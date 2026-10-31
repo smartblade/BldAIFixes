@@ -45,6 +45,8 @@ def _transform_code_instruction(block_instructions, code_instr, **kwargs):
 def _transform_ne_if_instruction(
     block_instructions, if_instr, inline_procedures, stack_vars, **kwargs
 ):
+    if _transform_virtual_delete(block_instructions, if_instr, stack_vars):
+        return
     if len(if_instr.if_block) < 3:
         return
     deleting_if = if_instr.if_block[-2]
@@ -127,6 +129,89 @@ def _transform_ne_if_instruction(
         return
     deleting_chain.replace_instructions(
         [instructions.Delete(deleting_expression)])
+
+
+def _transform_virtual_delete(block_instructions, if_instr, stack_vars):
+    """Transform 'delete obj' of object with virtual destructor.
+
+        copy = obj;
+        p = copy;
+        if (p != 0)
+        {
+            result = p->(vtbl(p)[index])(1);
+        }
+        else
+        {
+            result = 0;
+        }
+
+    The entry of the table is the scalar deleting destructor, 1 is the flag
+    to free the memory.
+    """
+    if len(if_instr.if_block) != 1:
+        return False
+    deleting_ass = if_instr.if_block[0]
+    if not isinstance(deleting_ass, instructions.Assignment):
+        return False
+    deleting_result_offset = _extract_var_offset(deleting_ass.dst)
+    if deleting_result_offset is None:
+        return False
+    pc = deleting_ass.src
+    if not isinstance(pc, expressions.ProcedureCall) or not pc.is_method:
+        return False
+    if len(pc.arguments) != 2:
+        return False
+    if not _is_unknown_constant(pc.arguments[1], 1):
+        return False
+    deleting_offset = _extract_var_offset(pc.arguments[0])
+    if deleting_offset is None:
+        return False
+    callee = pc.callee_expression
+    if not isinstance(callee, expressions.intermediate.Access):
+        return False
+    vtbl = callee.expression
+    if not isinstance(vtbl, expressions.intermediate.Access):
+        return False
+    if vtbl.offset != 0 or not _check_var_offset(
+        vtbl.expression, deleting_offset
+    ):
+        return False
+    if not _is_deleting_obj_null_check(if_instr.if_clause, deleting_offset):
+        return False
+    if if_instr.else_block is None or len(if_instr.else_block) != 1:
+        return False
+    deleting_result_ass_null = if_instr.else_block[0]
+    if not isinstance(deleting_result_ass_null, instructions.Assignment):
+        return False
+    if not _check_var_offset(
+        deleting_result_ass_null.dst, deleting_result_offset
+    ):
+        return False
+    if not _is_unknown_constant(deleting_result_ass_null.src, 0):
+        return False
+    deleting_chain = block_instructions.interval(-2)
+    first_ass = deleting_chain.as_instr(0, instructions.Assignment)
+    if first_ass is None:
+        return False
+    deleting_obj_copy_offset = _extract_var_offset(first_ass.dst)
+    if deleting_obj_copy_offset is None:
+        return False
+    second_ass = deleting_chain.as_instr(1, instructions.Assignment)
+    if second_ass is None:
+        return False
+    if not _check_var_offset(second_ass.dst, deleting_offset):
+        return False
+    if not _check_var_offset(second_ass.src, deleting_obj_copy_offset):
+        return False
+    assert deleting_chain.as_instr(2, instructions.IfInstruction) == if_instr
+    stack_vars[deleting_offset] = expressions.Identifier(
+        data_types.Pointer32(), "__deleting_obj")
+    stack_vars[deleting_obj_copy_offset] = expressions.Identifier(
+        data_types.Pointer32(), "__deleting_obj_copy")
+    stack_vars[deleting_result_offset] = expressions.Identifier(
+        data_types.Pointer32(), "__deleting_result")
+    deleting_chain.replace_instructions([instructions.Delete(first_ass.src)])
+    return True
 
 
 def _transform_eq_if_instruction(block_instructions, if_instr, **kwargs):

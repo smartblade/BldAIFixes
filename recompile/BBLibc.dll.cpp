@@ -1001,16 +1001,7 @@ unsigned int B_List::Remove(B_ListElement *element, unsigned int index)
     element->list = nullptr;
     if (index != 0)
     {
-        B_ListElement *unknown_loc_10 = element;
-        STACKVAR(-12, 4) = unknown_loc_10;
-        if (STACKVAR(-12, 4) != 0x00000000)
-        {
-            STACKVAR(-24, 4) = STACKVAR(-12, 4)->(ACCESS(ACCESS(STACKVAR(-12, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-24, 4) = 0x00000000;
-        }
+        delete element;
     }
     this->numElements--;
     return 1;
@@ -1035,16 +1026,7 @@ B_ListElement *B_List::RemoveFirst(unsigned int arg_1)
     unknown_loc_04->prev = nullptr;
     if (arg_1 != 0)
     {
-        STACKVAR(-12, 4) = unknown_loc_04;
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-20, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-20, 4) = 0x00000000;
-        }
+        delete unknown_loc_04;
         return nullptr;
     }
     return unknown_loc_04;
@@ -1069,16 +1051,7 @@ B_ListElement *B_List::RemoveLast(unsigned int arg_1)
     unknown_loc_04->prev = nullptr;
     if (arg_1 != 0)
     {
-        STACKVAR(-12, 4) = unknown_loc_04;
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-20, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-20, 4) = 0x00000000;
-        }
+        delete unknown_loc_04;
         return nullptr;
     }
     return unknown_loc_04;
@@ -1887,16 +1860,7 @@ p100045B9
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=0)
     if (ACCESS(this, 28, 4) != 0x00000000)
     {
-        STACKVAR(-8, 4) = ACCESS(this, 28, 4);
-        STACKVAR(-4, 4) = STACKVAR(-8, 4);
-        if (STACKVAR(-4, 4) != 0x00000000)
-        {
-            STACKVAR(-16, 4) = STACKVAR(-4, 4)->(ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-16, 4) = 0x00000000;
-        }
+        delete ACCESS(this, 28, 4);
         ACCESS(this, 28, 4) = 0x00000000;
     }
 }
@@ -1912,16 +1876,7 @@ p10004606
     ACCESS(this, 32, 4) = reinterpret_cast<any_int32>(ACCESS(this, 32, 4)) - 0x00000001;
     if (ACCESS(this, 32, 4) == 0x00000000 && ACCESS(this, 28, 4) != 0x00000000)
     {
-        STACKVAR(-8, 4) = ACCESS(this, 28, 4);
-        STACKVAR(-4, 4) = STACKVAR(-8, 4);
-        if (STACKVAR(-4, 4) != 0x00000000)
-        {
-            STACKVAR(-16, 4) = STACKVAR(-4, 4)->(ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-16, 4) = 0x00000000;
-        }
+        delete ACCESS(this, 28, 4);
         ACCESS(this, 28, 4) = 0x00000000;
     }
 }
@@ -1978,16 +1933,7 @@ l1000473C:
 l10004745:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-44, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-44, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1000473C;
     }
 l10004785:
@@ -2018,16 +1964,7 @@ l100047F4:
 l100047FD:
     if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_14, 0), 0, 4);
-        STACKVAR(-24, 4) = STACKVAR(-28, 4);
-        if (STACKVAR(-24, 4) != 0x00000000)
-        {
-            STACKVAR(-48, 4) = STACKVAR(-24, 4)->(ACCESS(ACCESS(STACKVAR(-24, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-48, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_14, 0), 0, 4);
         goto l100047F4;
     }
 l1000483D:
@@ -2190,16 +2127,7 @@ l10004AFB:
         if (ACCESS(ARRPTR(this, 4, unknown_loc_04, 0), 0, 4) != 0x00000000)
         {
             ACCESS(ARRPTR(this, 4, unknown_loc_04, 0), 0, 4)->unknown_method_100049BB();
-            STACKVAR(-12, 4) = ACCESS(ARRPTR(this, 4, unknown_loc_04, 0), 0, 4);
-            STACKVAR(-8, 4) = STACKVAR(-12, 4);
-            if (STACKVAR(-8, 4) != 0x00000000)
-            {
-                STACKVAR(-40, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-            }
-            else
-            {
-                STACKVAR(-40, 4) = 0x00000000;
-            }
+            delete ACCESS(ARRPTR(this, 4, unknown_loc_04, 0), 0, 4);
             ACCESS(ARRPTR(this, 4, unknown_loc_04, 0), 0, 4) = 0x00000000;
         }
         goto l10004AF2;
@@ -3092,16 +3020,7 @@ l100064F3:
             reinterpret_cast<B_ObjDscr *>(STACKVAR(-16424, 4))->LoadPacked(*reinterpret_cast<B_IDataFile *>(LOCAL(-16412)));
             if (this->AddAutoResource(reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-16424, 4)) + 0x00000004), reinterpret_cast<B_Resource *>(STACKVAR(-16424, 4)), arg_1) == 0)
             {
-                STACKVAR(-16440, 4) = STACKVAR(-16424, 4);
-                STACKVAR(-16436, 4) = STACKVAR(-16440, 4);
-                if (STACKVAR(-16436, 4) != 0x00000000)
-                {
-                    STACKVAR(-16456, 4) = STACKVAR(-16436, 4)->(ACCESS(ACCESS(STACKVAR(-16436, 4), 0, 4), 0, 4))(0x00000001);
-                }
-                else
-                {
-                    STACKVAR(-16456, 4) = 0x00000000;
-                }
+                delete STACKVAR(-16424, 4);
             }
         }
         goto l100064E4;
@@ -3457,16 +3376,7 @@ l10006EC1:
     }
     if (0x00000000 != 0x00000000)
     {
-        STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_0C, 0), 0, 4);
-        STACKVAR(-28, 4) = STACKVAR(-32, 4);
-        if (STACKVAR(-28, 4) != 0x00000000)
-        {
-            STACKVAR(-52, 4) = STACKVAR(-28, 4)->(ACCESS(ACCESS(STACKVAR(-28, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-52, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_0C, 0), 0, 4);
     }
     if (ACCESS(GLOBAL(0x1004A528), 0, 4) == 0x00000001)
     {
@@ -3666,16 +3576,7 @@ l100075B0:
     }
     if (0x00000000 != 0x00000000)
     {
-        STACKVAR(-56, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_24, 0), 0, 4);
-        STACKVAR(-52, 4) = STACKVAR(-56, 4);
-        if (STACKVAR(-52, 4) != 0x00000000)
-        {
-            STACKVAR(-76, 4) = STACKVAR(-52, 4)->(ACCESS(ACCESS(STACKVAR(-52, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-76, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_24, 0), 0, 4);
     }
     if (ACCESS(GLOBAL(0x1004A528), 0, 4) == 0x00000001)
     {
@@ -3772,16 +3673,7 @@ l100077EB:
     }
     if (0x00000000 != 0x00000000)
     {
-        STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_0C, 0), 0, 4);
-        STACKVAR(-28, 4) = STACKVAR(-32, 4);
-        if (STACKVAR(-28, 4) != 0x00000000)
-        {
-            STACKVAR(-56, 4) = STACKVAR(-28, 4)->(ACCESS(ACCESS(STACKVAR(-28, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-56, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_0C, 0), 0, 4);
     }
     if (ACCESS(GLOBAL(0x1004A528), 0, 4) == 0x00000001)
     {
@@ -3879,16 +3771,7 @@ l10007A2B:
     }
     if (0x00000000 != 0x00000000)
     {
-        STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_0C, 0), 0, 4);
-        STACKVAR(-28, 4) = STACKVAR(-32, 4);
-        if (STACKVAR(-28, 4) != 0x00000000)
-        {
-            STACKVAR(-56, 4) = STACKVAR(-28, 4)->(ACCESS(ACCESS(STACKVAR(-28, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-56, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_0C, 0), 0, 4);
     }
     if (ACCESS(GLOBAL(0x1004A528), 0, 4) == 0x00000001)
     {
@@ -4008,16 +3891,7 @@ p10007D30
     }
     if (STACKVAR(12, 4) != 0x00000000)
     {
-        STACKVAR(-20, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, STACKVAR(8, 4), 0), 0, 4);
-        STACKVAR(-16, 4) = STACKVAR(-20, 4);
-        if (STACKVAR(-16, 4) != 0x00000000)
-        {
-            STACKVAR(-40, 4) = STACKVAR(-16, 4)->(ACCESS(ACCESS(STACKVAR(-16, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-40, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, STACKVAR(8, 4), 0), 0, 4);
     }
     if (ACCESS(this, 8, 4) == 0x00000001)
     {
@@ -4127,16 +4001,7 @@ l10007FE5:
 l10007FEE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l10007FE5;
     }
 l1000802E:
@@ -4178,16 +4043,7 @@ l100080C5:
 l100080CE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l100080C5;
     }
 l1000810E:
@@ -4271,16 +4127,7 @@ l100082A5:
 l100082AE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l100082A5;
     }
 l100082EE:
@@ -20752,16 +20599,7 @@ l10026A56:
 l10026A5F:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-24, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-24, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l10026A56;
     }
 l10026A9F:
@@ -20856,16 +20694,7 @@ l10026CEF:
 l10026CF8:
     if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
     {
-        STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_14, 0), 0, 4);
-        STACKVAR(-24, 4) = STACKVAR(-28, 4);
-        if (STACKVAR(-24, 4) != 0x00000000)
-        {
-            STACKVAR(-36, 4) = STACKVAR(-24, 4)->(ACCESS(ACCESS(STACKVAR(-24, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-36, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_14, 0), 0, 4);
         goto l10026CEF;
     }
 l10026D37:
@@ -21550,16 +21379,7 @@ l10028505:
 l1002850E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l10028505;
     }
 l1002854E:
@@ -22549,16 +22369,7 @@ l10029F35:
     }
     if (0x00000000 != 0x00000000)
     {
-        STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-44, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-24, 4) = STACKVAR(-28, 4);
-        if (STACKVAR(-24, 4) != 0x00000000)
-        {
-            STACKVAR(-52, 4) = STACKVAR(-24, 4)->(ACCESS(ACCESS(STACKVAR(-24, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-52, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(STACKVAR(-44, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4);
     }
     if (ACCESS(STACKVAR(-44, 4), 8, 4) == 0x00000001)
     {
@@ -22750,16 +22561,7 @@ l1002A335:
 l1002A33E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1002A335;
     }
 l1002A37E:
@@ -22801,16 +22603,7 @@ l1002A415:
 l1002A41E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1002A415;
     }
 l1002A45E:
@@ -22852,16 +22645,7 @@ l1002A4F5:
 l1002A4FE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1002A4F5;
     }
 l1002A53E:
@@ -25187,16 +24971,7 @@ l10035C73:
 l10035C82:
     if (unknown_loc_228 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-568, 4), 8, 4)))
     {
-        STACKVAR(-560, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-568, 4), 4, 4), 4, unknown_loc_228, 0), 0, 4);
-        STACKVAR(-556, 4) = STACKVAR(-560, 4);
-        if (STACKVAR(-556, 4) != 0x00000000)
-        {
-            STACKVAR(-684, 4) = STACKVAR(-556, 4)->(ACCESS(ACCESS(STACKVAR(-556, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-684, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(STACKVAR(-568, 4), 4, 4), 4, unknown_loc_228, 0), 0, 4);
         goto l10035C73;
     }
 l10035CE6:
@@ -27213,16 +26988,7 @@ l10039F86:
 l10039F8F:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-24, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-24, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l10039F86;
     }
 l10039FCF:
@@ -27613,16 +27379,7 @@ l1003A845:
 l1003A84E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003A845;
     }
 l1003A88E:
@@ -27664,16 +27421,7 @@ l1003A925:
 l1003A92E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003A925;
     }
 l1003A96E:
@@ -27755,16 +27503,7 @@ l1003AB05:
 l1003AB0E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003AB05;
     }
 l1003AB4E:
@@ -27806,16 +27545,7 @@ l1003ABE5:
 l1003ABEE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003ABE5;
     }
 l1003AC2E:
@@ -27877,16 +27607,7 @@ l1003AD45:
 l1003AD4E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003AD45;
     }
 l1003AD8E:
@@ -27928,16 +27649,7 @@ l1003AE25:
 l1003AE2E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003AE25;
     }
 l1003AE6E:
@@ -28202,16 +27914,7 @@ l1003B335:
 l1003B33E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003B335;
     }
 l1003B37E:
@@ -28253,16 +27956,7 @@ l1003B415:
 l1003B41E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003B415;
     }
 l1003B45E:
@@ -28304,16 +27998,7 @@ l1003B4F5:
 l1003B4FE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003B4F5;
     }
 l1003B53E:
@@ -28355,16 +28040,7 @@ l1003B5D5:
 l1003B5DE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003B5D5;
     }
 l1003B61E:
@@ -28583,16 +28259,7 @@ l1003BAA6:
 l1003BAAF:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-24, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-24, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003BAA6;
     }
 l1003BAEF:
@@ -28652,16 +28319,7 @@ l1003BC06:
 l1003BC0F:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-24, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-24, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003BC06;
     }
 l1003BC4F:
@@ -28797,16 +28455,7 @@ l1003BED6:
 l1003BEDF:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-24, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-24, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003BED6;
     }
 l1003BF1F:
@@ -28851,16 +28500,7 @@ l1003BFE6:
 l1003BFEF:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-24, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-24, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003BFE6;
     }
 l1003C02F:
@@ -28896,16 +28536,7 @@ l1003C0B5:
 l1003C0BE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C0B5;
     }
 l1003C0FE:
@@ -28947,16 +28578,7 @@ l1003C195:
 l1003C19E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C195;
     }
 l1003C1DE:
@@ -28998,16 +28620,7 @@ l1003C275:
 l1003C27E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C275;
     }
 l1003C2BE:
@@ -29049,16 +28662,7 @@ l1003C355:
 l1003C35E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C355;
     }
 l1003C39E:
@@ -29100,16 +28704,7 @@ l1003C435:
 l1003C43E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C435;
     }
 l1003C47E:
@@ -29151,16 +28746,7 @@ l1003C515:
 l1003C51E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C515;
     }
 l1003C55E:
@@ -29202,16 +28788,7 @@ l1003C5F5:
 l1003C5FE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C5F5;
     }
 l1003C63E:
@@ -29253,16 +28830,7 @@ l1003C6D5:
 l1003C6DE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C6D5;
     }
 l1003C71E:
@@ -29304,16 +28872,7 @@ l1003C7B5:
 l1003C7BE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C7B5;
     }
 l1003C7FE:
@@ -29355,16 +28914,7 @@ l1003C895:
 l1003C89E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003C895;
     }
 l1003C8DE:
@@ -29525,16 +29075,7 @@ l1003CC03:
 l1003CC0C:
     if (unknown_loc_10 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
-        STACKVAR(-20, 4) = STACKVAR(-24, 4);
-        if (STACKVAR(-20, 4) != 0x00000000)
-        {
-            STACKVAR(-32, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-32, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
         goto l1003CC03;
     }
 l1003CC4C:
@@ -29602,16 +29143,7 @@ l1003CDB3:
 l1003CDBC:
     if (unknown_loc_10 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
-        STACKVAR(-20, 4) = STACKVAR(-24, 4);
-        if (STACKVAR(-20, 4) != 0x00000000)
-        {
-            STACKVAR(-44, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-44, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
         goto l1003CDB3;
     }
 l1003CDFC:
@@ -29690,16 +29222,7 @@ l1003D003:
 l1003D00C:
     if (unknown_loc_10 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
-        STACKVAR(-20, 4) = STACKVAR(-24, 4);
-        if (STACKVAR(-20, 4) != 0x00000000)
-        {
-            STACKVAR(-40, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-40, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
         goto l1003D003;
     }
 l1003D04C:
@@ -29842,16 +29365,7 @@ l1003D403:
 l1003D40C:
     if (unknown_loc_10 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
-        STACKVAR(-20, 4) = STACKVAR(-24, 4);
-        if (STACKVAR(-20, 4) != 0x00000000)
-        {
-            STACKVAR(-40, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-40, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
         goto l1003D403;
     }
 l1003D44C:
@@ -30150,16 +29664,7 @@ l1003DB42:
 l1003DB4B:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A9D8), 0, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A9D4), 0, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-24, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-24, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A9D4), 0, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003DB42;
     }
 l1003DB8A:
@@ -30293,16 +29798,7 @@ l1003DF45:
 l1003DF4E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003DF45;
     }
 l1003DF8E:
@@ -30344,16 +29840,7 @@ l1003E025:
 l1003E02E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003E025;
     }
 l1003E06E:
@@ -30395,16 +29882,7 @@ l1003E105:
 l1003E10E:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003E105;
     }
 l1003E14E:
@@ -30446,16 +29924,7 @@ l1003E1E5:
 l1003E1EE:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-28, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
         goto l1003E1E5;
     }
 l1003E22E:
@@ -31029,16 +30498,7 @@ p1003F24C
         REGDEF(eax=0x00000000)
         return;
     }
-    STACKVAR(-20, 4) = STACKVAR(-8, 4);
-    STACKVAR(-16, 4) = STACKVAR(-20, 4);
-    if (STACKVAR(-16, 4) != 0x00000000)
-    {
-        STACKVAR(-24, 4) = STACKVAR(-16, 4)->(ACCESS(ACCESS(STACKVAR(-16, 4), 0, 4), 0, 4))(0x00000001);
-    }
-    else
-    {
-        STACKVAR(-24, 4) = 0x00000000;
-    }
+    delete STACKVAR(-8, 4);
     ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
     STACKVAR(-4, 4) = &_Py_NoneStruct;
     REGDEF(eax=STACKVAR(-4, 4))
