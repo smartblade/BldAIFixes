@@ -87,16 +87,7 @@ B_OctantNode::~B_OctantNode()
     {
         if (this->children[unknown_loc_04] != nullptr)
         {
-            B_OctantNodeBase *unknown_loc_0C = this->children[unknown_loc_04];
-            STACKVAR(-8, 4) = unknown_loc_0C;
-            if (STACKVAR(-8, 4) != 0x00000000)
-            {
-                STACKVAR(-20, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 4, 4))(0x00000001);
-            }
-            else
-            {
-                STACKVAR(-20, 4) = 0x00000000;
-            }
+            delete this->children[unknown_loc_04];
         }
     }
     ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
@@ -162,16 +153,7 @@ B_SectorListNode::~B_SectorListNode()
     }
     for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 8, 4)); unknown_loc_04++)
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-20, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            STACKVAR(-52, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-52, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(STACKVAR(-20, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4);
     }
 l00450596:
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-20, 4), 4, 4);
@@ -204,16 +186,7 @@ l004505C9:
     }
     for (unsigned int unknown_loc_18 = 0; unknown_loc_18 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)); unknown_loc_18++)
     {
-        STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-44, 4), 4, 4), 4, unknown_loc_18, 0), 0, 4);
-        STACKVAR(-28, 4) = STACKVAR(-32, 4);
-        if (STACKVAR(-28, 4) != 0x00000000)
-        {
-            STACKVAR(-56, 4) = STACKVAR(-28, 4)->(ACCESS(ACCESS(STACKVAR(-28, 4), 0, 4), 0, 4))(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-56, 4) = 0x00000000;
-        }
+        delete ACCESS(ARRPTR(ACCESS(STACKVAR(-44, 4), 4, 4), 4, unknown_loc_18, 0), 0, 4);
     }
 l00450666:
     STACKVAR(-36, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
