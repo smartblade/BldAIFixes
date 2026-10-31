@@ -34,6 +34,8 @@ def do_pointer_dereference(expression, offset, size):
                 "Data type size expected to be {} but was: {}.".format(
                     size, data_type.size))
         return field_access
+    if isinstance(pointee, data_types.Array) and 0 < offset < pointee.size:
+        return _dereference_array_element(expression, pointee, offset, size)
     if isinstance(pointee, data_types.Array) and offset == 0:
         data_type = pointee.element_type
         if size is not None and data_type.size != size:
@@ -70,3 +72,20 @@ def do_pointer_dereference(expression, offset, size):
                     0, offset))
         return dereference
     return None
+
+
+def _dereference_array_element(expression, array_type, offset, size):
+    """Access to data at the offset inside an element of the array."""
+    element_type = array_type.element_type
+    index, element_offset = divmod(offset, element_type.size)
+    if size is not None and element_offset + size > element_type.size:
+        # Access to several elements
+        return None
+    array_access = expressions.ArrayAccess(
+        expressions.do_dereference(expression),
+        expressions.Constant(data_types.Int32(), index),
+    )
+    if element_offset == 0 and (size is None or element_type.size == size):
+        return array_access
+    return do_pointer_dereference(
+        expressions.AddressOf(array_access), element_offset, size)

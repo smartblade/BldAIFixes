@@ -318,29 +318,29 @@ void B_OctantNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSect
                 ACCESS(LOCAL(-24), 0, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
                 this->children[0]->(ACCESS(ACCESS(this->children[0], 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-64)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-40)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
             }
-            if (localPos.z > -10.0 && ACCESS(this, 8, 4) != 0x00000000)
+            if (localPos.z > -10.0 && this->children[1] != nullptr)
             {
                 STACKVAR(-88, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
                 ACCESS(LOCAL(-80), 0, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
                 ACCESS(LOCAL(-72), 0, 8) = STACKVAR(-16, 8);
-                ACCESS(this, 8, 4)->(ACCESS(ACCESS(ACCESS(this, 8, 4), 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-112)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-88)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
+                this->children[1]->(ACCESS(ACCESS(this->children[1], 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-112)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-88)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
             }
         }
         if (localPos.y > -10.0)
         {
-            if (localPos.z < 10.0 && ACCESS(this, 12, 4) != 0x00000000)
+            if (localPos.z < 10.0 && this->children[2] != nullptr)
             {
                 STACKVAR(-136, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
                 ACCESS(LOCAL(-128), 0, 8) = STACKVAR(-16, 8);
                 ACCESS(LOCAL(-120), 0, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
-                ACCESS(this, 12, 4)->(ACCESS(ACCESS(ACCESS(this, 12, 4), 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-160)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-136)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
+                this->children[2]->(ACCESS(ACCESS(this->children[2], 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-160)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-136)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
             }
-            if (localPos.z > -10.0 && ACCESS(this, 16, 4) != 0x00000000)
+            if (localPos.z > -10.0 && this->children[3] != nullptr)
             {
                 STACKVAR(-184, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
                 ACCESS(LOCAL(-176), 0, 8) = STACKVAR(-16, 8);
                 ACCESS(LOCAL(-168), 0, 8) = STACKVAR(-16, 8);
-                ACCESS(this, 16, 4)->(ACCESS(ACCESS(ACCESS(this, 16, 4), 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-208)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-184)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
+                this->children[3]->(ACCESS(ACCESS(this->children[3], 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-208)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-184)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
             }
         }
     }
@@ -348,40 +348,40 @@ void B_OctantNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSect
     {
         if (localPos.y < 10.0)
         {
-            if (localPos.z < 10.0 && ACCESS(this, 20, 4) != 0x00000000)
+            if (localPos.z < 10.0 && this->children[4] != nullptr)
             {
                 STACKVAR(-232, 4) = STACKVAR(-16, 4);
                 STACKVAR(-228, 4) = STACKVAR(-12, 4);
                 ACCESS(LOCAL(-224), 0, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
                 ACCESS(LOCAL(-216), 0, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
-                ACCESS(this, 20, 4)->(ACCESS(ACCESS(ACCESS(this, 20, 4), 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-256)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-232)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
+                this->children[4]->(ACCESS(ACCESS(this->children[4], 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-256)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-232)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
             }
-            if (localPos.z > -10.0 && ACCESS(this, 24, 4) != 0x00000000)
+            if (localPos.z > -10.0 && this->children[5] != nullptr)
             {
                 STACKVAR(-280, 4) = STACKVAR(-16, 4);
                 STACKVAR(-276, 4) = STACKVAR(-12, 4);
                 ACCESS(LOCAL(-272), 0, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
                 ACCESS(LOCAL(-264), 0, 8) = STACKVAR(-16, 8);
-                ACCESS(this, 24, 4)->(ACCESS(ACCESS(ACCESS(this, 24, 4), 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-304)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-280)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
+                this->children[5]->(ACCESS(ACCESS(this->children[5], 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-304)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-280)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
             }
         }
         if (localPos.y > -10.0)
         {
-            if (localPos.z < 10.0 && ACCESS(this, 28, 4) != 0x00000000)
+            if (localPos.z < 10.0 && this->children[6] != nullptr)
             {
                 STACKVAR(-328, 4) = STACKVAR(-16, 4);
                 STACKVAR(-324, 4) = STACKVAR(-12, 4);
                 ACCESS(LOCAL(-320), 0, 8) = STACKVAR(-16, 8);
                 ACCESS(LOCAL(-312), 0, 8) = -reinterpret_cast<double>(STACKVAR(-16, 8));
-                ACCESS(this, 28, 4)->(ACCESS(ACCESS(ACCESS(this, 28, 4), 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-352)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-328)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
+                this->children[6]->(ACCESS(ACCESS(this->children[6], 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-352)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-328)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
             }
-            if (localPos.z > -10.0 && ACCESS(this, 32, 4) != 0x00000000)
+            if (localPos.z > -10.0 && this->children[7] != nullptr)
             {
                 STACKVAR(-376, 4) = STACKVAR(-16, 4);
                 STACKVAR(-372, 4) = STACKVAR(-12, 4);
                 ACCESS(LOCAL(-368), 0, 8) = STACKVAR(-16, 8);
                 ACCESS(LOCAL(-360), 0, 8) = STACKVAR(-16, 8);
-                ACCESS(this, 32, 4)->(ACCESS(ACCESS(ACCESS(this, 32, 4), 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-400)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-376)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
+                this->children[7]->(ACCESS(ACCESS(this->children[7], 0, 4), 12, 4))(*reinterpret_cast<B_Vector *>(LOCAL(-400)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-376)), outList, STACKVAR(-8, 4), STACKVAR(-4, 4));
             }
         }
     }
@@ -409,7 +409,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-160)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-136))), 24);
                 this->children[0]->(ACCESS(ACCESS(this->children[0], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
             }
-            if (bb.maxCoords.z > -10.0 && ACCESS(this, 8, 4) != 0x00000000)
+            if (bb.maxCoords.z > -10.0 && this->children[1] != nullptr)
             {
                 STACKVAR(-184, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 ACCESS(LOCAL(-176), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
@@ -419,12 +419,12 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 ACCESS(LOCAL(-224), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 ACCESS(LOCAL(-216), 0, 8) = STACKVAR(-64, 8);
                 memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-256)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-232))), 24);
-                ACCESS(this, 8, 4)->(ACCESS(ACCESS(ACCESS(this, 8, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+                this->children[1]->(ACCESS(ACCESS(this->children[1], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
             }
         }
         if (bb.maxCoords.y > -10.0)
         {
-            if (bb.minCoords.z < 10.0 && ACCESS(this, 12, 4) != 0x00000000)
+            if (bb.minCoords.z < 10.0 && this->children[2] != nullptr)
             {
                 STACKVAR(-280, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 ACCESS(LOCAL(-272), 0, 8) = STACKVAR(-64, 8);
@@ -434,9 +434,9 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 ACCESS(LOCAL(-320), 0, 8) = STACKVAR(-64, 8);
                 ACCESS(LOCAL(-312), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-352)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-328))), 24);
-                ACCESS(this, 12, 4)->(ACCESS(ACCESS(ACCESS(this, 12, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+                this->children[2]->(ACCESS(ACCESS(this->children[2], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
             }
-            if (bb.maxCoords.z > -10.0 && ACCESS(this, 16, 4) != 0x00000000)
+            if (bb.maxCoords.z > -10.0 && this->children[3] != nullptr)
             {
                 STACKVAR(-376, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 ACCESS(LOCAL(-368), 0, 8) = STACKVAR(-64, 8);
@@ -446,7 +446,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 ACCESS(LOCAL(-416), 0, 8) = STACKVAR(-64, 8);
                 ACCESS(LOCAL(-408), 0, 8) = STACKVAR(-64, 8);
                 memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-448)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-424))), 24);
-                ACCESS(this, 16, 4)->(ACCESS(ACCESS(ACCESS(this, 16, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+                this->children[3]->(ACCESS(ACCESS(this->children[3], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
             }
         }
     }
@@ -454,7 +454,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
     {
         if (bb.minCoords.y < 10.0)
         {
-            if (bb.minCoords.z < 10.0 && ACCESS(this, 20, 4) != 0x00000000)
+            if (bb.minCoords.z < 10.0 && this->children[4] != nullptr)
             {
                 STACKVAR(-472, 4) = STACKVAR(-64, 4);
                 STACKVAR(-468, 4) = STACKVAR(-60, 4);
@@ -466,9 +466,9 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 ACCESS(LOCAL(-512), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 ACCESS(LOCAL(-504), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-544)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-520))), 24);
-                ACCESS(this, 20, 4)->(ACCESS(ACCESS(ACCESS(this, 20, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+                this->children[4]->(ACCESS(ACCESS(this->children[4], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
             }
-            if (bb.maxCoords.z > -10.0 && ACCESS(this, 24, 4) != 0x00000000)
+            if (bb.maxCoords.z > -10.0 && this->children[5] != nullptr)
             {
                 STACKVAR(-568, 4) = STACKVAR(-64, 4);
                 STACKVAR(-564, 4) = STACKVAR(-60, 4);
@@ -480,12 +480,12 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 ACCESS(LOCAL(-608), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 ACCESS(LOCAL(-600), 0, 8) = STACKVAR(-64, 8);
                 memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-640)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-616))), 24);
-                ACCESS(this, 24, 4)->(ACCESS(ACCESS(ACCESS(this, 24, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+                this->children[5]->(ACCESS(ACCESS(this->children[5], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
             }
         }
         if (bb.maxCoords.y > -10.0)
         {
-            if (bb.minCoords.z < 10.0 && ACCESS(this, 28, 4) != 0x00000000)
+            if (bb.minCoords.z < 10.0 && this->children[6] != nullptr)
             {
                 STACKVAR(-664, 4) = STACKVAR(-64, 4);
                 STACKVAR(-660, 4) = STACKVAR(-60, 4);
@@ -497,9 +497,9 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 ACCESS(LOCAL(-704), 0, 8) = STACKVAR(-64, 8);
                 ACCESS(LOCAL(-696), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
                 memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-736)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-712))), 24);
-                ACCESS(this, 28, 4)->(ACCESS(ACCESS(ACCESS(this, 28, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+                this->children[6]->(ACCESS(ACCESS(this->children[6], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
             }
-            if (bb.maxCoords.z > -10.0 && ACCESS(this, 32, 4) != 0x00000000)
+            if (bb.maxCoords.z > -10.0 && this->children[7] != nullptr)
             {
                 STACKVAR(-760, 4) = STACKVAR(-64, 4);
                 STACKVAR(-756, 4) = STACKVAR(-60, 4);
@@ -511,7 +511,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 ACCESS(LOCAL(-800), 0, 8) = STACKVAR(-64, 8);
                 ACCESS(LOCAL(-792), 0, 8) = STACKVAR(-64, 8);
                 memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-832)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-808))), 24);
-                ACCESS(this, 32, 4)->(ACCESS(ACCESS(ACCESS(this, 32, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+                this->children[7]->(ACCESS(ACCESS(this->children[7], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
             }
         }
     }
