@@ -54,6 +54,24 @@ class ClassType(DataType):
         return found_method
 
     @property
+    def virtual_methods(self):
+        """Virtual methods in order of the virtual methods table."""
+        if self._parent is not None:
+            methods = self._parent.virtual_methods
+        else:
+            methods = []
+        for method in self._methods:
+            if not method.is_virtual:
+                continue
+            for index, base_method in enumerate(methods):
+                if _is_override(method, base_method):
+                    methods[index] = method
+                    break
+            else:
+                methods.append(method)
+        return methods
+
+    @property
     def has_virtual_methods(self):
         for method in self._methods:
             if method.is_virtual:
@@ -102,3 +120,9 @@ class ClassType(DataType):
         self._fields = dict(sorted(self._fields.items()))
         self._fields_sorted = True
         self._sorted_offsets = list(self._fields.keys())
+
+
+def _is_override(method, base_method):
+    if method.is_destructor and base_method.is_destructor:
+        return True
+    return method.proc_name == base_method.proc_name
