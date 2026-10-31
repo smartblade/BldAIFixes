@@ -24995,15 +24995,15 @@ l10035134:
     ACCESS(LOCAL(-228), 0, 8) = 0.0;
     ACCESS(LOCAL(-220), 0, 8) = 0.0;
     STACKVAR(-204, 8) = reinterpret_cast<double>(STACKVAR(-204, 8)) - reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D88), 0, 8));
-    raster->(ACCESS(ACCESS(raster, 0, 4), 108, 4))();
+    raster->unknown06C();
     if (i_unknown == 0)
     {
         goto l10035712;
     }
-    raster->(ACCESS(ACCESS(raster, 0, 4), 276, 4))(0x00000002);
-    STACKVAR(-548, 4) = static_cast<float>(raster->(ACCESS(ACCESS(raster, 0, 4), 384, 4))());
+    raster->SetMode(2);
+    STACKVAR(-548, 4) = static_cast<float>(static_cast<double>(raster->get_alpha()));
     STACKVAR(-1092, 4) = static_cast<float>(reinterpret_cast<float>(STACKVAR(-548, 4)) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D80), 0, 8)));
-    raster->(ACCESS(ACCESS(raster, 0, 4), 368, 4))(reinterpret_cast<float>(STACKVAR(-1092, 4)));
+    raster->set_alpha(reinterpret_cast<float>(STACKVAR(-1092, 4)));
     STACKVAR(-44, 4) = 0x00000000;
     goto l100354FC;
 l100354F3:
@@ -25017,7 +25017,7 @@ l100354FC:
         memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-892), STACKVAR(-4, 4), LOCAL(-940), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-916), STACKVAR(-4, 4)))->unknown_method_10031882()), 24);
         if (reinterpret_cast<double>(STACKVAR(-220, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
         {
-            raster->(ACCESS(ACCESS(raster, 0, 4), 172, 4))(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 24), 0, 4));
+            raster->SetActiveTexture(reinterpret_cast<unsigned long>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 24), 0, 4)));
             ARG(reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 24);
             ARG(0x00000000);
             ARG(0x00000000);
@@ -25043,9 +25043,9 @@ l100354FC:
         }
         goto l100354F3;
     }
-    raster->(ACCESS(ACCESS(raster, 0, 4), 368, 4))(STACKVAR(-548, 4));
+    raster->set_alpha(reinterpret_cast<float>(STACKVAR(-548, 4)));
 l10035712:
-    raster->(ACCESS(ACCESS(raster, 0, 4), 276, 4))(0x00000003);
+    raster->SetMode(3);
     STACKVAR(-44, 4) = 0x00000000;
     goto l10035734;
 l1003572B:
@@ -25084,7 +25084,7 @@ l10035734:
         }
         goto l1003572B;
     }
-    raster->(ACCESS(ACCESS(raster, 0, 4), 112, 4))();
+    raster->unknown070();
 }
 
 // address: 0x1003590B
