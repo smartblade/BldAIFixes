@@ -45,7 +45,7 @@ void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &secto
             outBuffer.size++;
             continue;
         }
-        outBuffer.num_alloc += reinterpret_cast<unsigned int>(outBuffer.increment);
+        outBuffer.num_alloc += static_cast<unsigned int>(outBuffer.increment);
         if (outBuffer.size == 0)
         {
             goto l004502DC;
@@ -215,9 +215,9 @@ B_OctTree::~B_OctTree()
 // address: 0x0045201F
 void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
-    if (this->sectors->lastQueryId != reinterpret_cast<int>(gbl_oct_tree_query_id) && this->sectors->isActive != 0)
+    if (this->sectors->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->sectors->isActive != 0)
     {
-        this->sectors->lastQueryId = reinterpret_cast<int>(gbl_oct_tree_query_id);
+        this->sectors->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
         if (outList->size < 512)
         {
             outList->sectors[outList->size] = this->sectors;
@@ -229,9 +229,9 @@ void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsL
 // address: 0x00452082
 void LeafNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsList *outList, double arg_3)
 {
-    if (this->sectors->lastQueryId != reinterpret_cast<int>(gbl_oct_tree_query_id) && this->sectors->isActive != 0)
+    if (this->sectors->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->sectors->isActive != 0)
     {
-        this->sectors->lastQueryId = reinterpret_cast<int>(gbl_oct_tree_query_id);
+        this->sectors->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
         B_BoundingBox *unknown_loc_04 = &this->sectors->boundingBox;
         if (!(gbl_current_query_box->minCoords.x > unknown_loc_04->maxCoords.x || gbl_current_query_box->minCoords.y > unknown_loc_04->maxCoords.y || gbl_current_query_box->minCoords.z > unknown_loc_04->maxCoords.z || gbl_current_query_box->maxCoords.x < unknown_loc_04->minCoords.x || gbl_current_query_box->maxCoords.y < unknown_loc_04->minCoords.y || gbl_current_query_box->maxCoords.z < unknown_loc_04->minCoords.z) && outList->size < 512)
         {
@@ -246,9 +246,9 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
 {
     for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < this->size; unknown_loc_04++)
     {
-        if (this->elements[unknown_loc_04]->lastQueryId != reinterpret_cast<int>(gbl_oct_tree_query_id) && this->elements[unknown_loc_04]->isActive != 0)
+        if (this->elements[unknown_loc_04]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[unknown_loc_04]->isActive != 0)
         {
-            this->elements[unknown_loc_04]->lastQueryId = reinterpret_cast<int>(gbl_oct_tree_query_id);
+            this->elements[unknown_loc_04]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
             if (outList->size < 512)
             {
                 outList->sectors[outList->size] = this->elements[unknown_loc_04];
@@ -263,9 +263,9 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTree
 {
     for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < this->size; unknown_loc_04++)
     {
-        if (this->elements[unknown_loc_04]->lastQueryId != reinterpret_cast<int>(gbl_oct_tree_query_id) && this->elements[unknown_loc_04]->isActive != 0)
+        if (this->elements[unknown_loc_04]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[unknown_loc_04]->isActive != 0)
         {
-            this->elements[unknown_loc_04]->lastQueryId = reinterpret_cast<int>(gbl_oct_tree_query_id);
+            this->elements[unknown_loc_04]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
             B_BoundingBox *unknown_loc_08 = &this->elements[unknown_loc_04]->boundingBox;
             if (!(gbl_current_query_box->minCoords.x > unknown_loc_08->maxCoords.x || gbl_current_query_box->minCoords.y > unknown_loc_08->maxCoords.y || gbl_current_query_box->minCoords.z > unknown_loc_08->maxCoords.z || gbl_current_query_box->maxCoords.x < unknown_loc_08->minCoords.x || gbl_current_query_box->maxCoords.y < unknown_loc_08->minCoords.y || gbl_current_query_box->maxCoords.z < unknown_loc_08->minCoords.z) && outList->size < 512)
             {

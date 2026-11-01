@@ -1045,7 +1045,7 @@ B_ListElement *B_List::RemoveLast(unsigned int arg_1)
 // address: 0x10002E0E
 B_ListElement *B_List::GetAt(unsigned int arg_1)
 {
-    if (reinterpret_cast<unsigned int>(this->numElements) < arg_1)
+    if (static_cast<unsigned int>(this->numElements) < arg_1)
     {
         return nullptr;
     }
@@ -1166,7 +1166,7 @@ B_List::~B_List()
 // address: 0x10003100
 unsigned int B_List::nElements()
 {
-    return reinterpret_cast<unsigned int>(this->numElements);
+    return static_cast<unsigned int>(this->numElements);
 }
 
 // address: 0x10003120
@@ -2566,7 +2566,7 @@ int B_ResourceManager::IsResourceLoaded(int arg_1, const char *arg_2)
     {
         if (unknown_loc_0C == reinterpret_cast<B_NamedObj *>(ACCESS(ARRPTR(ACCESS(STACKVAR(-20, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4))->Id() != 0)
         {
-            unknown_loc_04 = reinterpret_cast<int>(unknown_loc_10);
+            unknown_loc_04 = static_cast<int>(unknown_loc_10);
             goto l10005D86;
         }
     }
@@ -2809,7 +2809,7 @@ int B_ResourceManager::SavePackedData(int arg_1, const char *arg_2)
     for (unsigned int unknown_loc_4018 = 0; unknown_loc_4018 < reinterpret_cast<unsigned int>(STACKVAR(-4, 4)); unknown_loc_4018++)
     {
         STACKVAR(-16412, 4) = 0x00000001;
-        if (this->IsResourceLoaded(arg_1, reinterpret_cast<int>(unknown_loc_4018)) != 0)
+        if (this->IsResourceLoaded(arg_1, static_cast<int>(unknown_loc_4018)) != 0)
         {
             STACKVAR(-16412, 4) = 0x00000001;
             unknown_loc_4014 << *reinterpret_cast<unsigned int *>(LOCAL(-16412));
@@ -3148,8 +3148,8 @@ l10006D9A:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
     ACCESS(GLOBAL(0x1004A528), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A528), 0, 4)) + 0x00000001;
 l10006DBA:
-    this->dimension1 = reinterpret_cast<unsigned int>(width);
-    this->dimension2 = reinterpret_cast<unsigned int>(height);
+    this->dimension1 = static_cast<unsigned int>(width);
+    this->dimension2 = static_cast<unsigned int>(height);
     if (width != 0 && height != 0)
     {
         STACKVAR(-4, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
@@ -3243,8 +3243,8 @@ l1000705F:
 // address: 0x10007090
 void B_BitMap24::GetDimension(int &arg_1, int &arg_2) const
 {
-    arg_1 = reinterpret_cast<int>(this->dimension1);
-    arg_2 = reinterpret_cast<int>(this->dimension2);
+    arg_1 = static_cast<int>(this->dimension1);
+    arg_2 = static_cast<int>(this->dimension2);
 }
 
 // address: 0x100070C0
@@ -4737,7 +4737,7 @@ l1000A4C1:
     }
     else
     {
-        unknown_loc_2C = reinterpret_cast<int>(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 32, 4)) % reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 12, 4)));
+        unknown_loc_2C = static_cast<int>(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 32, 4)) % reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 12, 4)));
         if (unknown_loc_2C == 0)
         {
             unknown_loc_2C = reinterpret_cast<int>(ACCESS(STACKVAR(-40, 4), 12, 4));
@@ -4745,7 +4745,7 @@ l1000A4C1:
     }
     unsigned int unknown_loc_20 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 28, 4));
     int unknown_loc_14 = reinterpret_cast<int>(ACCESS(STACKVAR(-40, 4), 8, 4));
-    int unknown_loc_08 = reinterpret_cast<int>(unknown_loc_20 % reinterpret_cast<unsigned int>(unknown_loc_14));
+    int unknown_loc_08 = static_cast<int>(unknown_loc_20 % static_cast<unsigned int>(unknown_loc_14));
     if (unknown_loc_08 > 0)
     {
         unknown_loc_08 = unknown_loc_14 - unknown_loc_08;
@@ -4772,8 +4772,8 @@ l1000A4C1:
     {
         goto l1000A714;
     }
-    unknown_loc_20 += reinterpret_cast<unsigned int>(unknown_loc_08);
-    unsigned int unknown_loc_34 = unknown_loc_20 / reinterpret_cast<unsigned int>(unknown_loc_14);
+    unknown_loc_20 += static_cast<unsigned int>(unknown_loc_08);
+    unsigned int unknown_loc_34 = unknown_loc_20 / static_cast<unsigned int>(unknown_loc_14);
     for (unknown_loc_3C = unknown_loc_2C; unknown_loc_3C < reinterpret_cast<int>(ACCESS(STACKVAR(-40, 4), 12, 4)); unknown_loc_3C++)
     {
         STACKVAR(-64, 4) = ACCESS(ARRPTR(STACKVAR(-36, 4), 4, unknown_loc_3C, 0), 0, 4);
@@ -9743,7 +9743,7 @@ l10014DCA:
     }
     else
     {
-        unknown_loc_28 = reinterpret_cast<int>(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 32, 4)) % reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 12, 4)));
+        unknown_loc_28 = static_cast<int>(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 32, 4)) % reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 12, 4)));
         if (unknown_loc_28 == 0)
         {
             unknown_loc_28 = reinterpret_cast<int>(ACCESS(STACKVAR(-32, 4), 12, 4));
@@ -9879,7 +9879,7 @@ l100151A6:
     }
     else
     {
-        unknown_loc_F4 = reinterpret_cast<int>(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-236, 4), 32, 4)) % reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-236, 4), 12, 4)));
+        unknown_loc_F4 = static_cast<int>(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-236, 4), 32, 4)) % reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-236, 4), 12, 4)));
         if (unknown_loc_F4 == 0)
         {
             unknown_loc_F4 = reinterpret_cast<int>(ACCESS(STACKVAR(-236, 4), 12, 4));
@@ -11872,7 +11872,7 @@ l10018F0C:
     }
     else if (unknown_loc_14 > 0)
     {
-        unknown_loc_24 = reinterpret_cast<unsigned int>(unknown_loc_14);
+        unknown_loc_24 = static_cast<unsigned int>(unknown_loc_14);
     }
     else
     {
@@ -11899,7 +11899,7 @@ l10019005:
             goto l10019005;
         }
     }
-    unknown_loc_14 -= reinterpret_cast<int>(unknown_loc_24);
+    unknown_loc_14 -= static_cast<int>(unknown_loc_24);
     switch (ACCESS(STACKVAR(8, 4), 380, 4))
     {
         case 224:
@@ -13416,9 +13416,9 @@ l1001B946:
         {
             unknown_loc_28 = reinterpret_cast<unsigned int>(ACCESS(ARRPTR(STACKVAR(-20, 4), 4, ACCESS(STACKVAR(8, 4), 380, 4), -800), 0, 4));
         }
-        if (reinterpret_cast<unsigned int>(unknown_loc_0C) < unknown_loc_28)
+        if (static_cast<unsigned int>(unknown_loc_0C) < unknown_loc_28)
         {
-            unknown_loc_28 = reinterpret_cast<unsigned int>(unknown_loc_0C);
+            unknown_loc_28 = static_cast<unsigned int>(unknown_loc_0C);
         }
         STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 4, 4)(STACKVAR(8, 4), 0x00000001, unknown_loc_28 + 20);
         ACCESS(STACKVAR(-36, 4), 0, 4) = 0x00000000;
@@ -16393,7 +16393,7 @@ p10022AC1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=0)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    int unknown_loc_0C = reinterpret_cast<int>(999999988 / reinterpret_cast<unsigned int>(STACKVAR(16, 4)));
+    int unknown_loc_0C = static_cast<int>(999999988 / reinterpret_cast<unsigned int>(STACKVAR(16, 4)));
     if (unknown_loc_0C <= 0)
     {
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000046;
@@ -16402,7 +16402,7 @@ p10022AC1
     unsigned int unknown_loc_18;
     if (unknown_loc_0C < reinterpret_cast<int>(STACKVAR(20, 4)))
     {
-        unknown_loc_18 = reinterpret_cast<unsigned int>(unknown_loc_0C);
+        unknown_loc_18 = static_cast<unsigned int>(unknown_loc_0C);
     }
     else
     {
@@ -16434,7 +16434,7 @@ p10022BC2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=0)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    int unknown_loc_0C = reinterpret_cast<int>(999999988 / (128 * reinterpret_cast<unsigned int>(STACKVAR(16, 4))));
+    int unknown_loc_0C = static_cast<int>(999999988 / (128 * reinterpret_cast<unsigned int>(STACKVAR(16, 4))));
     if (unknown_loc_0C <= 0)
     {
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000046;
@@ -16443,7 +16443,7 @@ p10022BC2
     unsigned int unknown_loc_18;
     if (unknown_loc_0C < reinterpret_cast<int>(STACKVAR(20, 4)))
     {
-        unknown_loc_18 = reinterpret_cast<unsigned int>(unknown_loc_0C);
+        unknown_loc_18 = static_cast<unsigned int>(unknown_loc_0C);
     }
     else
     {
@@ -16562,7 +16562,7 @@ p10022E15
     {
         if (ACCESS(STACKVAR(-24, 4), 0, 4) == 0x00000000)
         {
-            unknown_loc_1C = reinterpret_cast<int>((reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-24, 4), 4, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-24, 4), 12, 4))) + 1;
+            unknown_loc_1C = static_cast<int>((reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-24, 4), 4, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-24, 4), 12, 4))) + 1;
             if (unknown_loc_1C <= unknown_loc_14)
             {
                 ACCESS(STACKVAR(-24, 4), 16, 4) = ACCESS(STACKVAR(-24, 4), 4, 4);
@@ -16584,7 +16584,7 @@ p10022E15
     {
         if (ACCESS(STACKVAR(-8, 4), 0, 4) == 0x00000000)
         {
-            unknown_loc_1C = reinterpret_cast<int>((reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 4, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 12, 4))) + 1;
+            unknown_loc_1C = static_cast<int>((reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 4, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 12, 4))) + 1;
             if (unknown_loc_1C <= unknown_loc_14)
             {
                 ACCESS(STACKVAR(-8, 4), 16, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
@@ -18626,7 +18626,7 @@ l10026E78:
 l10026F4F:
     unknown_loc_08++;
 l10026F58:
-    if (unknown_loc_08 >= reinterpret_cast<int>(this->dimension2))
+    if (unknown_loc_08 >= static_cast<int>(this->dimension2))
     {
         goto l1002700F;
     }
@@ -18636,7 +18636,7 @@ l10026F70:
     unknown_loc_10++;
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10026F82:
-    if (unknown_loc_10 < reinterpret_cast<int>(this->dimension1))
+    if (unknown_loc_10 < static_cast<int>(this->dimension1))
     {
         ACCESS(STACKVAR(-4, 4), 0, 1) = static_cast<any_int8>(0x00000002 * static_cast<any_int32>(arg_1.pal->GetRed(static_cast<unsigned int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1))))));
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
@@ -18675,7 +18675,7 @@ l100270A2:
     }
     STACKVAR(-20, 4) = this->data;
     STACKVAR(-28, 4) = arg_1.data;
-    for (int unknown_loc_18 = 0; unknown_loc_18 < reinterpret_cast<int>(this->dimension2); unknown_loc_18++)
+    for (int unknown_loc_18 = 0; unknown_loc_18 < static_cast<int>(this->dimension2); unknown_loc_18++)
     {
         int unknown_loc_20 = 0;
         goto l1002714B;
@@ -18683,7 +18683,7 @@ l10027139:
         unknown_loc_20++;
         STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
 l1002714B:
-        if (unknown_loc_20 < reinterpret_cast<int>(this->dimension1))
+        if (unknown_loc_20 < static_cast<int>(this->dimension1))
         {
             ACCESS(STACKVAR(-20, 4), 0, 1) = ACCESS(STACKVAR(-28, 4), 0, 1);
             STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
@@ -18730,12 +18730,12 @@ unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const 
 {
     if (strcmp(arg_4, "RGB") == 0)
     {
-        if (this->dimension1 != reinterpret_cast<unsigned int>(arg_1) || this->dimension2 != reinterpret_cast<unsigned int>(arg_2))
+        if (this->dimension1 != static_cast<unsigned int>(arg_1) || this->dimension2 != static_cast<unsigned int>(arg_2))
         {
             STACKVAR(-4, 4) = this->data;
             ??3@YAXPAX@Z(STACKVAR(-4, 4));
-            this->dimension1 = reinterpret_cast<unsigned int>(arg_1);
-            this->dimension2 = reinterpret_cast<unsigned int>(arg_2);
+            this->dimension1 = static_cast<unsigned int>(arg_1);
+            this->dimension2 = static_cast<unsigned int>(arg_2);
             STACKVAR(-8, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
             if (this->data == nullptr)
@@ -18777,7 +18777,7 @@ int B_BitMap24::SaveToBMP(const char *fileName) const
     *reinterpret_cast<B_ODataFile *>(LOCAL(-16408)) << *reinterpret_cast<unsigned char *>(LOCAL(-16496)) << *reinterpret_cast<unsigned char *>(LOCAL(-16492)) << *reinterpret_cast<unsigned char *>(LOCAL(-16488));
     STACKVAR(-16500, 4) = ??2@YAPAXI@Z(3 * this->dimension1);
     STACKVAR(-8, 4) = STACKVAR(-16500, 4);
-    STACKVAR(-4, 4) = reinterpret_cast<int>(this->dimension1) % 4;
+    STACKVAR(-4, 4) = static_cast<int>(this->dimension1) % 4;
     STACKVAR(-16416, 1) = 0;
     STACKVAR(-16415, 1) = 0;
     STACKVAR(-16414, 1) = 0;
@@ -18793,7 +18793,7 @@ int B_BitMap24::SaveToBMP(const char *fileName) const
         STACKVAR(-16440, 4) = 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-16412, 4)) * this->dimension1;
         int unknown_loc_4030 = 0;
         STACKVAR(-16436, 4) = 0x00000000;
-        for (; unknown_loc_4030 < reinterpret_cast<int>(this->dimension1); unknown_loc_4030++)
+        for (; unknown_loc_4030 < static_cast<int>(this->dimension1); unknown_loc_4030++)
         {
             STACKVAR(-16424, 1) = ACCESS(ARRPTR(this->data, 1, STACKVAR(-16440, 4), 0), 0, 1);
             STACKVAR(-16440, 4) = reinterpret_cast<any_int32>(STACKVAR(-16440, 4)) + 0x00000001;
@@ -18866,12 +18866,12 @@ int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height) cons
     }
     for (int unknown_loc_4020 = height - 1; unknown_loc_4020 >= 0; unknown_loc_4020--)
     {
-        STACKVAR(-16440, 4) = 0x00000003 * unknown_loc_4020 * reinterpret_cast<int>(this->dimension2) / height * this->dimension1;
+        STACKVAR(-16440, 4) = 0x00000003 * unknown_loc_4020 * static_cast<int>(this->dimension2) / height * this->dimension1;
         int unknown_loc_4030 = 0;
         STACKVAR(-16436, 4) = 0x00000000;
         for (; unknown_loc_4030 < width; unknown_loc_4030++)
         {
-            int unknown_loc_403C = 3 * unknown_loc_4030 * reinterpret_cast<int>(this->dimension1) / width;
+            int unknown_loc_403C = 3 * unknown_loc_4030 * static_cast<int>(this->dimension1) / width;
             STACKVAR(-16424, 1) = ACCESS(ARRPTR(this->data, 1, reinterpret_cast<any_int32>(STACKVAR(-16440, 4)) + unknown_loc_403C, 0), 0, 1);
             STACKVAR(-16428, 1) = ACCESS(ARRPTR(this->data, 1, reinterpret_cast<any_int32>(STACKVAR(-16440, 4)) + unknown_loc_403C, 1), 0, 1);
             STACKVAR(-16420, 1) = ACCESS(ARRPTR(this->data, 1, reinterpret_cast<any_int32>(STACKVAR(-16440, 4)) + unknown_loc_403C, 2), 0, 1);
@@ -18882,7 +18882,7 @@ int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height) cons
             ACCESS(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(STACKVAR(-16436, 4)), 0, 1) = STACKVAR(-16420, 1);
             STACKVAR(-16436, 4) = reinterpret_cast<any_int32>(STACKVAR(-16436, 4)) + 0x00000001;
         }
-        reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->Write(reinterpret_cast<void *>(STACKVAR(-8, 4)), 3 * reinterpret_cast<unsigned int>(width));
+        reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->Write(reinterpret_cast<void *>(STACKVAR(-8, 4)), 3 * static_cast<unsigned int>(width));
         if (STACKVAR(-4, 4) != 0x00000000)
         {
             reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->Write(LOCAL(-16412), reinterpret_cast<unsigned int>(STACKVAR(-4, 4)));
@@ -18892,12 +18892,12 @@ int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height) cons
 l10027B72:
     for (int unknown_loc_4040 = height - 1; unknown_loc_4040 >= 0; unknown_loc_4040--)
     {
-        STACKVAR(-16472, 4) = 0x00000003 * unknown_loc_4040 * reinterpret_cast<int>(this->dimension2) / height * this->dimension1;
+        STACKVAR(-16472, 4) = 0x00000003 * unknown_loc_4040 * static_cast<int>(this->dimension2) / height * this->dimension1;
         int unknown_loc_4050 = 0;
         STACKVAR(-16468, 4) = 0x00000000;
         for (; unknown_loc_4050 < width; unknown_loc_4050++)
         {
-            int unknown_loc_4060 = 3 * unknown_loc_4050 * reinterpret_cast<int>(this->dimension1) / width;
+            int unknown_loc_4060 = 3 * unknown_loc_4050 * static_cast<int>(this->dimension1) / width;
             STACKVAR(-16456, 1) = ACCESS(ARRPTR(this->data, 1, reinterpret_cast<any_int32>(STACKVAR(-16472, 4)) + unknown_loc_4060, 0), 0, 1);
             STACKVAR(-16460, 1) = ACCESS(ARRPTR(this->data, 1, reinterpret_cast<any_int32>(STACKVAR(-16472, 4)) + unknown_loc_4060, 1), 0, 1);
             STACKVAR(-16452, 1) = ACCESS(ARRPTR(this->data, 1, reinterpret_cast<any_int32>(STACKVAR(-16472, 4)) + unknown_loc_4060, 2), 0, 1);
@@ -18909,7 +18909,7 @@ l10027B72:
             ACCESS(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(STACKVAR(-16468, 4)), 0, 1) = STACKVAR(-16476, 1);
             STACKVAR(-16468, 4) = reinterpret_cast<any_int32>(STACKVAR(-16468, 4)) + 0x00000001;
         }
-        reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->Write(reinterpret_cast<void *>(STACKVAR(-8, 4)), 3 * reinterpret_cast<unsigned int>(width));
+        reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->Write(reinterpret_cast<void *>(STACKVAR(-8, 4)), 3 * static_cast<unsigned int>(width));
         if (STACKVAR(-4, 4) != 0x00000000)
         {
             reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->Write(LOCAL(-16412), reinterpret_cast<unsigned int>(STACKVAR(-4, 4)));
@@ -19060,7 +19060,7 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap24 &bitMap)
     file << *reinterpret_cast<unsigned char *>(LOCAL(-92)) << *reinterpret_cast<unsigned char *>(LOCAL(-88)) << *reinterpret_cast<unsigned char *>(LOCAL(-84));
     STACKVAR(-96, 4) = ??2@YAPAXI@Z(3 * bitMap.dimension1);
     STACKVAR(-8, 4) = STACKVAR(-96, 4);
-    STACKVAR(-4, 4) = reinterpret_cast<int>(bitMap.dimension1) % 4;
+    STACKVAR(-4, 4) = static_cast<int>(bitMap.dimension1) % 4;
     STACKVAR(-16, 1) = 0;
     STACKVAR(-15, 1) = 0;
     STACKVAR(-14, 1) = 0;
@@ -19074,7 +19074,7 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap24 &bitMap)
         STACKVAR(-40, 4) = 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)) * bitMap.dimension1;
         int unknown_loc_20 = 0;
         STACKVAR(-36, 4) = 0x00000000;
-        for (; unknown_loc_20 < reinterpret_cast<int>(bitMap.dimension1); unknown_loc_20++)
+        for (; unknown_loc_20 < static_cast<int>(bitMap.dimension1); unknown_loc_20++)
         {
             STACKVAR(-24, 1) = ACCESS(ARRPTR(bitMap.data, 1, STACKVAR(-40, 4), 0), 0, 1);
             STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-40, 4)) + 0x00000001;
@@ -19120,7 +19120,7 @@ void B_BitMap24::EscribeArchivoRAW(const char *arg_1) const
 // address: 0x100283CD
 void B_BitMap24::ChangeRGBOrder()
 {
-    int unknown_loc_0C = reinterpret_cast<int>(this->dimension1 * this->dimension2);
+    int unknown_loc_0C = static_cast<int>(this->dimension1 * this->dimension2);
     STACKVAR(-4, 4) = this->data;
     int unknown_loc_08 = 0;
     goto l1002840A;
@@ -19140,7 +19140,7 @@ l1002840A:
 // address: 0x10028434
 unsigned int B_BitMap24::GetPixelAt(int arg_1, int arg_2, B_Color &arg_3) const
 {
-    if (arg_1 >= 0 && arg_1 < reinterpret_cast<int>(this->dimension1) && arg_2 >= 0 && arg_2 < reinterpret_cast<int>(this->dimension2))
+    if (arg_1 >= 0 && arg_1 < static_cast<int>(this->dimension1) && arg_2 >= 0 && arg_2 < static_cast<int>(this->dimension2))
     {
         STACKVAR(-4, 4) = 0x00000003 * arg_2 * this->dimension1 + 3 * arg_1;
         arg_3.r = reinterpret_cast<byte>(ACCESS(ARRPTR(this->data, 1, STACKVAR(-4, 4), 0), 0, 1));
@@ -21648,7 +21648,7 @@ int B_ObjDscr::GetVtxNode(unsigned int arg_1)
             STACKVAR(-16, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, unknown_loc_04, 0), 0, 4);
             if (arg_1 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 168, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 164, 4)))
             {
-                return reinterpret_cast<int>(unknown_loc_04);
+                return static_cast<int>(unknown_loc_04);
             }
         }
     }
@@ -26401,7 +26401,7 @@ l1003DC48:
         csvs->size++;
         goto l1003DE99;
     }
-    csvs->num_alloc += reinterpret_cast<unsigned int>(csvs->increment);
+    csvs->num_alloc += static_cast<unsigned int>(csvs->increment);
     if (csvs->size == 0)
     {
         goto l1003DE51;
@@ -28019,7 +28019,7 @@ B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_ty
     this->bmpHandle = reinterpret_cast<int>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(parent_type.String()));
     unsigned int unknown_loc_28 = duration + 1;
     array_t<B_ParticleElement> *unknown_loc_24 = &this->a00C;
-    STACKVAR(-12, 4) = (unknown_loc_28 + reinterpret_cast<unsigned int>(unknown_loc_24->increment) - 1) / reinterpret_cast<unsigned int>(unknown_loc_24->increment) * unknown_loc_24->increment;
+    STACKVAR(-12, 4) = (unknown_loc_28 + static_cast<unsigned int>(unknown_loc_24->increment) - 1) / static_cast<unsigned int>(unknown_loc_24->increment) * unknown_loc_24->increment;
     unsigned int unknown_loc_14 = min(unknown_loc_24->size, unknown_loc_28);
     if (unknown_loc_24->num_alloc == reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
@@ -28103,7 +28103,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     file >> *reinterpret_cast<unsigned int *>(LOCAL(-12));
     unsigned int unknown_loc_30 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
     array_t<B_ParticleElement> *unknown_loc_2C = &particleType.a00C;
-    STACKVAR(-20, 4) = (unknown_loc_30 + reinterpret_cast<unsigned int>(unknown_loc_2C->increment) - 1) / reinterpret_cast<unsigned int>(unknown_loc_2C->increment) * unknown_loc_2C->increment;
+    STACKVAR(-20, 4) = (unknown_loc_30 + static_cast<unsigned int>(unknown_loc_2C->increment) - 1) / static_cast<unsigned int>(unknown_loc_2C->increment) * unknown_loc_2C->increment;
     unsigned int unknown_loc_1C = min(unknown_loc_2C->size, unknown_loc_30);
     if (unknown_loc_2C->num_alloc == reinterpret_cast<unsigned int>(STACKVAR(-20, 4)))
     {
