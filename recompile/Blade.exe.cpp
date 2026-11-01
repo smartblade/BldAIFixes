@@ -534,14 +534,4 @@ B_GlobalSurfaceCache::B_GlobalSurfaceCache()
 }
 
 // address: 0x00453AC0
-p00453AC0
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
-    gbl_node_count--;
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p00453AC0: scalar deleting destructor
