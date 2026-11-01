@@ -30,3 +30,15 @@ class TestOperatorNewDelete(unittest.TestCase):
         self.assertEqual(
             "operator delete(size)",
             _transform_call("shi_delete").emit_code())
+
+    def test_operator_new_returns_void_pointer(self):
+        e = _transform_call("shi_new")
+        self.assertEqual("void *", e.data_type.get_type_name())
+
+    def test_void_pointer_variable(self):
+        import data_types
+        from patterns.high_level.analysis.locals import _is_acceptable_type
+        self.assertTrue(_is_acceptable_type(data_types.Pointer32()))
+        sector = data_types.ClassType("B_Sector", {})
+        self.assertTrue(_is_acceptable_type(
+            data_types.Pointer32(data_types.Pointer32(sector))))
