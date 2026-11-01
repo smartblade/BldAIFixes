@@ -8,6 +8,7 @@ class LocalsAnalysis:
         self._types_by_offset = {}
         self._compared_types_by_offset = {}
         self._local_pointees_sizes = {}
+        self._stackvar_sizes = {}
 
     def process_assignment(self, dst, src):
         if not isinstance(dst, expressions.intermediate.Stackvar):
@@ -68,6 +69,9 @@ class LocalsAnalysis:
         assert expression.size == data_type.size
         self._update_type(expression.offset, data_type)
 
+    def process_stackvar(self, offset, size):
+        self._stackvar_sizes.setdefault(offset, set()).add(size)
+
     def process_local(self, local):
         if local not in self._local_pointees_sizes:
             self._local_pointees_sizes[local] = None
@@ -112,8 +116,25 @@ class LocalsAnalysis:
                 if data_type is None:
                     continue
             if not _is_acceptable_type(data_type):
-                continue
+                if not self._is_acceptable_float(offset, data_type):
+                    continue
             stack_vars[offset] = expressions.Identifier(data_type, name)
+
+    def _is_acceptable_float(self, offset, data_type):
+        """Check if floating point variable doesn't overlap other data."""
+        if not isinstance(data_type, (data_types.Float, data_types.Double)):
+            return False
+        if self._stackvar_sizes.get(offset, set()) - {data_type.size}:
+            return False
+        for other_offset, sizes in self._stackvar_sizes.items():
+            if other_offset == offset:
+                continue
+            if offset < other_offset < offset + data_type.size:
+                return False
+            if any(other_offset < offset < other_offset + size
+                   for size in sizes):
+                return False
+        return True
 
     def _update_type(self, offset, data_type):
         if offset >= 0:
