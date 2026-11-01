@@ -45,3 +45,28 @@ class TestStructLocals(unittest.TestCase):
     def test_access_inside_field(self):
         stack_vars = _analyse(expressions.intermediate.Stackvar(-36, 4))
         self.assertNotIn(-40, stack_vars)
+
+    def test_memory_copy_to_field(self):
+        box = data_types.ClassType("B_BoundingBox", {
+            0: (_vector(), "minCoords"),
+            24: (_vector(), "maxCoords"),
+        })
+        analysis = LocalsAnalysis()
+        local = expressions.intermediate.Local(-48)
+        field_local = expressions.intermediate.Local(-24)
+        bb = expressions.Identifier(data_types.Pointer32(box), "bb")
+        size = expressions.Constant(data_types.Int32(), 24)
+        for e in (local, field_local, local):
+            analysis.process_local(e)
+        analysis.process_memory_copy(
+            [local, bb, expressions.Constant(data_types.Int32(), 48)])
+        analysis.process_memory_copy([field_local, bb, size])
+        analysis.process_reinterpret(data_types.Pointer32(box), local)
+        analysis.on_transformation_finished()
+        analysis.collect_stack_accesses([])
+        stack_vars = {}
+        analysis.fill_stack_variables(stack_vars, {})
+        self.assertEqual("B_BoundingBox", stack_vars[-48].data_type.class_name)
+        self.assertEqual(
+            "unknown_loc_30.maxCoords",
+            struct_variable_field(stack_vars, -24, None).emit_code())

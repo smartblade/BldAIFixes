@@ -138,6 +138,17 @@ class LocalsAnalysis:
                 self._local_pointees_sizes[argument] = pointee_size
             assert self._local_pointees_sizes[argument] == pointee_size
 
+    def process_memory_copy(self, arguments):
+        """Process 'memcpy(dst, src, size)' accessing locals."""
+        size = arguments[2]
+        if not isinstance(size, expressions.Constant):
+            return
+        if not isinstance(size.value, int):
+            return
+        for argument in arguments[:2]:
+            if isinstance(argument, expressions.intermediate.Local):
+                self._process_typed_local_use(argument, 0, size.value)
+
     def _get_min_local_ptr_offset(self, ignore_extents=False):
         min_local_ptr_offset = 0
         for local, size in self._local_pointees_sizes.items():
