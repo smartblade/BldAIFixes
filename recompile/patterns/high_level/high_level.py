@@ -26,6 +26,7 @@ from .transform_switch import transform_switch
 from .transform_procedure_call import transform_procedure_call
 from .transform_reinterpret import transform_reinterpret
 from .transform_returns import transform_returns
+from .transform_struct_copy import transform_struct_copy
 from .variables_declarations import insert_declarations
 
 
@@ -95,6 +96,10 @@ def _eliminate_procedure_info(proc_info, instrs):
 
 
 class _ExpressionTransformer(ExpressionTransformer):
+    @staticmethod
+    def transform_code_instruction(expression, **kwargs):
+        return transform_struct_copy(expression, **kwargs)
+
     @staticmethod
     def transform_assignment(dst, src, **kwargs):
         return transform_assignment(dst, src, **kwargs)
