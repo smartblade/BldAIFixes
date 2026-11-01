@@ -554,8 +554,8 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
     for (unknown_loc_0C = 0; unknown_loc_0C < this->size; unknown_loc_0C++)
     {
         B_Sector *unknown_loc_10 = this->sectors[unknown_loc_0C];
-        ACCESS(ARRPTR(cache, 1, 272 * cache->count, 8), 0, 4) = unknown_loc_10;
-        ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = 0x00000000;
+        cache->elements[cache->count].sector = unknown_loc_10;
+        cache->elements[cache->count].numSurfaces = 0;
         unsigned int unknown_loc_14;
         for (unknown_loc_14 = 0; unknown_loc_14 < unknown_loc_10->size; unknown_loc_14++)
         {
@@ -568,19 +568,19 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
             else if (unknown_loc_08 < sphere->radius)
             {
                 STACKVAR(-28, 4) = ACCESS(ARRPTR(unknown_loc_10->elements, 4, unknown_loc_14, 0), 0, 4);
-                ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4), 12), 0, 4) = STACKVAR(-28, 4);
-                ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4)) + 0x00000001;
+                ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, cache->elements[cache->count].numSurfaces, 12), 0, 4) = STACKVAR(-28, 4);
+                cache->elements[cache->count].numSurfaces++;
             }
         }
         if (unknown_loc_14 == unknown_loc_10->size)
         {
-            if (ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) == 0x00000000)
+            if (cache->elements[cache->count].numSurfaces == 0)
             {
-                ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000001;
+                cache->elements[cache->count].hasNoIntersections = 1;
                 cache->count++;
                 return 1;
             }
-            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000000;
+            cache->elements[cache->count].hasNoIntersections = 0;
             cache->count++;
         }
     }
