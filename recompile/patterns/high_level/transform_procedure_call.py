@@ -16,6 +16,9 @@ from .narrow_constant import narrow_constant
 def transform_procedure_call(
     pc, analysis, declarations, file_declarations, call_args_matcher, **kwargs
 ):
+    operator_name = _operator_names.get(pc.name)
+    if operator_name is not None and pc.callee_expression is None:
+        return pc.copy(name=operator_name)
     proc_decl = _get_callee_declaration(pc, declarations)
     pc = call_args_matcher.match_args(pc, proc_decl)
     if proc_decl is None:
@@ -30,6 +33,15 @@ def transform_procedure_call(
     pc = _convert_procedure_call_arguments(
         pc, analysis, file_declarations, call_characteristics, proc_decl)
     return _convert_to_return_type(pc, return_type)
+
+
+# Operators new and delete of Visual C++ runtime and SmartHeap
+_operator_names = {
+    "??2@YAPAXI@Z": "operator new",
+    "??3@YAXPAX@Z": "operator delete",
+    "shi_new": "operator new",
+    "shi_delete": "operator delete",
+}
 
 
 def _convert_procedure_call_arguments(

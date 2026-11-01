@@ -704,7 +704,7 @@ l100023F8:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -713,7 +713,7 @@ l10002447:
     reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -788,7 +788,7 @@ l10002678:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -798,7 +798,7 @@ l100026D0:
     reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -1187,7 +1187,7 @@ l10003028:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -1195,7 +1195,7 @@ l1000306B:
     reinterpret_cast<B_ListElement *>(this)->~B_ListElement();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -1281,7 +1281,7 @@ l10003288:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -1289,7 +1289,7 @@ l100032CC:
     ACCESS(this, 0, 4) = GLOBAL(0x10042194);
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -1297,7 +1297,7 @@ l100032CC:
 // address: 0x10003300
 B_Name::B_Name()
 {
-    STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000001);
+    STACKVAR(-4, 4) = operator new(0x00000001);
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     *this->string = '\0';
     this->len = 0;
@@ -1307,7 +1307,7 @@ B_Name::B_Name()
 B_Name::B_Name(const char *str)
 {
     this->len = static_cast<unsigned int>(strlen(str));
-    STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 1);
+    STACKVAR(-4, 4) = operator new(this->len + 1);
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     strcpy(this->string, str);
 }
@@ -1317,7 +1317,7 @@ B_Name::B_Name(const B_Name &src)
 {
     unsigned int unknown_loc_08 = src.len;
     this->len = unknown_loc_08;
-    STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 1);
+    STACKVAR(-4, 4) = operator new(this->len + 1);
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     strcpy(this->string, src.string);
 }
@@ -1326,7 +1326,7 @@ B_Name::B_Name(const B_Name &src)
 B_Name::B_Name(unsigned int len)
 {
     this->len = len;
-    STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 1);
+    STACKVAR(-4, 4) = operator new(this->len + 1);
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     this->string[this->len] = '\0';
 }
@@ -1421,9 +1421,9 @@ B_Name &B_Name::operator =(const B_Name &src)
     if (this->len != src.len)
     {
         STACKVAR(-4, 4) = this->string;
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         this->len = static_cast<unsigned int>(strlen(src.string));
-        STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 1);
+        STACKVAR(-8, 4) = operator new(this->len + 1);
         this->string = reinterpret_cast<char *>(STACKVAR(-8, 4));
     }
     strcpy(this->string, src.string);
@@ -1473,9 +1473,9 @@ B_IDataFile &operator >>(B_IDataFile &file, B_Name &name)
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) != name.len)
     {
         STACKVAR(-8, 4) = name.string;
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
         name.len = reinterpret_cast<unsigned int>(STACKVAR(-4, 4));
-        STACKVAR(-12, 4) = ??2@YAPAXI@Z(name.len + 1);
+        STACKVAR(-12, 4) = operator new(name.len + 1);
         name.string = reinterpret_cast<char *>(STACKVAR(-12, 4));
     }
     file.Read(name.string, name.len);
@@ -1496,7 +1496,7 @@ B_Name::~B_Name()
 {
     this->len = 0;
     STACKVAR(-4, 4) = this->string;
-    ??3@YAXPAX@Z(STACKVAR(-4, 4));
+    operator delete(STACKVAR(-4, 4));
 }
 
 // address: 0x100039E5
@@ -1574,12 +1574,12 @@ B_Name operator +(const char *str, const B_Name &bName)
 const B_Name &B_Name::operator +=(const char *str)
 {
     this->len += static_cast<unsigned int>(strlen(str));
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 1);
+    STACKVAR(-8, 4) = operator new(this->len + 1);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
     strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);
     strcat(reinterpret_cast<char *>(STACKVAR(-4, 4)), str);
     STACKVAR(-12, 4) = this->string;
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    operator delete(STACKVAR(-12, 4));
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     return *this;
 }
@@ -1588,13 +1588,13 @@ const B_Name &B_Name::operator +=(const char *str)
 const B_Name &B_Name::operator +=(char c)
 {
     this->len++;
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 1);
+    STACKVAR(-8, 4) = operator new(this->len + 1);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
     strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);
     ACCESS(ARRPTR(STACKVAR(-4, 4), 1, this->len, -1), 0, 1) = c;
     ACCESS(ARRPTR(STACKVAR(-4, 4), 1, this->len, 0), 0, 1) = 0;
     STACKVAR(-12, 4) = this->string;
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    operator delete(STACKVAR(-12, 4));
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     return *this;
 }
@@ -1604,13 +1604,13 @@ const B_Name &B_Name::operator +=(const B_Name &other)
 {
     unsigned int unknown_loc_10 = other.len;
     this->len += unknown_loc_10;
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 1);
+    STACKVAR(-8, 4) = operator new(this->len + 1);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
     strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);
     STACKVAR(-20, 4) = other.string;
     strcat(reinterpret_cast<char *>(STACKVAR(-4, 4)), reinterpret_cast<char *>(STACKVAR(-20, 4)));
     STACKVAR(-12, 4) = this->string;
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    operator delete(STACKVAR(-12, 4));
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     return *this;
 }
@@ -1685,7 +1685,7 @@ B_Resource *B_Resource::Load(B_IDataFile &arg_1, unsigned short arg_2)
             goto l1000434E;
         case 1:
         case 5:
-            unknown_loc_10 = reinterpret_cast<B_ObjDscr *>(??2@YAPAXI@Z(0x00000278));
+            unknown_loc_10 = reinterpret_cast<B_ObjDscr *>(operator new(0x00000278));
             STACKVAR(-4, 4) = unknown_loc_10 != nullptr ? unknown_loc_10->B_ObjDscr() : 0x00000000;
             unknown_function_1003590B(arg_1, STACKVAR(-4, 4));
             goto l10004355;
@@ -1693,7 +1693,7 @@ B_Resource *B_Resource::Load(B_IDataFile &arg_1, unsigned short arg_2)
             arg_1 >> arg_2;
             arg_1 >> *reinterpret_cast<unsigned long *>(LOCAL(-12));
             arg_1 >> *reinterpret_cast<unsigned int *>(LOCAL(-8));
-            STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000024);
+            STACKVAR(-20, 4) = operator new(0x00000024);
             if (STACKVAR(-20, 4) != 0x00000000)
             {
                 reinterpret_cast<B_Resource *>(STACKVAR(-20, 4))->B_Resource();
@@ -1709,7 +1709,7 @@ B_Resource *B_Resource::Load(B_IDataFile &arg_1, unsigned short arg_2)
             unknown_function_100084FB(arg_1, STACKVAR(-4, 4));
             goto l10004355;
         case 3:
-            STACKVAR(-24, 4) = ??2@YAPAXI@Z(0x0000001C);
+            STACKVAR(-24, 4) = operator new(0x0000001C);
             if (STACKVAR(-24, 4) == 0x00000000)
             {
                 goto l10004263;
@@ -1728,7 +1728,7 @@ B_Resource *B_Resource::Load(B_IDataFile &arg_1, unsigned short arg_2)
             {
                 goto l100041C4;
             }
-            STACKVAR(-44, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+            STACKVAR(-44, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
             STACKVAR(-36, 4) = STACKVAR(-44, 4);
             unknown_loc_28 = 0;
             goto l10004183;
@@ -1742,11 +1742,11 @@ l10004183:
         goto l1000417A;
     }
     STACKVAR(-48, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-48, 4));
+    operator delete(STACKVAR(-48, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-36, 4);
     goto l100041E1;
 l100041C4:
-    STACKVAR(-52, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-52, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-52, 4);
 l100041E1:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = STACKVAR(-56, 4);
@@ -1756,7 +1756,7 @@ l10004201:
     ACCESS(STACKVAR(-56, 4), 8, 4) = 0x00000000;
     if (0x00000000 != 0x00000000 && 0x00000000 != 0x00000000)
     {
-        STACKVAR(-32, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-56, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-56, 4), 8, 4)));
+        STACKVAR(-32, 4) = operator new(0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-56, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-56, 4), 8, 4)));
         ACCESS(STACKVAR(-56, 4), 12, 4) = STACKVAR(-32, 4);
     }
     else
@@ -1773,7 +1773,7 @@ l1000426A:
     unknown_function_10008595(arg_1, STACKVAR(-4, 4));
     goto l10004355;
 l10004285:
-    STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x0000001C);
+    STACKVAR(-28, 4) = operator new(0x0000001C);
     if (STACKVAR(-28, 4) != 0x00000000)
     {
         reinterpret_cast<B_Resource *>(STACKVAR(-28, 4))->B_Resource();
@@ -1784,7 +1784,7 @@ l10004285:
         ACCESS(STACKVAR(-64, 4), 8, 4) = 0x00000000;
         if (0x00000000 != 0x00000000 && 0x00000000 != 0x00000000)
         {
-            STACKVAR(-60, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-64, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-64, 4), 8, 4)));
+            STACKVAR(-60, 4) = operator new(0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-64, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-64, 4), 8, 4)));
             ACCESS(STACKVAR(-64, 4), 12, 4) = STACKVAR(-60, 4);
         }
         else
@@ -1992,7 +1992,7 @@ l10004745:
     }
 l10004785:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -2032,7 +2032,7 @@ l100047FD:
     }
 l1000483D:
     STACKVAR(-32, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-32, 4));
+    operator delete(STACKVAR(-32, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -2145,7 +2145,7 @@ l10004A13:
         ACCESS(ARRPTR(this, 4, unknown_loc_04, 0), 0, 4) = 0x00000000;
         goto l10004A0A;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000018);
+    STACKVAR(-8, 4) = operator new(0x00000018);
     if (STACKVAR(-8, 4) != 0x00000000)
     {
         ACCESS(STACKVAR(-8, 4), 4, 4) = 0x00000000;
@@ -2225,7 +2225,7 @@ l10004B92:
     }
 l10004BE9:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-32, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(-32, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-32, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-32, 4), 16, 4) = 0x00000000;
@@ -2263,7 +2263,7 @@ l10004C92:
         }
         goto l10004C89;
     }
-    B_Name *unknown_loc_08 = reinterpret_cast<B_Name *>(??2@YAPAXI@Z(0x00000008));
+    B_Name *unknown_loc_08 = reinterpret_cast<B_Name *>(operator new(0x00000008));
     if (unknown_loc_08 != nullptr)
     {
         STACKVAR(-36, 4) = unknown_loc_08->B_Name(arg_1);
@@ -2284,7 +2284,7 @@ l10004C92:
     {
         goto l10004DC0;
     }
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 16, 4)));
+    STACKVAR(-20, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 16, 4)));
     STACKVAR(-12, 4) = STACKVAR(-20, 4);
     unsigned int unknown_loc_10 = 0;
     goto l10004D7E;
@@ -2297,11 +2297,11 @@ l10004D7E:
         goto l10004D75;
     }
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-32, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-24, 4));
+    operator delete(STACKVAR(-24, 4));
     ACCESS(STACKVAR(-32, 4), 4, 4) = STACKVAR(-12, 4);
     goto l10004DDE;
 l10004DC0:
-    STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 16, 4)));
+    STACKVAR(-28, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 16, 4)));
     ACCESS(STACKVAR(-32, 4), 4, 4) = STACKVAR(-28, 4);
 l10004DDE:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, ACCESS(STACKVAR(-32, 4), 8, 4), 0), 0, 4) = STACKVAR(-36, 4);
@@ -2331,7 +2331,7 @@ unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name 
     this->AddFile(id);
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        STACKVAR(-16444, 4) = ??2@YAPAXI@Z(0x00000018);
+        STACKVAR(-16444, 4) = operator new(0x00000018);
         ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4) = STACKVAR(-16444, 4) != 0x00000000 ? STACKVAR(-16444, 4)->unknown_method_100046A6() : 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF) != 0x00000001 && (reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF) != 0x00000005)
@@ -2361,7 +2361,7 @@ l10004F90:
         }
         goto l10004F81;
     }
-    STACKVAR(-16452, 4) = ??2@YAPAXI@Z(0x00000024);
+    STACKVAR(-16452, 4) = operator new(0x00000024);
     if (STACKVAR(-16452, 4) != 0x00000000)
     {
         STACKVAR(-16504, 4) = STACKVAR(-16452, 4)->unknown_method_10004371(id, 0x00000000, LOCAL(-16416), 0x00000000);
@@ -2382,7 +2382,7 @@ l10004F90:
     {
         goto l100051D7;
     }
-    STACKVAR(-16488, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 16, 4)));
+    STACKVAR(-16488, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 16, 4)));
     STACKVAR(-16480, 4) = STACKVAR(-16488, 4);
     unsigned int unknown_loc_4064 = 0;
     goto l10005174;
@@ -2395,11 +2395,11 @@ l10005174:
         goto l10005165;
     }
     STACKVAR(-16492, 4) = ACCESS(STACKVAR(-16500, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16492, 4));
+    operator delete(STACKVAR(-16492, 4));
     ACCESS(STACKVAR(-16500, 4), 4, 4) = STACKVAR(-16480, 4);
     goto l10005201;
 l100051D7:
-    STACKVAR(-16496, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 16, 4)));
+    STACKVAR(-16496, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 16, 4)));
     ACCESS(STACKVAR(-16500, 4), 4, 4) = STACKVAR(-16496, 4);
 l10005201:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-16500, 4), 4, 4), 4, ACCESS(STACKVAR(-16500, 4), 8, 4), 0), 0, 4) = STACKVAR(-16504, 4);
@@ -2432,7 +2432,7 @@ l1000529E:
         }
         goto l1000528F;
     }
-    STACKVAR(-16464, 4) = ??2@YAPAXI@Z(0x00000024);
+    STACKVAR(-16464, 4) = operator new(0x00000024);
     if (STACKVAR(-16464, 4) != 0x00000000)
     {
         STACKVAR(-16536, 4) = STACKVAR(-16464, 4)->unknown_method_10004371(id, 0x00000000, arg_2, 0x00000000);
@@ -2453,7 +2453,7 @@ l1000529E:
     {
         goto l100054AC;
     }
-    STACKVAR(-16520, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 16, 4)));
+    STACKVAR(-16520, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 16, 4)));
     STACKVAR(-16512, 4) = STACKVAR(-16520, 4);
     unsigned int unknown_loc_4084 = 0;
     goto l10005449;
@@ -2466,11 +2466,11 @@ l10005449:
         goto l1000543A;
     }
     STACKVAR(-16524, 4) = ACCESS(STACKVAR(-16532, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16524, 4));
+    operator delete(STACKVAR(-16524, 4));
     ACCESS(STACKVAR(-16532, 4), 4, 4) = STACKVAR(-16512, 4);
     goto l100054D6;
 l100054AC:
-    STACKVAR(-16528, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 16, 4)));
+    STACKVAR(-16528, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 16, 4)));
     ACCESS(STACKVAR(-16532, 4), 4, 4) = STACKVAR(-16528, 4);
 l100054D6:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-16532, 4), 4, 4), 4, ACCESS(STACKVAR(-16532, 4), 8, 4), 0), 0, 4) = STACKVAR(-16536, 4);
@@ -2507,7 +2507,7 @@ l10005582:
     arg_2 >> *reinterpret_cast<B_Name *>(LOCAL(-28));
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000018);
+        STACKVAR(-40, 4) = operator new(0x00000018);
         ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x0000FFFF, 0), 0, 4) = STACKVAR(-40, 4) != 0x00000000 ? STACKVAR(-40, 4)->unknown_method_100046A6() : 0x00000000;
     }
     STACKVAR(-60, 4) = ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x0000FFFF, 0), 0, 4);
@@ -2531,7 +2531,7 @@ l1000568A:
     {
         goto l100057E0;
     }
-    STACKVAR(-44, 4) = ??2@YAPAXI@Z(0x00000024);
+    STACKVAR(-44, 4) = operator new(0x00000024);
     if (STACKVAR(-44, 4) != 0x00000000)
     {
         STACKVAR(-92, 4) = STACKVAR(-44, 4)->unknown_method_10004371(arg_1, STACKVAR(-32, 4), LOCAL(-28), 0x00000000);
@@ -2552,7 +2552,7 @@ l1000568A:
     {
         goto l10005798;
     }
-    STACKVAR(-76, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 16, 4)));
+    STACKVAR(-76, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 16, 4)));
     STACKVAR(-68, 4) = STACKVAR(-76, 4);
     unsigned int unknown_loc_48 = 0;
     goto l10005756;
@@ -2565,11 +2565,11 @@ l10005756:
         goto l1000574D;
     }
     STACKVAR(-80, 4) = ACCESS(STACKVAR(-88, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-80, 4));
+    operator delete(STACKVAR(-80, 4));
     ACCESS(STACKVAR(-88, 4), 4, 4) = STACKVAR(-68, 4);
     goto l100057B6;
 l10005798:
-    STACKVAR(-84, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 16, 4)));
+    STACKVAR(-84, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 16, 4)));
     ACCESS(STACKVAR(-88, 4), 4, 4) = STACKVAR(-84, 4);
 l100057B6:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-88, 4), 4, 4), 4, ACCESS(STACKVAR(-88, 4), 8, 4), 0), 0, 4) = STACKVAR(-92, 4);
@@ -2605,7 +2605,7 @@ unsigned int B_ResourceManager::AddAutoResource(const B_Name &arg_1, B_Resource 
     }
     if (ACCESS(ARRPTR(this, 4, arg_3, 0), 0, 4) == 0x00000000)
     {
-        STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000018);
+        STACKVAR(-20, 4) = operator new(0x00000018);
         ACCESS(ARRPTR(this, 4, arg_3, 0), 0, 4) = STACKVAR(-20, 4) != 0x00000000 ? STACKVAR(-20, 4)->unknown_method_100046A6() : 0x00000000;
     }
     STACKVAR(-4, 4) = ACCESS(ACCESS(ARRPTR(this, 4, arg_3, 0), 0, 4), 8, 4);
@@ -2629,7 +2629,7 @@ l100058D3:
         }
         goto l100058CA;
     }
-    STACKVAR(-24, 4) = ??2@YAPAXI@Z(0x00000024);
+    STACKVAR(-24, 4) = operator new(0x00000024);
     if (STACKVAR(-24, 4) != 0x00000000)
     {
         reinterpret_cast<B_Name *>(LOCAL(-32))->B_Name("<Blade Internal>");
@@ -2663,7 +2663,7 @@ l100058D3:
     {
         goto l10005AA5;
     }
-    STACKVAR(-48, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 16, 4)));
+    STACKVAR(-48, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 16, 4)));
     STACKVAR(-40, 4) = STACKVAR(-48, 4);
     unsigned int unknown_loc_2C = 0;
     goto l10005A63;
@@ -2676,11 +2676,11 @@ l10005A63:
         goto l10005A5A;
     }
     STACKVAR(-52, 4) = ACCESS(STACKVAR(-60, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-52, 4));
+    operator delete(STACKVAR(-52, 4));
     ACCESS(STACKVAR(-60, 4), 4, 4) = STACKVAR(-40, 4);
     goto l10005AC3;
 l10005AA5:
-    STACKVAR(-56, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 16, 4)));
+    STACKVAR(-56, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 16, 4)));
     ACCESS(STACKVAR(-60, 4), 4, 4) = STACKVAR(-56, 4);
 l10005AC3:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-60, 4), 4, 4), 4, ACCESS(STACKVAR(-60, 4), 8, 4), 0), 0, 4) = STACKVAR(-12, 4);
@@ -2878,14 +2878,14 @@ void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
     STACKVAR(-28, 4) = 0x00000000;
     if (this->unknown04 == nullptr)
     {
-        STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000018);
+        STACKVAR(-4, 4) = operator new(0x00000018);
         this->unknown04 = STACKVAR(-4, 4) != 0x00000000 ? reinterpret_cast<void *>(STACKVAR(-4, 4)->unknown_method_100046A6()) : nullptr;
     }
     if (this->IsResourceLoaded(1, pc) != 0)
     {
         goto l10006151;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000024);
+    STACKVAR(-8, 4) = operator new(0x00000024);
     if (STACKVAR(-8, 4) != 0x00000000)
     {
         reinterpret_cast<B_Name *>(LOCAL(-16))->B_Name(pc);
@@ -2910,7 +2910,7 @@ void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
     {
         goto l100060E4;
     }
-    STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 16, 4)));
+    STACKVAR(-40, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 16, 4)));
     STACKVAR(-32, 4) = STACKVAR(-40, 4);
     unsigned int unknown_loc_24 = 0;
     goto l100060A2;
@@ -2923,11 +2923,11 @@ l100060A2:
         goto l10006099;
     }
     STACKVAR(-44, 4) = ACCESS(STACKVAR(-52, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-44, 4));
+    operator delete(STACKVAR(-44, 4));
     ACCESS(STACKVAR(-52, 4), 4, 4) = STACKVAR(-32, 4);
     goto l10006102;
 l100060E4:
-    STACKVAR(-48, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 16, 4)));
+    STACKVAR(-48, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 16, 4)));
     ACCESS(STACKVAR(-52, 4), 4, 4) = STACKVAR(-48, 4);
 l10006102:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-52, 4), 4, 4), 4, ACCESS(STACKVAR(-52, 4), 8, 4), 0), 0, 4) = STACKVAR(-56, 4);
@@ -3087,7 +3087,7 @@ l100064F3:
         *reinterpret_cast<B_IDataFile *>(LOCAL(-16412)) >> *reinterpret_cast<unsigned int *>(LOCAL(-16420));
         if (STACKVAR(-16420, 4) != 0x00000000)
         {
-            B_ObjDscr *unknown_loc_4030 = reinterpret_cast<B_ObjDscr *>(??2@YAPAXI@Z(0x00000278));
+            B_ObjDscr *unknown_loc_4030 = reinterpret_cast<B_ObjDscr *>(operator new(0x00000278));
             STACKVAR(-16424, 4) = unknown_loc_4030 != nullptr ? unknown_loc_4030->B_ObjDscr() : 0x00000000;
             reinterpret_cast<B_ObjDscr *>(STACKVAR(-16424, 4))->LoadPacked(*reinterpret_cast<B_IDataFile *>(LOCAL(-16412)));
             if (this->AddAutoResource(reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-16424, 4)) + 0x00000004), reinterpret_cast<B_Resource *>(STACKVAR(-16424, 4)), arg_1) == 0)
@@ -3153,7 +3153,7 @@ p10006680
     this->unknown_method_100043CB();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -3165,7 +3165,7 @@ p100066B0
     this->unknown_method_1000470A();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -3207,7 +3207,7 @@ l100067B8:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -3215,7 +3215,7 @@ l100067FB:
     reinterpret_cast<B_Resource *>(this)->~B_Resource();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -3363,7 +3363,7 @@ p10006C70
     reinterpret_cast<B_Resource *>(this)->~B_Resource();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -3382,7 +3382,7 @@ B_BitMap24::B_BitMap24(int width, int height)
     {
         goto l10006D7D;
     }
-    STACKVAR(-16, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-16, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-8, 4) = STACKVAR(-16, 4);
     unsigned int unknown_loc_0C = 0;
     goto l10006D3C;
@@ -3395,11 +3395,11 @@ l10006D3C:
         goto l10006D33;
     }
     STACKVAR(-20, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-20, 4));
+    operator delete(STACKVAR(-20, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-8, 4);
     goto l10006D9A;
 l10006D7D:
-    STACKVAR(-24, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-24, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-24, 4);
 l10006D9A:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
@@ -3409,7 +3409,7 @@ l10006DBA:
     this->dimension2 = reinterpret_cast<unsigned int>(height);
     if (width != 0 && height != 0)
     {
-        STACKVAR(-4, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+        STACKVAR(-4, 4) = operator new(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-4, 4));
     }
     else
@@ -3424,7 +3424,7 @@ void B_BitMap24::Clear()
     if (this->data != nullptr)
     {
         STACKVAR(-4, 4) = this->data;
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         this->data = nullptr;
     }
     this->dimension2 = 0;
@@ -3471,7 +3471,7 @@ l10006EC1:
     if (ACCESS(GLOBAL(0x1004A528), 0, 4) == 0x00000001)
     {
         STACKVAR(-36, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-36, 4));
+        operator delete(STACKVAR(-36, 4));
         ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A530), 0, 4) = 0x00000000;
@@ -3482,7 +3482,7 @@ l10006EC1:
         goto l10007017;
     }
     ACCESS(GLOBAL(0x1004A530), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A52C), 0, 4));
-    STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-40, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-16, 4) = STACKVAR(-40, 4);
     unsigned int unknown_loc_14 = 0;
     goto l10006FA2;
@@ -3505,7 +3505,7 @@ l10006FD5:
         goto l10006FCC;
     }
     STACKVAR(-44, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-44, 4));
+    operator delete(STACKVAR(-44, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-16, 4);
     goto l10007050;
 l10007017:
@@ -3525,7 +3525,7 @@ l1000705F:
     if (this->data != nullptr)
     {
         STACKVAR(-4, 4) = this->data;
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
     }
 }
 
@@ -3557,7 +3557,7 @@ void B_BitMap24::default constructor closure()
     {
         goto l100071AD;
     }
-    STACKVAR(-16, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-16, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-8, 4) = STACKVAR(-16, 4);
     unsigned int unknown_loc_0C = 0;
     goto l1000716C;
@@ -3570,11 +3570,11 @@ l1000716C:
         goto l10007163;
     }
     STACKVAR(-20, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-20, 4));
+    operator delete(STACKVAR(-20, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-8, 4);
     goto l100071CA;
 l100071AD:
-    STACKVAR(-24, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-24, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-24, 4);
 l100071CA:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
@@ -3584,7 +3584,7 @@ l100071EA:
     this->dimension2 = 0;
     if (0x00000000 != 0x00000000 && 0x00000000 != 0x00000000)
     {
-        STACKVAR(-4, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+        STACKVAR(-4, 4) = operator new(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-4, 4));
         return;
     }
@@ -3631,13 +3631,13 @@ l10007511:
     if (ACCESS(STACKVAR(-16, 4), 12, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(STACKVAR(-16, 4), 12, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
     }
     goto l100074AD;
 l10007544:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -3680,7 +3680,7 @@ l100075B0:
     if (ACCESS(GLOBAL(0x1004A528), 0, 4) == 0x00000001)
     {
         STACKVAR(-60, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-60, 4));
+        operator delete(STACKVAR(-60, 4));
         ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A530), 0, 4) = 0x00000000;
@@ -3691,7 +3691,7 @@ l100075B0:
         goto l10007706;
     }
     ACCESS(GLOBAL(0x1004A530), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A52C), 0, 4));
-    STACKVAR(-64, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-64, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-40, 4) = STACKVAR(-64, 4);
     unsigned int unknown_loc_2C = 0;
     goto l10007692;
@@ -3714,7 +3714,7 @@ l100076C5:
         goto l100076BC;
     }
     STACKVAR(-68, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-68, 4));
+    operator delete(STACKVAR(-68, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-40, 4);
     goto l10007740;
 l10007706:
@@ -3734,11 +3734,11 @@ l1000774F:
     if (ACCESS(this, 12, 4) != 0x00000000)
     {
         STACKVAR(-28, 4) = ACCESS(this, 12, 4);
-        ??3@YAXPAX@Z(STACKVAR(-28, 4));
+        operator delete(STACKVAR(-28, 4));
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -3786,7 +3786,7 @@ l100077EB:
     if (ACCESS(GLOBAL(0x1004A528), 0, 4) == 0x00000001)
     {
         STACKVAR(-36, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-36, 4));
+        operator delete(STACKVAR(-36, 4));
         ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A530), 0, 4) = 0x00000000;
@@ -3797,7 +3797,7 @@ l100077EB:
         goto l10007941;
     }
     ACCESS(GLOBAL(0x1004A530), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A52C), 0, 4));
-    STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-40, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-16, 4) = STACKVAR(-40, 4);
     unsigned int unknown_loc_14 = 0;
     goto l100078CD;
@@ -3820,7 +3820,7 @@ l10007900:
         goto l100078F7;
     }
     STACKVAR(-44, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-44, 4));
+    operator delete(STACKVAR(-44, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-16, 4);
     goto l1000797B;
 l10007941:
@@ -3840,12 +3840,12 @@ l1000798A:
     if (ACCESS(STACKVAR(-48, 4), 12, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(STACKVAR(-48, 4), 12, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
     }
     reinterpret_cast<B_Resource *>(this)->~B_Resource();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -3893,7 +3893,7 @@ l10007A2B:
     if (ACCESS(GLOBAL(0x1004A528), 0, 4) == 0x00000001)
     {
         STACKVAR(-36, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-36, 4));
+        operator delete(STACKVAR(-36, 4));
         ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A530), 0, 4) = 0x00000000;
@@ -3904,7 +3904,7 @@ l10007A2B:
         goto l10007B81;
     }
     ACCESS(GLOBAL(0x1004A530), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A52C), 0, 4));
-    STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-40, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-16, 4) = STACKVAR(-40, 4);
     unsigned int unknown_loc_14 = 0;
     goto l10007B0D;
@@ -3927,7 +3927,7 @@ l10007B40:
         goto l10007B37;
     }
     STACKVAR(-44, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-44, 4));
+    operator delete(STACKVAR(-44, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-16, 4);
     goto l10007BBB;
 l10007B81:
@@ -3947,12 +3947,12 @@ l10007BCA:
     if (ACCESS(STACKVAR(-48, 4), 12, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(STACKVAR(-48, 4), 12, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
     }
     reinterpret_cast<B_Resource *>(this)->~B_Resource();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -3972,7 +3972,7 @@ p10007C10
     {
         goto l10007CD8;
     }
-    STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
+    STACKVAR(-12, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-12, 4);
     unsigned int unknown_loc_08 = 0;
     goto l10007C96;
@@ -3985,11 +3985,11 @@ l10007C96:
         goto l10007C8D;
     }
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = STACKVAR(-4, 4);
     goto l10007CF6;
 l10007CD8:
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
+    STACKVAR(-20, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     ACCESS(this, 4, 4) = STACKVAR(-20, 4);
 l10007CF6:
     ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, ACCESS(this, 8, 4), 0), 0, 4) = STACKVAR(8, 4);
@@ -4022,7 +4022,7 @@ p10007D30
     if (ACCESS(this, 8, 4) == 0x00000001)
     {
         STACKVAR(-24, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-24, 4));
+        operator delete(STACKVAR(-24, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
@@ -4033,7 +4033,7 @@ p10007D30
         goto l10007E95;
     }
     ACCESS(this, 16, 4) = reinterpret_cast<any_int32>(ACCESS(this, 16, 4)) - reinterpret_cast<any_int32>(ACCESS(this, 12, 4));
-    STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
+    STACKVAR(-28, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-28, 4);
     unsigned int unknown_loc_08 = 0;
     goto l10007E1F;
@@ -4056,7 +4056,7 @@ l10007E52:
         goto l10007E49;
     }
     STACKVAR(-32, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-32, 4));
+    operator delete(STACKVAR(-32, 4));
     ACCESS(this, 4, 4) = STACKVAR(-4, 4);
     goto l10007ECF;
 l10007E95:
@@ -4141,14 +4141,14 @@ l10007FEE:
     }
 l1000802E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l10008061:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -4192,14 +4192,14 @@ l100080CE:
     }
 l1000810E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l10008141:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -4234,14 +4234,14 @@ l100081AE:
     }
 l10008205:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l10008238:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -4285,14 +4285,14 @@ l100082AE:
     }
 l100082EE:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l10008321:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -4443,11 +4443,11 @@ B_BitMap::B_BitMap(BitMapType type, unsigned int arg_2, unsigned int arg_3, cons
     dimension2(arg_3)
 {
     int unknown_loc_04 = this->BytesPerTexel();
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(arg_2 * arg_3 * unknown_loc_04);
+    STACKVAR(-8, 4) = operator new(arg_2 * arg_3 * unknown_loc_04);
     this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
     if (pal != nullptr)
     {
-        B_Pal *unknown_loc_0C = reinterpret_cast<B_Pal *>(??2@YAPAXI@Z(0x00000300));
+        B_Pal *unknown_loc_0C = reinterpret_cast<B_Pal *>(operator new(0x00000300));
         this->pal = unknown_loc_0C != nullptr ? &unknown_loc_0C->B_Pal(*pal) : nullptr;
     }
     else
@@ -4469,31 +4469,31 @@ B_BitMap::B_BitMap(const B_BitMap &src)
     switch (this->type)
     {
         case 1:
-            unknown_loc_04 = reinterpret_cast<B_Pal *>(??2@YAPAXI@Z(0x00000300));
+            unknown_loc_04 = reinterpret_cast<B_Pal *>(operator new(0x00000300));
             this->pal = unknown_loc_04 != nullptr ? &unknown_loc_04->B_Pal(*src.pal) : nullptr;
-            STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
+            STACKVAR(-8, 4) = operator new(this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
             memcpy(this->data, src.data, static_cast<size_t>(this->dimension1 * this->dimension2));
             break;
         case 2:
-            STACKVAR(-12, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
+            STACKVAR(-12, 4) = operator new(this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-12, 4));
             memcpy(this->data, src.data, static_cast<size_t>(this->dimension1 * this->dimension2));
             break;
         case 3:
-            unknown_loc_10 = reinterpret_cast<B_Pal *>(??2@YAPAXI@Z(0x00000300));
+            unknown_loc_10 = reinterpret_cast<B_Pal *>(operator new(0x00000300));
             this->pal = unknown_loc_10 != nullptr ? &unknown_loc_10->B_Pal(*src.pal) : nullptr;
-            STACKVAR(-20, 4) = ??2@YAPAXI@Z(2 * this->dimension1 * this->dimension2);
+            STACKVAR(-20, 4) = operator new(2 * this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-20, 4));
             memcpy(this->data, src.data, 2 * static_cast<size_t>(this->dimension1 * this->dimension2));
             break;
         case 4:
-            STACKVAR(-24, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+            STACKVAR(-24, 4) = operator new(3 * this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-24, 4));
             memcpy(this->data, src.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
             break;
         case 5:
-            STACKVAR(-28, 4) = ??2@YAPAXI@Z(4 * this->dimension1 * this->dimension2);
+            STACKVAR(-28, 4) = operator new(4 * this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-28, 4));
             memcpy(this->data, src.data, 4 * static_cast<size_t>(this->dimension1 * this->dimension2));
             break;
@@ -4515,7 +4515,7 @@ B_BitMap::B_BitMap(BitMapType arg_1, const B_BitMap24 &arg_2)
             this->type = 2;
             this->dimension1 = arg_2.dimension1;
             this->dimension2 = arg_2.dimension2;
-            STACKVAR(-16, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
+            STACKVAR(-16, 4) = operator new(this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-16, 4));
             STACKVAR(-12, 4) = this->data;
             STACKVAR(-4, 4) = arg_2.data;
@@ -4537,7 +4537,7 @@ l10008A4A:
     this->type = 4;
     this->dimension1 = arg_2.dimension1;
     this->dimension2 = arg_2.dimension2;
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    STACKVAR(-20, 4) = operator new(3 * this->dimension1 * this->dimension2);
     this->data = reinterpret_cast<void *>(STACKVAR(-20, 4));
     memcpy(this->data, arg_2.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
     goto l10008AE5;
@@ -4608,13 +4608,13 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
     if (bitMap.data != nullptr)
     {
         STACKVAR(-8, 4) = bitMap.data;
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
         bitMap.data = nullptr;
     }
     if (bitMap.pal != nullptr)
     {
         B_Pal *unknown_loc_0C = bitMap.pal;
-        ??3@YAXPAX@Z(unknown_loc_0C);
+        operator delete(unknown_loc_0C);
         bitMap.pal = nullptr;
     }
     file >> *reinterpret_cast<unsigned long *>(LOCAL(-4)) >> bitMap.dimension1 >> bitMap.dimension2;
@@ -4646,33 +4646,33 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
     switch (bitMap.type)
     {
         case 1:
-            STACKVAR(-16, 4) = ??2@YAPAXI@Z(bitMap.dimension1 * bitMap.dimension2);
+            STACKVAR(-16, 4) = operator new(bitMap.dimension1 * bitMap.dimension2);
             bitMap.data = reinterpret_cast<void *>(STACKVAR(-16, 4));
             file.Read(bitMap.data, bitMap.dimension1 * bitMap.dimension2);
-            STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000300);
+            STACKVAR(-20, 4) = operator new(0x00000300);
             bitMap.pal = STACKVAR(-20, 4) != 0x00000000 ? reinterpret_cast<B_Pal *>(STACKVAR(-20, 4)) : nullptr;
             unknown_function_10009661(file, bitMap.pal);
             break;
         case 2:
-            STACKVAR(-24, 4) = ??2@YAPAXI@Z(bitMap.dimension1 * bitMap.dimension2);
+            STACKVAR(-24, 4) = operator new(bitMap.dimension1 * bitMap.dimension2);
             bitMap.data = reinterpret_cast<void *>(STACKVAR(-24, 4));
             file.Read(bitMap.data, bitMap.dimension1 * bitMap.dimension2);
             break;
         case 3:
-            STACKVAR(-28, 4) = ??2@YAPAXI@Z(2 * bitMap.dimension1 * bitMap.dimension2);
+            STACKVAR(-28, 4) = operator new(2 * bitMap.dimension1 * bitMap.dimension2);
             bitMap.data = reinterpret_cast<void *>(STACKVAR(-28, 4));
             file.Read(bitMap.data, 2 * bitMap.dimension1 * bitMap.dimension2);
-            STACKVAR(-32, 4) = ??2@YAPAXI@Z(0x00000300);
+            STACKVAR(-32, 4) = operator new(0x00000300);
             bitMap.pal = STACKVAR(-32, 4) != 0x00000000 ? reinterpret_cast<B_Pal *>(STACKVAR(-32, 4)) : nullptr;
             unknown_function_10009661(file, bitMap.pal);
             break;
         case 4:
-            STACKVAR(-36, 4) = ??2@YAPAXI@Z(3 * bitMap.dimension1 * bitMap.dimension2);
+            STACKVAR(-36, 4) = operator new(3 * bitMap.dimension1 * bitMap.dimension2);
             bitMap.data = reinterpret_cast<void *>(STACKVAR(-36, 4));
             file.Read(bitMap.data, 3 * bitMap.dimension1 * bitMap.dimension2);
             break;
         case 5:
-            STACKVAR(-40, 4) = ??2@YAPAXI@Z(4 * bitMap.dimension1 * bitMap.dimension2);
+            STACKVAR(-40, 4) = operator new(4 * bitMap.dimension1 * bitMap.dimension2);
             bitMap.data = reinterpret_cast<void *>(STACKVAR(-40, 4));
             file.Read(bitMap.data, 4 * bitMap.dimension1 * bitMap.dimension2);
             break;
@@ -4686,12 +4686,12 @@ B_BitMap::~B_BitMap()
     if (this->data != nullptr)
     {
         STACKVAR(-4, 4) = this->data;
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
     }
     if (this->pal != nullptr)
     {
         B_Pal *unknown_loc_08 = this->pal;
-        ??3@YAXPAX@Z(unknown_loc_08);
+        operator delete(unknown_loc_08);
     }
 }
 
@@ -4717,7 +4717,7 @@ l10009098:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -4725,7 +4725,7 @@ l100090DB:
     reinterpret_cast<B_BitMap *>(this)->~B_BitMap();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -20766,7 +20766,7 @@ l10026A5F:
     }
 l10026A9F:
     STACKVAR(-16, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A530), 0, 4) = 0x00000000;
@@ -20787,7 +20787,7 @@ B_BitMap24::B_BitMap24(const B_BitMap24 &that)
     {
         goto l10026BA3;
     }
-    STACKVAR(-16, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-16, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-8, 4) = STACKVAR(-16, 4);
     unsigned int unknown_loc_0C = 0;
     goto l10026B62;
@@ -20800,11 +20800,11 @@ l10026B62:
         goto l10026B59;
     }
     STACKVAR(-20, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-20, 4));
+    operator delete(STACKVAR(-20, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-8, 4);
     goto l10026BC0;
 l10026BA3:
-    STACKVAR(-24, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-24, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-24, 4);
 l10026BC0:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
@@ -20814,7 +20814,7 @@ l10026BE0:
     this->dimension2 = that.dimension2;
     if (this->dimension1 != 0 && this->dimension2 != 0)
     {
-        STACKVAR(-4, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+        STACKVAR(-4, 4) = operator new(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-4, 4));
         memcpy(this->data, that.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
     }
@@ -20836,7 +20836,7 @@ l10026C88:
     {
         STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_04, 0), 0, 4);
         STACKVAR(-8, 4) = ACCESS(STACKVAR(-12, 4), 12, 4);
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
         STACKVAR(-16, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, unknown_loc_04, 0), 0, 4);
         ACCESS(STACKVAR(-16, 4), 12, 4) = 0x00000000;
         goto l10026C7F;
@@ -20870,7 +20870,7 @@ l10026CF8:
     }
 l10026D37:
     STACKVAR(-32, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-32, 4));
+    operator delete(STACKVAR(-32, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A530), 0, 4) = 0x00000000;
@@ -20890,7 +20890,7 @@ B_BitMap24::B_BitMap24(const B_BitMap &arg_1)
     {
         goto l10026E3B;
     }
-    STACKVAR(-56, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-56, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-48, 4) = STACKVAR(-56, 4);
     unsigned int unknown_loc_34 = 0;
     goto l10026DFA;
@@ -20903,11 +20903,11 @@ l10026DFA:
         goto l10026DF1;
     }
     STACKVAR(-60, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-60, 4));
+    operator delete(STACKVAR(-60, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-48, 4);
     goto l10026E58;
 l10026E3B:
-    STACKVAR(-64, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-64, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-64, 4);
 l10026E58:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
@@ -20932,7 +20932,7 @@ l10026E78:
         case 1:
             this->dimension1 = arg_1.dimension1;
             this->dimension2 = arg_1.dimension2;
-            STACKVAR(-36, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+            STACKVAR(-36, 4) = operator new(3 * this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-36, 4));
             if (this->data == nullptr)
             {
@@ -20974,7 +20974,7 @@ l1002700F:
 l10027014:
     this->dimension1 = arg_1.dimension1;
     this->dimension2 = arg_1.dimension2;
-    STACKVAR(-40, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    STACKVAR(-40, 4) = operator new(3 * this->dimension1 * this->dimension2);
     this->data = reinterpret_cast<void *>(STACKVAR(-40, 4));
     if (this->data == nullptr)
     {
@@ -20987,7 +20987,7 @@ l10027014:
 l100270A2:
     this->dimension1 = arg_1.dimension1;
     this->dimension2 = arg_1.dimension2;
-    STACKVAR(-44, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    STACKVAR(-44, 4) = operator new(3 * this->dimension1 * this->dimension2);
     this->data = reinterpret_cast<void *>(STACKVAR(-44, 4));
     if (this->data == nullptr)
     {
@@ -21040,7 +21040,7 @@ B_BitMap24 &B_BitMap24::operator =(const B_BitMap24 &that)
         this->dimension1 = that.dimension1;
         this->dimension2 = that.dimension2;
         STACKVAR(-4, 4) = this->data;
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         if (this->dimension1 == 0 || this->dimension2 == 0)
         {
             this->dimension2 = 0;
@@ -21048,7 +21048,7 @@ B_BitMap24 &B_BitMap24::operator =(const B_BitMap24 &that)
             this->data = nullptr;
             return *this;
         }
-        STACKVAR(-8, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+        STACKVAR(-8, 4) = operator new(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
     }
     memcpy(this->data, that.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
@@ -21063,10 +21063,10 @@ unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const 
         if (this->dimension1 != reinterpret_cast<unsigned int>(arg_1) || this->dimension2 != reinterpret_cast<unsigned int>(arg_2))
         {
             STACKVAR(-4, 4) = this->data;
-            ??3@YAXPAX@Z(STACKVAR(-4, 4));
+            operator delete(STACKVAR(-4, 4));
             this->dimension1 = reinterpret_cast<unsigned int>(arg_1);
             this->dimension2 = reinterpret_cast<unsigned int>(arg_2);
-            STACKVAR(-8, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+            STACKVAR(-8, 4) = operator new(3 * this->dimension1 * this->dimension2);
             this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
             if (this->data == nullptr)
             {
@@ -21105,7 +21105,7 @@ int B_BitMap24::SaveToBMP(const char *fileName) const
     STACKVAR(-16492, 1) = 0;
     STACKVAR(-16496, 1) = 0;
     *reinterpret_cast<B_ODataFile *>(LOCAL(-16408)) << *reinterpret_cast<unsigned char *>(LOCAL(-16496)) << *reinterpret_cast<unsigned char *>(LOCAL(-16492)) << *reinterpret_cast<unsigned char *>(LOCAL(-16488));
-    STACKVAR(-16500, 4) = ??2@YAPAXI@Z(3 * this->dimension1);
+    STACKVAR(-16500, 4) = operator new(3 * this->dimension1);
     STACKVAR(-8, 4) = STACKVAR(-16500, 4);
     STACKVAR(-4, 4) = reinterpret_cast<int>(this->dimension1) % 4;
     STACKVAR(-16416, 1) = 0;
@@ -21158,7 +21158,7 @@ l1002762A:
     goto l100275D0;
 l10027756:
     STACKVAR(-16508, 4) = STACKVAR(-8, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16508, 4));
+    operator delete(STACKVAR(-16508, 4));
     int unknown_loc_4080 = 1;
     reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->~B_ODataFile();
     return unknown_loc_4080;
@@ -21190,7 +21190,7 @@ int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height) cons
     STACKVAR(-16532, 1) = 0;
     STACKVAR(-16536, 1) = 0;
     *reinterpret_cast<B_ODataFile *>(LOCAL(-16408)) << *reinterpret_cast<unsigned char *>(LOCAL(-16536)) << *reinterpret_cast<unsigned char *>(LOCAL(-16532)) << *reinterpret_cast<unsigned char *>(LOCAL(-16528));
-    STACKVAR(-16540, 4) = ??2@YAPAXI@Z(3 * width);
+    STACKVAR(-16540, 4) = operator new(3 * width);
     STACKVAR(-8, 4) = STACKVAR(-16540, 4);
     STACKVAR(-4, 4) = width % 4;
     STACKVAR(-16412, 1) = 0;
@@ -21285,7 +21285,7 @@ l10027BEA:
     goto l10027B80;
 l10027D4D:
     STACKVAR(-16548, 4) = STACKVAR(-8, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16548, 4));
+    operator delete(STACKVAR(-16548, 4));
     int unknown_loc_40A8 = 1;
     reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->~B_ODataFile();
     return unknown_loc_40A8;
@@ -21383,7 +21383,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap24 &bitMap)
     if (bitMap.data != nullptr)
     {
         STACKVAR(-12, 4) = bitMap.data;
-        ??3@YAXPAX@Z(STACKVAR(-12, 4));
+        operator delete(STACKVAR(-12, 4));
         bitMap.data = nullptr;
     }
     long unknown_loc_08 = file.Tell();
@@ -21419,7 +21419,7 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap24 &bitMap)
     STACKVAR(-88, 1) = 0;
     STACKVAR(-92, 1) = 0;
     file << *reinterpret_cast<unsigned char *>(LOCAL(-92)) << *reinterpret_cast<unsigned char *>(LOCAL(-88)) << *reinterpret_cast<unsigned char *>(LOCAL(-84));
-    STACKVAR(-96, 4) = ??2@YAPAXI@Z(3 * bitMap.dimension1);
+    STACKVAR(-96, 4) = operator new(3 * bitMap.dimension1);
     STACKVAR(-8, 4) = STACKVAR(-96, 4);
     STACKVAR(-4, 4) = reinterpret_cast<int>(bitMap.dimension1) % 4;
     STACKVAR(-16, 1) = 0;
@@ -21470,7 +21470,7 @@ l10028271:
     goto l10028235;
 l1002833A:
     STACKVAR(-100, 4) = STACKVAR(-8, 4);
-    ??3@YAXPAX@Z(STACKVAR(-100, 4));
+    operator delete(STACKVAR(-100, 4));
     return file;
 }
 
@@ -21564,14 +21564,14 @@ l1002850E:
     }
 l1002854E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l10028581:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -21969,7 +21969,7 @@ l10028FB9:
 l10028FBE:
     STACKVAR(-28, 4) = 0x00000000;
     STACKVAR(-12, 4) = reinterpret_cast<int>(STACKVAR(16, 4)) % 4;
-    STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(STACKVAR(16, 4)));
+    STACKVAR(-40, 4) = operator new(0x00000003 * reinterpret_cast<any_int32>(STACKVAR(16, 4)));
     STACKVAR(-32, 4) = STACKVAR(-40, 4);
     STACKVAR(-8, 4) = STACKVAR(20, 4);
     goto l10029000;
@@ -22028,7 +22028,7 @@ l10029122:
     if (STACKVAR(-32, 4) != 0x00000000)
     {
         STACKVAR(-44, 4) = STACKVAR(-32, 4);
-        ??3@YAXPAX@Z(STACKVAR(-44, 4));
+        operator delete(STACKVAR(-44, 4));
     }
 l1002913A:
     REGDEF(eax=0x00000000)
@@ -22101,7 +22101,7 @@ p10029217
         goto l10029400;
     }
     STACKVAR(-8, 4) = 0x00000001 << reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-12, 4))));
-    STACKVAR(-128, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-8, 4)));
+    STACKVAR(-128, 4) = operator new(0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-8, 4)));
     STACKVAR(-24, 4) = STACKVAR(-128, 4);
     if (STACKVAR(-24, 4) == 0x00000000)
     {
@@ -22137,14 +22137,14 @@ l100293D1:
 l10029400:
     STACKVAR(-108, 4) = reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Tell();
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-84, 4)) * reinterpret_cast<any_int32>(STACKVAR(-80, 4));
-    STACKVAR(-132, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    STACKVAR(-132, 4) = operator new(0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-112, 4) = STACKVAR(-132, 4);
     if (STACKVAR(-112, 4) == 0x00000000)
     {
         if (STACKVAR(-24, 4) != 0x00000000)
         {
             STACKVAR(-136, 4) = STACKVAR(-24, 4);
-            ??3@YAXPAX@Z(STACKVAR(-136, 4));
+            operator delete(STACKVAR(-136, 4));
         }
         REGDEF(eax=0x000003EC)
         return;
@@ -22166,7 +22166,7 @@ l10029400:
     if (STACKVAR(-24, 4) != 0x00000000)
     {
         STACKVAR(-140, 4) = STACKVAR(-24, 4);
-        ??3@YAXPAX@Z(STACKVAR(-140, 4));
+        operator delete(STACKVAR(-140, 4));
     }
     REGDEF(eax=0x00000000)
 }
@@ -22192,10 +22192,10 @@ int B_BitMap24::ReadFromJPEG(const char *arg_1)
     if (this->dimension1 != reinterpret_cast<unsigned int>(STACKVAR(-400, 4)) || this->dimension2 != reinterpret_cast<unsigned int>(STACKVAR(-396, 4)))
     {
         STACKVAR(-572, 4) = this->data;
-        ??3@YAXPAX@Z(STACKVAR(-572, 4));
+        operator delete(STACKVAR(-572, 4));
         this->dimension1 = reinterpret_cast<unsigned int>(STACKVAR(-400, 4));
         this->dimension2 = reinterpret_cast<unsigned int>(STACKVAR(-396, 4));
-        STACKVAR(-576, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+        STACKVAR(-576, 4) = operator new(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-576, 4));
     }
     unknown_function_10013C80(LOCAL(-428));
@@ -22249,7 +22249,7 @@ B_ChannelOFile::B_ChannelOFile(B_Name arg_1, const char *arg_2)
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
     this->unknown0Ch = 1;
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
-    B_ODataFile *unknown_loc_04 = reinterpret_cast<B_ODataFile *>(??2@YAPAXI@Z(0x00004010));
+    B_ODataFile *unknown_loc_04 = reinterpret_cast<B_ODataFile *>(operator new(0x00004010));
     ACCESS(this, 16, 4) = unknown_loc_04 != nullptr ? unknown_loc_04->B_ODataFile(arg_2, 16384) : 0x00000000;
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
@@ -22348,7 +22348,7 @@ l10029B68:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -22356,7 +22356,7 @@ l10029BAB:
     reinterpret_cast<B_ChannelOFile *>(this)->~B_ChannelOFile();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -22403,7 +22403,7 @@ B_MessageManager::B_MessageManager()
 {
     if (ACCESS(GLOBAL(0x1004A944), 0, 4) == 0x00000000)
     {
-        STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000018);
+        STACKVAR(-4, 4) = operator new(0x00000018);
         if (STACKVAR(-4, 4) != 0x00000000)
         {
             ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
@@ -22443,7 +22443,7 @@ unsigned int B_MessageManager::Add(B_MessageChannel *channel)
     {
         goto l10029DCC;
     }
-    STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)));
+    STACKVAR(-12, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-12, 4);
     unsigned int unknown_loc_08 = 0;
     goto l10029D8A;
@@ -22456,11 +22456,11 @@ l10029D8A:
         goto l10029D81;
     }
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-24, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(STACKVAR(-24, 4), 4, 4) = STACKVAR(-4, 4);
     goto l10029DEA;
 l10029DCC:
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)));
+    STACKVAR(-20, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)));
     ACCESS(STACKVAR(-24, 4), 4, 4) = STACKVAR(-20, 4);
 l10029DEA:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-24, 4), 4, 4), 4, ACCESS(STACKVAR(-24, 4), 8, 4), 0), 0, 4) = channel;
@@ -22563,7 +22563,7 @@ l10029F35:
     if (ACCESS(STACKVAR(-44, 4), 8, 4) == 0x00000001)
     {
         STACKVAR(-32, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-32, 4));
+        operator delete(STACKVAR(-32, 4));
         ACCESS(STACKVAR(-44, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(-44, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-44, 4), 16, 4) = 0x00000000;
@@ -22574,7 +22574,7 @@ l10029F35:
         goto l1002A0E0;
     }
     ACCESS(STACKVAR(-44, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 12, 4));
-    STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)));
+    STACKVAR(-36, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)));
     STACKVAR(-12, 4) = STACKVAR(-36, 4);
     unsigned int unknown_loc_10 = 0;
     goto l1002A06A;
@@ -22597,7 +22597,7 @@ l1002A09D:
         goto l1002A094;
     }
     STACKVAR(-40, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-40, 4));
+    operator delete(STACKVAR(-40, 4));
     ACCESS(STACKVAR(-44, 4), 4, 4) = STACKVAR(-12, 4);
     goto l1002A11A;
 l1002A0E0:
@@ -22764,14 +22764,14 @@ l1002A33E:
     }
 l1002A37E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1002A3B1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -22815,14 +22815,14 @@ l1002A41E:
     }
 l1002A45E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1002A491:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -22866,14 +22866,14 @@ l1002A4FE:
     }
 l1002A53E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1002A571:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -23499,12 +23499,12 @@ l10032045:
     if (unknown_loc_10 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 8, 4)))
     {
         STACKVAR(-20, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-20, 4));
+        operator delete(STACKVAR(-20, 4));
         goto l1003203C;
     }
 l1003206D:
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-28, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-24, 4));
+    operator delete(STACKVAR(-24, 4));
     ACCESS(STACKVAR(-28, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-28, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-28, 4), 16, 4) = 0x00000000;
@@ -23515,7 +23515,7 @@ l100320A0:
     {
         goto l10032171;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 16, 4)));
+    STACKVAR(-8, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 16, 4)));
     ACCESS(STACKVAR(-28, 4), 4, 4) = STACKVAR(-8, 4);
     unsigned int unknown_loc_04 = 0;
     goto l10032115;
@@ -23524,7 +23524,7 @@ l1003210C:
 l10032115:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 8, 4)))
     {
-        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x0000001C);
+        STACKVAR(-12, 4) = operator new(0x0000001C);
         ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4) = STACKVAR(-12, 4) != 0x00000000 ? STACKVAR(-12, 4)->unknown_method_10031EA0() : 0x00000000;
         unknown_function_10031F48(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4));
         goto l1003210C;
@@ -23653,7 +23653,7 @@ p10032524
     if (ACCESS(STACKVAR(-44, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(-44, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-24, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-24, 4));
+        operator delete(STACKVAR(-24, 4));
         ACCESS(STACKVAR(-44, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(-44, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-44, 4), 16, 4) = 0x00000000;
@@ -23665,7 +23665,7 @@ p10032524
         goto l100326FB;
     }
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-44, 4), 16, 4);
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000028 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)));
+    STACKVAR(-20, 4) = operator new(0x00000028 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)));
     if (STACKVAR(-20, 4) == 0x00000000)
     {
         goto l100326B1;
@@ -23828,7 +23828,7 @@ unsigned int B_ObjDscr::SerialSize() const
 void B_ObjDscr::SetUpNormals()
 {
     STACKVAR(-28, 4) = ACCESS(this, 44, 4);
-    STACKVAR(-204, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
+    STACKVAR(-204, 4) = operator new(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
     if (STACKVAR(-204, 4) == 0x00000000)
     {
         goto l10032BB9;
@@ -23899,7 +23899,7 @@ l10032C7D:
         goto l10032DF5;
     }
     STACKVAR(-508, 4) = STACKVAR(-4, 4);
-    STACKVAR(-520, 4) = ??2@YAPAXI@Z(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-508, 4)));
+    STACKVAR(-520, 4) = operator new(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-508, 4)));
     if (STACKVAR(-520, 4) != 0x00000000)
     {
         unknown_function_100395E0(STACKVAR(-520, 4), 0x00000080, STACKVAR(-508, 4), GLOBAL(0x1002E190));
@@ -23921,12 +23921,12 @@ l10032D9F:
         goto l10032D90;
     }
     STACKVAR(-524, 4) = STACKVAR(-16, 4);
-    ??3@YAXPAX@Z(STACKVAR(-524, 4));
+    operator delete(STACKVAR(-524, 4));
     STACKVAR(-16, 4) = STACKVAR(-504, 4);
     goto l10032E5D;
 l10032DF5:
     STACKVAR(-516, 4) = STACKVAR(-4, 4);
-    STACKVAR(-528, 4) = ??2@YAPAXI@Z(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-516, 4)));
+    STACKVAR(-528, 4) = operator new(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-516, 4)));
     if (STACKVAR(-528, 4) != 0x00000000)
     {
         unknown_function_100395E0(STACKVAR(-528, 4), 0x00000080, STACKVAR(-516, 4), GLOBAL(0x1002E190));
@@ -23958,7 +23958,7 @@ l10032E83:
         goto l10032FFB;
     }
     STACKVAR(-548, 4) = STACKVAR(-4, 4);
-    STACKVAR(-560, 4) = ??2@YAPAXI@Z(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-548, 4)));
+    STACKVAR(-560, 4) = operator new(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-548, 4)));
     if (STACKVAR(-560, 4) != 0x00000000)
     {
         unknown_function_100395E0(STACKVAR(-560, 4), 0x00000080, STACKVAR(-548, 4), GLOBAL(0x1002E190));
@@ -23980,12 +23980,12 @@ l10032FA5:
         goto l10032F96;
     }
     STACKVAR(-564, 4) = STACKVAR(-16, 4);
-    ??3@YAXPAX@Z(STACKVAR(-564, 4));
+    operator delete(STACKVAR(-564, 4));
     STACKVAR(-16, 4) = STACKVAR(-544, 4);
     goto l10033063;
 l10032FFB:
     STACKVAR(-556, 4) = STACKVAR(-4, 4);
-    STACKVAR(-568, 4) = ??2@YAPAXI@Z(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-556, 4)));
+    STACKVAR(-568, 4) = operator new(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-556, 4)));
     if (STACKVAR(-568, 4) != 0x00000000)
     {
         unknown_function_100395E0(STACKVAR(-568, 4), 0x00000080, STACKVAR(-556, 4), GLOBAL(0x1002E190));
@@ -24087,7 +24087,7 @@ l1003338C:
     goto l10033322;
 l10033563:
     STACKVAR(-480, 4) = STACKVAR(-32, 4);
-    ??3@YAXPAX@Z(STACKVAR(-480, 4));
+    operator delete(STACKVAR(-480, 4));
     STACKVAR(-20, 4) = GLOBAL(0x10042D68);
     if (STACKVAR(-4, 4) != 0x00000000)
     {
@@ -24096,7 +24096,7 @@ l10033563:
             return;
         }
         STACKVAR(-624, 4) = STACKVAR(-16, 4);
-        ??3@YAXPAX@Z(STACKVAR(-624, 4));
+        operator delete(STACKVAR(-624, 4));
         STACKVAR(-16, 4) = 0x00000000;
         STACKVAR(-12, 4) = 0x00000000;
         STACKVAR(-4, 4) = 0x00000000;
@@ -24106,10 +24106,10 @@ l10033563:
 // address: 0x100335C3
 void B_ObjDscr::SetUpInertialT()
 {
-    STACKVAR(-120, 4) = ??2@YAPAXI@Z(0x00000008 * reinterpret_cast<any_int32>(ACCESS(this, 44, 4)));
+    STACKVAR(-120, 4) = operator new(0x00000008 * reinterpret_cast<any_int32>(ACCESS(this, 44, 4)));
     STACKVAR(-24, 4) = STACKVAR(-120, 4);
     STACKVAR(-32, 4) = ACCESS(this, 44, 4);
-    STACKVAR(-124, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)));
+    STACKVAR(-124, 4) = operator new(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)));
     if (STACKVAR(-124, 4) == 0x00000000)
     {
         goto l100336A8;
@@ -24176,7 +24176,7 @@ l10033727:
         goto l100338DB;
     }
     STACKVAR(-536, 4) = STACKVAR(-4, 4);
-    STACKVAR(-548, 4) = ??2@YAPAXI@Z(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-536, 4)));
+    STACKVAR(-548, 4) = operator new(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-536, 4)));
     if (STACKVAR(-548, 4) == 0x00000000)
     {
         goto l10033854;
@@ -24209,12 +24209,12 @@ l10033885:
         goto l10033876;
     }
     STACKVAR(-552, 4) = STACKVAR(-16, 4);
-    ??3@YAXPAX@Z(STACKVAR(-552, 4));
+    operator delete(STACKVAR(-552, 4));
     STACKVAR(-16, 4) = STACKVAR(-532, 4);
     goto l10033943;
 l100338DB:
     STACKVAR(-544, 4) = STACKVAR(-4, 4);
-    STACKVAR(-556, 4) = ??2@YAPAXI@Z(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-544, 4)));
+    STACKVAR(-556, 4) = operator new(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-544, 4)));
     if (STACKVAR(-556, 4) != 0x00000000)
     {
         unknown_function_100395E0(STACKVAR(-556, 4), 0x00000080, STACKVAR(-544, 4), GLOBAL(0x1002E190));
@@ -24246,7 +24246,7 @@ l10033969:
         goto l10033B20;
     }
     STACKVAR(-588, 4) = STACKVAR(-4, 4);
-    STACKVAR(-600, 4) = ??2@YAPAXI@Z(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-588, 4)));
+    STACKVAR(-600, 4) = operator new(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-588, 4)));
     if (STACKVAR(-600, 4) == 0x00000000)
     {
         goto l10033A96;
@@ -24279,12 +24279,12 @@ l10033AC7:
         goto l10033AB8;
     }
     STACKVAR(-604, 4) = STACKVAR(-16, 4);
-    ??3@YAXPAX@Z(STACKVAR(-604, 4));
+    operator delete(STACKVAR(-604, 4));
     STACKVAR(-16, 4) = STACKVAR(-584, 4);
     goto l10033BC4;
 l10033B20:
     STACKVAR(-596, 4) = STACKVAR(-4, 4);
-    STACKVAR(-608, 4) = ??2@YAPAXI@Z(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-596, 4)));
+    STACKVAR(-608, 4) = operator new(0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-596, 4)));
     if (STACKVAR(-608, 4) == 0x00000000)
     {
         goto l10033BB1;
@@ -24407,9 +24407,9 @@ l100340AF:
     memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x000001B0), reinterpret_cast<void *>((reinterpret_cast<any_int32>(this) + 0x00000130)->unknown_method_1002F159(LOCAL(-500))), 128);
     (reinterpret_cast<any_int32>(this) + 0x00000240)->unknown_method_1003165E(ACCESS(this, 568, 8));
     STACKVAR(-504, 4) = STACKVAR(-36, 4);
-    ??3@YAXPAX@Z(STACKVAR(-504, 4));
+    operator delete(STACKVAR(-504, 4));
     STACKVAR(-508, 4) = STACKVAR(-24, 4);
-    ??3@YAXPAX@Z(STACKVAR(-508, 4));
+    operator delete(STACKVAR(-508, 4));
     STACKVAR(-20, 4) = GLOBAL(0x10042D68);
     if (STACKVAR(-4, 4) != 0x00000000)
     {
@@ -24418,7 +24418,7 @@ l100340AF:
             return;
         }
         STACKVAR(-656, 4) = STACKVAR(-16, 4);
-        ??3@YAXPAX@Z(STACKVAR(-656, 4));
+        operator delete(STACKVAR(-656, 4));
         STACKVAR(-16, 4) = 0x00000000;
         STACKVAR(-12, 4) = 0x00000000;
         STACKVAR(-4, 4) = 0x00000000;
@@ -24541,7 +24541,7 @@ p10034467
             return;
         }
         STACKVAR(-4, 4) = ACCESS(GLOBAL(0x1004A9AC), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(GLOBAL(0x1004A9AC), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A9B0), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A9B8), 0, 4) = 0x00000000;
@@ -24595,7 +24595,7 @@ l10034508:
         goto l1003474D;
     }
     STACKVAR(-64, 4) = ACCESS(STACKVAR(-116, 4), 16, 4);
-    STACKVAR(-80, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-64, 4)));
+    STACKVAR(-80, 4) = operator new(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-64, 4)));
     if (STACKVAR(-80, 4) == 0x00000000)
     {
         goto l100346DB;
@@ -24628,12 +24628,12 @@ l10034700:
         goto l100346F7;
     }
     STACKVAR(-84, 4) = ACCESS(STACKVAR(-116, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-84, 4));
+    operator delete(STACKVAR(-84, 4));
     ACCESS(STACKVAR(-116, 4), 4, 4) = STACKVAR(-68, 4);
     goto l100347C4;
 l1003474D:
     STACKVAR(-76, 4) = ACCESS(STACKVAR(-116, 4), 16, 4);
-    STACKVAR(-88, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-76, 4)));
+    STACKVAR(-88, 4) = operator new(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-76, 4)));
     if (STACKVAR(-88, 4) == 0x00000000)
     {
         goto l100347AE;
@@ -24673,7 +24673,7 @@ l100347EE:
         goto l100349C2;
     }
     STACKVAR(-120, 4) = ACCESS(GLOBAL(0x1004A9A0), 0, 4);
-    STACKVAR(-136, 4) = ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-120, 4)) + 0x00000004);
+    STACKVAR(-136, 4) = operator new(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-120, 4)) + 0x00000004);
     if (STACKVAR(-136, 4) == 0x00000000)
     {
         goto l10034920;
@@ -24721,7 +24721,7 @@ l10034945:
     goto l10034A43;
 l100349C2:
     STACKVAR(-132, 4) = ACCESS(GLOBAL(0x1004A9A0), 0, 4);
-    STACKVAR(-148, 4) = ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-132, 4)) + 0x00000004);
+    STACKVAR(-148, 4) = operator new(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-132, 4)) + 0x00000004);
     if (STACKVAR(-148, 4) != 0x00000000)
     {
         ARG(GLOBAL(0x10039610));
@@ -24765,7 +24765,7 @@ void B_ObjDscr::SetUpEdges()
     if (ACCESS(GLOBAL(0x1004A9B8), 0, 4) != 0x00000000)
     {
         STACKVAR(-100, 4) = ACCESS(GLOBAL(0x1004A9AC), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-100, 4));
+        operator delete(STACKVAR(-100, 4));
         ACCESS(GLOBAL(0x1004A9AC), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A9B0), 0, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004A9B8), 0, 4) = 0x00000000;
@@ -24811,11 +24811,11 @@ void B_ObjDscr::Draw(B_3DRasterDevice *raster, float x1, float y1, float x2, flo
     if (ACCESS(GLOBAL(0x1004A9BC), 0, 4) != 0x00000000)
     {
         STACKVAR(-552, 4) = ACCESS(GLOBAL(0x1004A9BC), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-552, 4));
+        operator delete(STACKVAR(-552, 4));
         ACCESS(GLOBAL(0x1004A9C0), 0, 4) = 0x00000000;
     }
     STACKVAR(-264, 4) = ACCESS(this, 44, 4);
-    STACKVAR(-556, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-264, 4)));
+    STACKVAR(-556, 4) = operator new(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-264, 4)));
     if (STACKVAR(-556, 4) == 0x00000000)
     {
         goto l10034E98;
@@ -25096,7 +25096,7 @@ p1003590B
     if (ACCESS(STACKVAR(-532, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(-532, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-524, 4) = ACCESS(STACKVAR(-532, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-524, 4));
+        operator delete(STACKVAR(-524, 4));
         ACCESS(STACKVAR(-532, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(-532, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-532, 4), 16, 4) = 0x00000000;
@@ -25108,7 +25108,7 @@ p1003590B
         goto l10035AB7;
     }
     STACKVAR(-512, 4) = ACCESS(STACKVAR(-532, 4), 16, 4);
-    STACKVAR(-520, 4) = ??2@YAPAXI@Z(0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-512, 4)));
+    STACKVAR(-520, 4) = operator new(0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-512, 4)));
     if (STACKVAR(-520, 4) != 0x00000000)
     {
         unknown_function_100395E0(STACKVAR(-520, 4), 0x00000030, STACKVAR(-512, 4), GLOBAL(0x1003D740));
@@ -25134,7 +25134,7 @@ l10035AB7:
     if (ACCESS(STACKVAR(-548, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(-548, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-544, 4) = ACCESS(STACKVAR(-548, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-544, 4));
+        operator delete(STACKVAR(-544, 4));
         ACCESS(STACKVAR(-548, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(-548, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-548, 4), 16, 4) = 0x00000000;
@@ -25145,7 +25145,7 @@ l10035AB7:
     {
         goto l10035BF7;
     }
-    STACKVAR(-540, 4) = ??2@YAPAXI@Z(0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-548, 4), 16, 4)));
+    STACKVAR(-540, 4) = operator new(0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-548, 4), 16, 4)));
     ACCESS(STACKVAR(-548, 4), 4, 4) = STACKVAR(-540, 4);
     unsigned int unknown_loc_218 = 0;
     goto l10035BC0;
@@ -25201,7 +25201,7 @@ l10035C82:
     }
 l10035CE6:
     STACKVAR(-564, 4) = ACCESS(STACKVAR(-568, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-564, 4));
+    operator delete(STACKVAR(-564, 4));
     ACCESS(STACKVAR(-568, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-568, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-568, 4), 16, 4) = 0x00000000;
@@ -25215,7 +25215,7 @@ l10035D3D:
     {
         goto l10035F4F;
     }
-    STACKVAR(-44, 4) = ??2@YAPAXI@Z(0x000000AC);
+    STACKVAR(-44, 4) = operator new(0x000000AC);
     if (STACKVAR(-44, 4) != 0x00000000)
     {
         reinterpret_cast<B_NamedObj *>(STACKVAR(-44, 4))->B_NamedObj();
@@ -25244,7 +25244,7 @@ l10035D3D:
     {
         goto l10035EF3;
     }
-    STACKVAR(-584, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 16, 4)));
+    STACKVAR(-584, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 16, 4)));
     STACKVAR(-576, 4) = STACKVAR(-584, 4);
     unsigned int unknown_loc_244 = 0;
     goto l10035E90;
@@ -25257,11 +25257,11 @@ l10035E90:
         goto l10035E81;
     }
     STACKVAR(-588, 4) = ACCESS(STACKVAR(-596, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-588, 4));
+    operator delete(STACKVAR(-588, 4));
     ACCESS(STACKVAR(-596, 4), 4, 4) = STACKVAR(-576, 4);
     goto l10035F1D;
 l10035EF3:
-    STACKVAR(-592, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 16, 4)));
+    STACKVAR(-592, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 16, 4)));
     ACCESS(STACKVAR(-596, 4), 4, 4) = STACKVAR(-592, 4);
 l10035F1D:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-596, 4), 4, 4), 4, ACCESS(STACKVAR(-596, 4), 8, 4), 0), 0, 4) = STACKVAR(-4, 4);
@@ -25284,7 +25284,7 @@ l10035F4F:
     {
         goto l10036120;
     }
-    STACKVAR(-604, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-616, 4), 16, 4)));
+    STACKVAR(-604, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-616, 4), 16, 4)));
     ACCESS(STACKVAR(-616, 4), 4, 4) = STACKVAR(-604, 4);
     unsigned int unknown_loc_258 = 0;
     goto l10036089;
@@ -25293,7 +25293,7 @@ l1003607A:
 l10036089:
     if (unknown_loc_258 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-616, 4), 8, 4)))
     {
-        STACKVAR(-608, 4) = ??2@YAPAXI@Z(0x00000020);
+        STACKVAR(-608, 4) = operator new(0x00000020);
         if (STACKVAR(-608, 4) != 0x00000000)
         {
             (reinterpret_cast<any_int32>(STACKVAR(-608, 4)) + 0x00000008)->unknown_method_1003D950(0x00000010, 0x00000001);
@@ -25319,7 +25319,7 @@ l10036120:
     {
         goto l100362B6;
     }
-    STACKVAR(-624, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-636, 4), 16, 4)));
+    STACKVAR(-624, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-636, 4), 16, 4)));
     ACCESS(STACKVAR(-636, 4), 4, 4) = STACKVAR(-624, 4);
     unsigned int unknown_loc_26C = 0;
     goto l100361E7;
@@ -25328,7 +25328,7 @@ l100361D8:
 l100361E7:
     if (unknown_loc_26C < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-636, 4), 8, 4)))
     {
-        STACKVAR(-628, 4) = ??2@YAPAXI@Z(0x00000024);
+        STACKVAR(-628, 4) = operator new(0x00000024);
         if (STACKVAR(-628, 4) != 0x00000000)
         {
             STACKVAR(-632, 4) = reinterpret_cast<any_int32>(STACKVAR(-628, 4)) + 0x00000008;
@@ -25357,7 +25357,7 @@ l100362B6:
     {
         goto l10036408;
     }
-    STACKVAR(-644, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-652, 4), 16, 4)));
+    STACKVAR(-644, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-652, 4), 16, 4)));
     ACCESS(STACKVAR(-652, 4), 4, 4) = STACKVAR(-644, 4);
     unsigned int unknown_loc_280 = 0;
     goto l1003637F;
@@ -25366,7 +25366,7 @@ l10036370:
 l1003637F:
     if (unknown_loc_280 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-652, 4), 8, 4)))
     {
-        STACKVAR(-648, 4) = ??2@YAPAXI@Z(0x00000090);
+        STACKVAR(-648, 4) = operator new(0x00000090);
         ACCESS(ARRPTR(ACCESS(STACKVAR(-652, 4), 4, 4), 4, unknown_loc_280, 0), 0, 4) = STACKVAR(-648, 4) != 0x00000000 ? STACKVAR(-648, 4)->unknown_method_1003D7C0() : 0x00000000;
         unknown_function_10032871(STACKVAR(-612, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-652, 4), 4, 4), 4, unknown_loc_280, 0), 0, 4));
         goto l10036370;
@@ -25397,7 +25397,7 @@ l10036408:
     {
         goto l100365DF;
     }
-    STACKVAR(-660, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-668, 4), 16, 4)));
+    STACKVAR(-660, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-668, 4), 16, 4)));
     ACCESS(STACKVAR(-668, 4), 4, 4) = STACKVAR(-660, 4);
     unsigned int unknown_loc_290 = 0;
     goto l1003655C;
@@ -25406,7 +25406,7 @@ l1003654D:
 l1003655C:
     if (unknown_loc_290 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-668, 4), 8, 4)))
     {
-        STACKVAR(-664, 4) = ??2@YAPAXI@Z(0x00000058);
+        STACKVAR(-664, 4) = operator new(0x00000058);
         ACCESS(ARRPTR(ACCESS(STACKVAR(-668, 4), 4, 4), 4, unknown_loc_290, 0), 0, 4) = STACKVAR(-664, 4) != 0x00000000 ? STACKVAR(-664, 4)->unknown_method_10039670() : 0x00000000;
         unknown_function_100328ED(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-668, 4), 4, 4), 4, unknown_loc_290, 0), 0, 4));
         goto l1003654D;
@@ -25453,7 +25453,7 @@ l100366FB:
         STACKVAR(-28, 4) = (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000D0)->unknown_method_1003A1E0(B_Name("1H_R"));
         if (STACKVAR(-28, 4) != 0x00000000)
         {
-            STACKVAR(-356, 4) = ??2@YAPAXI@Z(0x00000058);
+            STACKVAR(-356, 4) = operator new(0x00000058);
             STACKVAR(-32, 4) = STACKVAR(-356, 4) != 0x00000000 ? STACKVAR(-356, 4)->unknown_method_10039670() : 0x00000000;
             reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000004) = B_Name("C0");
             ACCESS(STACKVAR(-32, 4), 12, 4) = 0x00000000;
@@ -25677,7 +25677,7 @@ l10036DE0:
 void B_ObjDscr::SetUpBSP()
 {
     STACKVAR(-24, 4) = ACCESS(this, 64, 4);
-    STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000004);
+    STACKVAR(-36, 4) = operator new(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000004);
     if (STACKVAR(-36, 4) == 0x00000000)
     {
         goto l10036ED2;
@@ -25736,7 +25736,7 @@ l10036F1A:
     {
         goto l100370DE;
     }
-    STACKVAR(-144, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    STACKVAR(-144, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-136, 4) = STACKVAR(-144, 4);
     unsigned int unknown_loc_8C = 0;
     goto l10037093;
@@ -25749,11 +25749,11 @@ l10037093:
         goto l10037084;
     }
     STACKVAR(-148, 4) = STACKVAR(-16, 4);
-    ??3@YAXPAX@Z(STACKVAR(-148, 4));
+    operator delete(STACKVAR(-148, 4));
     STACKVAR(-16, 4) = STACKVAR(-136, 4);
     goto l100370FC;
 l100370DE:
-    STACKVAR(-152, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    STACKVAR(-152, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-16, 4) = STACKVAR(-152, 4);
 l100370FC:
     ACCESS(ARRPTR(STACKVAR(-16, 4), 4, STACKVAR(-12, 4), 0), 0, 4) = STACKVAR(-32, 4);
@@ -25783,7 +25783,7 @@ l10037116:
             return;
         }
         STACKVAR(-156, 4) = STACKVAR(-16, 4);
-        ??3@YAXPAX@Z(STACKVAR(-156, 4));
+        operator delete(STACKVAR(-156, 4));
         STACKVAR(-16, 4) = 0x00000000;
         STACKVAR(-12, 4) = 0x00000000;
         STACKVAR(-4, 4) = 0x00000000;
@@ -25872,7 +25872,7 @@ l100374F4:
             goto l10037CA4;
         case 2:
             STACKVAR(-48, 4) = ACCESS(STACKVAR(16, 4), 20, 4);
-            STACKVAR(-124, 4) = ??2@YAPAXI@Z(0x00000010);
+            STACKVAR(-124, 4) = operator new(0x00000010);
             if (STACKVAR(-124, 4) != 0x00000000)
             {
                 ACCESS(STACKVAR(-124, 4), 4, 4) = 0x00000000;
@@ -25917,7 +25917,7 @@ l100374F4:
             {
                 goto l10037941;
             }
-            STACKVAR(-368, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+            STACKVAR(-368, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
             STACKVAR(-360, 4) = STACKVAR(-368, 4);
             unknown_loc_16C = 0;
             goto l100378F6;
@@ -25931,11 +25931,11 @@ l100378F6:
         goto l100378E7;
     }
     STACKVAR(-372, 4) = STACKVAR(-16, 4);
-    ??3@YAXPAX@Z(STACKVAR(-372, 4));
+    operator delete(STACKVAR(-372, 4));
     STACKVAR(-16, 4) = STACKVAR(-360, 4);
     goto l1003795F;
 l10037941:
-    STACKVAR(-376, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    STACKVAR(-376, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-16, 4) = STACKVAR(-376, 4);
 l1003795F:
     ACCESS(ARRPTR(STACKVAR(-16, 4), 4, STACKVAR(-12, 4), 0), 0, 4) = ACCESS(STACKVAR(-380, 4), 0, 4);
@@ -25955,7 +25955,7 @@ l1003797E:
     {
         goto l10037A51;
     }
-    STACKVAR(-392, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    STACKVAR(-392, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-384, 4) = STACKVAR(-392, 4);
     unsigned int unknown_loc_184 = 0;
     goto l10037A06;
@@ -25968,11 +25968,11 @@ l10037A06:
         goto l100379F7;
     }
     STACKVAR(-396, 4) = STACKVAR(-16, 4);
-    ??3@YAXPAX@Z(STACKVAR(-396, 4));
+    operator delete(STACKVAR(-396, 4));
     STACKVAR(-16, 4) = STACKVAR(-384, 4);
     goto l10037A6F;
 l10037A51:
-    STACKVAR(-400, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    STACKVAR(-400, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-16, 4) = STACKVAR(-400, 4);
 l10037A6F:
     ACCESS(ARRPTR(STACKVAR(-16, 4), 4, STACKVAR(-12, 4), 0), 0, 4) = ACCESS(STACKVAR(-404, 4), 0, 4);
@@ -25990,7 +25990,7 @@ l10037A89:
     {
         goto l10037B5C;
     }
-    STACKVAR(-416, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
+    STACKVAR(-416, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
     STACKVAR(-408, 4) = STACKVAR(-416, 4);
     unsigned int unknown_loc_19C = 0;
     goto l10037B11;
@@ -26003,11 +26003,11 @@ l10037B11:
         goto l10037B02;
     }
     STACKVAR(-420, 4) = STACKVAR(-40, 4);
-    ??3@YAXPAX@Z(STACKVAR(-420, 4));
+    operator delete(STACKVAR(-420, 4));
     STACKVAR(-40, 4) = STACKVAR(-408, 4);
     goto l10037B7A;
 l10037B5C:
-    STACKVAR(-424, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
+    STACKVAR(-424, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
     STACKVAR(-40, 4) = STACKVAR(-424, 4);
 l10037B7A:
     ACCESS(ARRPTR(STACKVAR(-40, 4), 4, STACKVAR(-36, 4), 0), 0, 4) = ACCESS(STACKVAR(-428, 4), 0, 4);
@@ -26027,7 +26027,7 @@ l10037B99:
     {
         goto l10037C6C;
     }
-    STACKVAR(-440, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
+    STACKVAR(-440, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
     STACKVAR(-432, 4) = STACKVAR(-440, 4);
     unsigned int unknown_loc_1B4 = 0;
     goto l10037C21;
@@ -26040,11 +26040,11 @@ l10037C21:
         goto l10037C12;
     }
     STACKVAR(-444, 4) = STACKVAR(-40, 4);
-    ??3@YAXPAX@Z(STACKVAR(-444, 4));
+    operator delete(STACKVAR(-444, 4));
     STACKVAR(-40, 4) = STACKVAR(-432, 4);
     goto l10037C8A;
 l10037C6C:
-    STACKVAR(-448, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
+    STACKVAR(-448, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
     STACKVAR(-40, 4) = STACKVAR(-448, 4);
 l10037C8A:
     ACCESS(ARRPTR(STACKVAR(-40, 4), 4, STACKVAR(-36, 4), 0), 0, 4) = ACCESS(STACKVAR(-452, 4), 0, 4);
@@ -26054,7 +26054,7 @@ l10037CA4:
 l10037CA9:
     if (STACKVAR(-12, 4) != 0x00000000)
     {
-        STACKVAR(-272, 4) = ??2@YAPAXI@Z(0x00000018);
+        STACKVAR(-272, 4) = operator new(0x00000018);
         if (STACKVAR(-272, 4) != 0x00000000)
         {
             ACCESS(STACKVAR(-272, 4), 0, 4) = 0x00000000;
@@ -26076,7 +26076,7 @@ l10037CA9:
     }
     if (STACKVAR(-36, 4) != 0x00000000)
     {
-        STACKVAR(-276, 4) = ??2@YAPAXI@Z(0x00000018);
+        STACKVAR(-276, 4) = operator new(0x00000018);
         if (STACKVAR(-276, 4) != 0x00000000)
         {
             ACCESS(STACKVAR(-276, 4), 0, 4) = 0x00000000;
@@ -26100,7 +26100,7 @@ l10037CA9:
     if (STACKVAR(-28, 4) != 0x00000000 && STACKVAR(-28, 4) != 0x00000000)
     {
         STACKVAR(-456, 4) = STACKVAR(-40, 4);
-        ??3@YAXPAX@Z(STACKVAR(-456, 4));
+        operator delete(STACKVAR(-456, 4));
         STACKVAR(-40, 4) = 0x00000000;
         STACKVAR(-36, 4) = 0x00000000;
         STACKVAR(-28, 4) = 0x00000000;
@@ -26113,7 +26113,7 @@ l10037CA9:
             return;
         }
         STACKVAR(-460, 4) = STACKVAR(-16, 4);
-        ??3@YAXPAX@Z(STACKVAR(-460, 4));
+        operator delete(STACKVAR(-460, 4));
         STACKVAR(-16, 4) = 0x00000000;
         STACKVAR(-12, 4) = 0x00000000;
         STACKVAR(-4, 4) = 0x00000000;
@@ -26251,7 +26251,7 @@ B_ObjDscr::~B_ObjDscr()
             __deleting_obj->unknown_method_10039C10();
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(__deleting_obj);
+                operator delete(__deleting_obj);
             }
             __deleting_result = __deleting_obj;
         }
@@ -26315,7 +26315,7 @@ B_ObjDscr::~B_ObjDscr()
     if (ACCESS(STACKVAR(-72, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(-72, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-68, 4) = ACCESS(STACKVAR(-72, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-68, 4));
+        operator delete(STACKVAR(-68, 4));
         ACCESS(STACKVAR(-72, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(-72, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-72, 4), 16, 4) = 0x00000000;
@@ -26325,7 +26325,7 @@ B_ObjDscr::~B_ObjDscr()
     if (ACCESS(STACKVAR(-80, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(-80, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-76, 4) = ACCESS(STACKVAR(-80, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-76, 4));
+        operator delete(STACKVAR(-76, 4));
         ACCESS(STACKVAR(-80, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(-80, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-80, 4), 16, 4) = 0x00000000;
@@ -26511,7 +26511,7 @@ unsigned int B_ObjDscr::LoadPacked(B_IDataFile &arg_1)
     {
         goto l10038B44;
     }
-    STACKVAR(-208, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 16, 4)));
+    STACKVAR(-208, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 16, 4)));
     ACCESS(STACKVAR(-220, 4), 4, 4) = STACKVAR(-208, 4);
     unsigned int unknown_loc_CC = 0;
     goto l10038A78;
@@ -26520,7 +26520,7 @@ l10038A69:
 l10038A78:
     if (unknown_loc_CC < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 8, 4)))
     {
-        STACKVAR(-212, 4) = ??2@YAPAXI@Z(0x00000024);
+        STACKVAR(-212, 4) = operator new(0x00000024);
         if (STACKVAR(-212, 4) != 0x00000000)
         {
             STACKVAR(-216, 4) = reinterpret_cast<any_int32>(STACKVAR(-212, 4)) + 0x00000008;
@@ -26542,7 +26542,7 @@ l10038B44:
     if (ACCESS(STACKVAR(-240, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(-240, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-236, 4) = ACCESS(STACKVAR(-240, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-236, 4));
+        operator delete(STACKVAR(-236, 4));
         ACCESS(STACKVAR(-240, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(-240, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-240, 4), 16, 4) = 0x00000000;
@@ -26554,7 +26554,7 @@ l10038B44:
         goto l10038CCC;
     }
     STACKVAR(-224, 4) = ACCESS(STACKVAR(-240, 4), 16, 4);
-    STACKVAR(-232, 4) = ??2@YAPAXI@Z(0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-224, 4)));
+    STACKVAR(-232, 4) = operator new(0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-224, 4)));
     if (STACKVAR(-232, 4) != 0x00000000)
     {
         unknown_function_100395E0(STACKVAR(-232, 4), 0x00000030, STACKVAR(-224, 4), GLOBAL(0x1003D740));
@@ -26587,7 +26587,7 @@ l10038CCC:
     {
         goto l10038DC1;
     }
-    STACKVAR(-248, 4) = ??2@YAPAXI@Z(0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 16, 4)));
+    STACKVAR(-248, 4) = operator new(0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 16, 4)));
     ACCESS(STACKVAR(-252, 4), 4, 4) = STACKVAR(-248, 4);
     unsigned int unknown_loc_F4 = 0;
     goto l10038D8D;
@@ -26611,7 +26611,7 @@ l10038DC1:
     {
         goto l10038F0E;
     }
-    STACKVAR(-260, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-268, 4), 16, 4)));
+    STACKVAR(-260, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-268, 4), 16, 4)));
     ACCESS(STACKVAR(-268, 4), 4, 4) = STACKVAR(-260, 4);
     unsigned int unknown_loc_100 = 0;
     goto l10038E88;
@@ -26620,7 +26620,7 @@ l10038E79:
 l10038E88:
     if (unknown_loc_100 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-268, 4), 8, 4)))
     {
-        STACKVAR(-264, 4) = ??2@YAPAXI@Z(0x000000AC);
+        STACKVAR(-264, 4) = operator new(0x000000AC);
         ACCESS(ARRPTR(ACCESS(STACKVAR(-268, 4), 4, 4), 4, unknown_loc_100, 0), 0, 4) = STACKVAR(-264, 4) != 0x00000000 ? STACKVAR(-264, 4)->unknown_method_10039EA0() : 0x00000000;
         unknown_function_10032524(arg_1, ACCESS(ARRPTR(ACCESS(STACKVAR(-268, 4), 4, 4), 4, unknown_loc_100, 0), 0, 4));
         goto l10038E79;
@@ -26637,7 +26637,7 @@ l10038F0E:
     {
         goto l10038FFB;
     }
-    STACKVAR(-276, 4) = ??2@YAPAXI@Z(ACCESS(STACKVAR(-280, 4), 16, 4));
+    STACKVAR(-276, 4) = operator new(ACCESS(STACKVAR(-280, 4), 16, 4));
     ACCESS(STACKVAR(-280, 4), 4, 4) = STACKVAR(-276, 4);
     unsigned int unknown_loc_110 = 0;
     goto l10038FCC;
@@ -26661,7 +26661,7 @@ l10038FFB:
     {
         goto l100390EE;
     }
-    STACKVAR(-288, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-292, 4), 16, 4)));
+    STACKVAR(-288, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-292, 4), 16, 4)));
     ACCESS(STACKVAR(-292, 4), 4, 4) = STACKVAR(-288, 4);
     unsigned int unknown_loc_11C = 0;
     goto l100390BC;
@@ -26698,7 +26698,7 @@ l10039100:
     {
         goto l10039287;
     }
-    STACKVAR(-300, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-308, 4), 16, 4)));
+    STACKVAR(-300, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-308, 4), 16, 4)));
     ACCESS(STACKVAR(-308, 4), 4, 4) = STACKVAR(-300, 4);
     unsigned int unknown_loc_128 = 0;
     goto l10039204;
@@ -26707,7 +26707,7 @@ l100391F5:
 l10039204:
     if (unknown_loc_128 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-308, 4), 8, 4)))
     {
-        STACKVAR(-304, 4) = ??2@YAPAXI@Z(0x00000040);
+        STACKVAR(-304, 4) = operator new(0x00000040);
         ACCESS(ARRPTR(ACCESS(STACKVAR(-308, 4), 4, 4), 4, unknown_loc_128, 0), 0, 4) = STACKVAR(-304, 4) != 0x00000000 ? STACKVAR(-304, 4)->unknown_method_1003D7F0() : 0x00000000;
         unknown_function_10032A2D(arg_1, ACCESS(ARRPTR(ACCESS(STACKVAR(-308, 4), 4, 4), 4, unknown_loc_128, 0), 0, 4));
         goto l100391F5;
@@ -26725,7 +26725,7 @@ l10039287:
         STACKVAR(-8, 4) = (reinterpret_cast<any_int32>(this) + 0x000000D0)->unknown_method_1003A1E0(B_Name("1H_R"));
         if (STACKVAR(-8, 4) != 0x00000000)
         {
-            STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x00000058);
+            STACKVAR(-28, 4) = operator new(0x00000058);
             STACKVAR(-12, 4) = STACKVAR(-28, 4) != 0x00000000 ? STACKVAR(-28, 4)->unknown_method_10039670() : 0x00000000;
             reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000004) = B_Name("C0");
             ACCESS(STACKVAR(-12, 4), 12, 4) = 0x00000000;
@@ -26810,7 +26810,7 @@ p10039750
     if (ACCESS(STACKVAR(-8, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(-8, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(STACKVAR(-8, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(-8, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-8, 4), 16, 4) = 0x00000000;
@@ -26819,7 +26819,7 @@ p10039750
     reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26832,7 +26832,7 @@ p100397F0
     reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26845,14 +26845,14 @@ p10039830
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26879,7 +26879,7 @@ l100398E8:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+        operator delete(reinterpret_cast<any_int32>(this) - 0x00000004);
     }
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
@@ -26887,7 +26887,7 @@ l1003992C:
     ACCESS(this, 0, 4) = GLOBAL(0x10042D3C);
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26899,7 +26899,7 @@ p10039960
     reinterpret_cast<B_ObjDscr *>(this)->~B_ObjDscr();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26912,14 +26912,14 @@ p10039990
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26932,14 +26932,14 @@ p10039A10
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26952,14 +26952,14 @@ p10039A90
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26972,14 +26972,14 @@ p10039B10
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -26992,14 +26992,14 @@ p10039B90
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27017,7 +27017,7 @@ p10039C10
             __deleting_obj->unknown_method_10039C10();
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(__deleting_obj);
+                operator delete(__deleting_obj);
             }
             __deleting_result = __deleting_obj;
         }
@@ -27035,7 +27035,7 @@ p10039C10
             __deleting_obj->unknown_method_10039C10();
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(__deleting_obj);
+                operator delete(__deleting_obj);
             }
             __deleting_result = __deleting_obj;
         }
@@ -27065,7 +27065,7 @@ p10039C10
             }
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(STACKVAR(-20, 4));
+                operator delete(STACKVAR(-20, 4));
             }
             STACKVAR(-52, 4) = STACKVAR(-20, 4);
             return;
@@ -27093,7 +27093,7 @@ p10039D30
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27149,7 +27149,7 @@ p10039D90
             }
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(__deleting_obj);
+                operator delete(__deleting_obj);
             }
             __deleting_result = __deleting_obj;
         }
@@ -27160,7 +27160,7 @@ p10039D90
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27227,7 +27227,7 @@ l10039F8F:
     }
 l10039FCF:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -27259,7 +27259,7 @@ p1003A050
     ACCESS(this, 16, 4) = STACKVAR(-4, 4);
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
-        STACKVAR(-20, 4) = ??2@YAPAXI@Z(ACCESS(this, 16, 4));
+        STACKVAR(-20, 4) = operator new(ACCESS(this, 16, 4));
         ACCESS(this, 4, 4) = STACKVAR(-20, 4);
         if (ACCESS(this, 4, 4) == 0x00000000)
         {
@@ -27288,7 +27288,7 @@ l1003A136:
     if (STACKVAR(-8, 4) != 0x00000000)
     {
         STACKVAR(-24, 4) = STACKVAR(-8, 4);
-        ??3@YAXPAX@Z(STACKVAR(-24, 4));
+        operator delete(STACKVAR(-24, 4));
     }
 l1003A14E:
     ACCESS(this, 8, 4) = STACKVAR(8, 4);
@@ -27354,7 +27354,7 @@ p1003A240
     {
         goto l1003A308;
     }
-    STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
+    STACKVAR(-12, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-12, 4);
     unsigned int unknown_loc_08 = 0;
     goto l1003A2C6;
@@ -27367,11 +27367,11 @@ l1003A2C6:
         goto l1003A2BD;
     }
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = STACKVAR(-4, 4);
     goto l1003A326;
 l1003A308:
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
+    STACKVAR(-20, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     ACCESS(this, 4, 4) = STACKVAR(-20, 4);
 l1003A326:
     ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, ACCESS(this, 8, 4), 0), 0, 4) = STACKVAR(8, 4);
@@ -27416,7 +27416,7 @@ p1003A3C0
     {
         goto l1003A48A;
     }
-    STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
+    STACKVAR(-12, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-12, 4);
     unsigned int unknown_loc_08 = 0;
     goto l1003A448;
@@ -27429,11 +27429,11 @@ l1003A448:
         goto l1003A43F;
     }
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = STACKVAR(-4, 4);
     goto l1003A4A8;
 l1003A48A:
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
+    STACKVAR(-20, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     ACCESS(this, 4, 4) = STACKVAR(-20, 4);
 l1003A4A8:
     ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, ACCESS(this, 8, 4), 0), 0, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
@@ -27450,14 +27450,14 @@ p1003A4E0
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27488,19 +27488,19 @@ l1003A5AB:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
         STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
         goto l1003A5A2;
     }
 l1003A5D3:
     STACKVAR(-12, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    operator delete(STACKVAR(-12, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003A606:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27531,19 +27531,19 @@ l1003A67B:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
         STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
         goto l1003A672;
     }
 l1003A6A3:
     STACKVAR(-12, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    operator delete(STACKVAR(-12, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003A6D6:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27556,14 +27556,14 @@ p1003A700
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27576,14 +27576,14 @@ p1003A780
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27627,14 +27627,14 @@ l1003A84E:
     }
 l1003A88E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003A8C1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27678,14 +27678,14 @@ l1003A92E:
     }
 l1003A96E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003A9A1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27698,14 +27698,14 @@ p1003A9C0
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27718,14 +27718,14 @@ p1003AA40
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27769,14 +27769,14 @@ l1003AB0E:
     }
 l1003AB4E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003AB81:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27820,14 +27820,14 @@ l1003ABEE:
     }
 l1003AC2E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003AC61:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27840,14 +27840,14 @@ p1003AC80
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27891,14 +27891,14 @@ l1003AD4E:
     }
 l1003AD8E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003ADC1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -27942,14 +27942,14 @@ l1003AE2E:
     }
 l1003AE6E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003AEA1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28010,19 +28010,19 @@ l1003AF8B:
     if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 8, 4)))
     {
         STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-36, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-24, 4));
+        operator delete(STACKVAR(-24, 4));
         goto l1003AF82;
     }
 l1003AFB3:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-36, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(-36, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-36, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-36, 4), 16, 4) = 0x00000000;
 l1003AFE6:
     if ((0x00000001 & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
     }
     STACKVAR(-48, 4) = STACKVAR(-8, 4);
     goto l1003B00D;
@@ -28032,14 +28032,14 @@ l1003B00D:
     goto l1003AF09;
 l1003B012:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003B045:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28070,19 +28070,19 @@ l1003B0BB:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
         STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
         goto l1003B0B2;
     }
 l1003B0E3:
     STACKVAR(-12, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    operator delete(STACKVAR(-12, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003B116:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28143,19 +28143,19 @@ l1003B20B:
     if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 8, 4)))
     {
         STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-36, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-24, 4));
+        operator delete(STACKVAR(-24, 4));
         goto l1003B202;
     }
 l1003B233:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-36, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(-36, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-36, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-36, 4), 16, 4) = 0x00000000;
 l1003B266:
     if ((0x00000001 & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
     }
     STACKVAR(-48, 4) = STACKVAR(-8, 4);
     goto l1003B28D;
@@ -28165,14 +28165,14 @@ l1003B28D:
     goto l1003B189;
 l1003B292:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003B2C5:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28216,14 +28216,14 @@ l1003B33E:
     }
 l1003B37E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003B3B1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28267,14 +28267,14 @@ l1003B41E:
     }
 l1003B45E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003B491:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28318,14 +28318,14 @@ l1003B4FE:
     }
 l1003B53E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003B571:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28369,14 +28369,14 @@ l1003B5DE:
     }
 l1003B61E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003B651:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28389,14 +28389,14 @@ p1003B670
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28424,7 +28424,7 @@ p1003B6F0
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28446,14 +28446,14 @@ p1003B7C0
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28478,12 +28478,12 @@ l1003B86C:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
         STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
         goto l1003B863;
     }
 l1003B894:
     STACKVAR(-12, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    operator delete(STACKVAR(-12, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28498,7 +28498,7 @@ p1003B8D0
         return;
     }
     STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-4, 4));
+    operator delete(STACKVAR(-4, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28528,7 +28528,7 @@ p1003B980
         return;
     }
     STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-4, 4));
+    operator delete(STACKVAR(-4, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28543,7 +28543,7 @@ p1003B9D0
         return;
     }
     STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-4, 4));
+    operator delete(STACKVAR(-4, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28597,7 +28597,7 @@ l1003BAAF:
     }
 l1003BAEF:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28612,7 +28612,7 @@ p1003BB30
         return;
     }
     STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-4, 4));
+    operator delete(STACKVAR(-4, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28666,7 +28666,7 @@ l1003BC0F:
     }
 l1003BC4F:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28735,19 +28735,19 @@ l1003BD8C:
     if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 8, 4)))
     {
         STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-36, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-24, 4));
+        operator delete(STACKVAR(-24, 4));
         goto l1003BD83;
     }
 l1003BDB4:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-36, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(-36, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-36, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-36, 4), 16, 4) = 0x00000000;
 l1003BDE7:
     if ((0x00000001 & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
     }
     STACKVAR(-44, 4) = STACKVAR(-8, 4);
     goto l1003BE0E;
@@ -28757,7 +28757,7 @@ l1003BE0E:
     goto l1003BD0A;
 l1003BE13:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28811,7 +28811,7 @@ l1003BEDF:
     }
 l1003BF1F:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28865,7 +28865,7 @@ l1003BFEF:
     }
 l1003C02F:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
@@ -28910,14 +28910,14 @@ l1003C0BE:
     }
 l1003C0FE:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C131:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -28961,14 +28961,14 @@ l1003C19E:
     }
 l1003C1DE:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C211:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29012,14 +29012,14 @@ l1003C27E:
     }
 l1003C2BE:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C2F1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29063,14 +29063,14 @@ l1003C35E:
     }
 l1003C39E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C3D1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29114,14 +29114,14 @@ l1003C43E:
     }
 l1003C47E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C4B1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29165,14 +29165,14 @@ l1003C51E:
     }
 l1003C55E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C591:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29216,14 +29216,14 @@ l1003C5FE:
     }
 l1003C63E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C671:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29267,14 +29267,14 @@ l1003C6DE:
     }
 l1003C71E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C751:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29318,14 +29318,14 @@ l1003C7BE:
     }
 l1003C7FE:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C831:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29369,14 +29369,14 @@ l1003C89E:
     }
 l1003C8DE:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003C911:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -29435,19 +29435,19 @@ l1003C9E9:
     if (unknown_loc_20 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-48, 4), 8, 4)))
     {
         STACKVAR(-36, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-48, 4), 4, 4), 4, unknown_loc_20, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-36, 4));
+        operator delete(STACKVAR(-36, 4));
         goto l1003C9E0;
     }
 l1003CA11:
     STACKVAR(-40, 4) = ACCESS(STACKVAR(-48, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-40, 4));
+    operator delete(STACKVAR(-40, 4));
     ACCESS(STACKVAR(-48, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-48, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-48, 4), 16, 4) = 0x00000000;
 l1003CA44:
     if ((0x00000001 & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(STACKVAR(-20, 4));
+        operator delete(STACKVAR(-20, 4));
     }
     STACKVAR(-56, 4) = STACKVAR(-20, 4);
     goto l1003CA6B;
@@ -29457,7 +29457,7 @@ l1003CA6B:
     goto l1003C967;
 l1003CA70:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
@@ -29468,7 +29468,7 @@ l1003CAA3:
     {
         goto l1003CBC3;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    STACKVAR(-8, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
     unsigned int unknown_loc_04 = 0;
     goto l1003CB18;
@@ -29477,7 +29477,7 @@ l1003CB0F:
 l1003CB18:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000020);
+        STACKVAR(-12, 4) = operator new(0x00000020);
         if (STACKVAR(-12, 4) != 0x00000000)
         {
             STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000008;
@@ -29539,7 +29539,7 @@ l1003CC0C:
     }
 l1003CC4C:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
@@ -29550,7 +29550,7 @@ l1003CC7F:
     {
         goto l1003CD6A;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    STACKVAR(-8, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
     unsigned int unknown_loc_04 = 0;
     goto l1003CCF4;
@@ -29559,7 +29559,7 @@ l1003CCEB:
 l1003CCF4:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000090);
+        STACKVAR(-12, 4) = operator new(0x00000090);
         if (STACKVAR(-12, 4) != 0x00000000)
         {
             reinterpret_cast<B_NamedObj *>(STACKVAR(-12, 4))->B_NamedObj();
@@ -29616,7 +29616,7 @@ l1003CDBC:
     }
 l1003CDFC:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
@@ -29627,7 +29627,7 @@ l1003CE2F:
     {
         goto l1003CFC8;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    STACKVAR(-8, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
     unsigned int unknown_loc_04 = 0;
     goto l1003CEA4;
@@ -29636,7 +29636,7 @@ l1003CE9B:
 l1003CEA4:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000058);
+        STACKVAR(-12, 4) = operator new(0x00000058);
         if (STACKVAR(-12, 4) != 0x00000000)
         {
             reinterpret_cast<B_NamedObj *>(STACKVAR(-12, 4))->B_NamedObj();
@@ -29704,7 +29704,7 @@ l1003D00C:
     }
 l1003D04C:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
@@ -29715,7 +29715,7 @@ l1003D07F:
     {
         goto l1003D1DD;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    STACKVAR(-8, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
     unsigned int unknown_loc_04 = 0;
     goto l1003D0F4;
@@ -29724,7 +29724,7 @@ l1003D0EB:
 l1003D0F4:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000040);
+        STACKVAR(-12, 4) = operator new(0x00000040);
         if (STACKVAR(-12, 4) != 0x00000000)
         {
             reinterpret_cast<B_NamedObj *>(STACKVAR(-12, 4))->B_NamedObj();
@@ -29758,7 +29758,7 @@ p1003D1F0
     if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-12, 4));
+        operator delete(STACKVAR(-12, 4));
         ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
@@ -29769,7 +29769,7 @@ p1003D1F0
     {
         goto l1003D2CE;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(ACCESS(STACKVAR(12, 4), 16, 4));
+    STACKVAR(-8, 4) = operator new(ACCESS(STACKVAR(12, 4), 16, 4));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
     unsigned int unknown_loc_04 = 0;
     goto l1003D2AB;
@@ -29792,7 +29792,7 @@ p1003D2E0
     if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-12, 4));
+        operator delete(STACKVAR(-12, 4));
         ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
@@ -29803,7 +29803,7 @@ p1003D2E0
     {
         goto l1003D3C4;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    STACKVAR(-8, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
     unsigned int unknown_loc_04 = 0;
     goto l1003D39E;
@@ -29856,7 +29856,7 @@ l1003D40C:
     }
 l1003D44C:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-28, 4));
+    operator delete(STACKVAR(-28, 4));
     ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
@@ -29867,7 +29867,7 @@ l1003D47F:
     {
         goto l1003D5DD;
     }
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    STACKVAR(-8, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
     unsigned int unknown_loc_04 = 0;
     goto l1003D4F4;
@@ -29876,7 +29876,7 @@ l1003D4EB:
 l1003D4F4:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000040);
+        STACKVAR(-12, 4) = operator new(0x00000040);
         if (STACKVAR(-12, 4) != 0x00000000)
         {
             reinterpret_cast<B_NamedObj *>(STACKVAR(-12, 4))->B_NamedObj();
@@ -29910,7 +29910,7 @@ p1003D5F0
     if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-16, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-16, 4));
+        operator delete(STACKVAR(-16, 4));
         ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
         ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
@@ -29922,7 +29922,7 @@ p1003D5F0
         goto l1003D72A;
     }
     STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 16, 4);
-    STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    STACKVAR(-12, 4) = operator new(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     if (STACKVAR(-12, 4) == 0x00000000)
     {
         goto l1003D6E0;
@@ -30007,7 +30007,7 @@ p1003D890
     reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30020,7 +30020,7 @@ p1003D8D0
     reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30033,7 +30033,7 @@ p1003D910
     reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30078,19 +30078,19 @@ l1003D9FB:
     if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
         STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, unknown_loc_04, 0), 0, 4);
-        ??3@YAXPAX@Z(STACKVAR(-8, 4));
+        operator delete(STACKVAR(-8, 4));
         goto l1003D9F2;
     }
 l1003DA23:
     STACKVAR(-12, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    operator delete(STACKVAR(-12, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003DA56:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30164,7 +30164,7 @@ l1003DB4B:
     }
 l1003DB8A:
     STACKVAR(-16, 4) = ACCESS(GLOBAL(0x1004A9D4), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(GLOBAL(0x1004A9D4), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A9D8), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A9E0), 0, 4) = 0x00000000;
@@ -30195,7 +30195,7 @@ l1003DC48:
     {
         goto l1003DEAA;
     }
-    STACKVAR(-796, 4) = ??2@YAPAXI@Z(0x00000018);
+    STACKVAR(-796, 4) = operator new(0x00000018);
     if (STACKVAR(-796, 4) != 0x00000000)
     {
         reinterpret_cast<B_NamedObj *>(STACKVAR(-796, 4))->B_NamedObj();
@@ -30222,7 +30222,7 @@ l1003DC48:
     {
         goto l1003DE51;
     }
-    STACKVAR(-824, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(csvs, 16, 4)));
+    STACKVAR(-824, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(csvs, 16, 4)));
     STACKVAR(-816, 4) = STACKVAR(-824, 4);
     unsigned int unknown_loc_334 = 0;
     goto l1003DDFA;
@@ -30235,11 +30235,11 @@ l1003DDFA:
         goto l1003DDEB;
     }
     STACKVAR(-828, 4) = ACCESS(csvs, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-828, 4));
+    operator delete(STACKVAR(-828, 4));
     ACCESS(csvs, 4, 4) = STACKVAR(-816, 4);
     goto l1003DE75;
 l1003DE51:
-    STACKVAR(-832, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(csvs, 16, 4)));
+    STACKVAR(-832, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(csvs, 16, 4)));
     ACCESS(csvs, 4, 4) = STACKVAR(-832, 4);
 l1003DE75:
     ACCESS(ARRPTR(ACCESS(csvs, 4, 4), 4, ACCESS(csvs, 8, 4), 0), 0, 4) = STACKVAR(-792, 4);
@@ -30263,7 +30263,7 @@ p1003DED0
     reinterpret_cast<B_ElementCSV *>(this)->~B_ElementCSV();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30307,14 +30307,14 @@ l1003DF4E:
     }
 l1003DF8E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003DFC1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30358,14 +30358,14 @@ l1003E02E:
     }
 l1003E06E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003E0A1:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30409,14 +30409,14 @@ l1003E10E:
     }
 l1003E14E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003E181:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30460,14 +30460,14 @@ l1003E1EE:
     }
 l1003E22E:
     STACKVAR(-16, 4) = ACCESS(this, 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    operator delete(STACKVAR(-16, 4));
     ACCESS(this, 4, 4) = 0x00000000;
     ACCESS(this, 8, 4) = 0x00000000;
     ACCESS(this, 16, 4) = 0x00000000;
 l1003E261:
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -30948,7 +30948,7 @@ p1003EFD4
         REGDEF(eax=0x00000000)
         return;
     }
-    STACKVAR(-148, 4) = ??2@YAPAXI@Z(0x00000010);
+    STACKVAR(-148, 4) = operator new(0x00000010);
     if (STACKVAR(-148, 4) == 0x00000000)
     {
         goto l1003F201;
@@ -30967,7 +30967,7 @@ p1003EFD4
     {
         goto l1003F13A;
     }
-    STACKVAR(-164, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-164, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-156, 4) = STACKVAR(-164, 4);
     unsigned int unknown_loc_A0 = 0;
     goto l1003F0E4;
@@ -30980,11 +30980,11 @@ l1003F0E4:
         goto l1003F0D5;
     }
     STACKVAR(-168, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-168, 4));
+    operator delete(STACKVAR(-168, 4));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-156, 4);
     goto l1003F15D;
 l1003F13A:
-    STACKVAR(-172, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
+    STACKVAR(-172, 4) = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-172, 4);
 l1003F15D:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = STACKVAR(-148, 4);
@@ -30994,7 +30994,7 @@ l1003F180:
     ACCESS(STACKVAR(-148, 4), 8, 4) = STACKVAR(-180, 4);
     if (STACKVAR(-176, 4) != 0x00000000 && STACKVAR(-180, 4) != 0x00000000)
     {
-        STACKVAR(-152, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-148, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-148, 4), 8, 4)));
+        STACKVAR(-152, 4) = operator new(0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-148, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-148, 4), 8, 4)));
         ACCESS(STACKVAR(-148, 4), 12, 4) = STACKVAR(-152, 4);
     }
     else
@@ -31391,7 +31391,7 @@ p1003FDA8
     if (ACCESS(STACKVAR(-20, 4), 12, 4) != 0x00000000)
     {
         STACKVAR(-16, 4) = ACCESS(STACKVAR(-20, 4), 12, 4);
-        ??3@YAXPAX@Z(STACKVAR(-16, 4));
+        operator delete(STACKVAR(-16, 4));
         ACCESS(STACKVAR(-20, 4), 12, 4) = 0x00000000;
     }
     ACCESS(STACKVAR(-20, 4), 8, 4) = 0x00000000;
@@ -31959,7 +31959,7 @@ B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_ty
     unknown_loc_24->num_alloc = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
     if (unknown_loc_24->num_alloc != 0)
     {
-        STACKVAR(-28, 4) = ??2@YAPAXI@Z(8 * unknown_loc_24->num_alloc);
+        STACKVAR(-28, 4) = operator new(8 * unknown_loc_24->num_alloc);
         unknown_loc_24->elements = reinterpret_cast<TYPE *>(STACKVAR(-28, 4));
         if (unknown_loc_24->elements == nullptr)
         {
@@ -31988,7 +31988,7 @@ l100410FD:
     if (STACKVAR(-16, 4) != 0x00000000)
     {
         STACKVAR(-32, 4) = STACKVAR(-16, 4);
-        ??3@YAXPAX@Z(STACKVAR(-32, 4));
+        operator delete(STACKVAR(-32, 4));
     }
 l10041115:
     unknown_loc_24->size = unknown_loc_28;
@@ -32025,7 +32025,7 @@ B_ParticleGType::~B_ParticleGType()
     if (unknown_loc_08->num_alloc != 0 && unknown_loc_08->num_alloc != 0)
     {
         STACKVAR(-4, 4) = unknown_loc_08->elements;
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         unknown_loc_08->elements = nullptr;
         unknown_loc_08->size = 0;
         unknown_loc_08->num_alloc = 0;
@@ -32054,7 +32054,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     unknown_loc_2C->num_alloc = reinterpret_cast<unsigned int>(STACKVAR(-20, 4));
     if (unknown_loc_2C->num_alloc != 0)
     {
-        STACKVAR(-36, 4) = ??2@YAPAXI@Z(8 * unknown_loc_2C->num_alloc);
+        STACKVAR(-36, 4) = operator new(8 * unknown_loc_2C->num_alloc);
         unknown_loc_2C->elements = reinterpret_cast<TYPE *>(STACKVAR(-36, 4));
         if (unknown_loc_2C->elements == nullptr)
         {
@@ -32083,7 +32083,7 @@ l100413A1:
     if (STACKVAR(-24, 4) != 0x00000000)
     {
         STACKVAR(-40, 4) = STACKVAR(-24, 4);
-        ??3@YAXPAX@Z(STACKVAR(-40, 4));
+        operator delete(STACKVAR(-40, 4));
     }
 l100413B9:
     unknown_loc_2C->size = unknown_loc_30;
@@ -32114,14 +32114,14 @@ p100414A0
     if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
     {
         STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        operator delete(STACKVAR(-4, 4));
         ACCESS(this, 4, 4) = 0x00000000;
         ACCESS(this, 8, 4) = 0x00000000;
         ACCESS(this, 16, 4) = 0x00000000;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
@@ -32133,7 +32133,7 @@ p10041520
     reinterpret_cast<B_ParticleGType *>(this)->~B_ParticleGType();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        ??3@YAXPAX@Z(this);
+        operator delete(this);
     }
     REGDEF(eax=this)
 }
