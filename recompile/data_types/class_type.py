@@ -62,6 +62,11 @@ class ClassType(DataType):
         return size
 
     @property
+    def fields(self):
+        """Fields of the class without fields of parents by offset."""
+        return dict(self._fields)
+
+    @property
     def parent(self):
         return self._parent
 

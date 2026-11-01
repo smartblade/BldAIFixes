@@ -72,9 +72,6 @@ l004502FA:
 // address: 0x00450327
 B_OctantNode::B_OctantNode()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
-    gbl_node_count++;
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDCFC);
     for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < 8; unknown_loc_04++)
     {
         this->children[unknown_loc_04] = nullptr;
@@ -91,8 +88,6 @@ B_OctantNode::~B_OctantNode()
             delete this->children[unknown_loc_04];
         }
     }
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
-    gbl_node_count--;
 }
 
 // address: 0x00450407
@@ -104,17 +99,12 @@ int B_OctantNode::GetTypeID()
 // address: 0x00450417
 LeafNode::LeafNode()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
-    gbl_node_count++;
     this->sectors = nullptr;
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD1C);
 }
 
 // address: 0x00450450
 LeafNode::~LeafNode()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
-    gbl_node_count--;
 }
 
 // address: 0x0045047C
@@ -126,17 +116,6 @@ int LeafNode::GetTypeID()
 // address: 0x0045048C
 B_SectorListNode::B_SectorListNode()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
-    gbl_node_count++;
-    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(this) + 0x00000004;
-    ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000001;
-    ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 20, 4) = 0x00000001;
-    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x005BDB7C);
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD30);
-    ACCESS(this, 4, 4) = GLOBAL(0x005BDD2C);
 }
 
 // address: 0x0045050B

@@ -24,6 +24,8 @@ def discover_fields_destroying(procedure):
         field_type, field_name = field
         if not isinstance(field_type, data_types.ClassType):
             continue
+        if not instrs:
+            break
         last_instr = instrs[-1]
         if not is_destructor(proc_info, last_instr, field_type, field_name):
             break
