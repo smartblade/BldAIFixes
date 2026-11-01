@@ -12,6 +12,8 @@ class ClassType(DataType):
         self._parent = None
         self._fields_sorted = True
         self._sorted_offsets = None
+        # Type of the parameter of class template
+        self.template_param = None
 
     def __repr__(self):
         return "class {}".format(self._class_name)
@@ -22,6 +24,15 @@ class ClassType(DataType):
 
     def rename(self, new_name):
         return self.__class__(new_name, self._fields)
+
+    def instantiate(self, new_name, arg):
+        """Make class of template with parameter type substituted by arg."""
+        from data_types.substitute_type import substitute_type
+        fields = dict(
+            (offset, (substitute_type(t, self.template_param, arg), name))
+            for offset, (t, name) in self._fields.items()
+        )
+        return self.__class__(new_name, fields)
 
     @property
     def size(self):
