@@ -88,3 +88,25 @@ class TestInlinedBaseStructors(unittest.TestCase):
         ])
         self.assertEqual(2, len(instrs))
         self.assertEqual("countbody", instrs[1].expression.emit_code())
+
+    def test_destructor_with_labels(self):
+        instrs = _make(False, lambda this: [
+            _vtbl(this, 0x200), _count("body"),
+            instructions.Assignment(
+                expressions.intermediate.Access(this, 8, 4),
+                expressions.intermediate.Global(0x300)),
+            instructions.Goto("l1"),
+            instructions.LabeledBlock("l1", [
+                _vtbl(this, 0x100), _count("--"),
+            ]),
+        ])
+        self.assertEqual(2, len(instrs))
+        self.assertEqual("countbody", instrs[1].expression.emit_code())
+
+    def test_jump_into_base_destructor(self):
+        instrs = _make(False, lambda this: [
+            _vtbl(this, 0x200), instructions.Goto("l1"),
+            _vtbl(this, 0x100),
+            instructions.LabeledBlock("l1", [_count("--")]),
+        ])
+        self.assertEqual(4, len(instrs))

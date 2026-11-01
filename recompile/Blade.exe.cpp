@@ -118,62 +118,6 @@ B_SectorListNode::B_SectorListNode()
 // address: 0x0045050B
 B_SectorListNode::~B_SectorListNode()
 {
-    ACCESS(this, 4, 4) = GLOBAL(0x005BDD2C);
-    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(this) + 0x00000004;
-    if (ACCESS(STACKVAR(-20, 4), 16, 4) == 0x00000000)
-    {
-        goto l004505C9;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00450596;
-    }
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 8, 4)); unknown_loc_04++)
-    {
-        delete ACCESS(ARRPTR(ACCESS(STACKVAR(-20, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4);
-    }
-l00450596:
-    STACKVAR(-16, 4) = ACCESS(STACKVAR(-20, 4), 4, 4);
-    operator delete(STACKVAR(-16, 4));
-    ACCESS(STACKVAR(-20, 4), 4, 4) = 0x00000000;
-    ACCESS(STACKVAR(-20, 4), 8, 4) = 0x00000000;
-    ACCESS(STACKVAR(-20, 4), 16, 4) = 0x00000000;
-l004505C9:
-    if (this != nullptr)
-    {
-        STACKVAR(-44, 4) = reinterpret_cast<any_int32>(this) + 0x00000004;
-    }
-    else
-    {
-        STACKVAR(-44, 4) = 0x00000000;
-    }
-    ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x005BDB7C);
-    if (ACCESS(STACKVAR(-44, 4), 16, 4) == 0x00000000)
-    {
-        goto l00450699;
-    }
-    STACKVAR(-40, 4) = ACCESS(STACKVAR(-44, 4), 20, 4);
-    if (ACCESS(STACKVAR(-44, 4), 16, 4) == 0x00000000)
-    {
-        goto l00450699;
-    }
-    if (STACKVAR(-40, 4) == 0x00000000)
-    {
-        goto l00450666;
-    }
-    for (unsigned int unknown_loc_18 = 0; unknown_loc_18 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)); unknown_loc_18++)
-    {
-        delete ACCESS(ARRPTR(ACCESS(STACKVAR(-44, 4), 4, 4), 4, unknown_loc_18, 0), 0, 4);
-    }
-l00450666:
-    STACKVAR(-36, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
-    operator delete(STACKVAR(-36, 4));
-    ACCESS(STACKVAR(-44, 4), 4, 4) = 0x00000000;
-    ACCESS(STACKVAR(-44, 4), 8, 4) = 0x00000000;
-    ACCESS(STACKVAR(-44, 4), 16, 4) = 0x00000000;
-l00450699:
-    ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
-    gbl_node_count--;
 }
 
 // address: 0x004506B5
