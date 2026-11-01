@@ -3147,28 +3147,10 @@ p1000665F
 }
 
 // address: 0x10006680
-p10006680
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    this->unknown_method_100043CB();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10006680: scalar deleting destructor
 
 // address: 0x100066B0
-p100066B0
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    this->unknown_method_1000470A();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p100066B0: scalar deleting destructor
 
 // address: 0x100066E0
 B_Resource::B_Resource(const B_Resource &that)
@@ -3356,17 +3338,7 @@ B_BitMap &B_BitMap::operator =(const B_BitMap &that)
 }
 
 // address: 0x10006C70
-p10006C70
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    reinterpret_cast<B_BitMap *>(reinterpret_cast<any_int32>(this) + 0x0000000C)->~B_BitMap();
-    reinterpret_cast<B_Resource *>(this)->~B_Resource();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10006C70: scalar deleting destructor
 
 // address: 0x10006CB0
 B_BitMap24::B_BitMap24(int width, int height)
@@ -26802,60 +26774,13 @@ p10039670
 }
 
 // address: 0x10039750
-p10039750
-{
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=4)
-    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(this) + 0x00000090;
-    ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042D9C);
-    if (ACCESS(STACKVAR(-8, 4), 16, 4) != 0x00000000 && ACCESS(STACKVAR(-8, 4), 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(STACKVAR(-8, 4), 4, 4) = 0x00000000;
-        ACCESS(STACKVAR(-8, 4), 8, 4) = 0x00000000;
-        ACCESS(STACKVAR(-8, 4), 16, 4) = 0x00000000;
-    }
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039750: scalar deleting destructor
 
 // address: 0x100397F0
-p100397F0
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p100397F0: scalar deleting destructor
 
 // address: 0x10039830
-p10039830
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042D9C);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039830: scalar deleting destructor
 
 // address: 0x100398B0
 p100398B0
@@ -26893,116 +26818,22 @@ l1003992C:
 }
 
 // address: 0x10039960
-p10039960
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    reinterpret_cast<B_ObjDscr *>(this)->~B_ObjDscr();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039960: scalar deleting destructor
 
 // address: 0x10039990
-p10039990
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DE0);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039990: scalar deleting destructor
 
 // address: 0x10039A10
-p10039A10
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DD8);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039A10: scalar deleting destructor
 
 // address: 0x10039A90
-p10039A90
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DEC);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039A90: scalar deleting destructor
 
 // address: 0x10039B10
-p10039B10
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DF0);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039B10: scalar deleting destructor
 
 // address: 0x10039B90
-p10039B90
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DF4);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039B90: scalar deleting destructor
 
 // address: 0x10039C10
 p10039C10
@@ -27075,95 +26906,10 @@ p10039C10
 }
 
 // address: 0x10039D30
-p10039D30
-{
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=4)
-    if (ACCESS(this, 4, 4) != 0x00000000)
-    {
-        STACKVAR(-8, 4) = ACCESS(this, 4, 4);
-        STACKVAR(-4, 4) = STACKVAR(-8, 4);
-        if (STACKVAR(-4, 4) != 0x00000000)
-        {
-            STACKVAR(-16, 4) = STACKVAR(-4, 4)->unknown_method_10039D30(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-16, 4) = 0x00000000;
-        }
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039D30: scalar deleting destructor
 
 // address: 0x10039D90
-p10039D90
-{
-    ProcedureInfo(this=Id(this), this_offset=-36, local_size=52, stack_delta=4)
-    if (ACCESS(this, 12, 4) != 0x00000000)
-    {
-        STACKVAR(-8, 4) = ACCESS(this, 12, 4);
-        STACKVAR(-4, 4) = STACKVAR(-8, 4);
-        if (STACKVAR(-4, 4) != 0x00000000)
-        {
-            STACKVAR(-40, 4) = STACKVAR(-4, 4)->unknown_method_10039D90(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-40, 4) = 0x00000000;
-        }
-    }
-    if (ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-16, 4) = ACCESS(this, 16, 4);
-        STACKVAR(-12, 4) = STACKVAR(-16, 4);
-        if (STACKVAR(-12, 4) != 0x00000000)
-        {
-            STACKVAR(-44, 4) = STACKVAR(-12, 4)->unknown_method_10039D90(0x00000001);
-        }
-        else
-        {
-            STACKVAR(-44, 4) = 0x00000000;
-        }
-    }
-    if (ACCESS(this, 20, 4) != 0x00000000)
-    {
-        __deleting_obj_copy = reinterpret_cast<void *>(ACCESS(this, 20, 4));
-        __deleting_obj = __deleting_obj_copy;
-        if (__deleting_obj != nullptr)
-        {
-            if (ACCESS(__deleting_obj, 4, 4) != 0x00000000)
-            {
-                STACKVAR(-32, 4) = ACCESS(__deleting_obj, 4, 4);
-                STACKVAR(-28, 4) = STACKVAR(-32, 4);
-                if (STACKVAR(-28, 4) != 0x00000000)
-                {
-                    STACKVAR(-48, 4) = STACKVAR(-28, 4)->unknown_method_10039D30(0x00000001);
-                }
-                else
-                {
-                    STACKVAR(-48, 4) = 0x00000000;
-                }
-            }
-            if ((0x00000001 & 0x00000001) != 0x00000000)
-            {
-                operator delete(__deleting_obj);
-            }
-            __deleting_result = __deleting_obj;
-        }
-        else
-        {
-            __deleting_result = nullptr;
-        }
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10039D90: scalar deleting destructor
 
 // address: 0x10039EA0
 p10039EA0
@@ -27443,24 +27189,7 @@ l1003A4CB:
 }
 
 // address: 0x1003A4E0
-p1003A4E0
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042D9C);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003A4E0: scalar deleting destructor
 
 // address: 0x1003A560
 p1003A560
@@ -27549,44 +27278,10 @@ l1003A6D6:
 }
 
 // address: 0x1003A700
-p1003A700
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DE0);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003A700: scalar deleting destructor
 
 // address: 0x1003A780
-p1003A780
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DD8);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003A780: scalar deleting destructor
 
 // address: 0x1003A800
 p1003A800
@@ -27691,44 +27386,10 @@ l1003A9A1:
 }
 
 // address: 0x1003A9C0
-p1003A9C0
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DEC);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003A9C0: scalar deleting destructor
 
 // address: 0x1003AA40
-p1003AA40
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DF0);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003AA40: scalar deleting destructor
 
 // address: 0x1003AAC0
 p1003AAC0
@@ -27833,24 +27494,7 @@ l1003AC61:
 }
 
 // address: 0x1003AC80
-p1003AC80
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DF4);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003AC80: scalar deleting destructor
 
 // address: 0x1003AD00
 p1003AD00
@@ -28382,52 +28026,10 @@ l1003B651:
 }
 
 // address: 0x1003B670
-p1003B670
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042D68);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003B670: scalar deleting destructor
 
 // address: 0x1003B6F0
-p1003B6F0
-{
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042D78);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-8, 4) = ACCESS(this, 4, 4);
-        STACKVAR(-4, 4) = STACKVAR(-8, 4);
-        if (STACKVAR(-4, 4) != 0x00000000)
-        {
-            STACKVAR(-16, 4) = STACKVAR(-4, 4)->(ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 0, 4))(0x00000003);
-        }
-        else
-        {
-            STACKVAR(-16, 4) = 0x00000000;
-        }
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003B6F0: scalar deleting destructor
 
 // address: 0x1003B780
 p1003B780
@@ -28439,24 +28041,7 @@ p1003B780
 }
 
 // address: 0x1003B7C0
-p1003B7C0
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042D7C);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003B7C0: scalar deleting destructor
 
 // address: 0x1003B840
 p1003B840
@@ -30000,43 +29585,13 @@ p1003D7F0
 }
 
 // address: 0x1003D890
-p1003D890
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003D890: scalar deleting destructor
 
 // address: 0x1003D8D0
-p1003D8D0
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003D8D0: scalar deleting destructor
 
 // address: 0x1003D910
-p1003D910
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003D910: scalar deleting destructor
 
 // address: 0x1003D950
 p1003D950
@@ -30257,16 +29812,7 @@ l1003DEB1:
 }
 
 // address: 0x1003DED0
-p1003DED0
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    reinterpret_cast<B_ElementCSV *>(this)->~B_ElementCSV();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p1003DED0: scalar deleting destructor
 
 // address: 0x1003DF00
 p1003DF00
@@ -32107,36 +31653,10 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)
 }
 
 // address: 0x100414A0
-p100414A0
-{
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=4)
-    ACCESS(this, 0, 4) = GLOBAL(0x10042E68);
-    if (ACCESS(this, 16, 4) != 0x00000000 && ACCESS(this, 16, 4) != 0x00000000)
-    {
-        STACKVAR(-4, 4) = ACCESS(this, 4, 4);
-        operator delete(STACKVAR(-4, 4));
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 16, 4) = 0x00000000;
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p100414A0: scalar deleting destructor
 
 // address: 0x10041520
-p10041520
-{
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    reinterpret_cast<B_ParticleGType *>(this)->~B_ParticleGType();
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
-    {
-        operator delete(this);
-    }
-    REGDEF(eax=this)
-}
+// p10041520: scalar deleting destructor
 
 // address: 0x100415A8
 p100415A8
