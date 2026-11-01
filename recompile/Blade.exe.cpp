@@ -10,9 +10,10 @@ B_Sphere::B_Sphere()
 
 // address: 0x004015C5
 B_BoundingBox::B_BoundingBox(const B_Vector &minCoords, const B_Vector &maxCoords)
+:
+    minCoords(minCoords),
+    maxCoords(maxCoords)
 {
-    memcpy(this, &minCoords, 24);
-    memcpy(&this->maxCoords, &maxCoords, 24);
 }
 
 // address: 0x0040A5D0

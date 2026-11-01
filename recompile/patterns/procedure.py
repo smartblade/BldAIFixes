@@ -142,7 +142,11 @@ def _make_init_call(instr, proc_info):
     if isinstance(instr, instructions.Assignment):
         field_access = instr.dst
         assert isinstance(field_access, expressions.FieldAccess)
-        assert not isinstance(field_access.data_type, data_types.ClassType)
+        # Fields of class types are copied only from objects of the class
+        assert (
+            not isinstance(field_access.data_type, data_types.ClassType) or
+            data_types.are_same(field_access.data_type, instr.src.data_type)
+        )
         assert proc_info.is_this_expression(field_access.expression)
         name = field_access.field_name
         return expressions.ProcedureCall(
