@@ -8,6 +8,13 @@ class LocalsAnalysis:
         self._types_by_offset = {}
         self._compared_types_by_offset = {}
         self._local_pointees_sizes = {}
+        # Uses of locals in the current transformation pass by offset:
+        # [number of uses, number of typed uses, start, end of accessed data]
+        self._local_uses = {}
+        # Extents of locals used only by typed accesses in the last pass
+        self._local_extents = {}
+        # Sizes of stack accesses in instructions by offset
+        self._stackvar_sizes = {}
 
     def process_assignment(self, dst, src):
         if not isinstance(dst, expressions.intermediate.Stackvar):
@@ -15,7 +22,25 @@ class LocalsAnalysis:
         assert dst.size == src.data_type.size
         self._update_type(dst.offset, src.data_type)
 
+    def on_transformation_finished(self):
+        self._local_extents = dict(
+            (offset, (offset + start, offset + end))
+            for offset, (uses, typed_uses, start, end)
+            in self._local_uses.items()
+            if uses == typed_uses
+        )
+        self._local_uses = {}
+
+    def _process_typed_local_use(self, local, start, end):
+        uses = self._local_uses.setdefault(local.offset, [0, 0, 0, 0])
+        uses[1] += 1
+        uses[2] = min(uses[2], start)
+        uses[3] = max(uses[3], end)
+
     def process_access(self, expression, offset, size):
+        if isinstance(expression, expressions.intermediate.Local):
+            self._process_typed_local_use(expression, offset, offset + size)
+            return
         if not isinstance(expression, expressions.intermediate.Stackvar):
             return
         if expression.offset not in self._types_by_offset:
@@ -63,12 +88,32 @@ class LocalsAnalysis:
             self._compared_types_by_offset[stackvar.offset] = None
 
     def process_reinterpret(self, data_type, expression):
+        if isinstance(expression, expressions.intermediate.Local):
+            if (
+                isinstance(data_type, data_types.Pointer32) and
+                data_type.pointee is not None
+            ):
+                self._process_typed_local_use(
+                    expression, 0, data_type.pointee.size)
+            return
         if not isinstance(expression, expressions.intermediate.Stackvar):
             return
         assert expression.size == data_type.size
         self._update_type(expression.offset, data_type)
 
+    def collect_stack_accesses(self, instrs):
+        """Collect stack accesses remaining in instructions."""
+        self._stackvar_sizes = {}
+
+        def on_visit(e, **kwargs):
+            if isinstance(e, expressions.intermediate.Stackvar):
+                self._stackvar_sizes.setdefault(e.offset, set()).add(e.size)
+
+        for instr in instrs:
+            instr.visit(on_visit)
+
     def process_local(self, local):
+        self._local_uses.setdefault(local.offset, [0, 0, 0, 0])[0] += 1
         if local not in self._local_pointees_sizes:
             self._local_pointees_sizes[local] = None
 
@@ -85,10 +130,13 @@ class LocalsAnalysis:
                 self._local_pointees_sizes[argument] = pointee_size
             assert self._local_pointees_sizes[argument] == pointee_size
 
-    def _get_min_local_ptr_offset(self):
+    def _get_min_local_ptr_offset(self, ignore_extents=False):
         min_local_ptr_offset = 0
         for local, size in self._local_pointees_sizes.items():
             if size == 1:
+                continue
+            # Locals with known extents don't hide variables above them
+            if not ignore_extents and local.offset in self._local_extents:
                 continue
             if local.offset < min_local_ptr_offset:
                 min_local_ptr_offset = local.offset
@@ -96,12 +144,22 @@ class LocalsAnalysis:
 
     def fill_stack_variables(self, stack_vars, variable_names):
         min_local_ptr_offset = self._get_min_local_ptr_offset()
+        # Variables hidden by locals with unknown extents before
+        min_any_local_ptr_offset = self._get_min_local_ptr_offset(
+            ignore_extents=True)
         for offset, data_type in self._types_by_offset.items():
             if data_type is None:
                 continue
             if offset in stack_vars:
                 continue
             if offset >= min_local_ptr_offset:
+                continue
+            if self._overlaps_local(offset, data_type):
+                continue
+            if (
+                offset >= min_any_local_ptr_offset and
+                self._overlaps_stackvars(offset, data_type)
+            ):
                 continue
             assert offset < 0
             name = variable_names.get(offset)
@@ -114,6 +172,26 @@ class LocalsAnalysis:
             if not _is_acceptable_type(data_type):
                 continue
             stack_vars[offset] = expressions.Identifier(data_type, name)
+
+    def _overlaps_stackvars(self, offset, data_type):
+        size = data_type.size
+        for other_offset, sizes in self._stackvar_sizes.items():
+            for other_size in sizes:
+                if other_offset == offset and other_size == size:
+                    continue
+                if (
+                    other_offset < offset + size and
+                    offset < other_offset + other_size
+                ):
+                    return True
+        return False
+
+    def _overlaps_local(self, offset, data_type):
+        size = data_type.size if data_type is not None else 1
+        return any(
+            start < offset + size and offset < end
+            for start, end in self._local_extents.values()
+        )
 
     def _update_type(self, offset, data_type):
         if offset >= 0:

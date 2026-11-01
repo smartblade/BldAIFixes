@@ -1,4 +1,5 @@
 from custom_block_transformer import transform_block
+from block_visitor import visit_block
 
 
 class WhileInstruction:
@@ -16,6 +17,10 @@ class WhileInstruction:
     @property
     def block(self):
         return self._block
+
+    def visit(self, on_expression_visited, **kwargs):
+        self._clause.visit(on_expression_visited, **kwargs)
+        visit_block(self._block, on_expression_visited, **kwargs)
 
     def transform(self, transformer, **kwargs):
         clause = self._clause.transform(transformer, **kwargs)
