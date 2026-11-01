@@ -58,11 +58,11 @@ void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &secto
         }
         STACKVAR(-28, 4) = outBuffer.elements;
         shi_delete(STACKVAR(-28, 4));
-        outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-16, 4));
+        outBuffer.elements = reinterpret_cast<B_Sector **>(STACKVAR(-16, 4));
         goto l004502FA;
 l004502DC:
         STACKVAR(-32, 4) = shi_new(4 * outBuffer.num_alloc);
-        outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-32, 4));
+        outBuffer.elements = reinterpret_cast<B_Sector **>(STACKVAR(-32, 4));
 l004502FA:
         ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
         outBuffer.size++;

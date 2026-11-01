@@ -63,6 +63,8 @@ class HeaderState:
         self._external_procedures = external_procedures
         self._constants = Constants()
         self._visited = False
+        # Parameter of template of the next class
+        self._template_param = None
 
     @property
     def constants(self):
@@ -118,6 +120,10 @@ class HeaderState:
                     parent = self._declared_types[parent_name]
                     class_type.set_parent(parent)
                     parent_size = parent.size
+                if not is_forward:
+                    class_type = self._declared_types[class_name]
+                    class_type.template_param = self._template_param
+                self._template_param = None
                 if is_forward:
                     fields = None
                 definition_chars = []
@@ -222,6 +228,7 @@ class HeaderState:
             return line
         arg_class = match.group("class")
         self._declared_types[arg_class] = data_types.ClassType(arg_class, {})
+        self._template_param = self._declared_types[arg_class]
         return re.sub(template_regexp, "", line).strip()
 
     def _try_parse_external_procedures(self, line):

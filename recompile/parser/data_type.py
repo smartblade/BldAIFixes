@@ -81,6 +81,7 @@ def _parse_template(s, classes):
         template_arg_name = template_arg.get_type_name()
     else:
         template_arg_name = "void"
-    return template_type.rename(
-        "{}<{}>".format(template_type.class_name, template_arg_name)
-    )
+    new_name = "{}<{}>".format(template_type.class_name, template_arg_name)
+    if template_type.template_param is not None and template_arg is not None:
+        return template_type.instantiate(new_name, template_arg)
+    return template_type.rename(new_name)

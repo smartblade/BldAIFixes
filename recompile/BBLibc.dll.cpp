@@ -28030,7 +28030,7 @@ B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_ty
     if (unknown_loc_24->num_alloc != 0)
     {
         STACKVAR(-28, 4) = ??2@YAPAXI@Z(8 * unknown_loc_24->num_alloc);
-        unknown_loc_24->elements = reinterpret_cast<TYPE *>(STACKVAR(-28, 4));
+        unknown_loc_24->elements = reinterpret_cast<B_ParticleElement *>(STACKVAR(-28, 4));
         if (unknown_loc_24->elements == nullptr)
         {
             unknown_loc_24->elements = unknown_loc_24->elements;
@@ -28114,7 +28114,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     if (unknown_loc_2C->num_alloc != 0)
     {
         STACKVAR(-36, 4) = ??2@YAPAXI@Z(8 * unknown_loc_2C->num_alloc);
-        unknown_loc_2C->elements = reinterpret_cast<TYPE *>(STACKVAR(-36, 4));
+        unknown_loc_2C->elements = reinterpret_cast<B_ParticleElement *>(STACKVAR(-36, 4));
         if (unknown_loc_2C->elements == nullptr)
         {
             unknown_loc_2C->elements = unknown_loc_2C->elements;
