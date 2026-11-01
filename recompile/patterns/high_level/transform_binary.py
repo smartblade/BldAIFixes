@@ -81,10 +81,27 @@ def _transform_pointer_index(e, index):
 
 
 def _transform_array_pointer_offset(bin_left, bin_right, right):
+    e = _transform_field_element_offset(bin_left, bin_right, right)
+    if e is not None:
+        return e
     e = _transform_const_pointer_offset(bin_left, right)
     if e is None:
         return None
     return transform_arrptr(e, 1, bin_right, 0)
+
+
+def _transform_field_element_offset(bin_left, bin_right, right):
+    """Transform '(int)p + 8 * i + offset' to address of element of field."""
+    if not isinstance(bin_left, expressions.ReinterpretCast):
+        return None
+    ptr = bin_left.expression
+    if not isinstance(ptr.data_type, data_types.Pointer32):
+        return None
+    if not isinstance(ptr.data_type.pointee, data_types.ClassType):
+        return None
+    if not isinstance(right.value, int):
+        return None
+    return transform_arrptr(ptr, 1, bin_right, right.value)
 
 
 def _convert_constants(operator, left, right):
