@@ -23113,8 +23113,7 @@ l1002F0BB:
     STACKVAR(-80, 8) = ACCESS(this, 112, 8);
     STACKVAR(-72, 8) = ACCESS(this, 104, 8);
     STACKVAR(-64, 8) = ACCESS(this, 96, 8);
-    STACKVAR(-28, 4) = STACKVAR(-64, 4);
-    STACKVAR(-24, 4) = STACKVAR(-60, 4);
+    STACKVAR(-28, 8) = STACKVAR(-64, 8);
     ACCESS(LOCAL(-20), 0, 8) = STACKVAR(-72, 8);
     ACCESS(LOCAL(-12), 0, 8) = STACKVAR(-80, 8);
     memcpy(LOCAL(-28), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-56), LOCAL(-28), STACKVAR(8, 4))), 24);
@@ -23141,8 +23140,7 @@ p1002F159
     STACKVAR(-208, 8) = ACCESS(this, 112, 8);
     STACKVAR(-200, 8) = ACCESS(this, 104, 8);
     STACKVAR(-192, 8) = ACCESS(this, 96, 8);
-    STACKVAR(-152, 4) = STACKVAR(-192, 4);
-    STACKVAR(-148, 4) = STACKVAR(-188, 4);
+    STACKVAR(-152, 8) = STACKVAR(-192, 8);
     ACCESS(LOCAL(-144), 0, 8) = STACKVAR(-200, 8);
     ACCESS(LOCAL(-136), 0, 8) = STACKVAR(-208, 8);
     memcpy(LOCAL(-152), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-184), LOCAL(-152), LOCAL(-128))), 24);
@@ -24911,61 +24909,51 @@ l10035134:
         memcpy(LOCAL(-544), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), 24);
         if (reinterpret_cast<double>(STACKVAR(-260, 8)) > reinterpret_cast<double>(STACKVAR(-544, 8)))
         {
-            STACKVAR(-1048, 4) = STACKVAR(-260, 4);
-            STACKVAR(-1044, 4) = STACKVAR(-256, 4);
+            STACKVAR(-1048, 8) = STACKVAR(-260, 8);
         }
         else
         {
-            STACKVAR(-1048, 4) = STACKVAR(-544, 4);
-            STACKVAR(-1044, 4) = STACKVAR(-540, 4);
+            STACKVAR(-1048, 8) = STACKVAR(-544, 8);
         }
         STACKVAR(-260, 4) = STACKVAR(-1048, 4);
         STACKVAR(-256, 4) = STACKVAR(-1044, 4);
         if (reinterpret_cast<double>(STACKVAR(-212, 8)) > reinterpret_cast<double>(STACKVAR(-536, 8)))
         {
-            STACKVAR(-1056, 4) = STACKVAR(-212, 4);
-            STACKVAR(-1052, 4) = STACKVAR(-208, 4);
+            STACKVAR(-1056, 8) = STACKVAR(-212, 8);
         }
         else
         {
-            STACKVAR(-1056, 4) = STACKVAR(-536, 4);
-            STACKVAR(-1052, 4) = STACKVAR(-532, 4);
+            STACKVAR(-1056, 8) = STACKVAR(-536, 8);
         }
         STACKVAR(-212, 4) = STACKVAR(-1056, 4);
         STACKVAR(-208, 4) = STACKVAR(-1052, 4);
         if (reinterpret_cast<double>(STACKVAR(-244, 8)) < reinterpret_cast<double>(STACKVAR(-544, 8)))
         {
-            STACKVAR(-1064, 4) = STACKVAR(-244, 4);
-            STACKVAR(-1060, 4) = STACKVAR(-240, 4);
+            STACKVAR(-1064, 8) = STACKVAR(-244, 8);
         }
         else
         {
-            STACKVAR(-1064, 4) = STACKVAR(-544, 4);
-            STACKVAR(-1060, 4) = STACKVAR(-540, 4);
+            STACKVAR(-1064, 8) = STACKVAR(-544, 8);
         }
         STACKVAR(-244, 4) = STACKVAR(-1064, 4);
         STACKVAR(-240, 4) = STACKVAR(-1060, 4);
         if (reinterpret_cast<double>(STACKVAR(-252, 8)) < reinterpret_cast<double>(STACKVAR(-536, 8)))
         {
-            STACKVAR(-1072, 4) = STACKVAR(-252, 4);
-            STACKVAR(-1068, 4) = STACKVAR(-248, 4);
+            STACKVAR(-1072, 8) = STACKVAR(-252, 8);
         }
         else
         {
-            STACKVAR(-1072, 4) = STACKVAR(-536, 4);
-            STACKVAR(-1068, 4) = STACKVAR(-532, 4);
+            STACKVAR(-1072, 8) = STACKVAR(-536, 8);
         }
         STACKVAR(-252, 4) = STACKVAR(-1072, 4);
         STACKVAR(-248, 4) = STACKVAR(-1068, 4);
         if (reinterpret_cast<double>(STACKVAR(-204, 8)) < reinterpret_cast<double>(STACKVAR(-528, 8)))
         {
-            STACKVAR(-1080, 4) = STACKVAR(-204, 4);
-            STACKVAR(-1076, 4) = STACKVAR(-200, 4);
+            STACKVAR(-1080, 8) = STACKVAR(-204, 8);
         }
         else
         {
-            STACKVAR(-1080, 4) = STACKVAR(-528, 4);
-            STACKVAR(-1076, 4) = STACKVAR(-524, 4);
+            STACKVAR(-1080, 8) = STACKVAR(-528, 8);
         }
         STACKVAR(-204, 4) = STACKVAR(-1080, 4);
         STACKVAR(-200, 4) = STACKVAR(-1076, 4);
@@ -24981,8 +24969,7 @@ l10035134:
         {
             STACKVAR(-1088, 8) = (y2 - y1) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8)));
         }
-        STACKVAR(-40, 4) = STACKVAR(-1088, 4);
-        STACKVAR(-36, 4) = STACKVAR(-1084, 4);
+        STACKVAR(-40, 8) = STACKVAR(-1088, 8);
     }
     else
     {
