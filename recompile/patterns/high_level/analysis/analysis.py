@@ -28,6 +28,7 @@ class Analysis:
 
     def process_stackvar(self, *args, **kwargs):
         self._conditional_operator_analysis.process_stackvar(*args, **kwargs)
+        self._locals_analysis.process_stackvar(*args, **kwargs)
 
     def process_arguments(self, *args, **kwargs):
         self._locals_analysis.process_arguments(*args, **kwargs)

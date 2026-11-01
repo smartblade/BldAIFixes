@@ -19,12 +19,12 @@ B_BoundingBox::B_BoundingBox(const B_Vector &minCoords, const B_Vector &maxCoord
 // address: 0x0040A5D0
 B_Vector B_Vector::operator -(const B_Vector &that) const
 {
-    STACKVAR(-24, 8) = this->z - that.z;
-    STACKVAR(-16, 8) = this->y - that.y;
-    STACKVAR(-8, 8) = this->x - that.x;
-    __result->x = reinterpret_cast<double>(STACKVAR(-8, 8));
-    __result->y = reinterpret_cast<double>(STACKVAR(-16, 8));
-    __result->z = reinterpret_cast<double>(STACKVAR(-24, 8));
+    double unknown_loc_18 = this->z - that.z;
+    double unknown_loc_10 = this->y - that.y;
+    double unknown_loc_08 = this->x - that.x;
+    __result->x = unknown_loc_08;
+    __result->y = unknown_loc_10;
+    __result->z = unknown_loc_18;
     REGDEF(eax=__result)
 }
 
@@ -523,12 +523,12 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
         for (unknown_loc_14 = 0; unknown_loc_14 < unknown_loc_10->size; unknown_loc_14++)
         {
             STACKVAR(-24, 4) = ACCESS(ARRPTR(unknown_loc_10->elements, 4, unknown_loc_14, 0), 0, 4);
-            STACKVAR(-8, 8) = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
-            if (-sphere->radius > reinterpret_cast<double>(STACKVAR(-8, 8)))
+            double unknown_loc_08 = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
+            if (-sphere->radius > unknown_loc_08)
             {
                 unknown_loc_14 = unknown_loc_10->size + 1;
             }
-            else if (reinterpret_cast<double>(STACKVAR(-8, 8)) < sphere->radius)
+            else if (unknown_loc_08 < sphere->radius)
             {
                 STACKVAR(-28, 4) = ACCESS(ARRPTR(unknown_loc_10->elements, 4, unknown_loc_14, 0), 0, 4);
                 ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4), 12), 0, 4) = STACKVAR(-28, 4);
