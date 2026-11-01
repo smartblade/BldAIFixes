@@ -59,6 +59,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(instrs, **context)
+    analysis.collect_stack_accesses(instrs)
     analysis.fill_stack_variables(
         stack_vars, characteristics.variables_names)
     instrs = _transform_instructions(instrs, **context)
