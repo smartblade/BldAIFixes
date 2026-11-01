@@ -33,15 +33,15 @@ void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &secto
 {
     for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < sectors.size; unknown_loc_04++)
     {
-        B_Sector *unknown_loc_08 = reinterpret_cast<B_Sector *>(ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4));
+        B_Sector *unknown_loc_08 = sectors.elements[unknown_loc_04];
         if (this->Intersects(unknown_loc_08) == 0)
         {
             continue;
         }
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4);
+        B_Sector *unknown_loc_0C = sectors.elements[unknown_loc_04];
         if (outBuffer.num_alloc > outBuffer.size)
         {
-            ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
+            outBuffer.elements[outBuffer.size] = unknown_loc_0C;
             outBuffer.size++;
             continue;
         }
@@ -54,7 +54,7 @@ void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &secto
         STACKVAR(-16, 4) = STACKVAR(-24, 4);
         for (unsigned int unknown_loc_14 = 0; unknown_loc_14 < outBuffer.size; unknown_loc_14++)
         {
-            ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = ACCESS(ARRPTR(outBuffer.elements, 4, unknown_loc_14, 0), 0, 4);
+            ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = outBuffer.elements[unknown_loc_14];
         }
         STACKVAR(-28, 4) = outBuffer.elements;
         shi_delete(STACKVAR(-28, 4));
@@ -64,7 +64,7 @@ l004502DC:
         STACKVAR(-32, 4) = shi_new(4 * outBuffer.num_alloc);
         outBuffer.elements = reinterpret_cast<B_Sector **>(STACKVAR(-32, 4));
 l004502FA:
-        ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
+        outBuffer.elements[outBuffer.size] = unknown_loc_0C;
         outBuffer.size++;
     }
 }
@@ -559,7 +559,7 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
         unsigned int unknown_loc_14;
         for (unknown_loc_14 = 0; unknown_loc_14 < unknown_loc_10->size; unknown_loc_14++)
         {
-            STACKVAR(-24, 4) = ACCESS(ARRPTR(unknown_loc_10->elements, 4, unknown_loc_14, 0), 0, 4);
+            STACKVAR(-24, 4) = unknown_loc_10->elements[unknown_loc_14];
             double unknown_loc_08 = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
             if (-sphere->radius > unknown_loc_08)
             {
@@ -567,7 +567,7 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
             }
             else if (unknown_loc_08 < sphere->radius)
             {
-                STACKVAR(-28, 4) = ACCESS(ARRPTR(unknown_loc_10->elements, 4, unknown_loc_14, 0), 0, 4);
+                STACKVAR(-28, 4) = unknown_loc_10->elements[unknown_loc_14];
                 ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, cache->elements[cache->count].numSurfaces, 12), 0, 4) = STACKVAR(-28, 4);
                 cache->elements[cache->count].numSurfaces++;
             }

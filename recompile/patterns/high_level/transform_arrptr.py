@@ -9,6 +9,9 @@ def transform_arrptr(base, scale, index, offset, **kwargs):
         base, *_extract_scale(scale, index), offset)
     if e is not None:
         return e
+    e = _transform_pointer_element(base, scale, index, offset)
+    if e is not None:
+        return e
     if scale != 1:
         return None
     if offset < 0:
@@ -61,6 +64,22 @@ def _transform_field_array_element(base, scale, index, offset):
     if e is None:
         return None
     return expressions.AddressOf(e)
+
+
+def _transform_pointer_element(base, scale, index, offset):
+    """Transform address of element pointed by pointer: &base[index]."""
+    if offset != 0 or scale == 1:
+        return None
+    if not isinstance(base.data_type, data_types.Pointer32):
+        return None
+    pointee = base.data_type.pointee
+    if pointee is None or pointee.size != scale:
+        return None
+    if isinstance(pointee, data_types.UnknownTypes + (
+        data_types.ClassType, data_types.Array
+    )):
+        return None
+    return expressions.AddressOf(expressions.ArrayAccess(base, index))
 
 
 def _extract_scale(scale, index):

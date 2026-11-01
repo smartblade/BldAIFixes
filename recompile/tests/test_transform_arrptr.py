@@ -42,3 +42,11 @@ class TestTransformArrptr(unittest.TestCase):
             i32_id("i"))
         e = transform_arrptr(base, 1, index, 8)
         self.assertEqual("&cache->items[i].b", e.emit_code())
+
+    def test_element_pointed_by_pointer(self):
+        base = expressions.Identifier(
+            data_types.Pointer32(data_types.Pointer32(data_types.Int32())),
+            "elements")
+        e = transform_arrptr(base, 4, i32_id("i"), 0)
+        self.assertEqual("&elements[i]", e.emit_code())
+        self.assertIsNone(transform_arrptr(base, 8, i32_id("i"), 0))
