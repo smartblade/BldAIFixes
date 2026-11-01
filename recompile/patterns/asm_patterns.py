@@ -6,6 +6,7 @@ from get_procedure_declaration_at import has_src_declaration
 from hex_conversion import from_hex, to_hex
 from make_tuple import add_attributes
 from patterns.apply_pattern import apply_pattern
+from patterns.annotate_import_jumps import annotate_import_jumps
 from patterns.collect_string_constants import collect_string_constants
 from patterns.asm_parser import parse_asm_lines
 from patterns.high_level import make_high_level_code
@@ -28,6 +29,7 @@ def process_asm_patterns(lines, declarations):
     smallest_failed_proc_exc = None
     smallest_failed_proc_addr = None
     standard_inlines = {}
+    lines = annotate_import_jumps(lines)
     string_constants = collect_string_constants(lines)
     declarations = add_attributes(
         declarations, string_constants=string_constants)
