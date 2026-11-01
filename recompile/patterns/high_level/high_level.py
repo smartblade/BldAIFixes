@@ -25,6 +25,7 @@ from .transform_stackvar import transform_stackvar
 from .transform_switch import transform_switch
 from .transform_procedure_call import transform_procedure_call
 from .transform_reinterpret import transform_reinterpret
+from .merge_split_copies import merge_split_copies
 from .transform_for_loops import transform_for_loops
 from .transform_returns import transform_returns
 from .transform_struct_copy import transform_struct_copy
@@ -59,6 +60,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(instrs, **context)
+    instrs = merge_split_copies(instrs)
     analysis.collect_stack_accesses(instrs)
     analysis.fill_stack_variables(
         stack_vars, characteristics.variables_names)
