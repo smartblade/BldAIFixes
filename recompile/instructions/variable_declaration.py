@@ -9,6 +9,10 @@ class VariableDeclaration:
         )
 
     @property
+    def identifier(self):
+        return self._id
+
+    @property
     def initial_expression(self):
         return self._initial_expression
 

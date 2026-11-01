@@ -29,6 +29,7 @@ from .transform_switch import transform_switch
 from .transform_procedure_call import transform_procedure_call
 from .transform_reinterpret import transform_reinterpret
 from .merge_split_copies import merge_split_copies
+from .split_jumped_declarations import split_jumped_declarations
 from .transform_for_loops import transform_for_loops
 from .transform_returns import transform_returns
 from .transform_struct_copy import transform_struct_copy
@@ -82,7 +83,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = remove_member_array_construction(procedure)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
-    return insert_declarations(procedure, stack_vars)
+    procedure = insert_declarations(procedure, stack_vars)
+    return split_jumped_declarations(procedure)
 
 
 def _transform_instructions(instrs, analysis, **kwargs):
