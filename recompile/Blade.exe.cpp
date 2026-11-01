@@ -233,7 +233,7 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsL
     {
         this->sectors->lastQueryId = reinterpret_cast<int>(gbl_oct_tree_query_id);
         B_BoundingBox *unknown_loc_04 = &this->sectors->boundingBox;
-        if ((gbl_current_query_box->minCoords.x > unknown_loc_04->maxCoords.x || gbl_current_query_box->minCoords.y > unknown_loc_04->maxCoords.y || gbl_current_query_box->minCoords.z > unknown_loc_04->maxCoords.z || gbl_current_query_box->maxCoords.x < unknown_loc_04->minCoords.x || gbl_current_query_box->maxCoords.y < unknown_loc_04->minCoords.y || gbl_current_query_box->maxCoords.z < unknown_loc_04->minCoords.z ? 0x00000000 : 0x00000001) != 0x00000000 && outList->size < 512)
+        if (!(gbl_current_query_box->minCoords.x > unknown_loc_04->maxCoords.x || gbl_current_query_box->minCoords.y > unknown_loc_04->maxCoords.y || gbl_current_query_box->minCoords.z > unknown_loc_04->maxCoords.z || gbl_current_query_box->maxCoords.x < unknown_loc_04->minCoords.x || gbl_current_query_box->maxCoords.y < unknown_loc_04->minCoords.y || gbl_current_query_box->maxCoords.z < unknown_loc_04->minCoords.z) && outList->size < 512)
         {
             outList->sectors[outList->size] = this->sectors;
             outList->size++;
@@ -267,7 +267,7 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTree
         {
             ACCESS(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4), 84, 4) = gbl_oct_tree_query_id;
             STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4)) + 0x0000005C;
-            if ((gbl_current_query_box->minCoords.x > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 24, 8)) || gbl_current_query_box->minCoords.y > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 32, 8)) || gbl_current_query_box->minCoords.z > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 40, 8)) || gbl_current_query_box->maxCoords.x < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 0, 8)) || gbl_current_query_box->maxCoords.y < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 8, 8)) || gbl_current_query_box->maxCoords.z < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 16, 8)) ? 0x00000000 : 0x00000001) != 0x00000000 && outList->size < 512)
+            if (!(gbl_current_query_box->minCoords.x > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 24, 8)) || gbl_current_query_box->minCoords.y > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 32, 8)) || gbl_current_query_box->minCoords.z > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 40, 8)) || gbl_current_query_box->maxCoords.x < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 0, 8)) || gbl_current_query_box->maxCoords.y < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 8, 8)) || gbl_current_query_box->maxCoords.z < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 16, 8))) && outList->size < 512)
             {
                 outList->sectors[outList->size] = reinterpret_cast<B_Sector *>(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4));
                 outList->size++;

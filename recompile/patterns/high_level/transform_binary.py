@@ -120,6 +120,9 @@ def _transform_eq_ne(operator, left, right, **kwargs):
     result = _try_cast_to_bool(operator, left, right, **kwargs)
     if result is not None:
         return result
+    result = _transform_bool_conditional(operator, left, right)
+    if result is not None:
+        return result
     if (
         isinstance(left.data_type, (data_types.Float, data_types.Double)) and
         isinstance(right.data_type, (data_types.Float, data_types.Double))
@@ -129,6 +132,28 @@ def _transform_eq_ne(operator, left, right, **kwargs):
     if not isinstance(right, expressions.ConstantTypes):
         left = expressions.do_reinterpret(right.data_type, left)
     return expressions.Bin(operator, left, right)
+
+
+def _transform_bool_conditional(operator, left, right):
+    """Transform '(c ? 0 : 1) != 0' to '!(c)' and '(c ? 1 : 0) != 0' to 'c'."""
+    if not isinstance(left, expressions.ConditionalOperator):
+        return None
+    values = []
+    for e in (left.then_expression, left.else_expression, right):
+        if not isinstance(e, expressions.Constant):
+            return None
+        if not isinstance(e.value, int) or e.value not in (0, 1):
+            return None
+        values.append(e.value)
+    then_value, else_value, right_value = values
+    if then_value == else_value:
+        return None
+    # Value of the comparison when the condition is true
+    is_true = (then_value == right_value) == (operator == Operator.EQ)
+    if is_true:
+        return left.if_clause
+    # Comparisons are not inverted: '!(x > y)' isn't 'x <= y' for NaN
+    return expressions.LogicalNot(left.if_clause)
 
 
 def _try_cast_to_bool(operator, left, right, declarations, **kwargs):
