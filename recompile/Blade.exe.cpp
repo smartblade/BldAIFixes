@@ -287,34 +287,42 @@ void B_OctantNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSect
         {
             if (localPos.z < 10.0 && this->children[0] != nullptr)
             {
-                STACKVAR(-40, 8) = -unknown_loc_10;
-                ACCESS(LOCAL(-32), 0, 8) = -unknown_loc_10;
-                ACCESS(LOCAL(-24), 0, 8) = -unknown_loc_10;
-                this->children[0]->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-64)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-40)), outList, unknown_loc_08);
+                B_Vector unknown_loc_28;
+                unknown_loc_28.x = -unknown_loc_10;
+                unknown_loc_28.y = -unknown_loc_10;
+                unknown_loc_28.z = -unknown_loc_10;
+                B_Vector unknown_loc_40;
+                this->children[0]->CollectSectorsAtPoint(unknown_loc_40 = localPos - unknown_loc_28, outList, unknown_loc_08);
             }
             if (localPos.z > -10.0 && this->children[1] != nullptr)
             {
-                STACKVAR(-88, 8) = -unknown_loc_10;
-                ACCESS(LOCAL(-80), 0, 8) = -unknown_loc_10;
-                ACCESS(LOCAL(-72), 0, 8) = unknown_loc_10;
-                this->children[1]->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-112)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-88)), outList, unknown_loc_08);
+                B_Vector unknown_loc_58;
+                unknown_loc_58.x = -unknown_loc_10;
+                unknown_loc_58.y = -unknown_loc_10;
+                unknown_loc_58.z = unknown_loc_10;
+                B_Vector unknown_loc_70;
+                this->children[1]->CollectSectorsAtPoint(unknown_loc_70 = localPos - unknown_loc_58, outList, unknown_loc_08);
             }
         }
         if (localPos.y > -10.0)
         {
             if (localPos.z < 10.0 && this->children[2] != nullptr)
             {
-                STACKVAR(-136, 8) = -unknown_loc_10;
-                ACCESS(LOCAL(-128), 0, 8) = unknown_loc_10;
-                ACCESS(LOCAL(-120), 0, 8) = -unknown_loc_10;
-                this->children[2]->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-160)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-136)), outList, unknown_loc_08);
+                B_Vector unknown_loc_88;
+                unknown_loc_88.x = -unknown_loc_10;
+                unknown_loc_88.y = unknown_loc_10;
+                unknown_loc_88.z = -unknown_loc_10;
+                B_Vector unknown_loc_A0;
+                this->children[2]->CollectSectorsAtPoint(unknown_loc_A0 = localPos - unknown_loc_88, outList, unknown_loc_08);
             }
             if (localPos.z > -10.0 && this->children[3] != nullptr)
             {
-                STACKVAR(-184, 8) = -unknown_loc_10;
-                ACCESS(LOCAL(-176), 0, 8) = unknown_loc_10;
-                ACCESS(LOCAL(-168), 0, 8) = unknown_loc_10;
-                this->children[3]->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-208)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-184)), outList, unknown_loc_08);
+                B_Vector unknown_loc_B8;
+                unknown_loc_B8.x = -unknown_loc_10;
+                unknown_loc_B8.y = unknown_loc_10;
+                unknown_loc_B8.z = unknown_loc_10;
+                B_Vector unknown_loc_D0;
+                this->children[3]->CollectSectorsAtPoint(unknown_loc_D0 = localPos - unknown_loc_B8, outList, unknown_loc_08);
             }
         }
     }
@@ -324,34 +332,42 @@ void B_OctantNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSect
         {
             if (localPos.z < 10.0 && this->children[4] != nullptr)
             {
-                STACKVAR(-232, 8) = unknown_loc_10;
-                ACCESS(LOCAL(-224), 0, 8) = -unknown_loc_10;
-                ACCESS(LOCAL(-216), 0, 8) = -unknown_loc_10;
-                this->children[4]->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-256)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-232)), outList, unknown_loc_08);
+                B_Vector unknown_loc_E8;
+                unknown_loc_E8.x = unknown_loc_10;
+                unknown_loc_E8.y = -unknown_loc_10;
+                unknown_loc_E8.z = -unknown_loc_10;
+                B_Vector unknown_loc_100;
+                this->children[4]->CollectSectorsAtPoint(unknown_loc_100 = localPos - unknown_loc_E8, outList, unknown_loc_08);
             }
             if (localPos.z > -10.0 && this->children[5] != nullptr)
             {
-                STACKVAR(-280, 8) = unknown_loc_10;
-                ACCESS(LOCAL(-272), 0, 8) = -unknown_loc_10;
-                ACCESS(LOCAL(-264), 0, 8) = unknown_loc_10;
-                this->children[5]->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-304)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-280)), outList, unknown_loc_08);
+                B_Vector unknown_loc_118;
+                unknown_loc_118.x = unknown_loc_10;
+                unknown_loc_118.y = -unknown_loc_10;
+                unknown_loc_118.z = unknown_loc_10;
+                B_Vector unknown_loc_130;
+                this->children[5]->CollectSectorsAtPoint(unknown_loc_130 = localPos - unknown_loc_118, outList, unknown_loc_08);
             }
         }
         if (localPos.y > -10.0)
         {
             if (localPos.z < 10.0 && this->children[6] != nullptr)
             {
-                STACKVAR(-328, 8) = unknown_loc_10;
-                ACCESS(LOCAL(-320), 0, 8) = unknown_loc_10;
-                ACCESS(LOCAL(-312), 0, 8) = -unknown_loc_10;
-                this->children[6]->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-352)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-328)), outList, unknown_loc_08);
+                B_Vector unknown_loc_148;
+                unknown_loc_148.x = unknown_loc_10;
+                unknown_loc_148.y = unknown_loc_10;
+                unknown_loc_148.z = -unknown_loc_10;
+                B_Vector unknown_loc_160;
+                this->children[6]->CollectSectorsAtPoint(unknown_loc_160 = localPos - unknown_loc_148, outList, unknown_loc_08);
             }
             if (localPos.z > -10.0 && this->children[7] != nullptr)
             {
-                STACKVAR(-376, 8) = unknown_loc_10;
-                ACCESS(LOCAL(-368), 0, 8) = unknown_loc_10;
-                ACCESS(LOCAL(-360), 0, 8) = unknown_loc_10;
-                this->children[7]->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-400)) = localPos - *reinterpret_cast<B_Vector *>(LOCAL(-376)), outList, unknown_loc_08);
+                B_Vector unknown_loc_178;
+                unknown_loc_178.x = unknown_loc_10;
+                unknown_loc_178.y = unknown_loc_10;
+                unknown_loc_178.z = unknown_loc_10;
+                B_Vector unknown_loc_190;
+                this->children[7]->CollectSectorsAtPoint(unknown_loc_190 = localPos - unknown_loc_178, outList, unknown_loc_08);
             }
         }
     }
@@ -369,26 +385,34 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
         {
             if (bb.minCoords.z < 10.0 && this->children[0] != nullptr)
             {
-                STACKVAR(-88, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-80), 0, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-72), 0, 8) = -unknown_loc_40;
-                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-112)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-88))), 24);
-                STACKVAR(-136, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-128), 0, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-120), 0, 8) = -unknown_loc_40;
-                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-160)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-136))), 24);
+                B_Vector unknown_loc_58;
+                unknown_loc_58.x = -unknown_loc_40;
+                unknown_loc_58.y = -unknown_loc_40;
+                unknown_loc_58.z = -unknown_loc_40;
+                B_Vector unknown_loc_70;
+                memcpy(LOCAL(-48), &(unknown_loc_70 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_58), 24);
+                B_Vector unknown_loc_88;
+                unknown_loc_88.x = -unknown_loc_40;
+                unknown_loc_88.y = -unknown_loc_40;
+                unknown_loc_88.z = -unknown_loc_40;
+                B_Vector unknown_loc_A0;
+                memcpy(LOCAL(-24), &(unknown_loc_A0 = bb.maxCoords - unknown_loc_88), 24);
                 this->children[0]->CollectSectorsInBox(*reinterpret_cast<B_BoundingBox *>(LOCAL(-48)), outList, unknown_loc_38);
             }
             if (bb.maxCoords.z > -10.0 && this->children[1] != nullptr)
             {
-                STACKVAR(-184, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-176), 0, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-168), 0, 8) = unknown_loc_40;
-                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-208)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-184))), 24);
-                STACKVAR(-232, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-224), 0, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-216), 0, 8) = unknown_loc_40;
-                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-256)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-232))), 24);
+                B_Vector unknown_loc_B8;
+                unknown_loc_B8.x = -unknown_loc_40;
+                unknown_loc_B8.y = -unknown_loc_40;
+                unknown_loc_B8.z = unknown_loc_40;
+                B_Vector unknown_loc_D0;
+                memcpy(LOCAL(-48), &(unknown_loc_D0 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_B8), 24);
+                B_Vector unknown_loc_E8;
+                unknown_loc_E8.x = -unknown_loc_40;
+                unknown_loc_E8.y = -unknown_loc_40;
+                unknown_loc_E8.z = unknown_loc_40;
+                B_Vector unknown_loc_100;
+                memcpy(LOCAL(-24), &(unknown_loc_100 = bb.maxCoords - unknown_loc_E8), 24);
                 this->children[1]->CollectSectorsInBox(*reinterpret_cast<B_BoundingBox *>(LOCAL(-48)), outList, unknown_loc_38);
             }
         }
@@ -396,26 +420,34 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
         {
             if (bb.minCoords.z < 10.0 && this->children[2] != nullptr)
             {
-                STACKVAR(-280, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-272), 0, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-264), 0, 8) = -unknown_loc_40;
-                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-304)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-280))), 24);
-                STACKVAR(-328, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-320), 0, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-312), 0, 8) = -unknown_loc_40;
-                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-352)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-328))), 24);
+                B_Vector unknown_loc_118;
+                unknown_loc_118.x = -unknown_loc_40;
+                unknown_loc_118.y = unknown_loc_40;
+                unknown_loc_118.z = -unknown_loc_40;
+                B_Vector unknown_loc_130;
+                memcpy(LOCAL(-48), &(unknown_loc_130 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_118), 24);
+                B_Vector unknown_loc_148;
+                unknown_loc_148.x = -unknown_loc_40;
+                unknown_loc_148.y = unknown_loc_40;
+                unknown_loc_148.z = -unknown_loc_40;
+                B_Vector unknown_loc_160;
+                memcpy(LOCAL(-24), &(unknown_loc_160 = bb.maxCoords - unknown_loc_148), 24);
                 this->children[2]->CollectSectorsInBox(*reinterpret_cast<B_BoundingBox *>(LOCAL(-48)), outList, unknown_loc_38);
             }
             if (bb.maxCoords.z > -10.0 && this->children[3] != nullptr)
             {
-                STACKVAR(-376, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-368), 0, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-360), 0, 8) = unknown_loc_40;
-                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-400)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-376))), 24);
-                STACKVAR(-424, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-416), 0, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-408), 0, 8) = unknown_loc_40;
-                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-448)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-424))), 24);
+                B_Vector unknown_loc_178;
+                unknown_loc_178.x = -unknown_loc_40;
+                unknown_loc_178.y = unknown_loc_40;
+                unknown_loc_178.z = unknown_loc_40;
+                B_Vector unknown_loc_190;
+                memcpy(LOCAL(-48), &(unknown_loc_190 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_178), 24);
+                B_Vector unknown_loc_1A8;
+                unknown_loc_1A8.x = -unknown_loc_40;
+                unknown_loc_1A8.y = unknown_loc_40;
+                unknown_loc_1A8.z = unknown_loc_40;
+                B_Vector unknown_loc_1C0;
+                memcpy(LOCAL(-24), &(unknown_loc_1C0 = bb.maxCoords - unknown_loc_1A8), 24);
                 this->children[3]->CollectSectorsInBox(*reinterpret_cast<B_BoundingBox *>(LOCAL(-48)), outList, unknown_loc_38);
             }
         }
@@ -426,26 +458,34 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
         {
             if (bb.minCoords.z < 10.0 && this->children[4] != nullptr)
             {
-                STACKVAR(-472, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-464), 0, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-456), 0, 8) = -unknown_loc_40;
-                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-496)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-472))), 24);
-                STACKVAR(-520, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-512), 0, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-504), 0, 8) = -unknown_loc_40;
-                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-544)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-520))), 24);
+                B_Vector unknown_loc_1D8;
+                unknown_loc_1D8.x = unknown_loc_40;
+                unknown_loc_1D8.y = -unknown_loc_40;
+                unknown_loc_1D8.z = -unknown_loc_40;
+                B_Vector unknown_loc_1F0;
+                memcpy(LOCAL(-48), &(unknown_loc_1F0 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_1D8), 24);
+                B_Vector unknown_loc_208;
+                unknown_loc_208.x = unknown_loc_40;
+                unknown_loc_208.y = -unknown_loc_40;
+                unknown_loc_208.z = -unknown_loc_40;
+                B_Vector unknown_loc_220;
+                memcpy(LOCAL(-24), &(unknown_loc_220 = bb.maxCoords - unknown_loc_208), 24);
                 this->children[4]->CollectSectorsInBox(*reinterpret_cast<B_BoundingBox *>(LOCAL(-48)), outList, unknown_loc_38);
             }
             if (bb.maxCoords.z > -10.0 && this->children[5] != nullptr)
             {
-                STACKVAR(-568, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-560), 0, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-552), 0, 8) = unknown_loc_40;
-                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-592)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-568))), 24);
-                STACKVAR(-616, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-608), 0, 8) = -unknown_loc_40;
-                ACCESS(LOCAL(-600), 0, 8) = unknown_loc_40;
-                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-640)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-616))), 24);
+                B_Vector unknown_loc_238;
+                unknown_loc_238.x = unknown_loc_40;
+                unknown_loc_238.y = -unknown_loc_40;
+                unknown_loc_238.z = unknown_loc_40;
+                B_Vector unknown_loc_250;
+                memcpy(LOCAL(-48), &(unknown_loc_250 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_238), 24);
+                B_Vector unknown_loc_268;
+                unknown_loc_268.x = unknown_loc_40;
+                unknown_loc_268.y = -unknown_loc_40;
+                unknown_loc_268.z = unknown_loc_40;
+                B_Vector unknown_loc_280;
+                memcpy(LOCAL(-24), &(unknown_loc_280 = bb.maxCoords - unknown_loc_268), 24);
                 this->children[5]->CollectSectorsInBox(*reinterpret_cast<B_BoundingBox *>(LOCAL(-48)), outList, unknown_loc_38);
             }
         }
@@ -453,26 +493,34 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
         {
             if (bb.minCoords.z < 10.0 && this->children[6] != nullptr)
             {
-                STACKVAR(-664, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-656), 0, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-648), 0, 8) = -unknown_loc_40;
-                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-688)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-664))), 24);
-                STACKVAR(-712, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-704), 0, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-696), 0, 8) = -unknown_loc_40;
-                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-736)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-712))), 24);
+                B_Vector unknown_loc_298;
+                unknown_loc_298.x = unknown_loc_40;
+                unknown_loc_298.y = unknown_loc_40;
+                unknown_loc_298.z = -unknown_loc_40;
+                B_Vector unknown_loc_2B0;
+                memcpy(LOCAL(-48), &(unknown_loc_2B0 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_298), 24);
+                B_Vector unknown_loc_2C8;
+                unknown_loc_2C8.x = unknown_loc_40;
+                unknown_loc_2C8.y = unknown_loc_40;
+                unknown_loc_2C8.z = -unknown_loc_40;
+                B_Vector unknown_loc_2E0;
+                memcpy(LOCAL(-24), &(unknown_loc_2E0 = bb.maxCoords - unknown_loc_2C8), 24);
                 this->children[6]->CollectSectorsInBox(*reinterpret_cast<B_BoundingBox *>(LOCAL(-48)), outList, unknown_loc_38);
             }
             if (bb.maxCoords.z > -10.0 && this->children[7] != nullptr)
             {
-                STACKVAR(-760, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-752), 0, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-744), 0, 8) = unknown_loc_40;
-                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-784)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-760))), 24);
-                STACKVAR(-808, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-800), 0, 8) = unknown_loc_40;
-                ACCESS(LOCAL(-792), 0, 8) = unknown_loc_40;
-                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-832)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-808))), 24);
+                B_Vector unknown_loc_2F8;
+                unknown_loc_2F8.x = unknown_loc_40;
+                unknown_loc_2F8.y = unknown_loc_40;
+                unknown_loc_2F8.z = unknown_loc_40;
+                B_Vector unknown_loc_310;
+                memcpy(LOCAL(-48), &(unknown_loc_310 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_2F8), 24);
+                B_Vector unknown_loc_328;
+                unknown_loc_328.x = unknown_loc_40;
+                unknown_loc_328.y = unknown_loc_40;
+                unknown_loc_328.z = unknown_loc_40;
+                B_Vector unknown_loc_340;
+                memcpy(LOCAL(-24), &(unknown_loc_340 = bb.maxCoords - unknown_loc_328), 24);
                 this->children[7]->CollectSectorsInBox(*reinterpret_cast<B_BoundingBox *>(LOCAL(-48)), outList, unknown_loc_38);
             }
         }
@@ -483,11 +531,12 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
 void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsList *outList) const
 {
     outList->size = 0;
-    *reinterpret_cast<B_Vector *>(LOCAL(-24)) = worldPos - this->m_center;
+    B_Vector unknown_loc_18;
+    unknown_loc_18 = worldPos - this->m_center;
     gbl_oct_tree_query_id++;
-    if (this->m_root != nullptr && this->m_halfSize + 10.0 > fabs(reinterpret_cast<double>(STACKVAR(-24, 8))) && this->m_halfSize + 10.0 > fabs(reinterpret_cast<double>(STACKVAR(-16, 8))) && this->m_halfSize + 10.0 > fabs(reinterpret_cast<double>(STACKVAR(-8, 8))))
+    if (this->m_root != nullptr && this->m_halfSize + 10.0 > fabs(unknown_loc_18.x) && this->m_halfSize + 10.0 > fabs(unknown_loc_18.y) && this->m_halfSize + 10.0 > fabs(unknown_loc_18.z))
     {
-        this->m_root->CollectSectorsAtPoint(*reinterpret_cast<B_Vector *>(LOCAL(-24)), outList, this->m_halfSize);
+        this->m_root->CollectSectorsAtPoint(unknown_loc_18, outList, this->m_halfSize);
     }
 }
 

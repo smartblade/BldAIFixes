@@ -1,5 +1,6 @@
 import data_types
 import expressions
+from expressions.do_pointer_dereference import do_pointer_dereference
 from expressions.operator import Operator
 
 
@@ -13,6 +14,9 @@ class LocalsAnalysis:
         self._local_uses = {}
         # Extents of locals used only by typed accesses in the last pass
         self._local_extents = {}
+        # Pointee types of casts of locals in the current and the last pass
+        self._cur_local_types = {}
+        self._local_types = {}
         # Sizes of stack accesses in instructions by offset
         self._stackvar_sizes = {}
 
@@ -30,6 +34,8 @@ class LocalsAnalysis:
             if uses == typed_uses
         )
         self._local_uses = {}
+        self._local_types = self._cur_local_types
+        self._cur_local_types = {}
 
     def _process_typed_local_use(self, local, start, end):
         uses = self._local_uses.setdefault(local.offset, [0, 0, 0, 0])
@@ -95,6 +101,8 @@ class LocalsAnalysis:
             ):
                 self._process_typed_local_use(
                     expression, 0, data_type.pointee.size)
+                self._cur_local_types.setdefault(
+                    expression.offset, []).append(data_type.pointee)
             return
         if not isinstance(expression, expressions.intermediate.Stackvar):
             return
@@ -144,6 +152,8 @@ class LocalsAnalysis:
 
     def fill_stack_variables(self, stack_vars, variable_names):
         min_local_ptr_offset = self._get_min_local_ptr_offset()
+        self._fill_struct_variables(
+            stack_vars, variable_names, min_local_ptr_offset)
         # Variables hidden by locals with unknown extents before
         min_any_local_ptr_offset = self._get_min_local_ptr_offset(
             ignore_extents=True)
@@ -202,6 +212,68 @@ class LocalsAnalysis:
                 ):
                     return True
         return False
+
+    def _fill_struct_variables(
+        self, stack_vars, variable_names, min_local_ptr_offset
+    ):
+        """Make variables of classes of locals used as pointers to them."""
+        for offset, (start, end) in self._local_extents.items():
+            class_type = self._get_local_class(offset)
+            if class_type is None:
+                continue
+            if start != offset or end != offset + class_type.size:
+                continue
+            if offset in stack_vars or offset >= min_local_ptr_offset:
+                continue
+            if not self._are_fields_accessed(offset, class_type):
+                continue
+            name = variable_names.get(offset)
+            if name is None:
+                name = "unknown_loc_{:02X}".format(-offset)
+            stack_vars[offset] = expressions.Identifier(class_type, name)
+
+    def _get_local_class(self, offset):
+        types = self._local_types.get(offset, [])
+        if not types or not isinstance(types[0], data_types.ClassType):
+            return None
+        if any(not data_types.are_same(t, types[0]) for t in types):
+            return None
+        return types[0]
+
+    def _are_fields_accessed(self, offset, class_type):
+        """Check that all accesses inside the variable are its fields."""
+        end = offset + class_type.size
+        ptr = expressions.Identifier(data_types.Pointer32(class_type), "ptr")
+        accesses = [
+            (other_offset, size)
+            for other_offset, sizes in self._stackvar_sizes.items()
+            for size in sizes
+        ] + [
+            (local_offset, local_end - local_offset)
+            for local_offset, (local_start, local_end)
+            in self._local_extents.items()
+            if local_offset != offset and local_start == local_offset
+        ]
+        for other_offset, size in accesses:
+            if other_offset + size <= offset or end <= other_offset:
+                continue
+            if other_offset < offset or end < other_offset + size:
+                return False
+            try:
+                field = do_pointer_dereference(
+                    ptr, other_offset - offset, size)
+            except Exception:
+                return False
+            if field is None:
+                return False
+        # Locals with accesses before them can't be inside the variable
+        extents = self._local_extents.items()
+        for local_offset, (local_start, local_end) in extents:
+            if local_offset == offset or local_start == local_offset:
+                continue
+            if local_start < end and offset < local_end:
+                return False
+        return True
 
     def _overlaps_local(self, offset, data_type):
         size = data_type.size if data_type is not None else 1
