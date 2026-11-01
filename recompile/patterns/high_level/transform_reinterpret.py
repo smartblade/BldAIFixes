@@ -39,4 +39,6 @@ _static_cast_pairs = {
     (data_types.UInt32, data_types.Long32): True,
     (data_types.SizeT, data_types.UInt32): True,
     (data_types.UInt32, data_types.SizeT): True,
+    (data_types.Int32, data_types.UInt32): True,
+    (data_types.UInt32, data_types.Int32): True,
 }
