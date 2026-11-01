@@ -69,6 +69,8 @@ def _split_nested(instr, label_uses):
     if isinstance(instr, instructions.WhileInstruction):
         return instructions.WhileInstruction(
             instr.clause, _split_block(instr.block, label_uses))
+    if isinstance(instr, instructions.ForInstruction):
+        return instr.copy(block=_split_block(instr.block, label_uses))
     if isinstance(instr, instructions.LabeledBlock):
         return instructions.LabeledBlock(
             instr.label, _split_block(instr.instructions, label_uses))

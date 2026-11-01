@@ -69,3 +69,15 @@ class TestSplitJumpedDeclarations(unittest.TestCase):
             ]),
         ]
         self.assertIn("int x = 1;\n", _emit(instrs))
+
+    def test_jump_past_declaration_in_for_loop(self):
+        body = [
+            if_instr(i32_id("a"), [instructions.Goto("l_end")]),
+            _declaration(),
+            call_instr(name="f", arguments=[i32_id("x")]),
+            instructions.LabeledBlock("l_end", [call_instr(name="g")]),
+        ]
+        instrs = [instructions.ForInstruction(
+            i32_id("i"), i32_id("c"), i32_id("i"), body)]
+        instr = split_jumped_declarations(_Procedure(instrs)).instructions[0]
+        self.assertIsNone(instr.block[1].initial_expression)
