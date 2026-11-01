@@ -11,6 +11,7 @@ from .call_arguments_matcher import CallArgumentsMatcher
 from .fields_destroying import discover_fields_destroying
 from .fields_initialization import discover_fields_initialization
 from .inlined_base_structors import remove_inlined_base_structors
+from .transform_class_returns import transform_class_returns
 from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
 from .transform_assignment import transform_assignment
@@ -62,6 +63,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         stack_vars, characteristics.variables_names)
     instrs = _transform_instructions(instrs, **context)
     instrs = _transform_instructions(instrs, **context)
+    instrs = transform_class_returns(proc_decl, instrs)
     procedure = procedure.copy(instrs=instrs)
     procedure = remove_inlined_base_structors(procedure)
     procedure = discover_fields_initialization(procedure)

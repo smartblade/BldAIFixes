@@ -143,6 +143,10 @@ class HeaderState:
             decl = self._parse_definition(class_name, field_definition)
             if decl is None:
                 continue
+            if isinstance(decl, _Constructor):
+                self._declared_types[class_name].add_constructor(
+                    decl.proc_decl)
+                continue
             if isinstance(decl, ProcedureDeclaration):
                 # Add space for vtable if necessary
                 if (
@@ -171,7 +175,7 @@ class HeaderState:
             if is_static or is_virtual:
                 return parser.parse_cpp_function(
                     class_name, definition, self._declared_types)
-            return
+            return self._try_parse_constructor(class_name, definition)
         if is_static:
             return
         if definition.startswith("enum"):
@@ -181,6 +185,26 @@ class HeaderState:
         field_type, field_name = parser.parse_cpp_variable_declaration(
             definition, self._declared_types, self._constants)
         return field_type, field_name
+
+    def _try_parse_constructor(self, class_name, definition):
+        if not definition.startswith(class_name + "("):
+            return None
+        # Strip initialization list after the closing bracket of parameters
+        depth = 0
+        for end, c in enumerate(definition):
+            if c == "(":
+                depth += 1
+            elif c == ")":
+                depth -= 1
+                if depth == 0:
+                    break
+        definition = definition[:end + 1]
+        try:
+            proc_decl = parser.parse_cpp_function(
+                class_name, definition, self._declared_types)
+        except Exception:
+            return None
+        return _Constructor(proc_decl)
 
     def _try_parse_preprocessor_directive(self, line):
         match = preprocessor_regexp.search(line)
@@ -233,6 +257,11 @@ class HeaderState:
         proc_decl = parser.parse_cpp_function(
             None, declaration, self._declared_types)
         self._external_procedures[alias] = proc_decl
+
+
+class _Constructor:
+    def __init__(self, proc_decl):
+        self.proc_decl = proc_decl
 
 
 def _strip_start(definition, start):
