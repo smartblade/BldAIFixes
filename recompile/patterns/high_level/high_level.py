@@ -25,6 +25,7 @@ from .transform_stackvar import transform_stackvar
 from .transform_switch import transform_switch
 from .transform_procedure_call import transform_procedure_call
 from .transform_reinterpret import transform_reinterpret
+from .split_jumped_declarations import split_jumped_declarations
 from .transform_for_loops import transform_for_loops
 from .transform_returns import transform_returns
 from .variables_declarations import insert_declarations
@@ -66,7 +67,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = procedure.copy(instrs=instrs)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
-    return insert_declarations(procedure, stack_vars)
+    procedure = insert_declarations(procedure, stack_vars)
+    return split_jumped_declarations(procedure)
 
 
 def _transform_instructions(instrs, analysis, **kwargs):
