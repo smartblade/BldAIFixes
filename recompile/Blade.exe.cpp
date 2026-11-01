@@ -49,18 +49,18 @@ void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &secto
         {
             goto l004502DC;
         }
-        STACKVAR(-24, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
+        STACKVAR(-24, 4) = shi_new(4 * outBuffer.num_alloc);
         STACKVAR(-16, 4) = STACKVAR(-24, 4);
         for (unsigned int unknown_loc_14 = 0; unknown_loc_14 < outBuffer.size; unknown_loc_14++)
         {
             ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = ACCESS(ARRPTR(outBuffer.elements, 4, unknown_loc_14, 0), 0, 4);
         }
         STACKVAR(-28, 4) = outBuffer.elements;
-        unknown_function_005BBD3D(STACKVAR(-28, 4));
+        shi_delete(STACKVAR(-28, 4));
         outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-16, 4));
         goto l004502FA;
 l004502DC:
-        STACKVAR(-32, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
+        STACKVAR(-32, 4) = shi_new(4 * outBuffer.num_alloc);
         outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-32, 4));
 l004502FA:
         ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
@@ -157,7 +157,7 @@ B_SectorListNode::~B_SectorListNode()
     }
 l00450596:
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-20, 4), 4, 4);
-    unknown_function_005BBD3D(STACKVAR(-16, 4));
+    shi_delete(STACKVAR(-16, 4));
     ACCESS(STACKVAR(-20, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-20, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-20, 4), 16, 4) = 0x00000000;
@@ -190,7 +190,7 @@ l004505C9:
     }
 l00450666:
     STACKVAR(-36, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
-    unknown_function_005BBD3D(STACKVAR(-36, 4));
+    shi_delete(STACKVAR(-36, 4));
     ACCESS(STACKVAR(-44, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-44, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-44, 4), 16, 4) = 0x00000000;
@@ -587,7 +587,7 @@ p00453AC0
     gbl_node_count--;
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
-        unknown_function_005BBD3D(this);
+        shi_delete(this);
     }
     REGDEF(eax=this)
 }

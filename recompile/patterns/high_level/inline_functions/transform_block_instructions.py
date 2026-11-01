@@ -60,7 +60,7 @@ def _transform_ne_if_instruction(
     deleting_call = deleting_instr.expression
     if not isinstance(deleting_call, expressions.ProcedureCall):
         return
-    if deleting_call.name != "??3@YAXPAX@Z":
+    if deleting_call.name not in _operator_delete_names:
         return
     deleting_offset = _extract_argument_offset(deleting_call)
     if deleting_offset is None:
@@ -342,6 +342,9 @@ def _is_unknown_constant(e, int_value):
         return False
     return True
 
+
+# Names of operator delete: Visual C++ runtime and SmartHeap
+_operator_delete_names = {"??3@YAXPAX@Z", "shi_delete"}
 
 _cb_by_instruction_type = {
     instructions.IfInstruction: _transform_if_instruction,
