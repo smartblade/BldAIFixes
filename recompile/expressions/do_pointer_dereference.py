@@ -54,6 +54,7 @@ def do_pointer_dereference(expression, offset, size):
             data_types.Char, data_types.UChar,
             data_types.Int32, data_types.UInt32,
             data_types.Pointer32,
+            data_types.Float, data_types.Double,
         )
     ):
         dereference = expressions.do_dereference(expression)
