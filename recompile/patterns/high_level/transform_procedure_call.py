@@ -40,6 +40,8 @@ def _convert_procedure_call_arguments(
     pc = pc.copy(arguments=_merge_split_arguments(pc.arguments, proc_decl))
     arguments = _convert_arguments_to_parameters_types(
         pc, analysis, file_declarations, call_characteristics, proc_decl)
+    if proc_decl.proc_name == "memcpy" and len(arguments) == 3:
+        analysis.process_memory_copy(arguments)
     arguments = convert_sizeof_arguments(arguments, proc_decl)
     return pc.copy(
         name=proc_decl.proc_name, proc_decl=proc_decl, arguments=arguments)

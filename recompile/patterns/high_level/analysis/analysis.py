@@ -33,6 +33,9 @@ class Analysis:
     def process_arguments(self, *args, **kwargs):
         self._locals_analysis.process_arguments(*args, **kwargs)
 
+    def process_memory_copy(self, *args, **kwargs):
+        self._locals_analysis.process_memory_copy(*args, **kwargs)
+
     def transform_block_instructions(self, *args, **kwargs):
         self._conditional_operator_analysis.transform_block_instructions(
             *args, **kwargs)
