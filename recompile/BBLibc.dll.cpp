@@ -743,8 +743,6 @@ int B_MessageChannel::operator ==(const B_MessageChannel &that) const
 // address: 0x10002550
 B_MessageChannel::~B_MessageChannel()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    this->name.~B_Name();
 }
 
 // address: 0x10002580
@@ -1642,8 +1640,6 @@ B_Resource::B_Resource(const B_Name &arg_1)
 // address: 0x10003EFE
 B_Resource::~B_Resource()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    this->name.~B_Name();
 }
 
 // address: 0x10003F26
@@ -22271,9 +22267,6 @@ B_ChannelOFile::~B_ChannelOFile()
         ACCESS(this, 16, 4) = 0x00000000;
         this->unknown0Ch = 1;
     }
-    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    this->name.~B_Name();
 }
 
 // address: 0x100299E1
@@ -30175,8 +30168,6 @@ l1003DBBC:
 B_ElementCSV::~B_ElementCSV()
 {
     this->material.~B_Name();
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    this->name.~B_Name();
 }
 
 // address: 0x1003DBF3
@@ -32030,8 +32021,6 @@ B_ParticleGType::~B_ParticleGType()
         unknown_loc_08->size = 0;
         unknown_loc_08->num_alloc = 0;
     }
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    this->name.~B_Name();
 }
 
 // address: 0x1004122B
