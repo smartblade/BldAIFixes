@@ -72,6 +72,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         stack_vars, characteristics.variables_names
     ):
         instrs = _transform_instructions(instrs, **context)
+    instrs = transform_for_loops(instrs)
     procedure = procedure.copy(instrs=instrs)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
