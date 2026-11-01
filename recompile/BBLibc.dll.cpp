@@ -26395,33 +26395,33 @@ l1003DC48:
     reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-792, 4)) + 0x00000004) = B_Name(reinterpret_cast<char *>(LOCAL(-260)));
     ACCESS(STACKVAR(-792, 4), 12, 4) = STACKVAR(-788, 4);
     reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-792, 4)) + 0x00000010) = B_Name(reinterpret_cast<char *>(LOCAL(-528)));
-    if (reinterpret_cast<unsigned int>(ACCESS(csvs, 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(csvs, 8, 4)))
+    if (csvs->num_alloc > csvs->size)
     {
-        ACCESS(ARRPTR(ACCESS(csvs, 4, 4), 4, ACCESS(csvs, 8, 4), 0), 0, 4) = STACKVAR(-792, 4);
-        ACCESS(csvs, 8, 4) = reinterpret_cast<any_int32>(ACCESS(csvs, 8, 4)) + 0x00000001;
+        csvs->elements[csvs->size] = reinterpret_cast<B_ElementCSV *>(STACKVAR(-792, 4));
+        csvs->size++;
         goto l1003DE99;
     }
-    ACCESS(csvs, 16, 4) = reinterpret_cast<any_int32>(ACCESS(csvs, 16, 4)) + reinterpret_cast<any_int32>(ACCESS(csvs, 12, 4));
-    if (ACCESS(csvs, 8, 4) == 0x00000000)
+    csvs->num_alloc += reinterpret_cast<unsigned int>(csvs->increment);
+    if (csvs->size == 0)
     {
         goto l1003DE51;
     }
-    STACKVAR(-824, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(csvs, 16, 4)));
+    STACKVAR(-824, 4) = ??2@YAPAXI@Z(4 * csvs->num_alloc);
     STACKVAR(-816, 4) = STACKVAR(-824, 4);
-    for (unsigned int unknown_loc_334 = 0; unknown_loc_334 < reinterpret_cast<unsigned int>(ACCESS(csvs, 8, 4)); unknown_loc_334++)
+    for (unsigned int unknown_loc_334 = 0; unknown_loc_334 < csvs->size; unknown_loc_334++)
     {
-        ACCESS(ARRPTR(STACKVAR(-816, 4), 4, unknown_loc_334, 0), 0, 4) = ACCESS(ARRPTR(ACCESS(csvs, 4, 4), 4, unknown_loc_334, 0), 0, 4);
+        ACCESS(ARRPTR(STACKVAR(-816, 4), 4, unknown_loc_334, 0), 0, 4) = csvs->elements[unknown_loc_334];
     }
-    STACKVAR(-828, 4) = ACCESS(csvs, 4, 4);
+    STACKVAR(-828, 4) = csvs->elements;
     ??3@YAXPAX@Z(STACKVAR(-828, 4));
-    ACCESS(csvs, 4, 4) = STACKVAR(-816, 4);
+    csvs->elements = reinterpret_cast<B_ElementCSV **>(STACKVAR(-816, 4));
     goto l1003DE75;
 l1003DE51:
-    STACKVAR(-832, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(csvs, 16, 4)));
-    ACCESS(csvs, 4, 4) = STACKVAR(-832, 4);
+    STACKVAR(-832, 4) = ??2@YAPAXI@Z(4 * csvs->num_alloc);
+    csvs->elements = reinterpret_cast<B_ElementCSV **>(STACKVAR(-832, 4));
 l1003DE75:
-    ACCESS(ARRPTR(ACCESS(csvs, 4, 4), 4, ACCESS(csvs, 8, 4), 0), 0, 4) = STACKVAR(-792, 4);
-    ACCESS(csvs, 8, 4) = reinterpret_cast<any_int32>(ACCESS(csvs, 8, 4)) + 0x00000001;
+    csvs->elements[csvs->size] = reinterpret_cast<B_ElementCSV *>(STACKVAR(-792, 4));
+    csvs->size++;
 l1003DE99:
     STACKVAR(-264, 4) = reinterpret_cast<any_int32>(STACKVAR(-264, 4)) + 0x00000001;
     goto l1003DEAC;

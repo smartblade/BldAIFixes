@@ -23,7 +23,8 @@ comment_start_regexp = re.compile(r'^(?P<line>.*)/\*(?P<tail>.*)$')
 comment_end_regexp = re.compile(r'\*/(?P<line>.*)$')
 class_regexp = re.compile(
     r'^(class|struct)\s+(LIB_EXP\s+)?(?P<class>\w+)(?P<semicolon>;)?'
-    r'(\s*:\s*public\s*(?P<parent>\w+))?')
+    r'(\s*:\s*public\s*(?P<parent>\w+(\s*<\s*\w+\s*>)?)'
+    r'(?P<other_parents>(\s*,\s*public\s*\w+(\s*<\s*\w+\s*>)?)*))?')
 template_regexp = re.compile(r'^template<class\s+(?P<class>\w+)>')
 ext_proc_regexp = re.compile(
     r'^_CRT_NONSTDC_DEPRECATE\((?P<alias>\w+)\)(?P<decl>.+);')
@@ -117,9 +118,14 @@ class HeaderState:
                 parent_size = 0
                 if parent_name is not None:
                     class_type = self._declared_types[class_name]
-                    parent = self._declared_types[parent_name]
+                    parent = parser.parse_data_type(
+                        parent_name, self._declared_types)
                     class_type.set_parent(parent)
                     parent_size = parent.size
+                    other_parents = match.group("other_parents")
+                    if other_parents and not is_forward:
+                        parent_size = self._add_other_parents_fields(
+                            fields, _get_class_size(parent), other_parents)
                 if not is_forward:
                     class_type = self._declared_types[class_name]
                     class_type.template_param = self._template_param
@@ -139,6 +145,21 @@ class HeaderState:
                         fields = None
                 if fields is not None and brackets_depth == 1:
                     definition_chars.append(c)
+
+    def _add_other_parents_fields(self, fields, offset, other_parents):
+        """Add fields of other base classes of multiple inheritance."""
+        for parent_name in other_parents.split(","):
+            parent_name = _strip_start(parent_name.strip(), "public")
+            parent_name = parent_name.strip()
+            if not parent_name:
+                continue
+            parent = parser.parse_data_type(
+                parent_name, self._declared_types)
+            offset = (offset + 3) // 4 * 4
+            for field_offset, field in parent.get_all_fields().items():
+                fields[offset + field_offset] = field
+            offset += _get_class_size(parent)
+        return offset
 
     def _parse_class_definition(
         self, class_name, definition, parent_size, fields
@@ -240,6 +261,16 @@ class HeaderState:
         proc_decl = parser.parse_cpp_function(
             None, declaration, self._declared_types)
         self._external_procedures[alias] = proc_decl
+
+
+def _get_class_size(class_type):
+    """Size of class including fields of parents and virtual table."""
+    size = 4 if class_type.has_virtual_methods else 0
+    for offset, (field_type, field_name) in (
+        class_type.get_all_fields().items()
+    ):
+        size = max(size, offset + field_type.size)
+    return size
 
 
 def _strip_start(definition, start):
