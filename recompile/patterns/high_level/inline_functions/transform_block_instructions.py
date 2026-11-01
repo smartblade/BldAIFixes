@@ -344,7 +344,7 @@ def _is_unknown_constant(e, int_value):
 
 
 # Names of operator delete: Visual C++ runtime and SmartHeap
-_operator_delete_names = {"??3@YAXPAX@Z", "shi_delete"}
+_operator_delete_names = {"??3@YAXPAX@Z", "shi_delete", "operator delete"}
 
 _cb_by_instruction_type = {
     instructions.IfInstruction: _transform_if_instruction,
