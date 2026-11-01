@@ -31,42 +31,57 @@ B_Vector B_Vector::operator -(const B_Vector &that) const
 // address: 0x004501C1
 void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &sectors, B_PtrArray<B_Sector> &outBuffer)
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < sectors.size; unknown_loc_04++)
+    unsigned int unknown_loc_04 = 0;
+    goto l004501DD;
+l004501D4:
+    unknown_loc_04++;
+l004501DD:
+    if (unknown_loc_04 >= sectors.size)
     {
-        B_Sector *unknown_loc_08 = sectors.elements[unknown_loc_04];
-        if (this->Intersects(unknown_loc_08) == 0)
-        {
-            continue;
-        }
-        B_Sector *unknown_loc_0C = sectors.elements[unknown_loc_04];
-        if (outBuffer.num_alloc > outBuffer.size)
-        {
-            outBuffer.elements[outBuffer.size] = unknown_loc_0C;
-            outBuffer.size++;
-            continue;
-        }
-        outBuffer.num_alloc += static_cast<unsigned int>(outBuffer.increment);
-        if (outBuffer.size == 0)
-        {
-            goto l004502DC;
-        }
-        STACKVAR(-24, 4) = shi_new(4 * outBuffer.num_alloc);
-        STACKVAR(-16, 4) = STACKVAR(-24, 4);
-        for (unsigned int unknown_loc_14 = 0; unknown_loc_14 < outBuffer.size; unknown_loc_14++)
-        {
-            ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = outBuffer.elements[unknown_loc_14];
-        }
-        STACKVAR(-28, 4) = outBuffer.elements;
-        shi_delete(STACKVAR(-28, 4));
-        outBuffer.elements = reinterpret_cast<B_Sector **>(STACKVAR(-16, 4));
-        goto l004502FA;
-l004502DC:
-        STACKVAR(-32, 4) = shi_new(4 * outBuffer.num_alloc);
-        outBuffer.elements = reinterpret_cast<B_Sector **>(STACKVAR(-32, 4));
-l004502FA:
+        goto l00450320;
+    }
+    B_Sector *unknown_loc_08 = sectors.elements[unknown_loc_04];
+    if (this->Intersects(unknown_loc_08) == 0)
+    {
+        goto l0045031B;
+    }
+    B_Sector *unknown_loc_0C = sectors.elements[unknown_loc_04];
+    if (outBuffer.num_alloc > outBuffer.size)
+    {
         outBuffer.elements[outBuffer.size] = unknown_loc_0C;
         outBuffer.size++;
+        goto l0045031B;
     }
+    outBuffer.num_alloc += static_cast<unsigned int>(outBuffer.increment);
+    if (outBuffer.size == 0)
+    {
+        goto l004502DC;
+    }
+    STACKVAR(-24, 4) = shi_new(4 * outBuffer.num_alloc);
+    STACKVAR(-16, 4) = STACKVAR(-24, 4);
+    unsigned int unknown_loc_14 = 0;
+    goto l0045029A;
+l00450291:
+    unknown_loc_14++;
+l0045029A:
+    if (unknown_loc_14 < outBuffer.size)
+    {
+        ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = outBuffer.elements[unknown_loc_14];
+        goto l00450291;
+    }
+    STACKVAR(-28, 4) = outBuffer.elements;
+    shi_delete(STACKVAR(-28, 4));
+    outBuffer.elements = reinterpret_cast<B_Sector **>(STACKVAR(-16, 4));
+    goto l004502FA;
+l004502DC:
+    STACKVAR(-32, 4) = shi_new(4 * outBuffer.num_alloc);
+    outBuffer.elements = reinterpret_cast<B_Sector **>(STACKVAR(-32, 4));
+l004502FA:
+    outBuffer.elements[outBuffer.size] = unknown_loc_0C;
+    outBuffer.size++;
+l0045031B:
+    goto l004501D4;
+l00450320:
 }
 
 // address: 0x00450327
@@ -75,21 +90,33 @@ B_OctantNode::B_OctantNode()
     ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
     gbl_node_count++;
     ACCESS(this, 0, 4) = GLOBAL(0x005BDCFC);
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < 8; unknown_loc_04++)
+    unsigned int unknown_loc_04 = 0;
+    goto l00450363;
+l0045035A:
+    unknown_loc_04++;
+l00450363:
+    if (unknown_loc_04 < 8)
     {
         this->children[unknown_loc_04] = nullptr;
+        goto l0045035A;
     }
 }
 
 // address: 0x00450380
 B_OctantNode::~B_OctantNode()
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < 8; unknown_loc_04++)
+    unsigned int unknown_loc_04 = 0;
+    goto l004503A4;
+l0045039B:
+    unknown_loc_04++;
+l004503A4:
+    if (unknown_loc_04 < 8)
     {
         if (this->children[unknown_loc_04] != nullptr)
         {
             delete this->children[unknown_loc_04];
         }
+        goto l0045039B;
     }
     ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
     gbl_node_count--;
@@ -152,9 +179,15 @@ B_SectorListNode::~B_SectorListNode()
     {
         goto l00450596;
     }
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 8, 4)); unknown_loc_04++)
+    unsigned int unknown_loc_04 = 0;
+    goto l00450556;
+l0045054D:
+    unknown_loc_04++;
+l00450556:
+    if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 8, 4)))
     {
         delete ACCESS(ARRPTR(ACCESS(STACKVAR(-20, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4);
+        goto l0045054D;
     }
 l00450596:
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-20, 4), 4, 4);
@@ -185,9 +218,15 @@ l004505C9:
     {
         goto l00450666;
     }
-    for (unsigned int unknown_loc_18 = 0; unknown_loc_18 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)); unknown_loc_18++)
+    unsigned int unknown_loc_18 = 0;
+    goto l00450626;
+l0045061D:
+    unknown_loc_18++;
+l00450626:
+    if (unknown_loc_18 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)))
     {
         delete ACCESS(ARRPTR(ACCESS(STACKVAR(-44, 4), 4, 4), 4, unknown_loc_18, 0), 0, 4);
+        goto l0045061D;
     }
 l00450666:
     STACKVAR(-36, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
@@ -244,7 +283,12 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsL
 // address: 0x00452191
 void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < this->size; unknown_loc_04++)
+    unsigned int unknown_loc_04 = 0;
+    goto l004521AD;
+l004521A4:
+    unknown_loc_04++;
+l004521AD:
+    if (unknown_loc_04 < this->size)
     {
         if (this->elements[unknown_loc_04]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[unknown_loc_04]->isActive != 0)
         {
@@ -255,13 +299,19 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
                 outList->size++;
             }
         }
+        goto l004521A4;
     }
 }
 
 // address: 0x00452232
 void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsList *outList, double arg_3)
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < this->size; unknown_loc_04++)
+    unsigned int unknown_loc_04 = 0;
+    goto l0045224E;
+l00452245:
+    unknown_loc_04++;
+l0045224E:
+    if (unknown_loc_04 < this->size)
     {
         if (this->elements[unknown_loc_04]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[unknown_loc_04]->isActive != 0)
         {
@@ -273,6 +323,7 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTree
                 outList->size++;
             }
         }
+        goto l00452245;
     }
 }
 
@@ -551,39 +602,52 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
 {
     cache->count = 0;
     unsigned int unknown_loc_0C = 0;
-    for (unknown_loc_0C = 0; unknown_loc_0C < this->size; unknown_loc_0C++)
+    unknown_loc_0C = 0;
+    goto l004532A6;
+l0045329D:
+    unknown_loc_0C++;
+l004532A6:
+    if (unknown_loc_0C >= this->size)
     {
-        B_Sector *unknown_loc_10 = this->sectors[unknown_loc_0C];
-        cache->elements[cache->count].sector = unknown_loc_10;
-        cache->elements[cache->count].numSurfaces = 0;
-        unsigned int unknown_loc_14;
-        for (unknown_loc_14 = 0; unknown_loc_14 < unknown_loc_10->size; unknown_loc_14++)
-        {
-            STACKVAR(-24, 4) = unknown_loc_10->elements[unknown_loc_14];
-            double unknown_loc_08 = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
-            if (-sphere->radius > unknown_loc_08)
-            {
-                unknown_loc_14 = unknown_loc_10->size + 1;
-            }
-            else if (unknown_loc_08 < sphere->radius)
-            {
-                STACKVAR(-28, 4) = unknown_loc_10->elements[unknown_loc_14];
-                ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, cache->elements[cache->count].numSurfaces, 12), 0, 4) = STACKVAR(-28, 4);
-                cache->elements[cache->count].numSurfaces++;
-            }
-        }
-        if (unknown_loc_14 == unknown_loc_10->size)
-        {
-            if (cache->elements[cache->count].numSurfaces == 0)
-            {
-                cache->elements[cache->count].hasNoIntersections = 1;
-                cache->count++;
-                return 1;
-            }
-            cache->elements[cache->count].hasNoIntersections = 0;
-            cache->count++;
-        }
+        goto l0045345A;
     }
+    B_Sector *unknown_loc_10 = this->sectors[unknown_loc_0C];
+    cache->elements[cache->count].sector = unknown_loc_10;
+    cache->elements[cache->count].numSurfaces = 0;
+    unsigned int unknown_loc_14 = 0;
+    goto l004532FE;
+l004532F5:
+    unknown_loc_14++;
+l004532FE:
+    if (unknown_loc_14 < unknown_loc_10->size)
+    {
+        B_Surface *unknown_loc_18 = unknown_loc_10->elements[unknown_loc_14];
+        double unknown_loc_08 = sphere->center.z * unknown_loc_18->normal.z + sphere->center.y * unknown_loc_18->normal.y + sphere->center.x * unknown_loc_18->normal.x + unknown_loc_18->p;
+        if (-sphere->radius > unknown_loc_08)
+        {
+            unknown_loc_14 = unknown_loc_10->size + 1;
+        }
+        else if (unknown_loc_08 < sphere->radius)
+        {
+            B_Surface *unknown_loc_1C = unknown_loc_10->elements[unknown_loc_14];
+            ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, cache->elements[cache->count].numSurfaces, 12), 0, 4) = unknown_loc_1C;
+            cache->elements[cache->count].numSurfaces++;
+        }
+        goto l004532F5;
+    }
+    if (unknown_loc_14 == unknown_loc_10->size)
+    {
+        if (cache->elements[cache->count].numSurfaces == 0)
+        {
+            cache->elements[cache->count].hasNoIntersections = 1;
+            cache->count++;
+            return 1;
+        }
+        cache->elements[cache->count].hasNoIntersections = 0;
+        cache->count++;
+    }
+    goto l0045329D;
+l0045345A:
     if (cache->count != 0)
     {
         return 0;
@@ -610,10 +674,13 @@ B_GlobalSurfaceCache::B_GlobalSurfaceCache()
     int unknown_loc_0C = 128;
     STACKVAR(-8, 4) = 0x00000110;
     STACKVAR(-4, 4) = &this->elements;
-    while (--unknown_loc_0C >= 0)
+l004539D2:
+    unknown_loc_0C--;
+    if (unknown_loc_0C >= 0)
     {
         reinterpret_cast<B_SectorSurfaceCache *>(STACKVAR(-4, 4))->B_SectorSurfaceCache();
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        goto l004539D2;
     }
 }
 

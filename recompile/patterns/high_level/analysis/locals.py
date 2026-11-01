@@ -162,6 +162,8 @@ class LocalsAnalysis:
         return min_local_ptr_offset
 
     def fill_stack_variables(self, stack_vars, variable_names):
+        """Add stack variables and return True if there are new ones."""
+        num_stack_vars = len(stack_vars)
         min_local_ptr_offset = self._get_min_local_ptr_offset()
         self._fill_struct_variables(
             stack_vars, variable_names, min_local_ptr_offset)
@@ -194,6 +196,7 @@ class LocalsAnalysis:
                 if not self._is_acceptable_float(offset, data_type):
                     continue
             stack_vars[offset] = expressions.Identifier(data_type, name)
+        return len(stack_vars) != num_stack_vars
 
     def _is_acceptable_float(self, offset, data_type):
         """Check if floating point variable doesn't overlap other data."""
@@ -301,6 +304,13 @@ class LocalsAnalysis:
             return
         existing_type = self._types_by_offset[offset]
         if existing_type is None:
+            return
+        if (
+            isinstance(existing_type, data_types.UnknownTypes) and
+            existing_type.size == data_type.size
+        ):
+            # Unknown type of the earlier pass is refined
+            self._types_by_offset[offset] = data_type
             return
         if (
             not data_types.are_same(data_type, existing_type) and
