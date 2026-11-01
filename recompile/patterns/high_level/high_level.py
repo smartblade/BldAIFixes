@@ -62,6 +62,12 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         stack_vars, characteristics.variables_names)
     instrs = _transform_instructions(instrs, **context)
     instrs = _transform_instructions(instrs, **context)
+    # Types of stack variables become known after transformations above
+    analysis.collect_stack_accesses(instrs)
+    if analysis.fill_stack_variables(
+        stack_vars, characteristics.variables_names
+    ):
+        instrs = _transform_instructions(instrs, **context)
     procedure = procedure.copy(instrs=instrs)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
