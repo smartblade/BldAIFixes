@@ -136,6 +136,17 @@ B_OctTree::~B_OctTree()
     this->unknown_method_004507D5();
 }
 
+// address: 0x004507D5
+p004507D5
+{
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=0)
+    if (ACCESS(this, 36, 4) != 0x00000000)
+    {
+        delete ACCESS(this, 36, 4);
+        ACCESS(this, 36, 4) = 0x00000000;
+    }
+}
+
 // address: 0x0045201F
 void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
