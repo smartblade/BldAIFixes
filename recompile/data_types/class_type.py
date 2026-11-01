@@ -27,12 +27,31 @@ class ClassType(DataType):
 
     def instantiate(self, new_name, arg):
         """Make class of template with parameter type substituted by arg."""
+        return self.substitute(self.template_param, arg, new_name)
+
+    def substitute(self, param, arg, new_name=None):
+        """Make class with template parameter type substituted by arg."""
         from data_types.substitute_type import substitute_type
+        if new_name is None:
+            new_name = self._class_name.replace(
+                "<{}>".format(param.get_type_name()),
+                "<{}>".format(arg.get_type_name()))
         fields = dict(
-            (offset, (substitute_type(t, self.template_param, arg), name))
+            (offset, (substitute_type(t, param, arg), name))
             for offset, (t, name) in self._fields.items()
         )
-        return self.__class__(new_name, fields)
+        result = self.__class__(new_name, fields)
+        if self._parent is not None:
+            result.set_parent(self._parent.substitute(param, arg))
+        return result
+
+    def get_all_fields(self):
+        """Fields of the class and its parents by offset."""
+        fields = {}
+        if self._parent is not None:
+            fields.update(self._parent.get_all_fields())
+        fields.update(self._fields)
+        return fields
 
     @property
     def size(self):
