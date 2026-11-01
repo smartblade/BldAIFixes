@@ -390,7 +390,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 unknown_loc_58.y = -unknown_loc_40;
                 unknown_loc_58.z = -unknown_loc_40;
                 B_Vector unknown_loc_70;
-                unknown_loc_30.minCoords = unknown_loc_70 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_58;
+                unknown_loc_30.minCoords = unknown_loc_70 = bb.minCoords - unknown_loc_58;
                 B_Vector unknown_loc_88;
                 unknown_loc_88.x = -unknown_loc_40;
                 unknown_loc_88.y = -unknown_loc_40;
@@ -406,7 +406,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 unknown_loc_B8.y = -unknown_loc_40;
                 unknown_loc_B8.z = unknown_loc_40;
                 B_Vector unknown_loc_D0;
-                unknown_loc_30.minCoords = unknown_loc_D0 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_B8;
+                unknown_loc_30.minCoords = unknown_loc_D0 = bb.minCoords - unknown_loc_B8;
                 B_Vector unknown_loc_E8;
                 unknown_loc_E8.x = -unknown_loc_40;
                 unknown_loc_E8.y = -unknown_loc_40;
@@ -425,7 +425,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 unknown_loc_118.y = unknown_loc_40;
                 unknown_loc_118.z = -unknown_loc_40;
                 B_Vector unknown_loc_130;
-                unknown_loc_30.minCoords = unknown_loc_130 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_118;
+                unknown_loc_30.minCoords = unknown_loc_130 = bb.minCoords - unknown_loc_118;
                 B_Vector unknown_loc_148;
                 unknown_loc_148.x = -unknown_loc_40;
                 unknown_loc_148.y = unknown_loc_40;
@@ -441,7 +441,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 unknown_loc_178.y = unknown_loc_40;
                 unknown_loc_178.z = unknown_loc_40;
                 B_Vector unknown_loc_190;
-                unknown_loc_30.minCoords = unknown_loc_190 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_178;
+                unknown_loc_30.minCoords = unknown_loc_190 = bb.minCoords - unknown_loc_178;
                 B_Vector unknown_loc_1A8;
                 unknown_loc_1A8.x = -unknown_loc_40;
                 unknown_loc_1A8.y = unknown_loc_40;
@@ -463,7 +463,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 unknown_loc_1D8.y = -unknown_loc_40;
                 unknown_loc_1D8.z = -unknown_loc_40;
                 B_Vector unknown_loc_1F0;
-                unknown_loc_30.minCoords = unknown_loc_1F0 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_1D8;
+                unknown_loc_30.minCoords = unknown_loc_1F0 = bb.minCoords - unknown_loc_1D8;
                 B_Vector unknown_loc_208;
                 unknown_loc_208.x = unknown_loc_40;
                 unknown_loc_208.y = -unknown_loc_40;
@@ -479,7 +479,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 unknown_loc_238.y = -unknown_loc_40;
                 unknown_loc_238.z = unknown_loc_40;
                 B_Vector unknown_loc_250;
-                unknown_loc_30.minCoords = unknown_loc_250 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_238;
+                unknown_loc_30.minCoords = unknown_loc_250 = bb.minCoords - unknown_loc_238;
                 B_Vector unknown_loc_268;
                 unknown_loc_268.x = unknown_loc_40;
                 unknown_loc_268.y = -unknown_loc_40;
@@ -498,7 +498,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 unknown_loc_298.y = unknown_loc_40;
                 unknown_loc_298.z = -unknown_loc_40;
                 B_Vector unknown_loc_2B0;
-                unknown_loc_30.minCoords = unknown_loc_2B0 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_298;
+                unknown_loc_30.minCoords = unknown_loc_2B0 = bb.minCoords - unknown_loc_298;
                 B_Vector unknown_loc_2C8;
                 unknown_loc_2C8.x = unknown_loc_40;
                 unknown_loc_2C8.y = unknown_loc_40;
@@ -514,7 +514,7 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
                 unknown_loc_2F8.y = unknown_loc_40;
                 unknown_loc_2F8.z = unknown_loc_40;
                 B_Vector unknown_loc_310;
-                unknown_loc_30.minCoords = unknown_loc_310 = *reinterpret_cast<B_Vector *>(&bb) - unknown_loc_2F8;
+                unknown_loc_30.minCoords = unknown_loc_310 = bb.minCoords - unknown_loc_2F8;
                 B_Vector unknown_loc_328;
                 unknown_loc_328.x = unknown_loc_40;
                 unknown_loc_328.y = unknown_loc_40;

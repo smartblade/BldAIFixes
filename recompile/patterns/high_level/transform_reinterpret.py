@@ -2,6 +2,7 @@ import struct
 
 import expressions
 import data_types
+from expressions.do_pointer_dereference import do_pointer_dereference
 
 
 def transform_reinterpret(data_type, expression, analysis, **kwargs):
@@ -12,6 +13,9 @@ def transform_reinterpret(data_type, expression, analysis, **kwargs):
     if result is not None:
         return result
     result = _transform_to_static_cast(data_type, expression)
+    if result is not None:
+        return result
+    result = _transform_to_first_field(data_type, expression)
     if result is not None:
         return result
     analysis.process_reinterpret(data_type, expression)
@@ -91,3 +95,25 @@ _static_cast_pairs = {
     (data_types.SizeT, data_types.UInt32): True,
     (data_types.UInt32, data_types.SizeT): True,
 }
+
+
+def _transform_to_first_field(data_type, expression):
+    """Transform cast of pointer to class to pointer to its first field."""
+    if not isinstance(data_type, data_types.Pointer32):
+        return None
+    pointee = data_type.pointee
+    if pointee is None:
+        return None
+    if not isinstance(expression.data_type, data_types.Pointer32):
+        return None
+    if not isinstance(expression.data_type.pointee, data_types.ClassType):
+        return None
+    if pointee.size >= expression.data_type.pointee.size:
+        return None
+    try:
+        field = do_pointer_dereference(expression, 0, pointee.size)
+    except Exception:
+        return None
+    if field is None or not data_types.are_same(field.data_type, pointee):
+        return None
+    return expressions.AddressOf(field)
