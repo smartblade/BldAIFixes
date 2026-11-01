@@ -29,6 +29,13 @@ if errorlevel 1 (
     cl 2>&1 | findstr /C:"Version"
     exit /b 1
 )
+rem Rich header of BBLibc.dll: cl.exe 12.00.8799 (Visual C++ 6.0 SP4)
+cl 2>&1 | findstr /C:"Version 12.00.8799" >nul
+if errorlevel 1 (
+    echo Warning: the original binaries are compiled with cl.exe 12.00.8799,
+    echo code of other builds can differ:
+    cl 2>&1 | findstr /C:"Version"
+)
 
 echo === BBLibc.dll
 for %%f in (IDataFile Name BBLibc) do (

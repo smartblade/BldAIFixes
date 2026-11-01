@@ -38,7 +38,9 @@ are in `.data`. In the original `Blade.exe` the constants are read from
 
 ## Usage
 
-Requirements: Visual C++ 6.0 (`cl.exe` version 12.00), Python 3 and a
+Requirements: Visual C++ 6.0 (`cl.exe` version 12.00, the original binaries
+are compiled with build 12.00.8799, Visual C++ 6.0 SP4, according to the Rich
+header of `BBLibc.dll`, `build.bat` warns about other builds), Python 3 and a
 checkout of BldMystery (pull request 7 for `Blade.exe`, without
 `src/BWorld/OctTree.cpp` only `BBLibc.dll` is compared).
 
