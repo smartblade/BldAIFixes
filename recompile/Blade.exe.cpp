@@ -133,17 +133,16 @@ int B_SectorListNode::GetTypeID()
 // address: 0x004507B9
 B_OctTree::~B_OctTree()
 {
-    this->unknown_method_004507D5();
+    this->DeleteRoot();
 }
 
 // address: 0x004507D5
-p004507D5
+void B_OctTree::DeleteRoot()
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=0)
-    if (ACCESS(this, 36, 4) != 0x00000000)
+    if (this->m_root != nullptr)
     {
-        delete ACCESS(this, 36, 4);
-        ACCESS(this, 36, 4) = 0x00000000;
+        delete this->m_root;
+        this->m_root = nullptr;
     }
 }
 

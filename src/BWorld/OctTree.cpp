@@ -117,6 +117,17 @@ B_OctTree::~B_OctTree()
 
 /*
 * Module:                 Blade.exe
+* Entry point:            0x004507D5
+* VC++ mangling:          ?DeleteRoot@B_OctTree@@QAEXXZ
+*/
+
+void B_OctTree::DeleteRoot()
+{
+}
+
+
+/*
+* Module:                 Blade.exe
 * Entry point:            0x00450823
 * VC++ mangling:          ?BuildNode@@YAPAVB_OctantNodeBase@@ABV?$B_PtrArray@VB_Sector@@@@NABVB_BoundingBox@@@Z
 */
