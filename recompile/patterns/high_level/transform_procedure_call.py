@@ -18,7 +18,7 @@ def transform_procedure_call(
 ):
     operator_name = _operator_names.get(pc.name)
     if operator_name is not None and pc.callee_expression is None:
-        return pc.copy(name=operator_name)
+        return _transform_operator_call(pc, operator_name)
     pc, proc_decl = _resolve_virtual_call(pc)
     if proc_decl is None:
         proc_decl = _get_callee_declaration(pc, declarations)
@@ -35,6 +35,19 @@ def transform_procedure_call(
     pc = _convert_procedure_call_arguments(
         pc, analysis, file_declarations, call_characteristics, proc_decl)
     return _convert_to_return_type(pc, return_type)
+
+
+def _transform_operator_call(pc, operator_name):
+    if operator_name != "operator new" or len(pc.arguments) != 1:
+        return pc.copy(name=operator_name)
+    if pc.proc_decl.return_type is not None and not isinstance(
+        pc.proc_decl.return_type, data_types.Unknown32
+    ):
+        return pc.copy(name=operator_name)
+    # void *operator new(unsigned int size)
+    proc_decl = pc.proc_decl.copy()
+    proc_decl.change_return_type(data_types.Pointer32())
+    return pc.copy(name=operator_name, proc_decl=proc_decl)
 
 
 # Operators new and delete of Visual C++ runtime and SmartHeap

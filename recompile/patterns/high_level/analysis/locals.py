@@ -334,7 +334,16 @@ class LocalsAnalysis:
 
 def _is_acceptable_type(data_type):
     if isinstance(data_type, data_types.Pointer32):
-        if isinstance(data_type.pointee, data_types.ClassType):
+        pointee = data_type.pointee
+        if isinstance(pointee, data_types.ClassType):
+            return True
+        # Pointers returned by operator new and arrays of pointers
+        if pointee is None:
+            return True
+        if (
+            isinstance(pointee, data_types.Pointer32) and
+            isinstance(pointee.pointee, data_types.ClassType)
+        ):
             return True
     if data_type.is_any_int and data_type.size == 4:
         return True
