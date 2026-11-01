@@ -22,10 +22,7 @@ B_Vector B_Vector::operator -(const B_Vector &that) const
     double unknown_loc_18 = this->z - that.z;
     double unknown_loc_10 = this->y - that.y;
     double unknown_loc_08 = this->x - that.x;
-    __result->x = unknown_loc_08;
-    __result->y = unknown_loc_10;
-    __result->z = unknown_loc_18;
-    REGDEF(eax=__result)
+    return B_Vector(unknown_loc_08, unknown_loc_10, unknown_loc_18);
 }
 
 // address: 0x004501C1

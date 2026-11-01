@@ -1388,9 +1388,7 @@ B_Name B_Name::Right(unsigned int count) const
     B_Name unknown_loc_08;
     unknown_loc_08.B_Name(count);
     strncpy(unknown_loc_08.string, &this->string[this->len - count], static_cast<size_t>(count));
-    __result->B_Name(unknown_loc_08);
-    unknown_loc_08.~B_Name();
-    REGDEF(eax=__result)
+    return unknown_loc_08;
 }
 
 // address: 0x10003898
@@ -1407,9 +1405,7 @@ B_Name B_Name::Left(unsigned int count) const
     B_Name unknown_loc_08;
     unknown_loc_08.B_Name(count);
     strncpy(unknown_loc_08.string, this->string, static_cast<size_t>(count));
-    __result->B_Name(unknown_loc_08);
-    unknown_loc_08.~B_Name();
-    REGDEF(eax=__result)
+    return unknown_loc_08;
 }
 
 // address: 0x10003904
@@ -1486,9 +1482,7 @@ B_Name operator +(const B_Name &lother, const B_Name &rother)
     strcpy(unknown_loc_08.string, reinterpret_cast<char *>(STACKVAR(-20, 4)));
     STACKVAR(-24, 4) = rother.string;
     strcat(unknown_loc_08.string, reinterpret_cast<char *>(STACKVAR(-24, 4)));
-    __result->B_Name(unknown_loc_08);
-    unknown_loc_08.~B_Name();
-    REGDEF(eax=__result)
+    return unknown_loc_08;
 }
 
 // address: 0x10003B1E
@@ -1500,9 +1494,7 @@ B_Name operator +(const B_Name &other, const char *str)
     STACKVAR(-16, 4) = other.string;
     strcpy(unknown_loc_08.string, reinterpret_cast<char *>(STACKVAR(-16, 4)));
     strcat(unknown_loc_08.string, str);
-    __result->B_Name(unknown_loc_08);
-    unknown_loc_08.~B_Name();
-    REGDEF(eax=__result)
+    return unknown_loc_08;
 }
 
 // address: 0x10003BC7
@@ -1514,9 +1506,7 @@ B_Name operator +(const char *str, const B_Name &bName)
     strcpy(unknown_loc_08.string, str);
     STACKVAR(-16, 4) = bName.string;
     strcat(unknown_loc_08.string, reinterpret_cast<char *>(STACKVAR(-16, 4)));
-    __result->B_Name(unknown_loc_08);
-    unknown_loc_08.~B_Name();
-    REGDEF(eax=__result)
+    return unknown_loc_08;
 }
 
 // address: 0x10003C70

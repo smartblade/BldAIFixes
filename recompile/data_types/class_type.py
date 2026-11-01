@@ -9,6 +9,8 @@ class ClassType(DataType):
         self._class_name = class_name
         self._fields = fields
         self._methods = []
+        # Constructors are kept apart: there may be several of them
+        self._constructors = []
         self._parent = None
         self._fields_sorted = True
         self._sorted_offsets = None
@@ -60,6 +62,13 @@ class ClassType(DataType):
             if offset + field_type.size > size:
                 size = offset + field_type.size
         return size
+
+    @property
+    def constructors(self):
+        return list(self._constructors)
+
+    def add_constructor(self, constructor):
+        self._constructors.append(constructor)
 
     @property
     def fields(self):
