@@ -77,3 +77,30 @@ MISMATCH ?GetnOpenedFiles@B_IDataFile@@SAHXZ at 0x1000100F, 10 bytes, 0 relocate
 ```
 
 The script exits with code 1 if a procedure does not match or is not found.
+
+## libjpeg 6b
+
+`BBLibc.dll` contains IJG libjpeg 6b (strings `6b  27-Mar-1998` and
+`Copyright (C) 1998, Thomas G. Lane`) at `100096A0`-`1002698F` (see
+`docs/BBLibc-object-map.md` in branch `claude/bblibc-object-map`).
+`build_libjpeg.bat` compiles the library files of libjpeg 6b (`LIBOBJECTS`
+of `makefile.vc` with the `jmemnobs` memory manager, 47 files; the Rich
+header of `BBLibc.dll` counts 46 C objects) with `jconfig.vc` as
+`jconfig.h` and searches each compiled procedure in `BBLibc.dll`:
+
+```bat
+vc6check\build_libjpeg.bat C:\path\to\BldMystery [C:\path\to\jpeg-6b]
+```
+
+Without the path to jpeg-6b sources `jpegsrc.v6b.tar.gz` is downloaded from
+<https://www.ijg.org/files/> with `curl` and unpacked with `tar` of
+Windows 10. The default compiler options are the same as for BBLibc
+(`/Zp4 /MD /Od /Ob1 /Gd /W3`, set `CFLAGS` to try others, for example
+without `/Zp4`).
+
+libjpeg procedures are not exported, so `compare_obj.py --search` looks for
+each procedure of the object files in the whole binary (relocated bytes
+match any bytes) and prints `FOUND` with the address, `MULTIPLE` with all
+addresses or `NOT FOUND`. The addresses also show the order of libjpeg
+object files in the link and which files were linked (for example which
+`jmem*.c` memory manager).

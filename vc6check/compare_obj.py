@@ -214,6 +214,92 @@ def compare(name, addr, code, mask, relocations, memory, show_relocations):
     return not differences
 
 
+class Memory:
+    """Bytes of the original binary for searching of procedures."""
+
+    def __init__(self, memory):
+        self._base = min(memory)
+        end = max(memory) + 1
+        data = bytearray(end - self._base)
+        for addr, value in memory.items():
+            data[addr - self._base] = value
+        self._data = bytes(data)
+
+    def find(self, code, mask):
+        """Return addresses of all matches of code, masked bytes match any."""
+        anchor_start, anchor_end = _longest_unmasked_run(mask)
+        if anchor_end - anchor_start < 4:
+            return []
+        anchor = code[anchor_start:anchor_end]
+        addresses = []
+        pos = self._data.find(anchor)
+        while pos >= 0:
+            start = pos - anchor_start
+            if start >= 0 and self._matches(start, code, mask):
+                addresses.append(self._base + start)
+            pos = self._data.find(anchor, pos + 1)
+        return addresses
+
+    def _matches(self, start, code, mask):
+        data = self._data[start:start + len(code)]
+        if len(data) != len(code):
+            return False
+        return all(mask[i] or data[i] == code[i] for i in range(len(code)))
+
+
+def _longest_unmasked_run(mask, max_length=32):
+    best = (0, 0)
+    start = None
+    for i in range(len(mask) + 1):
+        if i < len(mask) and not mask[i]:
+            if start is None:
+                start = i
+            if i + 1 - start > best[1] - best[0]:
+                best = (start, i + 1)
+            if best[1] - best[0] >= max_length:
+                break
+        else:
+            start = None
+    return best
+
+
+def search(obj_file_names, memory):
+    """Search all procedures of object files in the original binary."""
+    memory = Memory(memory)
+    found_count = 0
+    total_count = 0
+    for obj_file_name in _expand_directories(obj_file_names):
+        obj_file = ObjFile(obj_file_name)
+        for symbol in obj_file.functions():
+            code, mask, _ = obj_file.get_function_code(symbol)
+            total_count += 1
+            addresses = memory.find(code, mask)
+            if len(addresses) == 1:
+                found_count += 1
+                status = "FOUND"
+            elif addresses:
+                found_count += 1
+                status = "MULTIPLE"
+            else:
+                status = "NOT FOUND"
+            print("{} {} ({}, {} bytes){}".format(
+                status, symbol.name, os.path.basename(obj_file_name),
+                len(code),
+                "".join(" 0x{:08X}".format(a) for a in addresses)))
+    print("Found {} of {} procedures".format(found_count, total_count))
+    return found_count == total_count
+
+
+def _expand_directories(file_names):
+    for file_name in file_names:
+        if os.path.isdir(file_name):
+            for name in sorted(os.listdir(file_name)):
+                if name.lower().endswith(".obj"):
+                    yield os.path.join(file_name, name)
+        else:
+            yield file_name
+
+
 def read_module_name(raw_file_name):
     module_file_name = os.path.join(
         os.path.dirname(os.path.abspath(raw_file_name)), "module.txt")
@@ -232,9 +318,17 @@ def main():
         "--relocs", action="store_true",
         help="print targets of relocations: called procedures, variables "
         "and constants (float literals are __real@... symbols)")
-    arg_parser.add_argument("obj_files", nargs="+")
+    arg_parser.add_argument(
+        "--search", action="store_true",
+        help="search all procedures of object files in the original binary "
+        "instead of comparing at known addresses")
+    arg_parser.add_argument(
+        "obj_files", nargs="+",
+        help="object files (with --search also directories of object files)")
     args = arg_parser.parse_args()
     memory, exports = read_raw(args.raw)
+    if args.search:
+        return 0 if search(args.obj_files, memory) else 1
     module_procedures = PROCEDURES.get(read_module_name(args.raw), [])
     procedures = dict(module_procedures)
     if args.all:
