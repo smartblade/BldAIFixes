@@ -583,14 +583,6 @@ B_SectorSurfaceCache::~B_SectorSurfaceCache()
 B_GlobalSurfaceCache::B_GlobalSurfaceCache()
 {
     this->count = 0;
-    int unknown_loc_0C = 128;
-    STACKVAR(-8, 4) = 0x00000110;
-    STACKVAR(-4, 4) = &this->elements;
-    while (--unknown_loc_0C >= 0)
-    {
-        reinterpret_cast<B_SectorSurfaceCache *>(STACKVAR(-4, 4))->B_SectorSurfaceCache();
-        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4));
-    }
 }
 
 // address: 0x00453AC0
