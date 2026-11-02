@@ -25,7 +25,8 @@
 		"varnames": {
 			"8": "bb",
 			"16": "halfSize",
-			"-4": "sectorBB"
+			"-4": "sectorBB",
+			"-8": "intersects"
 		}
 	},
 	"00452191": {
@@ -38,7 +39,8 @@
 			"8": "bb",
 			"16": "halfSize",
 			"-4": "i",
-			"-8": "sectorBB"
+			"-8": "sectorBB",
+			"-12": "intersects"
 		}
 	},
 	"00452388": {

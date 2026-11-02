@@ -135,7 +135,16 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList
     {
         this->sectors->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
         B_BoundingBox *sectorBB = &this->sectors->boundingBox;
-        if (!(gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x || gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y || gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z || gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x || gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y || gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z) && outList->size < 512)
+        int intersects;
+        if (gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x || gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y || gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z || gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x || gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y || gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z)
+        {
+            intersects = 0;
+        }
+        else
+        {
+            intersects = 1;
+        }
+        if (intersects != 0 && outList->size < 512)
         {
             outList->sectors[outList->size] = this->sectors;
             outList->size++;
@@ -169,7 +178,16 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSec
         {
             this->elements[i]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
             B_BoundingBox *sectorBB = &this->elements[i]->boundingBox;
-            if (!(gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x || gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y || gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z || gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x || gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y || gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z) && outList->size < 512)
+            int intersects;
+            if (gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x || gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y || gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z || gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x || gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y || gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z)
+            {
+                intersects = 0;
+            }
+            else
+            {
+                intersects = 1;
+            }
+            if (intersects != 0 && outList->size < 512)
             {
                 outList->sectors[outList->size] = this->elements[i];
                 outList->size++;

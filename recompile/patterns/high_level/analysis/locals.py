@@ -161,7 +161,7 @@ class LocalsAnalysis:
                 min_local_ptr_offset = local.offset
         return min_local_ptr_offset
 
-    def fill_stack_variables(self, stack_vars, variable_names):
+    def fill_stack_variables(self, stack_vars, variable_names, is_final=False):
         """Add stack variables and return True if there are new ones."""
         num_stack_vars = len(stack_vars)
         min_local_ptr_offset = self._get_min_local_ptr_offset()
@@ -188,6 +188,9 @@ class LocalsAnalysis:
             name = variable_names.get(offset)
             if name is None:
                 name = "unknown_loc_{:02X}".format(-offset)
+            elif is_final and _is_unknown_int32(data_type):
+                # Named variables of unknown integer types are 'int'
+                data_type = data_types.Int32()
             if isinstance(data_type, data_types.AnyInt):
                 data_type = self._compared_types_by_offset.get(offset)
                 if data_type is None:
@@ -330,6 +333,12 @@ class LocalsAnalysis:
                 )
             else:
                 self._types_by_offset[offset] = None
+
+
+def _is_unknown_int32(data_type):
+    if data_type.size != 4:
+        return False
+    return isinstance(data_type, (data_types.Unknown32, data_types.AnyInt))
 
 
 def _is_acceptable_type(data_type):
