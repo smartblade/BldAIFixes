@@ -29,7 +29,7 @@ class ConditionalOperatorAnalysis:
         self._num_uses[local.offset] = None
 
     def transform_block_instructions(
-        self, block_instructions, stack_vars, **kwargs
+        self, block_instructions, stack_vars, characteristics=None, **kwargs
     ):
         if_instr = block_instructions.get_current_instruction(
             instructions.IfInstruction)
@@ -60,6 +60,13 @@ class ConditionalOperatorAnalysis:
         if else_stackvar.size != 4:
             return
         if if_stackvar.offset != else_stackvar.offset:
+            return
+        # Named variables are not results of conditional operators
+        if (
+            characteristics is not None and
+            characteristics.variables_names.get(if_stackvar.offset)
+            is not None
+        ):
             return
         cond_operator_chain = block_instructions.interval(1)
         assert cond_operator_chain.as_instr(0, None) == if_instr
