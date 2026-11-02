@@ -158,19 +158,21 @@ void B_IDataFile::Open(const char *src, int flags)
 
 // address: 0x10001740
 B_IDataFile::B_IDataFile()
+:
+    fd(-1),
+    file_name(nullptr),
+    cacheBlockStartPos(-IFILE_CACHE_SIZE),
+    posInCacheBlock(0),
+    fileInfo(nullptr)
 {
-    this->fd = -1;
-    this->file_name = nullptr;
-    this->cacheBlockStartPos = -IFILE_CACHE_SIZE;
-    this->posInCacheBlock = 0;
-    this->fileInfo = nullptr;
 }
 
 // address: 0x10001788
 B_IDataFile::B_IDataFile(const char *file_name, int flags)
+:
+    cacheBlockStartPos(-IFILE_CACHE_SIZE),
+    posInCacheBlock(0)
 {
-    this->cacheBlockStartPos = -IFILE_CACHE_SIZE;
-    this->posInCacheBlock = 0;
     this->Open(file_name, flags);
 }
 
@@ -363,9 +365,10 @@ B_IDataFile::~B_IDataFile()
 
 // address: 0x10001C44
 B_ODataFile::B_ODataFile(const char *file_name, int flags)
+:
+    cacheBlockStartPos(0),
+    posInCacheBlock(0)
 {
-    this->cacheBlockStartPos = 0;
-    this->posInCacheBlock = 0;
     this->file_name = strdup(file_name);
     this->fd = open(file_name, flags | O_WRONLY | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
     if (this->fd == -1)
@@ -1305,8 +1308,9 @@ B_Name::B_Name()
 
 // address: 0x10003337
 B_Name::B_Name(const char *str)
+:
+    len(static_cast<unsigned int>(strlen(str)))
 {
-    this->len = static_cast<unsigned int>(strlen(str));
     STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 1);
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     strcpy(this->string, str);
@@ -1324,8 +1328,9 @@ B_Name::B_Name(const B_Name &src)
 
 // address: 0x10003410
 B_Name::B_Name(unsigned int len)
+:
+    len(len)
 {
-    this->len = len;
     STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 1);
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     this->string[this->len] = '\0';
@@ -23560,8 +23565,9 @@ B_MeshEdge::B_MeshEdge()
 
 // address: 0x1003221C
 B_MeshEdge::B_MeshEdge(unsigned int a, unsigned int b, unsigned int c)
+:
+    field(c)
 {
-    this->field = c;
     ACCESS(this, 20, 4) = 0x00000001;
     ACCESS(this, 4, 4) = min(a, b);
     ACCESS(this, 8, 4) = max(a, b);

@@ -15,8 +15,6 @@ def discover_fields_initialization(procedure):
     proc_info = procedure.proc_info
     class_type = procedure.proc_decl.method_class
     fields = get_fields(class_type)
-    if not _is_init_required(class_type, fields):
-        return procedure
     vtbl_addr = _find_vtb_addr(procedure)
     last_init_instr = None
     prev_instr = None
@@ -40,16 +38,6 @@ def discover_fields_initialization(procedure):
         prev_instr = last_init_instr
         last_init_instr = instr
     return procedure.copy(last_init_instr=last_init_instr)
-
-
-def _is_init_required(class_type, fields):
-    if class_type.has_virtual_methods:
-        return True
-    for field in fields:
-        field_type, field_name = field
-        if isinstance(field_type, data_types.ClassType):
-            return True
-    return False
 
 
 def _find_vtb_addr(procedure):
@@ -114,6 +102,9 @@ def _go_to_field(field_index, fields, initialized_field):
             initialized_f_name == field_name
         ):
             return field_index
+        # Parent is constructed implicitly before fields
+        if field_name is None and initialized_f_name is not None:
+            continue
         if isinstance(data_type, data_types.ClassType):
             return -1
     return -1
