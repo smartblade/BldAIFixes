@@ -8,3 +8,7 @@ class Constant:
         if offset is None:
             return None
         return int(offset)
+
+    @property
+    def name(self):
+        return self._json_dict.get("name")
