@@ -3,6 +3,9 @@ import expressions
 
 
 def transform_constant(c, file_declarations, **kwargs):
+    result = _make_named_float_const(c, **kwargs)
+    if result is not None:
+        return result
     result = _make_named_const_from_characteristics(c, **kwargs)
     if result is not None:
         return result
@@ -22,6 +25,23 @@ def transform_constant(c, file_declarations, **kwargs):
             return None
         constant_name = "-{}".format(constant_name)
     return expressions.NamedConstant(c.data_type.size, constant_name)
+
+
+def _make_named_float_const(c, characteristics, **kwargs):
+    """Name floating point constant: 10.0 -> kMargin, -10.0 -> -kMargin."""
+    if not isinstance(c.data_type, (data_types.Float, data_types.Double)):
+        return None
+    for value, negate in ((c.value, False), (-c.value, True)):
+        const_characteristics = characteristics.constants.float_by_value(
+            value)
+        if const_characteristics is None or const_characteristics.name is None:
+            continue
+        result = expressions.Identifier(
+            c.data_type, const_characteristics.name)
+        if negate:
+            result = expressions.Negate(result)
+        return result
+    return None
 
 
 def _make_named_const_from_characteristics(
