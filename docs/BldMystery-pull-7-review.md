@@ -795,6 +795,23 @@ of BldRecompile output is used:
     {
     }
     ```
+12. Elements of arrays are accessed directly, not with inline methods:
+    `this->elements[i]` instead of `(*this)[i]`. Inline methods are
+    compiled into the same code, BldRecompile can't restore them.
+13. Pointers are compared with `nullptr` explicitly:
+    `this->children[0] != nullptr` instead of `this->children[0]`.
+14. Local variables are declared without `const`:
+    `double childHalfSize = halfSize / child_size_divisor;`.
+15. Fields assigned at the start of a constructor are initialized in the
+    initializer list, also for classes without virtual methods:
+
+    ```cpp
+    B_OctTreeSectorsList::B_OctTreeSectorsList()
+    :
+        size(0)
+    {
+    }
+    ```
 
 ## Procedures that match the binary
 
