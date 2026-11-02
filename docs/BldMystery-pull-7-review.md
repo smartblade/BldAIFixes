@@ -664,6 +664,30 @@ of BldRecompile output is used:
 7. There are no comments and no commented out code inside procedures,
    e.g. `// mark as "processed"`, `// TODO double check` and the commented
    out implementation of `B_Vector::operator -`.
+8. Lines longer than 80 characters are wrapped the way BldRecompile does
+   it when it updates sources (`process_asm.py --update-src-at`):
+
+   ```cpp
+   void LeafNode::CollectSectorsInBox(
+       const B_BoundingBox &bb,
+       B_OctTreeSectorsList *outList,
+       double halfSize
+   )
+   {
+       if (
+           this->sectors->lastQueryId != gbl_oct_tree_query_id &&
+           this->sectors->isActive != 0
+       )
+       {
+           ...
+   ```
+
+9. Procedures of a source file are in the order of their addresses: Visual
+   C++ 6 places procedures of a file in the order of their definitions. In
+   `OctTree.cpp` `B_SectorSurfaceCache::~B_SectorSurfaceCache` (0x00453490)
+   must be defined before `B_GlobalSurfaceCache::B_GlobalSurfaceCache`
+   (0x004539A9). BldRecompile can't update sources with procedures in other
+   order.
 
 ## Procedures that match the binary
 
