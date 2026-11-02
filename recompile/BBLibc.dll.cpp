@@ -18922,8 +18922,7 @@ int B_BitMap24::ReadFromFile(const char *arg_1)
 {
     B_Name unknown_loc_08;
     unknown_loc_08.B_Name(arg_1);
-    B_Name unknown_loc_10;
-    unknown_loc_10 = unknown_loc_08.Right(4);
+    B_Name unknown_loc_10 = unknown_loc_08.Right(4);
     if (unknown_loc_10.CompareNoCase(".BMP") != 0)
     {
         int unknown_loc_14 = this->ReadFromBMP(arg_1);
@@ -18938,8 +18937,8 @@ int B_BitMap24::ReadFromFile(const char *arg_1)
         unknown_loc_08.~B_Name();
         return unknown_loc_18;
     }
-    B_Name unknown_loc_20;
-    unknown_loc_10 = unknown_loc_20 = unknown_loc_08.Right(5);
+    B_Name unknown_loc_20 = unknown_loc_08.Right(5);
+    unknown_loc_10 = unknown_loc_20;
     unknown_loc_20.~B_Name();
     if (unknown_loc_10.CompareNoCase(".JPEG") != 0)
     {
@@ -18959,8 +18958,7 @@ int B_BitMap24::SaveToFile(const char *arg_1, int arg_2) const
 {
     B_Name unknown_loc_08;
     unknown_loc_08.B_Name(arg_1);
-    B_Name unknown_loc_10;
-    unknown_loc_10 = unknown_loc_08.Right(4);
+    B_Name unknown_loc_10 = unknown_loc_08.Right(4);
     if (unknown_loc_10.CompareNoCase(".BMP") != 0)
     {
         int unknown_loc_14 = this->SaveToBMP(arg_1);
@@ -18975,8 +18973,8 @@ int B_BitMap24::SaveToFile(const char *arg_1, int arg_2) const
         unknown_loc_08.~B_Name();
         return unknown_loc_18;
     }
-    B_Name unknown_loc_20;
-    unknown_loc_10 = unknown_loc_20 = unknown_loc_08.Right(5);
+    B_Name unknown_loc_20 = unknown_loc_08.Right(5);
+    unknown_loc_10 = unknown_loc_20;
     unknown_loc_20.~B_Name();
     if (unknown_loc_10.CompareNoCase(".JPEG") != 0)
     {
