@@ -35,6 +35,23 @@ class B_Node : public B_Base, public B_PtrArray<B_Item>
 public:
     virtual int GetTypeID();
 };
+
+template<class TYPE>
+class B_Array
+{
+public:
+    B_Array(unsigned int increment = 16, int deleteItems = true)
+    {
+    }
+
+    unsigned int increment;
+};
+
+class B_List : public B_Base, public B_Array<B_Item>
+{
+public:
+    virtual int GetTypeID();
+};
 """
 
 
@@ -61,3 +78,15 @@ class TestClassParents(unittest.TestCase):
         self.assertEqual("elements", field_name)
         self.assertEqual("B_Item **", field_type.get_type_name())
         self.assertEqual("size", node.get_field_by_offset(12)[1])
+
+    def test_constructor_default_values(self):
+        array = _parse_types()["B_List"].other_parents[0][1]
+        self.assertEqual("B_Array<B_Item>", array.class_name)
+        (constructor, ) = array.constructors
+        self.assertEqual(
+            ["16", "true"], array.get_default_values(constructor))
+
+    def test_other_parents(self):
+        (offset, parent), = _parse_types()["B_Node"].other_parents
+        self.assertEqual(4, offset)
+        self.assertEqual("B_PtrArray<B_Item>", parent.class_name)

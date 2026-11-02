@@ -11,6 +11,10 @@ class ClassType(DataType):
         self._methods = []
         # Constructors are kept apart: there may be several of them
         self._constructors = []
+        # Default values of parameters of constructors (C++ expressions)
+        self._default_values = {}
+        # Parents of multiple inheritance after the first one: (offset, type)
+        self._other_parents = []
         self._parent = None
         self._fields_sorted = True
         self._sorted_offsets = None
@@ -45,6 +49,9 @@ class ClassType(DataType):
         result = self.__class__(new_name, fields)
         if self._parent is not None:
             result.set_parent(self._parent.substitute(param, arg))
+        for constructor in self._constructors:
+            result.add_constructor(
+                constructor, self._default_values.get(id(constructor)))
         return result
 
     def get_all_fields(self):
@@ -67,8 +74,21 @@ class ClassType(DataType):
     def constructors(self):
         return list(self._constructors)
 
-    def add_constructor(self, constructor):
+    def add_constructor(self, constructor, default_values=None):
         self._constructors.append(constructor)
+        if default_values is not None:
+            self._default_values[id(constructor)] = default_values
+
+    def get_default_values(self, constructor):
+        """Default values of parameters of constructor or None for each."""
+        return self._default_values.get(id(constructor))
+
+    @property
+    def other_parents(self):
+        return list(self._other_parents)
+
+    def add_other_parent(self, offset, parent):
+        self._other_parents.append((offset, parent))
 
     @property
     def fields(self):

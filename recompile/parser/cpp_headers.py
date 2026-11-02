@@ -125,7 +125,8 @@ class HeaderState:
                     other_parents = match.group("other_parents")
                     if other_parents and not is_forward:
                         parent_size = self._add_other_parents_fields(
-                            fields, _get_class_size(parent), other_parents)
+                            class_type, fields, _get_class_size(parent),
+                            other_parents)
                 if not is_forward:
                     class_type = self._declared_types[class_name]
                     class_type.template_param = self._template_param
@@ -146,7 +147,9 @@ class HeaderState:
                 if fields is not None and brackets_depth == 1:
                     definition_chars.append(c)
 
-    def _add_other_parents_fields(self, fields, offset, other_parents):
+    def _add_other_parents_fields(
+        self, class_type, fields, offset, other_parents
+    ):
         """Add fields of other base classes of multiple inheritance."""
         for parent_name in other_parents.split(","):
             parent_name = _strip_start(parent_name.strip(), "public")
@@ -156,6 +159,7 @@ class HeaderState:
             parent = parser.parse_data_type(
                 parent_name, self._declared_types)
             offset = (offset + 3) // 4 * 4
+            class_type.add_other_parent(offset, parent)
             for field_offset, field in parent.get_all_fields().items():
                 fields[offset + field_offset] = field
             offset += _get_class_size(parent)
@@ -172,7 +176,7 @@ class HeaderState:
                 continue
             if isinstance(decl, _Constructor):
                 self._declared_types[class_name].add_constructor(
-                    decl.proc_decl)
+                    decl.proc_decl, decl.default_values)
                 continue
             if isinstance(decl, ProcedureDeclaration):
                 # Add space for vtable if necessary
@@ -231,7 +235,7 @@ class HeaderState:
                 class_name, definition, self._declared_types)
         except Exception:
             return None
-        return _Constructor(proc_decl)
+        return _Constructor(proc_decl, _get_default_values(definition))
 
     def _try_parse_preprocessor_directive(self, line):
         match = preprocessor_regexp.search(line)
@@ -288,8 +292,22 @@ class HeaderState:
 
 
 class _Constructor:
-    def __init__(self, proc_decl):
+    def __init__(self, proc_decl, default_values):
         self.proc_decl = proc_decl
+        self.default_values = default_values
+
+
+def _get_default_values(definition):
+    """Return default values of parameters of procedure definition."""
+    start = definition.find("(")
+    parameters = definition[start + 1:definition.rfind(")")]
+    if not parameters.strip():
+        return []
+    default_values = []
+    for parameter in parameters.split(","):
+        _, sep, value = parameter.partition("=")
+        default_values.append(value.strip() if sep else None)
+    return default_values
 
 
 def _get_class_size(class_type):
