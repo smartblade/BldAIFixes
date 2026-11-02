@@ -1,0 +1,178 @@
+"""Compare sources updated by BldRecompile with expected sources.
+
+BldRecompile converts procedures of a module and writes them into a copy
+of the sources (process_asm.py --update-src-at). Procedures converted by
+it are compared with procedures of the same addresses in the expected
+sources, e.g. sources of a pull request implementing them.
+
+Usage:
+    python tools/compare_sources.py --expected EXPECTED_SRC [--src SRC]
+        [--module Blade.exe] [--diff]
+"""
+import argparse
+import builtins
+import difflib
+import os
+import re
+import runpy
+import shutil
+import subprocess
+import sys
+import tempfile
+
+_root_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+_recompile_dir = os.path.join(_root_dir, "recompile")
+_address_regexp = re.compile(r"^// address: 0x(?P<addr>[\dABCDEF]+)$")
+
+
+def main():
+    if sys.argv[1:2] == ["--run-recompile"]:
+        _run_recompile(sys.argv[2:])
+        return
+    args = _parse_args()
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        converted, updated_src = _update_sources(
+            args.src, args.module, tmp_dir)
+        updated = _collect_procedures(updated_src, args.module)
+        expected = _collect_procedures(args.expected, args.module)
+    num_different = 0
+    for addr in sorted(converted):
+        actual_lines = updated.get(addr)
+        expected_lines = expected.get(addr)
+        if actual_lines is None:
+            status = "NOT UPDATED"
+        elif expected_lines is None:
+            status = "NOT FOUND"
+        elif actual_lines == expected_lines:
+            print("MATCH       0x{:08X} {}".format(
+                addr, _get_name(actual_lines)))
+            continue
+        else:
+            status = "DIFFERENT"
+        num_different += 1
+        print("{:11} 0x{:08X} {}".format(
+            status, addr, _get_name(actual_lines or expected_lines)))
+        if expected_lines is None and actual_lines is not None:
+            print("    procedure is not found in expected sources")
+        if actual_lines is None:
+            print("    procedure is not updated by BldRecompile")
+        if args.diff and actual_lines and expected_lines:
+            for line in difflib.unified_diff(
+                expected_lines, actual_lines, "expected", "recompile",
+                lineterm="",
+            ):
+                print("    " + line)
+    print("Matching procedures: {} of {}".format(
+        len(converted) - num_different, len(converted)))
+    sys.exit(1 if num_different else 0)
+
+
+def _parse_args():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument(
+        "--expected", help="directory of expected sources")
+    parser.add_argument(
+        "--src", default=os.path.join(_root_dir, "src"),
+        help="directory of sources converted by BldRecompile")
+    parser.add_argument(
+        "--module", default="Blade.exe", help="compared module")
+    parser.add_argument(
+        "--diff", action="store_true", help="show differences")
+    args = parser.parse_args()
+    if args.expected is None:
+        parser.error("--expected is required")
+    return args
+
+
+def _update_sources(src_dir, module, tmp_dir):
+    """Convert procedures of the module and update copy of sources."""
+    input_src = os.path.join(tmp_dir, "src")
+    shutil.copytree(src_dir, input_src)
+    # Only the compared module is converted
+    for root, dirs, files in os.walk(input_src):
+        if "module.txt" in files and _read_module(root) != module:
+            shutil.rmtree(root)
+            dirs[:] = []
+    updated_src = os.path.join(tmp_dir, "updated")
+    shutil.copytree(input_src, updated_src)
+    recompile_dir = os.path.join(tmp_dir, "recompile")
+    shutil.copytree(
+        _recompile_dir, recompile_dir,
+        ignore=shutil.ignore_patterns("__pycache__", "*.cpp"))
+    subprocess.run(
+        [
+            sys.executable, os.path.realpath(__file__), "--run-recompile",
+            "--asm-patterns=yes", "--src={}".format(input_src),
+            "--update-src-at={}".format(updated_src),
+        ],
+        cwd=recompile_dir, check=True, stdout=subprocess.DEVNULL)
+    converted = set()
+    with open(os.path.join(recompile_dir, "{}.cpp".format(module))) as f:
+        for line in f:
+            match = _address_regexp.search(line.rstrip())
+            if match:
+                converted.add(int(match.group("addr"), 16))
+    return converted, updated_src
+
+
+def _read_module(asm_dir):
+    with open(os.path.join(asm_dir, "module.txt")) as f:
+        return f.read().strip()
+
+
+def _run_recompile(recompile_args):
+    """Run process_asm.py reading files in Windows-1251 encoding."""
+    original_open = builtins.open
+
+    def open_cp1251(file, mode="r", *args, **kwargs):
+        if "b" not in mode and not args and "encoding" not in kwargs:
+            kwargs["encoding"] = "cp1251"
+        return original_open(file, mode, *args, **kwargs)
+
+    builtins.open = open_cp1251
+    sys.path.insert(0, os.getcwd())
+    sys.argv = ["process_asm.py"] + recompile_args
+    runpy.run_path("process_asm.py", run_name="__main__")
+
+
+def _collect_procedures(src_dir, module):
+    """Return lines of definitions of procedures of the module by address."""
+    sys.path.insert(0, _recompile_dir)
+    import parser
+    procedures = {}
+    for root, dirs, files in os.walk(src_dir):
+        for file in files:
+            if not file.lower().endswith((".cpp", ".h")):
+                continue
+            with open(os.path.join(root, file), encoding="cp1251") as f:
+                lines = [line.rstrip() for line in f]
+            definitions = parser.SrcSymbols.collect_procedures(lines)
+            for (cur_module, addr), definition in definitions.items():
+                if cur_module != module:
+                    continue
+                if definition.definition_end_line is None:
+                    continue
+                procedures[addr] = _strip_blank_lines(lines[
+                    definition.definition_start_line:
+                    definition.definition_end_line + 1])
+    return procedures
+
+
+def _get_name(lines):
+    """Return name of procedure from the first line of its definition."""
+    if not lines:
+        return ""
+    match = re.search(r"([\w:~]+(\s*operator\s*\S+)?)\s*\(", lines[0])
+    return match.group(1) if match else lines[0]
+
+
+def _strip_blank_lines(lines):
+    """Strip blank lines between metadata and definition."""
+    start = 0
+    while start < len(lines) and not lines[start]:
+        start += 1
+    return lines[start:]
+
+
+if __name__ == "__main__":
+    main()
