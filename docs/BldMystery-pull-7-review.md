@@ -674,12 +674,18 @@ of BldRecompile output is used:
        double halfSize
    )
    {
-       if (
-           this->sectors->lastQueryId != gbl_oct_tree_query_id &&
-           this->sectors->isActive != 0
-       )
-       {
-           ...
+       ...
+           if (
+               !(
+                   gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x ||
+                   gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y ||
+                   gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z ||
+                   gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x ||
+                   gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y ||
+                   gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z
+               ) &&
+               outList->size < 512
+           )
    ```
 
 9. Procedures of a source file are in the order of their addresses: Visual
