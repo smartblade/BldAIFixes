@@ -22,6 +22,10 @@ def discover_fields_initialization(procedure):
     prev_instr = None
     cur_class_field_index = 0
     for instr in procedure.instructions:
+        if _is_other_parent_construction(proc_info, class_type, instr):
+            prev_instr = last_init_instr
+            last_init_instr = instr
+            continue
         initialized_field = _extract_initialized_field(proc_info, instr)
         if initialized_field is None:
             if (
@@ -40,6 +44,23 @@ def discover_fields_initialization(procedure):
         prev_instr = last_init_instr
         last_init_instr = instr
     return procedure.copy(last_init_instr=last_init_instr)
+
+
+def _is_other_parent_construction(proc_info, class_type, instr):
+    """Check for construction of other parent of multiple inheritance."""
+    if not isinstance(instr, instructions.CodeInstruction):
+        return False
+    pc = instr.expression
+    if not isinstance(pc, expressions.ProcedureCall) or not pc.is_method:
+        return False
+    if pc.proc_decl is None or not pc.proc_decl.is_constructor:
+        return False
+    if not proc_info.is_this_expression(pc.arguments[0]):
+        return False
+    return any(
+        parent is pc.proc_decl.method_class
+        for offset, parent in class_type.other_parents
+    )
 
 
 def _is_init_required(class_type, fields):

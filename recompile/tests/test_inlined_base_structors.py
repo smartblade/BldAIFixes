@@ -110,3 +110,48 @@ class TestInlinedBaseStructors(unittest.TestCase):
             instructions.LabeledBlock("l1", [_count("--")]),
         ])
         self.assertEqual(4, len(instrs))
+
+
+class _ThisProcInfo(_ProcInfo):
+    @property
+    def stack_variables(self):
+        return {-4: self._this}
+
+
+class TestOtherParentsConstruction(unittest.TestCase):
+    def _construction(self, increment):
+        from calling_convention import CallingConvention
+        from expressions.operator import Operator
+        from patterns.high_level.inlined_base_structors import \
+            _make_other_parents_construction
+        from procedure_declaration import ProcedureDeclaration
+        array = data_types.ClassType("B_Array", {
+            4: (data_types.UInt32(), "increment"),
+        })
+        array.add_constructor(ProcedureDeclaration(
+            "B_Array", CallingConvention.THISCALL, array,
+            [(data_types.UInt32(), "increment")], None), ["16"])
+        node = data_types.ClassType("B_Node", {})
+        node.add_other_parent(4, array)
+        this = expressions.Identifier(data_types.Pointer32(node), "this")
+        ptr = expressions.intermediate.Stackvar(-8, 4)
+        removed = [
+            instructions.Assignment(ptr, expressions.Bin(
+                Operator.ADD,
+                expressions.ReinterpretCast(data_types.AnyInt32(), this),
+                expressions.Constant(data_types.Int32(), 4))),
+            instructions.Assignment(
+                expressions.intermediate.Access(ptr, 4, 4),
+                expressions.Constant(data_types.UInt32(), increment)),
+        ]
+        return _make_other_parents_construction(
+            _ThisProcInfo(this), node, removed)
+
+    def test_not_default_argument(self):
+        (call, ) = self._construction(1)
+        pc = call.expression
+        self.assertEqual("B_Array", pc.name)
+        self.assertEqual([1], [arg.value for arg in pc.arguments[1:]])
+
+    def test_default_argument(self):
+        self.assertEqual([], self._construction(16))
