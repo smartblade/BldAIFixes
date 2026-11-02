@@ -762,6 +762,19 @@ of BldRecompile output is used:
    must be defined before `B_GlobalSurfaceCache::B_GlobalSurfaceCache`
    (0x004539A9). BldRecompile can't update sources with procedures in other
    order.
+10. There are no blank lines inside procedures, including empty bodies and
+    lines before `return`:
+
+    ```cpp
+    B_SectorListNode::~B_SectorListNode()
+    {
+    }
+
+    int B_OctantNode::GetTypeID()
+    {
+        return B_OCT_NODE_CID_BRANCH;
+    }
+    ```
 
 ## Procedures that match the binary
 
