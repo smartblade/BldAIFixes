@@ -7,10 +7,17 @@ def get_fields(class_type):
         cur_field_offset, cur_field = cur_field_and_offset
         fields.append(cur_field)
         cur_field_type, cur_field_name = cur_field
-        if cur_field_type.size == 0:
+        size = cur_field_type.size
+        # Parent without fields has the table of virtual methods only
+        if (
+            cur_field_name is None and size == 0 and
+            cur_field_type.has_virtual_methods
+        ):
+            size = 4
+        if size == 0:
             cur_field_offset += 1
         else:
-            cur_field_offset += cur_field_type.size
+            cur_field_offset += size
         cur_field_and_offset = _get_type_at(class_type, cur_field_offset)
     return fields
 

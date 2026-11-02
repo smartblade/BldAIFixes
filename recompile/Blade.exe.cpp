@@ -65,8 +65,9 @@ int B_OctantNode::GetTypeID()
 
 // address: 0x00450417
 LeafNode::LeafNode()
+:
+    sectors(nullptr)
 {
-    this->sectors = nullptr;
 }
 
 // address: 0x00450450
@@ -357,8 +358,9 @@ void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsLis
 
 // address: 0x00453264
 B_OctTreeSectorsList::B_OctTreeSectorsList()
+:
+    size(0)
 {
-    this->size = 0;
 }
 
 // address: 0x0045327B
@@ -420,8 +422,9 @@ B_SectorSurfaceCache::~B_SectorSurfaceCache()
 
 // address: 0x004539A9
 B_GlobalSurfaceCache::B_GlobalSurfaceCache()
+:
+    count(0)
 {
-    this->count = 0;
 }
 
 // address: 0x00453AC0
