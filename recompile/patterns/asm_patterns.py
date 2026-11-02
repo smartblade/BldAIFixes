@@ -190,6 +190,8 @@ def _match_instructions_pattern(pattern, first_index, instrs):
     match_dict = dict()
     cur_index = first_index
     for instr_pattern in pattern.instructions:
+        if cur_index >= len(instrs):
+            return -1, None
         if not _match_instruction(instr_pattern, instrs[cur_index], match_dict):
             return -1, None
         cur_index += 1

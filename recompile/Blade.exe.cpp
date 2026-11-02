@@ -31,42 +31,11 @@ void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &secto
     for (unsigned int i = 0; i < sectors.size; i++)
     {
         B_Sector *sector = sectors.elements[i];
-        if (this->Intersects(sector) == 0)
+        if (this->Intersects(sector) != 0)
         {
-            continue;
+            B_Sector *newElement = sectors.elements[i];
+            outBuffer.Append(newElement);
         }
-        B_Sector *unknown_loc_0C = sectors.elements[i];
-        if (outBuffer.num_alloc > outBuffer.size)
-        {
-            outBuffer.elements[outBuffer.size] = unknown_loc_0C;
-            outBuffer.size++;
-            continue;
-        }
-        outBuffer.num_alloc += static_cast<unsigned int>(outBuffer.increment);
-        if (outBuffer.size == 0)
-        {
-            goto l004502DC;
-        }
-        void *unknown_loc_18;
-        unknown_loc_18 = operator new(4 * outBuffer.num_alloc);
-        B_Sector **unknown_loc_10;
-        unknown_loc_10 = reinterpret_cast<B_Sector **>(unknown_loc_18);
-        for (unsigned int unknown_loc_14 = 0; unknown_loc_14 < outBuffer.size; unknown_loc_14++)
-        {
-            unknown_loc_10[unknown_loc_14] = outBuffer.elements[unknown_loc_14];
-        }
-        B_Sector **unknown_loc_1C;
-        unknown_loc_1C = outBuffer.elements;
-        operator delete(unknown_loc_1C);
-        outBuffer.elements = unknown_loc_10;
-        goto l004502FA;
-l004502DC:
-        B_Sector **unknown_loc_20;
-        unknown_loc_20 = reinterpret_cast<B_Sector **>(operator new(4 * outBuffer.num_alloc));
-        outBuffer.elements = unknown_loc_20;
-l004502FA:
-        outBuffer.elements[outBuffer.size] = unknown_loc_0C;
-        outBuffer.size++;
     }
 }
 

@@ -29,6 +29,8 @@ _actions = {
     "pushfpu": lambda builder, **kwargs: builder.push_fpu(**kwargs),
     "stackarg": lambda builder, **kwargs: builder.make_arg(**kwargs),
     "call": lambda builder, **kwargs: builder.make_call(**kwargs),
+    "method-call": lambda builder, **kwargs: builder.make_method_call(
+        **kwargs),
     "addsp": lambda builder, **kwargs: builder.add_stack_pointer(**kwargs),
     "jump": lambda builder, **kwargs: builder.make_jump(**kwargs),
     "switch": lambda builder, **kwargs: builder.make_switch(**kwargs),

@@ -2119,37 +2119,7 @@ unsigned int B_ResourceManager::AddFile(const B_Name &arg_1)
         STACKVAR(-36, 4) = 0x00000000;
     }
     STACKVAR(-32, 4) = ACCESS(this, 1024, 4);
-    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 8, 4)))
-    {
-        ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, ACCESS(STACKVAR(-32, 4), 8, 4), 0), 0, 4) = STACKVAR(-36, 4);
-        ACCESS(STACKVAR(-32, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 8, 4)) + 0x00000001;
-        goto l10004DFF;
-    }
-    ACCESS(STACKVAR(-32, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 16, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 12, 4));
-    if (ACCESS(STACKVAR(-32, 4), 8, 4) == 0x00000000)
-    {
-        goto l10004DC0;
-    }
-    void *unknown_loc_14;
-    unknown_loc_14 = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 16, 4)));
-    void *unknown_loc_0C;
-    unknown_loc_0C = unknown_loc_14;
-    for (unsigned int unknown_loc_10 = 0; unknown_loc_10 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 8, 4)); unknown_loc_10++)
-    {
-        ACCESS(ARRPTR(unknown_loc_0C, 4, unknown_loc_10, 0), 0, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, unknown_loc_10, 0), 0, 4);
-    }
-    STACKVAR(-24, 4) = ACCESS(STACKVAR(-32, 4), 4, 4);
-    operator delete(STACKVAR(-24, 4));
-    ACCESS(STACKVAR(-32, 4), 4, 4) = unknown_loc_0C;
-    goto l10004DDE;
-l10004DC0:
-    void *unknown_loc_1C;
-    unknown_loc_1C = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 16, 4)));
-    ACCESS(STACKVAR(-32, 4), 4, 4) = unknown_loc_1C;
-l10004DDE:
-    ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, ACCESS(STACKVAR(-32, 4), 8, 4), 0), 0, 4) = STACKVAR(-36, 4);
-    ACCESS(STACKVAR(-32, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 8, 4)) + 0x00000001;
-l10004DFF:
+    STACKVAR(-32, 4)->Append(STACKVAR(-36, 4));
     return 1;
 }
 
@@ -2272,36 +2242,7 @@ l10005236:
         STACKVAR(-16536, 4) = 0x00000000;
     }
     STACKVAR(-16532, 4) = ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4);
-    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16532, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16532, 4), 8, 4)))
-    {
-        ACCESS(ARRPTR(ACCESS(STACKVAR(-16532, 4), 4, 4), 4, ACCESS(STACKVAR(-16532, 4), 8, 4), 0), 0, 4) = STACKVAR(-16536, 4);
-        ACCESS(STACKVAR(-16532, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 8, 4)) + 0x00000001;
-        goto l10005506;
-    }
-    ACCESS(STACKVAR(-16532, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 16, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 12, 4));
-    if (ACCESS(STACKVAR(-16532, 4), 8, 4) == 0x00000000)
-    {
-        goto l100054AC;
-    }
-    void *unknown_loc_4088;
-    unknown_loc_4088 = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 16, 4)));
-    void *unknown_loc_4080;
-    unknown_loc_4080 = unknown_loc_4088;
-    for (unsigned int unknown_loc_4084 = 0; unknown_loc_4084 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16532, 4), 8, 4)); unknown_loc_4084++)
-    {
-        ACCESS(ARRPTR(unknown_loc_4080, 4, unknown_loc_4084, 0), 0, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16532, 4), 4, 4), 4, unknown_loc_4084, 0), 0, 4);
-    }
-    STACKVAR(-16524, 4) = ACCESS(STACKVAR(-16532, 4), 4, 4);
-    operator delete(STACKVAR(-16524, 4));
-    ACCESS(STACKVAR(-16532, 4), 4, 4) = unknown_loc_4080;
-    goto l100054D6;
-l100054AC:
-    void *unknown_loc_4090;
-    unknown_loc_4090 = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 16, 4)));
-    ACCESS(STACKVAR(-16532, 4), 4, 4) = unknown_loc_4090;
-l100054D6:
-    ACCESS(ARRPTR(ACCESS(STACKVAR(-16532, 4), 4, 4), 4, ACCESS(STACKVAR(-16532, 4), 8, 4), 0), 0, 4) = STACKVAR(-16536, 4);
-    ACCESS(STACKVAR(-16532, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 8, 4)) + 0x00000001;
+    STACKVAR(-16532, 4)->Append(STACKVAR(-16536, 4));
 l10005506:
     unsigned int unknown_loc_4054 = 1;
     reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
@@ -2341,54 +2282,21 @@ unsigned int B_ResourceManager::LocateResourcesIn(const B_Name &arg_1, B_IDataFi
         }
         STACKVAR(-64, 4) = 0x00000000;
 l1000568A:
-        if (STACKVAR(-64, 4) != 0x00000000)
+        if (STACKVAR(-64, 4) == 0x00000000)
         {
-            goto l100057E0;
+            void *unknown_loc_2C = operator new(0x00000024);
+            if (unknown_loc_2C != nullptr)
+            {
+                STACKVAR(-92, 4) = unknown_loc_2C->unknown_method_10004371(arg_1, unknown_loc_20, LOCAL(-28), 0x00000000);
+            }
+            else
+            {
+                STACKVAR(-92, 4) = 0x00000000;
+            }
+            STACKVAR(-88, 4) = ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x0000FFFF, 0), 0, 4);
+            STACKVAR(-88, 4)->Append(STACKVAR(-92, 4));
+            STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
         }
-        void *unknown_loc_2C;
-        unknown_loc_2C = operator new(0x00000024);
-        if (unknown_loc_2C != nullptr)
-        {
-            STACKVAR(-92, 4) = unknown_loc_2C->unknown_method_10004371(arg_1, unknown_loc_20, LOCAL(-28), 0x00000000);
-        }
-        else
-        {
-            STACKVAR(-92, 4) = 0x00000000;
-        }
-        STACKVAR(-88, 4) = ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x0000FFFF, 0), 0, 4);
-        if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-88, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-88, 4), 8, 4)))
-        {
-            ACCESS(ARRPTR(ACCESS(STACKVAR(-88, 4), 4, 4), 4, ACCESS(STACKVAR(-88, 4), 8, 4), 0), 0, 4) = STACKVAR(-92, 4);
-            ACCESS(STACKVAR(-88, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 8, 4)) + 0x00000001;
-            goto l100057D7;
-        }
-        ACCESS(STACKVAR(-88, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 16, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 12, 4));
-        if (ACCESS(STACKVAR(-88, 4), 8, 4) == 0x00000000)
-        {
-            goto l10005798;
-        }
-        void *unknown_loc_4C;
-        unknown_loc_4C = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 16, 4)));
-        void *unknown_loc_44;
-        unknown_loc_44 = unknown_loc_4C;
-        for (unsigned int unknown_loc_48 = 0; unknown_loc_48 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-88, 4), 8, 4)); unknown_loc_48++)
-        {
-            ACCESS(ARRPTR(unknown_loc_44, 4, unknown_loc_48, 0), 0, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-88, 4), 4, 4), 4, unknown_loc_48, 0), 0, 4);
-        }
-        STACKVAR(-80, 4) = ACCESS(STACKVAR(-88, 4), 4, 4);
-        operator delete(STACKVAR(-80, 4));
-        ACCESS(STACKVAR(-88, 4), 4, 4) = unknown_loc_44;
-        goto l100057B6;
-l10005798:
-        void *unknown_loc_54;
-        unknown_loc_54 = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 16, 4)));
-        ACCESS(STACKVAR(-88, 4), 4, 4) = unknown_loc_54;
-l100057B6:
-        ACCESS(ARRPTR(ACCESS(STACKVAR(-88, 4), 4, 4), 4, ACCESS(STACKVAR(-88, 4), 8, 4), 0), 0, 4) = STACKVAR(-92, 4);
-        ACCESS(STACKVAR(-88, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 8, 4)) + 0x00000001;
-l100057D7:
-        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
-l100057E0:
         arg_2.Seek(arg_2.Tell() + reinterpret_cast<long>(STACKVAR(-8, 4)), 0);
     }
     if (STACKVAR(-4, 4) != 0x00000000)
@@ -2674,68 +2582,35 @@ void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
         STACKVAR(-4, 4) = operator new(0x00000018);
         this->unknown04 = STACKVAR(-4, 4) != 0x00000000 ? reinterpret_cast<void *>(STACKVAR(-4, 4)->unknown_method_100046A6()) : nullptr;
     }
-    if (this->IsResourceLoaded(1, pc) != 0)
+    if (this->IsResourceLoaded(1, pc) == 0)
     {
-        goto l10006151;
+        STACKVAR(-8, 4) = operator new(0x00000024);
+        if (STACKVAR(-8, 4) != 0x00000000)
+        {
+            reinterpret_cast<B_Name *>(LOCAL(-16))->B_Name(pc);
+            STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) | 0x00000001;
+            reinterpret_cast<B_Name *>(LOCAL(-24))->B_Name(c);
+            STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) | 0x00000002;
+            STACKVAR(-56, 4) = STACKVAR(-8, 4)->unknown_method_10004371(LOCAL(-24), i, LOCAL(-16), i);
+        }
+        else
+        {
+            STACKVAR(-56, 4) = 0x00000000;
+        }
+        void *unknown_loc_34 = this->unknown04;
+        unknown_loc_34->Append(STACKVAR(-56, 4));
+        if ((reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0x00000002) != 0x00000000)
+        {
+            STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0xFFFFFFFD;
+            reinterpret_cast<B_Name *>(LOCAL(-24))->~B_Name();
+        }
+        if ((reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0x00000001) != 0x00000000)
+        {
+            STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0xFFFFFFFE;
+            reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+        }
+        return;
     }
-    STACKVAR(-8, 4) = operator new(0x00000024);
-    if (STACKVAR(-8, 4) != 0x00000000)
-    {
-        reinterpret_cast<B_Name *>(LOCAL(-16))->B_Name(pc);
-        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) | 0x00000001;
-        reinterpret_cast<B_Name *>(LOCAL(-24))->B_Name(c);
-        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) | 0x00000002;
-        STACKVAR(-56, 4) = STACKVAR(-8, 4)->unknown_method_10004371(LOCAL(-24), i, LOCAL(-16), i);
-    }
-    else
-    {
-        STACKVAR(-56, 4) = 0x00000000;
-    }
-    void *unknown_loc_34;
-    unknown_loc_34 = this->unknown04;
-    if (reinterpret_cast<unsigned int>(ACCESS(unknown_loc_34, 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(unknown_loc_34, 8, 4)))
-    {
-        ACCESS(ARRPTR(ACCESS(unknown_loc_34, 4, 4), 4, ACCESS(unknown_loc_34, 8, 4), 0), 0, 4) = STACKVAR(-56, 4);
-        ACCESS(unknown_loc_34, 8, 4) = reinterpret_cast<any_int32>(ACCESS(unknown_loc_34, 8, 4)) + 0x00000001;
-        goto l10006123;
-    }
-    ACCESS(unknown_loc_34, 16, 4) = reinterpret_cast<any_int32>(ACCESS(unknown_loc_34, 16, 4)) + reinterpret_cast<any_int32>(ACCESS(unknown_loc_34, 12, 4));
-    if (ACCESS(unknown_loc_34, 8, 4) == 0x00000000)
-    {
-        goto l100060E4;
-    }
-    void *unknown_loc_28;
-    unknown_loc_28 = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(unknown_loc_34, 16, 4)));
-    void *unknown_loc_20;
-    unknown_loc_20 = unknown_loc_28;
-    for (unsigned int unknown_loc_24 = 0; unknown_loc_24 < reinterpret_cast<unsigned int>(ACCESS(unknown_loc_34, 8, 4)); unknown_loc_24++)
-    {
-        ACCESS(ARRPTR(unknown_loc_20, 4, unknown_loc_24, 0), 0, 4) = ACCESS(ARRPTR(ACCESS(unknown_loc_34, 4, 4), 4, unknown_loc_24, 0), 0, 4);
-    }
-    STACKVAR(-44, 4) = ACCESS(unknown_loc_34, 4, 4);
-    operator delete(STACKVAR(-44, 4));
-    ACCESS(unknown_loc_34, 4, 4) = unknown_loc_20;
-    goto l10006102;
-l100060E4:
-    void *unknown_loc_30;
-    unknown_loc_30 = operator new(0x00000004 * reinterpret_cast<any_int32>(ACCESS(unknown_loc_34, 16, 4)));
-    ACCESS(unknown_loc_34, 4, 4) = unknown_loc_30;
-l10006102:
-    ACCESS(ARRPTR(ACCESS(unknown_loc_34, 4, 4), 4, ACCESS(unknown_loc_34, 8, 4), 0), 0, 4) = STACKVAR(-56, 4);
-    ACCESS(unknown_loc_34, 8, 4) = reinterpret_cast<any_int32>(ACCESS(unknown_loc_34, 8, 4)) + 0x00000001;
-l10006123:
-    if ((reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0x00000002) != 0x00000000)
-    {
-        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0xFFFFFFFD;
-        reinterpret_cast<B_Name *>(LOCAL(-24))->~B_Name();
-    }
-    if ((reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0x00000001) != 0x00000000)
-    {
-        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0xFFFFFFFE;
-        reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
-    }
-    return;
-l10006151:
     mout << vararg("B_ResourceManager::AddBodLink() -> the file %s called %s is duplicated\n", c, pc);
 }
 
