@@ -24973,7 +24973,7 @@ l10035134:
     }
     if (scale == reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
     {
-        if ((y2 - y1) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8))) > (x2 - x1) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8))))
+        if ((x2 - x1) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8))) < (y2 - y1) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8))))
         {
             STACKVAR(-1088, 8) = (x2 - x1) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8)));
         }
