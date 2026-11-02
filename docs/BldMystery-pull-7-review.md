@@ -775,6 +775,26 @@ of BldRecompile output is used:
         return B_OCT_NODE_CID_BRANCH;
     }
     ```
+11. Initializer lists start with `:` on a separate line, each initializer
+    is on its own line:
+
+    ```cpp
+    B_SectorListNode::B_SectorListNode()
+    :
+        B_SharedPtrArray<B_Sector>(1)
+    {
+    }
+
+    B_BoundingBox::B_BoundingBox(
+        const B_Vector &minCoords,
+        const B_Vector &maxCoords
+    )
+    :
+        minCoords(minCoords),
+        maxCoords(maxCoords)
+    {
+    }
+    ```
 
 ## Procedures that match the binary
 
