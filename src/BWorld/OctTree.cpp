@@ -276,22 +276,22 @@ B_SectorSurfaceCache::B_SectorSurfaceCache()
 
 /*
 * Module:                 Blade.exe
-* Entry point:            0x004539A9
-* VC++ mangling:          ??0B_GlobalSurfaceCache@@QAE@XZ
+* Entry point:            0x00453490
+* VC++ mangling:          ??1B_SectorSurfaceCache@@UAE@XZ
 */
 
-B_GlobalSurfaceCache::B_GlobalSurfaceCache()
+B_SectorSurfaceCache::~B_SectorSurfaceCache()
 {
 }
 
 
 /*
 * Module:                 Blade.exe
-* Entry point:            0x00453490
-* VC++ mangling:          ??1B_SectorSurfaceCache@@UAE@XZ
+* Entry point:            0x004539A9
+* VC++ mangling:          ??0B_GlobalSurfaceCache@@QAE@XZ
 */
 
-B_SectorSurfaceCache::~B_SectorSurfaceCache()
+B_GlobalSurfaceCache::B_GlobalSurfaceCache()
 {
 }
 
