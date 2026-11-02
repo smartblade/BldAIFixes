@@ -29,6 +29,7 @@ from .transform_switch import transform_switch
 from .transform_procedure_call import transform_procedure_call
 from .transform_reinterpret import transform_reinterpret
 from .merge_split_copies import merge_split_copies
+from .fold_temporaries import fold_temporaries
 from .local_constructions import restore_local_constructions
 from .split_jumped_declarations import split_jumped_declarations
 from .transform_for_loops import transform_for_loops
@@ -88,6 +89,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = split_class_return_assignments(procedure)
     procedure = insert_declarations(procedure, stack_vars)
     procedure = restore_local_constructions(procedure)
+    procedure = fold_temporaries(procedure, declarations.declared_types)
     return split_jumped_declarations(procedure)
 
 
