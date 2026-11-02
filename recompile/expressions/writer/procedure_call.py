@@ -51,6 +51,8 @@ def _method_access_code(obj, proc_decl, callee, proc_name):
         method_code = proc_name
     if _is_obj_initialization(obj, proc_decl):
         return method_code
+    if isinstance(obj.data_type, data_types.Reference):
+        obj = expressions.AddressOf(obj)
     return expressions.FieldAccess(obj, method_code).emit_code()
 
 

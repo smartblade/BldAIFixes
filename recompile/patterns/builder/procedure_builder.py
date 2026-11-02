@@ -129,6 +129,13 @@ class ProcedureBuilder:
         procedure_call = expressions.ProcedureCall(**pc_args)
         self._add_instruction(instructions.CodeInstruction(procedure_call))
 
+    def make_method_call(self, name, object, argument):
+        """Make call of method inlined by compiler with unused result."""
+        procedure_call = expressions.ProcedureCall(
+            name=name.emit_code(), is_method=True,
+            arguments=[object, argument])
+        self._add_instruction(instructions.CodeInstruction(procedure_call))
+
     def add_stack_pointer(self, offset):
         self._current_block.merge_args_into_cdecl_procedure_call(
             from_hex(offset.emit_code()))
