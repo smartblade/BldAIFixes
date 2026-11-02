@@ -31,7 +31,7 @@ void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &secto
     for (unsigned int i = 0; i < sectors.size; i++)
     {
         B_Sector *sector = sectors.elements[i];
-        if (this->Intersects(sector) != 0)
+        if (this->Intersects(sector))
         {
             B_Sector *newElement = sectors.elements[i];
             outBuffer.Append(newElement);
