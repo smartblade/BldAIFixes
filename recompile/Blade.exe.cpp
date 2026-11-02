@@ -331,7 +331,7 @@ void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsLis
     outList->size = 0;
     B_Vector localPos = worldPos - this->m_center;
     gbl_oct_tree_query_id++;
-    if (this->m_root != nullptr && this->m_halfSize + kOctTreeMargin > fabs(localPos.x) && this->m_halfSize + kOctTreeMargin > fabs(localPos.y) && this->m_halfSize + kOctTreeMargin > fabs(localPos.z))
+    if (this->m_root != nullptr && fabs(localPos.x) < this->m_halfSize + kOctTreeMargin && fabs(localPos.y) < this->m_halfSize + kOctTreeMargin && fabs(localPos.z) < this->m_halfSize + kOctTreeMargin)
     {
         this->m_root->CollectSectorsAtPoint(localPos, outList, this->m_halfSize);
     }

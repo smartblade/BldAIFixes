@@ -1243,6 +1243,58 @@
 	{
 		"instructions": [
 			{"fcompp":  []},
+			{"fnstsw":  ["ax"]},
+			{"test":    ["ah", "001h"]},
+			{"je":     ["%label%"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "cmpfr", "src": "F(POPFPU())"}},
+			{"tmpreg": {"dst": "cmpfl", "src": "F(POPFPU())"}},
+			{"jump": {"condition": "REGVALUE(cmpfl) <= REGVALUE(cmpfr)", "address": "%label%"}}
+		]
+	},
+	{
+		"instructions": [
+			{"fcompp":  []},
+			{"fnstsw":  ["ax"]},
+			{"test":    ["ah", "040h"]},
+			{"je":     ["%label%"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "cmpfr", "src": "F(POPFPU())"}},
+			{"tmpreg": {"dst": "cmpfl", "src": "F(POPFPU())"}},
+			{"jump": {"condition": "REGVALUE(cmpfl) != REGVALUE(cmpfr)", "address": "%label%"}}
+		]
+	},
+	{
+		"instructions": [
+			{"fcompp":  []},
+			{"fnstsw":  ["ax"]},
+			{"test":    ["ah", "041h"]},
+			{"je":     ["%label%"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "cmpfr", "src": "F(POPFPU())"}},
+			{"tmpreg": {"dst": "cmpfl", "src": "F(POPFPU())"}},
+			{"jump": {"condition": "REGVALUE(cmpfl) < REGVALUE(cmpfr)", "address": "%label%"}}
+		]
+	},
+	{
+		"instructions": [
+			{"fcompp":  []},
+			{"fnstsw":  ["ax"]},
+			{"test":    ["ah", "041h"]},
+			{"jne":    ["%label%"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "cmpfr", "src": "F(POPFPU())"}},
+			{"tmpreg": {"dst": "cmpfl", "src": "F(POPFPU())"}},
+			{"jump": {"condition": "REGVALUE(cmpfl) >= REGVALUE(cmpfr)", "address": "%label%"}}
+		]
+	},
+	{
+		"instructions": [
+			{"fcompp":  []},
 			{"fnstsw":  ["ax"]}
 		],
 		"actions": [
