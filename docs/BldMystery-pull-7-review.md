@@ -77,6 +77,33 @@ Suggested fix: remove the address from the destructor and regenerate
      gbl_node_count--;
 ```
 
+The constructor and the destructor of `B_OctantNodeBase` have no
+addresses at all: their code (`vtable = g005BDD0C; gbl_node_count++;` and
+`vtable = g005BDD0C; gbl_node_count--;`) is inlined into constructors and
+destructors of `B_OctantNode`, `LeafNode` and `B_SectorListNode` and into
+the scalar deleting destructor. With `/Ob1` Visual C++ inlines only inline
+functions, so they are defined in the class in `OctTree.h`, not in
+`OctTree.cpp`:
+
+```cpp
+class B_OctantNodeBase
+{
+public:
+    B_OctantNodeBase()
+    {
+        gbl_node_count++;
+    }
+
+    virtual int GetTypeID() = 0;
+
+    virtual ~B_OctantNodeBase()
+    {
+        gbl_node_count--;
+    }
+    ...
+};
+```
+
 ## 2. `B_BoundingBox::Intersects` returns `unsigned int`, not `bool`
 
 `Intersects` (`0x0044F052`) is declared as returning `bool`, but it sets
@@ -222,59 +249,55 @@ Suggested fix: correct the comment and regenerate `procedures.inc`.
 ## 5. `B_OctTreeSectorsList::BuildSurfaceCache` does not match the binary
 
 The `// TODO double check` above `BuildSurfaceCache` (`0x0045327B`) is
-justified. The converted code is:
+justified. The converted code (with names of local variables of the pull
+request) is:
 
 ```cpp
-int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B_Sphere *sphere)
+int B_OctTreeSectorsList::BuildSurfaceCache(
+    B_GlobalSurfaceCache *cache,
+    const B_Sphere *sphere
+)
 {
     cache->count = 0;
-    unsigned int unknown_loc_0C = 0;
-    unknown_loc_0C = 0;
-    goto l004532A6;
-l0045329D:
-    unknown_loc_0C++;
-l004532A6:
-    if (unknown_loc_0C >= this->size)
+    unsigned int i = 0;
+    for (i = 0; i < this->size; i++)
     {
-        goto l0045345A;
-    }
-    STACKVAR(-16, 4) = ACCESS(ARRPTR(this, 4, unknown_loc_0C, 4), 0, 4);
-    ACCESS(ARRPTR(cache, 1, 272 * cache->count, 8), 0, 4) = STACKVAR(-16, 4);
-    ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = 0x00000000;
-    unsigned int unknown_loc_14 = 0;
-    goto l004532FE;
-l004532F5:
-    unknown_loc_14++;
-l004532FE:
-    if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
-    {
-        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
-        STACKVAR(-8, 8) = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
-        if (-sphere->radius > reinterpret_cast<double>(STACKVAR(-8, 8)))
+        B_Sector *current_sector = this->sectors[i];
+        cache->elements[cache->count].sector = current_sector;
+        cache->elements[cache->count].numSurfaces = 0;
+        unsigned int j;
+        for (j = 0; j < current_sector->size; j++)
         {
-            unknown_loc_14 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)) + 1;
+            B_Surface *current_surface = current_sector->elements[j];
+            double distance =
+                sphere->center.z * current_surface->normal.z +
+                    sphere->center.y * current_surface->normal.y +
+                    sphere->center.x * current_surface->normal.x +
+                    current_surface->p;
+            if (-sphere->radius > distance)
+            {
+                j = current_sector->size + 1;
+            }
+            else if (distance < sphere->radius)
+            {
+                B_Surface *unknown_loc_1C = current_sector->elements[j];
+                cache->elements[cache->count].surfaces[cache->elements[cache->count].numSurfaces] =
+                    unknown_loc_1C;
+                cache->elements[cache->count].numSurfaces++;
+            }
         }
-        else if (reinterpret_cast<double>(STACKVAR(-8, 8)) < sphere->radius)
+        if (j == current_sector->size)
         {
-            STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
-            ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4), 12), 0, 4) = STACKVAR(-28, 4);
-            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4)) + 0x00000001;
-        }
-        goto l004532F5;
-    }
-    if (unknown_loc_14 == reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
-    {
-        if (ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) == 0x00000000)
-        {
-            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000001;
+            if (cache->elements[cache->count].numSurfaces == 0)
+            {
+                cache->elements[cache->count].hasNoIntersections = 1;
+                cache->count++;
+                return 1;
+            }
+            cache->elements[cache->count].hasNoIntersections = 0;
             cache->count++;
-            return 1;
         }
-        ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000000;
-        cache->count++;
     }
-    goto l0045329D;
-l0045345A:
     if (cache->count != 0)
     {
         return 0;
@@ -298,6 +321,9 @@ Differences from the pull request:
 4. There is no `cacheEntry` local variable, the code accesses
    `cache->elements[cache->count]` every time. Loop counters are
    `unsigned int`.
+5. The added surface is read from `current_sector->elements[j]` again into
+   another local variable (`unknown_loc_1C`) instead of using
+   `current_surface`.
 
 The assembler code of `0x0045327B` confirms it.
 
@@ -547,9 +573,46 @@ intersection flag is computed with strict `>`/`<` comparisons and then
 tested:
 
 ```cpp
-STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4)) + 0x0000005C;
-if ((gbl_current_query_box->minCoords.x > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 24, 8)) || gbl_current_query_box->minCoords.y > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 32, 8)) || gbl_current_query_box->minCoords.z > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 40, 8)) || gbl_current_query_box->maxCoords.x < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 0, 8)) || gbl_current_query_box->maxCoords.y < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 8, 8)) || gbl_current_query_box->maxCoords.z < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 16, 8)) ? 0x00000000 : 0x00000001) != 0x00000000 && outList->size < 512)
+void B_SectorListNode::CollectSectorsInBox(
+    const B_BoundingBox &bb,
+    B_OctTreeSectorsList *outList,
+    double halfSize
+)
+{
+    for (unsigned int i = 0; i < this->size; i++)
+    {
+        if (
+            this->elements[i]->lastQueryId !=
+            static_cast<int>(gbl_oct_tree_query_id) &&
+                this->elements[i]->isActive != 0
+        )
+        {
+            this->elements[i]->lastQueryId =
+                static_cast<int>(gbl_oct_tree_query_id);
+            B_BoundingBox *sectorBB = &this->elements[i]->boundingBox;
+            if (
+                !(
+                    gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x ||
+                    gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y ||
+                    gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z ||
+                    gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x ||
+                    gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y ||
+                    gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z
+                ) &&
+                outList->size < 512
+            )
+            {
+                outList->sectors[outList->size] = this->elements[i];
+                outList->size++;
+            }
+        }
+    }
+}
 ```
+
+Both procedures keep the flag in a local variable (`[ebp-008h]`) before
+testing it. The `<=`/`>=` comparisons of the pull request are not the same
+as negated `>`/`<` comparisons for NaN coordinates.
 
 Suggested fix: write it like `LeafNode::CollectSectorsInBox`, with a
 `B_BoundingBox* sectorBB = &(*this)[i]->boundingBox;` local and an
@@ -577,6 +640,11 @@ Suggested fix: write it like `LeafNode::CollectSectorsInBox`, with a
 
   The original code was probably `outBuffer.Append(sectors.elements[i])`
   (or `sectors[i]`), but this is a guess.
+
+- Parameters of `LeafNode::CollectSectorsInBox` and
+  `B_SectorListNode::CollectSectorsInBox` have no names:
+  `(const B_BoundingBox&, B_OctTreeSectorsList* outList, double)`. Names of
+  the base class declaration are suggested: `bb` and `halfSize`.
 
 ## 10. Octree constants are literals, not `static double` variables
 
