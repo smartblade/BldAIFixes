@@ -28,14 +28,14 @@ B_Vector B_Vector::operator -(const B_Vector &that) const
 // address: 0x004501C1
 void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &sectors, B_PtrArray<B_Sector> &outBuffer)
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < sectors.size; unknown_loc_04++)
+    for (unsigned int i = 0; i < sectors.size; i++)
     {
-        B_Sector *unknown_loc_08 = sectors.elements[unknown_loc_04];
-        if (this->Intersects(unknown_loc_08) == 0)
+        B_Sector *sector = sectors.elements[i];
+        if (this->Intersects(sector) == 0)
         {
             continue;
         }
-        B_Sector *unknown_loc_0C = sectors.elements[unknown_loc_04];
+        B_Sector *unknown_loc_0C = sectors.elements[i];
         if (outBuffer.num_alloc > outBuffer.size)
         {
             outBuffer.elements[outBuffer.size] = unknown_loc_0C;
@@ -73,20 +73,20 @@ l004502FA:
 // address: 0x00450327
 B_OctantNode::B_OctantNode()
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < 8; unknown_loc_04++)
+    for (unsigned int i = 0; i < 8; i++)
     {
-        this->children[unknown_loc_04] = nullptr;
+        this->children[i] = nullptr;
     }
 }
 
 // address: 0x00450380
 B_OctantNode::~B_OctantNode()
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < 8; unknown_loc_04++)
+    for (unsigned int i = 0; i < 8; i++)
     {
-        if (this->children[unknown_loc_04] != nullptr)
+        if (this->children[i] != nullptr)
         {
-            delete this->children[unknown_loc_04];
+            delete this->children[i];
         }
     }
 }
@@ -161,13 +161,13 @@ void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsL
 }
 
 // address: 0x00452082
-void LeafNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsList *outList, double arg_3)
+void LeafNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *outList, double halfSize)
 {
     if (this->sectors->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->sectors->isActive != 0)
     {
         this->sectors->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
-        B_BoundingBox *unknown_loc_04 = &this->sectors->boundingBox;
-        if (!(gbl_current_query_box->minCoords.x > unknown_loc_04->maxCoords.x || gbl_current_query_box->minCoords.y > unknown_loc_04->maxCoords.y || gbl_current_query_box->minCoords.z > unknown_loc_04->maxCoords.z || gbl_current_query_box->maxCoords.x < unknown_loc_04->minCoords.x || gbl_current_query_box->maxCoords.y < unknown_loc_04->minCoords.y || gbl_current_query_box->maxCoords.z < unknown_loc_04->minCoords.z) && outList->size < 512)
+        B_BoundingBox *sectorBB = &this->sectors->boundingBox;
+        if (!(gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x || gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y || gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z || gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x || gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y || gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z) && outList->size < 512)
         {
             outList->sectors[outList->size] = this->sectors;
             outList->size++;
@@ -178,14 +178,14 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsL
 // address: 0x00452191
 void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < this->size; unknown_loc_04++)
+    for (unsigned int i = 0; i < this->size; i++)
     {
-        if (this->elements[unknown_loc_04]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[unknown_loc_04]->isActive != 0)
+        if (this->elements[i]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[i]->isActive != 0)
         {
-            this->elements[unknown_loc_04]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
+            this->elements[i]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
             if (outList->size < 512)
             {
-                outList->sectors[outList->size] = this->elements[unknown_loc_04];
+                outList->sectors[outList->size] = this->elements[i];
                 outList->size++;
             }
         }
@@ -193,17 +193,17 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
 }
 
 // address: 0x00452232
-void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsList *outList, double arg_3)
+void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *outList, double halfSize)
 {
-    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < this->size; unknown_loc_04++)
+    for (unsigned int i = 0; i < this->size; i++)
     {
-        if (this->elements[unknown_loc_04]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[unknown_loc_04]->isActive != 0)
+        if (this->elements[i]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[i]->isActive != 0)
         {
-            this->elements[unknown_loc_04]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
-            B_BoundingBox *unknown_loc_08 = &this->elements[unknown_loc_04]->boundingBox;
-            if (!(gbl_current_query_box->minCoords.x > unknown_loc_08->maxCoords.x || gbl_current_query_box->minCoords.y > unknown_loc_08->maxCoords.y || gbl_current_query_box->minCoords.z > unknown_loc_08->maxCoords.z || gbl_current_query_box->maxCoords.x < unknown_loc_08->minCoords.x || gbl_current_query_box->maxCoords.y < unknown_loc_08->minCoords.y || gbl_current_query_box->maxCoords.z < unknown_loc_08->minCoords.z) && outList->size < 512)
+            this->elements[i]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
+            B_BoundingBox *sectorBB = &this->elements[i]->boundingBox;
+            if (!(gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x || gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y || gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z || gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x || gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y || gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z) && outList->size < 512)
             {
-                outList->sectors[outList->size] = this->elements[unknown_loc_04];
+                outList->sectors[outList->size] = this->elements[i];
                 outList->size++;
             }
         }
@@ -213,50 +213,50 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTree
 // address: 0x00452388
 void B_OctantNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
-    double unknown_loc_08 = halfSize / 2.0;
-    double unknown_loc_10 = halfSize / 4.0;
+    double childHalfSize = halfSize / 2.0;
+    double childOffset = halfSize / 4.0;
     if (localPos.x < 10.0)
     {
         if (localPos.y < 10.0)
         {
             if (localPos.z < 10.0 && this->children[0] != nullptr)
             {
-                B_Vector unknown_loc_28;
-                unknown_loc_28.x = -unknown_loc_10;
-                unknown_loc_28.y = -unknown_loc_10;
-                unknown_loc_28.z = -unknown_loc_10;
-                B_Vector unknown_loc_40;
-                this->children[0]->CollectSectorsAtPoint(unknown_loc_40 = localPos - unknown_loc_28, outList, unknown_loc_08);
+                B_Vector childCenter;
+                childCenter.x = -childOffset;
+                childCenter.y = -childOffset;
+                childCenter.z = -childOffset;
+                B_Vector newLocalPos;
+                this->children[0]->CollectSectorsAtPoint(newLocalPos = localPos - childCenter, outList, childHalfSize);
             }
             if (localPos.z > -10.0 && this->children[1] != nullptr)
             {
-                B_Vector unknown_loc_58;
-                unknown_loc_58.x = -unknown_loc_10;
-                unknown_loc_58.y = -unknown_loc_10;
-                unknown_loc_58.z = unknown_loc_10;
-                B_Vector unknown_loc_70;
-                this->children[1]->CollectSectorsAtPoint(unknown_loc_70 = localPos - unknown_loc_58, outList, unknown_loc_08);
+                B_Vector childCenter;
+                childCenter.x = -childOffset;
+                childCenter.y = -childOffset;
+                childCenter.z = childOffset;
+                B_Vector newLocalPos;
+                this->children[1]->CollectSectorsAtPoint(newLocalPos = localPos - childCenter, outList, childHalfSize);
             }
         }
         if (localPos.y > -10.0)
         {
             if (localPos.z < 10.0 && this->children[2] != nullptr)
             {
-                B_Vector unknown_loc_88;
-                unknown_loc_88.x = -unknown_loc_10;
-                unknown_loc_88.y = unknown_loc_10;
-                unknown_loc_88.z = -unknown_loc_10;
-                B_Vector unknown_loc_A0;
-                this->children[2]->CollectSectorsAtPoint(unknown_loc_A0 = localPos - unknown_loc_88, outList, unknown_loc_08);
+                B_Vector childCenter;
+                childCenter.x = -childOffset;
+                childCenter.y = childOffset;
+                childCenter.z = -childOffset;
+                B_Vector newLocalPos;
+                this->children[2]->CollectSectorsAtPoint(newLocalPos = localPos - childCenter, outList, childHalfSize);
             }
             if (localPos.z > -10.0 && this->children[3] != nullptr)
             {
-                B_Vector unknown_loc_B8;
-                unknown_loc_B8.x = -unknown_loc_10;
-                unknown_loc_B8.y = unknown_loc_10;
-                unknown_loc_B8.z = unknown_loc_10;
-                B_Vector unknown_loc_D0;
-                this->children[3]->CollectSectorsAtPoint(unknown_loc_D0 = localPos - unknown_loc_B8, outList, unknown_loc_08);
+                B_Vector childCenter;
+                childCenter.x = -childOffset;
+                childCenter.y = childOffset;
+                childCenter.z = childOffset;
+                B_Vector newLocalPos;
+                this->children[3]->CollectSectorsAtPoint(newLocalPos = localPos - childCenter, outList, childHalfSize);
             }
         }
     }
@@ -266,42 +266,42 @@ void B_OctantNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSect
         {
             if (localPos.z < 10.0 && this->children[4] != nullptr)
             {
-                B_Vector unknown_loc_E8;
-                unknown_loc_E8.x = unknown_loc_10;
-                unknown_loc_E8.y = -unknown_loc_10;
-                unknown_loc_E8.z = -unknown_loc_10;
-                B_Vector unknown_loc_100;
-                this->children[4]->CollectSectorsAtPoint(unknown_loc_100 = localPos - unknown_loc_E8, outList, unknown_loc_08);
+                B_Vector childCenter;
+                childCenter.x = childOffset;
+                childCenter.y = -childOffset;
+                childCenter.z = -childOffset;
+                B_Vector newLocalPos;
+                this->children[4]->CollectSectorsAtPoint(newLocalPos = localPos - childCenter, outList, childHalfSize);
             }
             if (localPos.z > -10.0 && this->children[5] != nullptr)
             {
-                B_Vector unknown_loc_118;
-                unknown_loc_118.x = unknown_loc_10;
-                unknown_loc_118.y = -unknown_loc_10;
-                unknown_loc_118.z = unknown_loc_10;
-                B_Vector unknown_loc_130;
-                this->children[5]->CollectSectorsAtPoint(unknown_loc_130 = localPos - unknown_loc_118, outList, unknown_loc_08);
+                B_Vector childCenter;
+                childCenter.x = childOffset;
+                childCenter.y = -childOffset;
+                childCenter.z = childOffset;
+                B_Vector newLocalPos;
+                this->children[5]->CollectSectorsAtPoint(newLocalPos = localPos - childCenter, outList, childHalfSize);
             }
         }
         if (localPos.y > -10.0)
         {
             if (localPos.z < 10.0 && this->children[6] != nullptr)
             {
-                B_Vector unknown_loc_148;
-                unknown_loc_148.x = unknown_loc_10;
-                unknown_loc_148.y = unknown_loc_10;
-                unknown_loc_148.z = -unknown_loc_10;
-                B_Vector unknown_loc_160;
-                this->children[6]->CollectSectorsAtPoint(unknown_loc_160 = localPos - unknown_loc_148, outList, unknown_loc_08);
+                B_Vector childCenter;
+                childCenter.x = childOffset;
+                childCenter.y = childOffset;
+                childCenter.z = -childOffset;
+                B_Vector newLocalPos;
+                this->children[6]->CollectSectorsAtPoint(newLocalPos = localPos - childCenter, outList, childHalfSize);
             }
             if (localPos.z > -10.0 && this->children[7] != nullptr)
             {
-                B_Vector unknown_loc_178;
-                unknown_loc_178.x = unknown_loc_10;
-                unknown_loc_178.y = unknown_loc_10;
-                unknown_loc_178.z = unknown_loc_10;
-                B_Vector unknown_loc_190;
-                this->children[7]->CollectSectorsAtPoint(unknown_loc_190 = localPos - unknown_loc_178, outList, unknown_loc_08);
+                B_Vector childCenter;
+                childCenter.x = childOffset;
+                childCenter.y = childOffset;
+                childCenter.z = childOffset;
+                B_Vector newLocalPos;
+                this->children[7]->CollectSectorsAtPoint(newLocalPos = localPos - childCenter, outList, childHalfSize);
             }
         }
     }
@@ -310,9 +310,9 @@ void B_OctantNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSect
 // address: 0x00452845
 void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *outList, double halfSize)
 {
-    double unknown_loc_38 = halfSize / 2.0;
-    double unknown_loc_40 = halfSize / 4.0;
-    B_BoundingBox unknown_loc_30 = bb;
+    double childHalfSize = halfSize / 2.0;
+    double childOffset = halfSize / 4.0;
+    B_BoundingBox childBox = bb;
     if (bb.minCoords.x < 10.0)
     {
         if (bb.minCoords.y < 10.0)
@@ -320,34 +320,34 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
             if (bb.minCoords.z < 10.0 && this->children[0] != nullptr)
             {
                 B_Vector unknown_loc_58;
-                unknown_loc_58.x = -unknown_loc_40;
-                unknown_loc_58.y = -unknown_loc_40;
-                unknown_loc_58.z = -unknown_loc_40;
+                unknown_loc_58.x = -childOffset;
+                unknown_loc_58.y = -childOffset;
+                unknown_loc_58.z = -childOffset;
                 B_Vector unknown_loc_70;
-                unknown_loc_30.minCoords = unknown_loc_70 = bb.minCoords - unknown_loc_58;
+                childBox.minCoords = unknown_loc_70 = bb.minCoords - unknown_loc_58;
                 B_Vector unknown_loc_88;
-                unknown_loc_88.x = -unknown_loc_40;
-                unknown_loc_88.y = -unknown_loc_40;
-                unknown_loc_88.z = -unknown_loc_40;
+                unknown_loc_88.x = -childOffset;
+                unknown_loc_88.y = -childOffset;
+                unknown_loc_88.z = -childOffset;
                 B_Vector unknown_loc_A0;
-                unknown_loc_30.maxCoords = unknown_loc_A0 = bb.maxCoords - unknown_loc_88;
-                this->children[0]->CollectSectorsInBox(unknown_loc_30, outList, unknown_loc_38);
+                childBox.maxCoords = unknown_loc_A0 = bb.maxCoords - unknown_loc_88;
+                this->children[0]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
             if (bb.maxCoords.z > -10.0 && this->children[1] != nullptr)
             {
                 B_Vector unknown_loc_B8;
-                unknown_loc_B8.x = -unknown_loc_40;
-                unknown_loc_B8.y = -unknown_loc_40;
-                unknown_loc_B8.z = unknown_loc_40;
+                unknown_loc_B8.x = -childOffset;
+                unknown_loc_B8.y = -childOffset;
+                unknown_loc_B8.z = childOffset;
                 B_Vector unknown_loc_D0;
-                unknown_loc_30.minCoords = unknown_loc_D0 = bb.minCoords - unknown_loc_B8;
+                childBox.minCoords = unknown_loc_D0 = bb.minCoords - unknown_loc_B8;
                 B_Vector unknown_loc_E8;
-                unknown_loc_E8.x = -unknown_loc_40;
-                unknown_loc_E8.y = -unknown_loc_40;
-                unknown_loc_E8.z = unknown_loc_40;
+                unknown_loc_E8.x = -childOffset;
+                unknown_loc_E8.y = -childOffset;
+                unknown_loc_E8.z = childOffset;
                 B_Vector unknown_loc_100;
-                unknown_loc_30.maxCoords = unknown_loc_100 = bb.maxCoords - unknown_loc_E8;
-                this->children[1]->CollectSectorsInBox(unknown_loc_30, outList, unknown_loc_38);
+                childBox.maxCoords = unknown_loc_100 = bb.maxCoords - unknown_loc_E8;
+                this->children[1]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
         }
         if (bb.maxCoords.y > -10.0)
@@ -355,34 +355,34 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
             if (bb.minCoords.z < 10.0 && this->children[2] != nullptr)
             {
                 B_Vector unknown_loc_118;
-                unknown_loc_118.x = -unknown_loc_40;
-                unknown_loc_118.y = unknown_loc_40;
-                unknown_loc_118.z = -unknown_loc_40;
+                unknown_loc_118.x = -childOffset;
+                unknown_loc_118.y = childOffset;
+                unknown_loc_118.z = -childOffset;
                 B_Vector unknown_loc_130;
-                unknown_loc_30.minCoords = unknown_loc_130 = bb.minCoords - unknown_loc_118;
+                childBox.minCoords = unknown_loc_130 = bb.minCoords - unknown_loc_118;
                 B_Vector unknown_loc_148;
-                unknown_loc_148.x = -unknown_loc_40;
-                unknown_loc_148.y = unknown_loc_40;
-                unknown_loc_148.z = -unknown_loc_40;
+                unknown_loc_148.x = -childOffset;
+                unknown_loc_148.y = childOffset;
+                unknown_loc_148.z = -childOffset;
                 B_Vector unknown_loc_160;
-                unknown_loc_30.maxCoords = unknown_loc_160 = bb.maxCoords - unknown_loc_148;
-                this->children[2]->CollectSectorsInBox(unknown_loc_30, outList, unknown_loc_38);
+                childBox.maxCoords = unknown_loc_160 = bb.maxCoords - unknown_loc_148;
+                this->children[2]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
             if (bb.maxCoords.z > -10.0 && this->children[3] != nullptr)
             {
                 B_Vector unknown_loc_178;
-                unknown_loc_178.x = -unknown_loc_40;
-                unknown_loc_178.y = unknown_loc_40;
-                unknown_loc_178.z = unknown_loc_40;
+                unknown_loc_178.x = -childOffset;
+                unknown_loc_178.y = childOffset;
+                unknown_loc_178.z = childOffset;
                 B_Vector unknown_loc_190;
-                unknown_loc_30.minCoords = unknown_loc_190 = bb.minCoords - unknown_loc_178;
+                childBox.minCoords = unknown_loc_190 = bb.minCoords - unknown_loc_178;
                 B_Vector unknown_loc_1A8;
-                unknown_loc_1A8.x = -unknown_loc_40;
-                unknown_loc_1A8.y = unknown_loc_40;
-                unknown_loc_1A8.z = unknown_loc_40;
+                unknown_loc_1A8.x = -childOffset;
+                unknown_loc_1A8.y = childOffset;
+                unknown_loc_1A8.z = childOffset;
                 B_Vector unknown_loc_1C0;
-                unknown_loc_30.maxCoords = unknown_loc_1C0 = bb.maxCoords - unknown_loc_1A8;
-                this->children[3]->CollectSectorsInBox(unknown_loc_30, outList, unknown_loc_38);
+                childBox.maxCoords = unknown_loc_1C0 = bb.maxCoords - unknown_loc_1A8;
+                this->children[3]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
         }
     }
@@ -393,34 +393,34 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
             if (bb.minCoords.z < 10.0 && this->children[4] != nullptr)
             {
                 B_Vector unknown_loc_1D8;
-                unknown_loc_1D8.x = unknown_loc_40;
-                unknown_loc_1D8.y = -unknown_loc_40;
-                unknown_loc_1D8.z = -unknown_loc_40;
+                unknown_loc_1D8.x = childOffset;
+                unknown_loc_1D8.y = -childOffset;
+                unknown_loc_1D8.z = -childOffset;
                 B_Vector unknown_loc_1F0;
-                unknown_loc_30.minCoords = unknown_loc_1F0 = bb.minCoords - unknown_loc_1D8;
+                childBox.minCoords = unknown_loc_1F0 = bb.minCoords - unknown_loc_1D8;
                 B_Vector unknown_loc_208;
-                unknown_loc_208.x = unknown_loc_40;
-                unknown_loc_208.y = -unknown_loc_40;
-                unknown_loc_208.z = -unknown_loc_40;
+                unknown_loc_208.x = childOffset;
+                unknown_loc_208.y = -childOffset;
+                unknown_loc_208.z = -childOffset;
                 B_Vector unknown_loc_220;
-                unknown_loc_30.maxCoords = unknown_loc_220 = bb.maxCoords - unknown_loc_208;
-                this->children[4]->CollectSectorsInBox(unknown_loc_30, outList, unknown_loc_38);
+                childBox.maxCoords = unknown_loc_220 = bb.maxCoords - unknown_loc_208;
+                this->children[4]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
             if (bb.maxCoords.z > -10.0 && this->children[5] != nullptr)
             {
                 B_Vector unknown_loc_238;
-                unknown_loc_238.x = unknown_loc_40;
-                unknown_loc_238.y = -unknown_loc_40;
-                unknown_loc_238.z = unknown_loc_40;
+                unknown_loc_238.x = childOffset;
+                unknown_loc_238.y = -childOffset;
+                unknown_loc_238.z = childOffset;
                 B_Vector unknown_loc_250;
-                unknown_loc_30.minCoords = unknown_loc_250 = bb.minCoords - unknown_loc_238;
+                childBox.minCoords = unknown_loc_250 = bb.minCoords - unknown_loc_238;
                 B_Vector unknown_loc_268;
-                unknown_loc_268.x = unknown_loc_40;
-                unknown_loc_268.y = -unknown_loc_40;
-                unknown_loc_268.z = unknown_loc_40;
+                unknown_loc_268.x = childOffset;
+                unknown_loc_268.y = -childOffset;
+                unknown_loc_268.z = childOffset;
                 B_Vector unknown_loc_280;
-                unknown_loc_30.maxCoords = unknown_loc_280 = bb.maxCoords - unknown_loc_268;
-                this->children[5]->CollectSectorsInBox(unknown_loc_30, outList, unknown_loc_38);
+                childBox.maxCoords = unknown_loc_280 = bb.maxCoords - unknown_loc_268;
+                this->children[5]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
         }
         if (bb.maxCoords.y > -10.0)
@@ -428,34 +428,34 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
             if (bb.minCoords.z < 10.0 && this->children[6] != nullptr)
             {
                 B_Vector unknown_loc_298;
-                unknown_loc_298.x = unknown_loc_40;
-                unknown_loc_298.y = unknown_loc_40;
-                unknown_loc_298.z = -unknown_loc_40;
+                unknown_loc_298.x = childOffset;
+                unknown_loc_298.y = childOffset;
+                unknown_loc_298.z = -childOffset;
                 B_Vector unknown_loc_2B0;
-                unknown_loc_30.minCoords = unknown_loc_2B0 = bb.minCoords - unknown_loc_298;
+                childBox.minCoords = unknown_loc_2B0 = bb.minCoords - unknown_loc_298;
                 B_Vector unknown_loc_2C8;
-                unknown_loc_2C8.x = unknown_loc_40;
-                unknown_loc_2C8.y = unknown_loc_40;
-                unknown_loc_2C8.z = -unknown_loc_40;
+                unknown_loc_2C8.x = childOffset;
+                unknown_loc_2C8.y = childOffset;
+                unknown_loc_2C8.z = -childOffset;
                 B_Vector unknown_loc_2E0;
-                unknown_loc_30.maxCoords = unknown_loc_2E0 = bb.maxCoords - unknown_loc_2C8;
-                this->children[6]->CollectSectorsInBox(unknown_loc_30, outList, unknown_loc_38);
+                childBox.maxCoords = unknown_loc_2E0 = bb.maxCoords - unknown_loc_2C8;
+                this->children[6]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
             if (bb.maxCoords.z > -10.0 && this->children[7] != nullptr)
             {
                 B_Vector unknown_loc_2F8;
-                unknown_loc_2F8.x = unknown_loc_40;
-                unknown_loc_2F8.y = unknown_loc_40;
-                unknown_loc_2F8.z = unknown_loc_40;
+                unknown_loc_2F8.x = childOffset;
+                unknown_loc_2F8.y = childOffset;
+                unknown_loc_2F8.z = childOffset;
                 B_Vector unknown_loc_310;
-                unknown_loc_30.minCoords = unknown_loc_310 = bb.minCoords - unknown_loc_2F8;
+                childBox.minCoords = unknown_loc_310 = bb.minCoords - unknown_loc_2F8;
                 B_Vector unknown_loc_328;
-                unknown_loc_328.x = unknown_loc_40;
-                unknown_loc_328.y = unknown_loc_40;
-                unknown_loc_328.z = unknown_loc_40;
+                unknown_loc_328.x = childOffset;
+                unknown_loc_328.y = childOffset;
+                unknown_loc_328.z = childOffset;
                 B_Vector unknown_loc_340;
-                unknown_loc_30.maxCoords = unknown_loc_340 = bb.maxCoords - unknown_loc_328;
-                this->children[7]->CollectSectorsInBox(unknown_loc_30, outList, unknown_loc_38);
+                childBox.maxCoords = unknown_loc_340 = bb.maxCoords - unknown_loc_328;
+                this->children[7]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
         }
     }
@@ -465,12 +465,12 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
 void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsList *outList) const
 {
     outList->size = 0;
-    B_Vector unknown_loc_18;
-    unknown_loc_18 = worldPos - this->m_center;
+    B_Vector localPos;
+    localPos = worldPos - this->m_center;
     gbl_oct_tree_query_id++;
-    if (this->m_root != nullptr && this->m_halfSize + 10.0 > fabs(unknown_loc_18.x) && this->m_halfSize + 10.0 > fabs(unknown_loc_18.y) && this->m_halfSize + 10.0 > fabs(unknown_loc_18.z))
+    if (this->m_root != nullptr && this->m_halfSize + 10.0 > fabs(localPos.x) && this->m_halfSize + 10.0 > fabs(localPos.y) && this->m_halfSize + 10.0 > fabs(localPos.z))
     {
-        this->m_root->CollectSectorsAtPoint(unknown_loc_18, outList, this->m_halfSize);
+        this->m_root->CollectSectorsAtPoint(localPos, outList, this->m_halfSize);
     }
 }
 
@@ -484,29 +484,29 @@ B_OctTreeSectorsList::B_OctTreeSectorsList()
 int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B_Sphere *sphere)
 {
     cache->count = 0;
-    unsigned int unknown_loc_0C = 0;
-    for (unknown_loc_0C = 0; unknown_loc_0C < this->size; unknown_loc_0C++)
+    unsigned int i = 0;
+    for (i = 0; i < this->size; i++)
     {
-        B_Sector *unknown_loc_10 = this->sectors[unknown_loc_0C];
-        cache->elements[cache->count].sector = unknown_loc_10;
+        B_Sector *current_sector = this->sectors[i];
+        cache->elements[cache->count].sector = current_sector;
         cache->elements[cache->count].numSurfaces = 0;
-        unsigned int unknown_loc_14;
-        for (unknown_loc_14 = 0; unknown_loc_14 < unknown_loc_10->size; unknown_loc_14++)
+        unsigned int j;
+        for (j = 0; j < current_sector->size; j++)
         {
-            B_Surface *unknown_loc_18 = unknown_loc_10->elements[unknown_loc_14];
-            double unknown_loc_08 = sphere->center.z * unknown_loc_18->normal.z + sphere->center.y * unknown_loc_18->normal.y + sphere->center.x * unknown_loc_18->normal.x + unknown_loc_18->p;
-            if (-sphere->radius > unknown_loc_08)
+            B_Surface *current_surface = current_sector->elements[j];
+            double distance = sphere->center.z * current_surface->normal.z + sphere->center.y * current_surface->normal.y + sphere->center.x * current_surface->normal.x + current_surface->p;
+            if (-sphere->radius > distance)
             {
-                unknown_loc_14 = unknown_loc_10->size + 1;
+                j = current_sector->size + 1;
             }
-            else if (unknown_loc_08 < sphere->radius)
+            else if (distance < sphere->radius)
             {
-                B_Surface *unknown_loc_1C = unknown_loc_10->elements[unknown_loc_14];
+                B_Surface *unknown_loc_1C = current_sector->elements[j];
                 cache->elements[cache->count].surfaces[cache->elements[cache->count].numSurfaces] = unknown_loc_1C;
                 cache->elements[cache->count].numSurfaces++;
             }
         }
-        if (unknown_loc_14 == unknown_loc_10->size)
+        if (j == current_sector->size)
         {
             if (cache->elements[cache->count].numSurfaces == 0)
             {

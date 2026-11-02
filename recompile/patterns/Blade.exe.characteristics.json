@@ -1,0 +1,81 @@
+{
+	"004501C1": {
+		"varnames": {
+			"-4": "i",
+			"-8": "sector"
+		}
+	},
+	"00450327": {
+		"varnames": {
+			"-4": "i"
+		}
+	},
+	"00450380": {
+		"varnames": {
+			"-4": "i"
+		}
+	},
+	"00452082": {
+		"varnames": {
+			"8": "bb",
+			"16": "halfSize",
+			"-4": "sectorBB"
+		}
+	},
+	"00452191": {
+		"varnames": {
+			"-4": "i"
+		}
+	},
+	"00452232": {
+		"varnames": {
+			"8": "bb",
+			"16": "halfSize",
+			"-4": "i",
+			"-8": "sectorBB"
+		}
+	},
+	"00452388": {
+		"varnames": {
+			"-8": "childHalfSize",
+			"-16": "childOffset",
+			"-40": "childCenter",
+			"-64": "newLocalPos",
+			"-88": "childCenter",
+			"-112": "newLocalPos",
+			"-136": "childCenter",
+			"-160": "newLocalPos",
+			"-184": "childCenter",
+			"-208": "newLocalPos",
+			"-232": "childCenter",
+			"-256": "newLocalPos",
+			"-280": "childCenter",
+			"-304": "newLocalPos",
+			"-328": "childCenter",
+			"-352": "newLocalPos",
+			"-376": "childCenter",
+			"-400": "newLocalPos"
+		}
+	},
+	"00452845": {
+		"varnames": {
+			"-56": "childHalfSize",
+			"-64": "childOffset",
+			"-48": "childBox"
+		}
+	},
+	"00453067": {
+		"varnames": {
+			"-24": "localPos"
+		}
+	},
+	"0045327B": {
+		"varnames": {
+			"-12": "i",
+			"-16": "current_sector",
+			"-20": "j",
+			"-24": "current_surface",
+			"-8": "distance"
+		}
+	}
+}
