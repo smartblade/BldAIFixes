@@ -7,7 +7,8 @@ The procedures implemented in the pull request were converted by
 BldRecompile (see `recompile/Blade.exe.cpp`). The issues below were found
 while doing it. Each one comes with a suggested patch against `ee43e85` or
 with suggested code. Sections 1-5 are bugs, sections 6-10 are differences of
-the generated code from the original binary.
+the generated code from the original binary, section 11 is the code style
+which makes the sources and the output of BldRecompile identical.
 
 ## 1. `~B_OctantNodeBase` is attributed to the scalar deleting destructor
 
@@ -634,6 +635,35 @@ So the original code used literals (`2.0`, `4.0`, `10.0`, `-10.0`) or
 the `static double` variables of the pull request the compiler reads them
 from `.data` and computes `-kOctTreeMargin` with `fld` and `fchs`.
 Suggested fix: use literals or `const double` constants.
+
+## 11. Code style
+
+The goal is that the implemented procedures are identical to the output of
+BldRecompile. The compiler doesn't keep the differences below, so the style
+of BldRecompile output is used:
+
+1. `&` and `*` are attached to names, not to types:
+   `const B_Vector &that`, `B_Sector *sector`.
+2. Opening braces are on separate lines, there is no `;` after the closing
+   brace of a function:
+
+   ```cpp
+   int B_SectorListNode::GetTypeID()
+   {
+       return B_OCT_NODE_CID_SECTOR_LIST;
+   }
+   ```
+
+3. Loop counters are incremented with postfix `i++`, not `++i`.
+4. Fields and methods are accessed with explicit `this->`:
+   `this->children[i] = nullptr;`.
+5. Nested `if` statements without `else` are merged with `&&`:
+   `if (bb.minCoords.z < 10.0 && this->children[0] != nullptr)` instead of
+   `if (bb.minCoords.z < 10.0) { if (children[0]) { ... } }`.
+6. Integer literals are decimal: `outList->size < 512`, not `0x200`.
+7. There are no comments and no commented out code inside procedures,
+   e.g. `// mark as "processed"`, `// TODO double check` and the commented
+   out implementation of `B_Vector::operator -`.
 
 ## Procedures that match the binary
 
