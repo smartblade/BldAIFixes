@@ -621,10 +621,19 @@ Suggested fix: write it like `LeafNode::CollectSectorsInBox`, with a
 ## 9. Minor differences
 
 - `B_Sector::lastQueryId` is declared as `int`, but `gbl_oct_tree_query_id`
-  is `unsigned int`, so `LeafNode::CollectSectorsAtPoint` and
-  `LeafNode::CollectSectorsInBox` compare signed and unsigned values. In
-  `B_SectorListNode` the same field is compared as `unsigned int`. It is
-  probably `unsigned int`.
+  is `unsigned int`, so `LeafNode::CollectSectorsAtPoint`,
+  `LeafNode::CollectSectorsInBox` and both `B_SectorListNode` procedures
+  compare and assign signed and unsigned values. The field is only compared
+  with `!=` and assigned, so the binary doesn't show its signedness.
+  Suggested fix: declare it as `unsigned int` like the query identifier:
+
+  ```diff
+  --- a/src/BWorld/BMap.h
+  +++ b/src/BWorld/BMap.h
+  @@ -46 +46 @@
+  -    int lastQueryId;
+  +    unsigned int lastQueryId;
+  ```
 - In `B_BoundingBox::CollectIntersectingSectors` the element passed to the
   inlined `Append` is read from `sectors.elements[i]` again instead of
   using the `sector` local variable:

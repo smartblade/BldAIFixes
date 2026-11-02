@@ -117,9 +117,9 @@ void B_OctTree::DeleteRoot()
 // address: 0x0045201F
 void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
-    if (this->sectors->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->sectors->isActive != 0)
+    if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
     {
-        this->sectors->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
+        this->sectors->lastQueryId = gbl_oct_tree_query_id;
         if (outList->size < 512)
         {
             outList->sectors[outList->size] = this->sectors;
@@ -131,9 +131,9 @@ void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsL
 // address: 0x00452082
 void LeafNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *outList, double halfSize)
 {
-    if (this->sectors->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->sectors->isActive != 0)
+    if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
     {
-        this->sectors->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
+        this->sectors->lastQueryId = gbl_oct_tree_query_id;
         B_BoundingBox *sectorBB = &this->sectors->boundingBox;
         int intersects;
         if (gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x || gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y || gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z || gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x || gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y || gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z)
@@ -157,9 +157,9 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
 {
     for (unsigned int i = 0; i < this->size; i++)
     {
-        if (this->elements[i]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[i]->isActive != 0)
+        if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id && this->elements[i]->isActive != 0)
         {
-            this->elements[i]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
+            this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
             if (outList->size < 512)
             {
                 outList->sectors[outList->size] = this->elements[i];
@@ -174,9 +174,9 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSec
 {
     for (unsigned int i = 0; i < this->size; i++)
     {
-        if (this->elements[i]->lastQueryId != static_cast<int>(gbl_oct_tree_query_id) && this->elements[i]->isActive != 0)
+        if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id && this->elements[i]->isActive != 0)
         {
-            this->elements[i]->lastQueryId = static_cast<int>(gbl_oct_tree_query_id);
+            this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
             B_BoundingBox *sectorBB = &this->elements[i]->boundingBox;
             int intersects;
             if (gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x || gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y || gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z || gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x || gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y || gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z)
