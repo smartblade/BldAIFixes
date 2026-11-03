@@ -65,8 +65,12 @@ def do_pointer_dereference(expression, offset, size):
                 "Data type size expected to be {} but was: {}.".format(
                     size, pointee.size))
         if offset != 0:
-            raise Exception(
-                "Data access offset expected to be {} but was: {}.".format(
-                    0, offset))
+            # Element of array pointed by pointer: p[offset / size]
+            if pointee.size == 0 or offset % pointee.size != 0:
+                return None
+            return expressions.ArrayAccess(
+                expression,
+                expressions.Constant(
+                    data_types.Int32(), offset // pointee.size))
         return dereference
     return None

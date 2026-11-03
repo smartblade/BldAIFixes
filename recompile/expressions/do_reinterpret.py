@@ -33,6 +33,12 @@ def do_reinterpret(data_type, e):
 
 
 def _reinterpret_const(data_type, c):
+    # Signed 32-bit integers have the same values
+    if (
+        isinstance(data_type, (data_types.Int32, data_types.Long32)) and
+        isinstance(c.data_type, (data_types.Int32, data_types.Long32))
+    ):
+        return expressions.Constant(data_type, c.value)
     if (
         isinstance(data_type, (data_types.Int32, data_types.Long32)) and
         isinstance(

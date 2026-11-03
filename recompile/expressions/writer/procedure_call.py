@@ -20,7 +20,10 @@ def write_procedure_call(
         call = _method_access_code(arguments[0], proc_decl, callee, proc_name)
         arguments = arguments[1:]
     else:
-        if proc_decl is not None and proc_decl.is_static:
+        if (
+            proc_decl is not None and proc_decl.is_static and
+            proc_decl.method_class is not None
+        ):
             assert callee is None
             call = "{}::{}".format(
                 proc_decl.method_class.class_name, proc_name)
