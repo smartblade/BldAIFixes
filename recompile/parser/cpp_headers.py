@@ -25,6 +25,7 @@ class_regexp = re.compile(
     r'^(class|struct)\s+(LIB_EXP\s+)?(?P<class>\w+)(?P<semicolon>;)?'
     r'(\s*:\s*public\s*(?P<parent>\w+))?')
 template_regexp = re.compile(r'^template<class\s+(?P<class>\w+)>')
+typedef_regexp = re.compile(r'^\s*typedef\s+(?P<definition>[^;{}]+);\s*$')
 ext_proc_regexp = re.compile(
     r'^_CRT_NONSTDC_DEPRECATE\((?P<alias>\w+)\)(?P<decl>.+);')
 
@@ -97,6 +98,8 @@ class HeaderState:
                 continue
             line = self._try_parse_template(line)
             self._try_parse_external_procedures(line)
+            if brackets_depth == 0 and self._try_parse_typedef(line):
+                continue
             match = class_regexp.search(line)
             if match and brackets_depth == 0:
                 class_name = match.group("class")
@@ -224,6 +227,22 @@ class HeaderState:
         self._declared_types[arg_class] = data_types.ClassType(arg_class, {})
         return re.sub(template_regexp, "", line).strip()
 
+    def _try_parse_typedef(self, line):
+        """Parse single line type definitions: 'typedef unsigned int T;'."""
+        match = typedef_regexp.search(line)
+        if not match:
+            return False
+        definition = match.group("definition").strip()
+        try:
+            data_type, name = parser.parse_cpp_variable_declaration(
+                definition, self._declared_types, self._constants)
+        except Exception:
+            # Types which can't be parsed, e.g. pointers to functions
+            return True
+        self._declared_types[name] = data_types.make_named_type(
+            data_type, name)
+        return True
+
     def _try_parse_external_procedures(self, line):
         match = ext_proc_regexp.search(line)
         if not match:
@@ -269,6 +288,7 @@ def _collect_cpp_declarations(
         for file in files:
             if (
                 file.lower().endswith(".cpp") or
+                file.lower().endswith(".c") or
                 file.lower().endswith(".h") or
                 file.lower().endswith(".xml")
             ):

@@ -178,7 +178,7 @@ def _collect_symbols_from_sources(src_dir):
     procedures = {}
     for (root, dirs, files) in os.walk(src_dir):
         for file in files:
-            if file.lower().endswith(".cpp") or file.lower().endswith(".h"):
+            if file.lower().endswith((".cpp", ".c", ".h")):
                 file_name = os.path.join(root, file)
                 _collect_symbols_from_file(file_name, variables, procedures)
     return SrcSymbols.create_symbols_dict(

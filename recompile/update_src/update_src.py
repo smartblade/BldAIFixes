@@ -30,7 +30,7 @@ def _get_source_files(src_path):
     src_files = []
     for root, dirs, files in os.walk(src_path):
         for file in files:
-            if file.lower().endswith(".h") or file.lower().endswith(".cpp"):
+            if file.lower().endswith((".h", ".cpp", ".c")):
                 src_file_name = os.path.join(root, file)
                 with open(src_file_name) as f:
                     lines = f.readlines()
