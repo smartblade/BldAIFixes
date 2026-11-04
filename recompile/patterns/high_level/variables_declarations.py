@@ -5,13 +5,15 @@ from expression_transformer import ExpressionTransformer
 
 def insert_declarations(procedure, stack_vars):
     collector = _IdentifiersCollector(
-        procedure.exclude_implicit_stack_variables(stack_vars))
+        procedure.exclude_implicit_stack_variables(stack_vars),
+        _first_body_instr(procedure))
     collector.collect_identifiers(procedure.instructions)
     return procedure.transform(collector)
 
 
 class _IdentifiersCollector(ExpressionTransformer):
-    def __init__(self, local_stack_variables):
+    def __init__(self, local_stack_variables, first_body_instr):
+        self._first_body_instr = first_body_instr
         self._local_variables_set = _make_variables_set(local_stack_variables)
         self._offsets = dict(
             (identifier, offset)
@@ -114,8 +116,13 @@ class _IdentifiersCollector(ExpressionTransformer):
                             instructions.LabeledBlock)
                     ):
                         common_len -= 1
-                    block = path[common_len - 1][1]
-                    self._ids[identifier] = path[:common_len], block[0]
+                    if common_len == 1:
+                        first_instr = self._first_body_instr
+                    else:
+                        first_instr = path[common_len - 1][1][0]
+                    if first_instr is None:
+                        continue
+                    self._ids[identifier] = path[:common_len], first_instr
                     changed = True
                     break
                 if changed:
@@ -177,6 +184,17 @@ class _IdentifiersCollector(ExpressionTransformer):
             if not any(parent is instr for parent, _ in path):
                 return False
         return True
+
+
+def _first_body_instr(procedure):
+    """First instruction after initialization of fields of constructor."""
+    instrs = list(procedure.instructions)
+    last_init_instr = getattr(procedure, "last_init_instr", None)
+    if last_init_instr is not None:
+        index = next(
+            i for i, instr in enumerate(instrs) if instr == last_init_instr)
+        instrs = instrs[index + 1:]
+    return instrs[0] if instrs else None
 
 
 def _common_prefix_length(first_path, second_path):

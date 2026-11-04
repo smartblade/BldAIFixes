@@ -43,6 +43,10 @@ class Procedure:
         return self._address
 
     @property
+    def last_init_instr(self):
+        return self._last_init_instr
+
+    @property
     def instructions(self):
         return self._instructions
 

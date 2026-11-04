@@ -366,6 +366,7 @@ B_OctTreeSectorsList::B_OctTreeSectorsList()
 // address: 0x0045327B
 int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B_Sphere *sphere)
 {
+    double distance;
     cache->count = 0;
     unsigned int i = 0;
     for (i = 0; i < this->size; i++)
@@ -377,7 +378,7 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
         for (j = 0; j < current_sector->size; j++)
         {
             B_Surface *current_surface = current_sector->elements[j];
-            double distance = sphere->center.z * current_surface->normal.z + sphere->center.y * current_surface->normal.y + sphere->center.x * current_surface->normal.x + current_surface->p;
+            distance = sphere->center.z * current_surface->normal.z + sphere->center.y * current_surface->normal.y + sphere->center.x * current_surface->normal.x + current_surface->p;
             if (-sphere->radius > distance)
             {
                 j = current_sector->size + 1;
