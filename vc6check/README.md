@@ -36,6 +36,9 @@ are in `.data`. In the original `Blade.exe` the constants are read from
 `.rdata` and `-10.0` is a separate constant, see section 10 of
 `docs/BldMystery-pull-7-review.md` in branch `claude/blade-single-procedure`.
 
+Rules of placing local variables in the stack frame by Visual C++ 6.0 are
+described in [stack-layout.md](stack-layout.md).
+
 ## Usage
 
 Requirements: Visual C++ 6.0 (`cl.exe` version 12.00, the original binaries
