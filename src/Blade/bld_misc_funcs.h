@@ -44,12 +44,22 @@ public:
     virtual ~B_ProcTexture();
     void Update();
 
+    int HasData()
+    {
+        return data != NULL;
+    }
+
     void *data;
 };
 
 class B_AGTexture
 {
 public:
+    long BmpHandle()
+    {
+        return bmpHandle;
+    }
+
     int textureEffect;
     int needUpdate;
     B_ProcTexture *procTexture;

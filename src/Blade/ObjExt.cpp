@@ -1427,6 +1427,17 @@ B_BitMap *RM_GetResource(const char *name)
 }
 
 
+inline B_AGTexture *FindAGTexture(long bmpHandle)
+{
+    for (unsigned int i = 0; i < gbl_ag_textures.size; i++)
+    {
+        if (gbl_ag_textures[i]->BmpHandle() == bmpHandle)
+            return gbl_ag_textures[i];
+    }
+    return NULL;
+}
+
+
 /*
 * Module:                 Blade.exe
 * Entry point:            0x0042B0F4
@@ -1434,26 +1445,10 @@ B_BitMap *RM_GetResource(const char *name)
 
 void UpdateAGTexture(long bmpHandle)
 {
-    B_AGTexture *texture;
-    {
-        for (unsigned int i = 0; i < gbl_ag_textures.size; i++)
-        {
-            B_AGTexture *currentTexture = gbl_ag_textures.elements[i];
-            long currentHandle = currentTexture->bmpHandle;
-            if (currentHandle == bmpHandle)
-            {
-                B_AGTexture *foundTexture = gbl_ag_textures.elements[i];
-                texture = foundTexture;
-                goto after_search;
-            }
-        }
-        texture = NULL;
-after_search:
-        ;
-    }
+    B_AGTexture *texture = FindAGTexture(bmpHandle);
     if (
         (texture != NULL) &&
-        (texture->procTexture->data != NULL) &&
+        (texture->procTexture->HasData()) &&
         (texture->needUpdate))
     {
         texture->procTexture->Update();
