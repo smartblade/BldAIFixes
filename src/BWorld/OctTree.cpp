@@ -77,7 +77,7 @@ int LeafNode::GetTypeID()
 * VC++ mangling:          ??0B_SectorListNode@@QAE@XZ
 */
 
-B_SectorListNode::B_SectorListNode(): B_SharedPtrArray<B_Sector>(1)
+B_SectorListNode::B_SectorListNode(): B_PtrArray<B_Sector>(1)
 {
 }
 

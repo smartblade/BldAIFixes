@@ -115,7 +115,7 @@ public:
     B_Sector* sectors;
 };
 
-class B_SectorListNode : public B_OctantNodeBase, public B_SharedPtrArray<B_Sector>
+class B_SectorListNode : public B_OctantNodeBase, public B_PtrArray<B_Sector>
 {
 public:
 

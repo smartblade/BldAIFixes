@@ -84,7 +84,7 @@ int LeafNode::GetTypeID()
 // address: 0x0045048C
 B_SectorListNode::B_SectorListNode()
 :
-    B_SharedPtrArray<B_Sector>(1)
+    B_PtrArray<B_Sector>(1)
 {
 }
 
