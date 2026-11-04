@@ -1,8 +1,10 @@
+from calling_convention import CallingConvention
 import data_types
 import expressions
 from hex_conversion import from_hex
 import instructions
 from patterns.procedure import Procedure
+from procedure_declaration import ProcedureDeclaration
 
 from .block_builder import BlockBuilder
 from .ensure_tmp_reg_def import ensure_tmp_reg_def
@@ -135,6 +137,18 @@ class ProcedureBuilder:
             name=name.emit_code(), is_method=True,
             arguments=[object, argument])
         self._add_instruction(instructions.CodeInstruction(procedure_call))
+
+    def make_fpu_method_call(self, name, object, argument):
+        """Push result of floating point method inlined by compiler."""
+        name = name.emit_code()
+        proc_decl = ProcedureDeclaration(
+            name, CallingConvention.THISCALL, None,
+            [(data_types.Pointer32(), "point")], data_types.Double(),
+            is_const=True)
+        procedure_call = expressions.ProcedureCall(
+            name=name, is_method=True, arguments=[object, argument],
+            proc_decl=proc_decl)
+        self.push_fpu(procedure_call)
 
     def add_stack_pointer(self, offset):
         self._current_block.merge_args_into_cdecl_procedure_call(

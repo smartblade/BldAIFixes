@@ -15,7 +15,7 @@ def transform_reinterpret(data_type, expression, analysis, **kwargs):
     result = _transform_to_static_cast(data_type, expression)
     if result is not None:
         return result
-    result = _transform_to_first_field(data_type, expression)
+    result = transform_to_first_field(data_type, expression)
     if result is not None:
         return result
     analysis.process_reinterpret(data_type, expression)
@@ -99,7 +99,7 @@ _static_cast_pairs = {
 }
 
 
-def _transform_to_first_field(data_type, expression):
+def transform_to_first_field(data_type, expression):
     """Transform cast of pointer to class to pointer to its first field."""
     if not isinstance(data_type, data_types.Pointer32):
         return None

@@ -9,6 +9,9 @@ class ClassType(DataType):
         self._class_name = class_name
         self._fields = fields
         self._methods = []
+        # Not virtual methods (e.g. inline methods) are kept apart: there may
+        # be overloaded ones
+        self._other_methods = []
         # Constructors are kept apart: there may be several of them
         self._constructors = []
         # Default values of parameters of constructors (C++ expressions)
@@ -104,6 +107,17 @@ class ClassType(DataType):
 
     def add_method(self, method):
         self._methods.append(method)
+
+    def add_other_method(self, method):
+        self._other_methods.append(method)
+
+    def find_other_method(self, method_name):
+        """Find not virtual method, None if it's overloaded."""
+        methods = [
+            method for method in self._other_methods
+            if method.proc_name == method_name
+        ]
+        return methods[0] if len(methods) == 1 else None
 
     def find_method(self, method_name):
         found_method = None

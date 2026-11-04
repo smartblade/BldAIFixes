@@ -11,6 +11,7 @@ from .call_characteristics import get_call_characteristics
 from .convert_sizeof_arguments import convert_sizeof_arguments
 from .explicit_arg_cast import explicit_arg_cast
 from .narrow_constant import narrow_constant
+from .transform_reinterpret import transform_to_first_field
 
 
 def transform_procedure_call(
@@ -22,6 +23,8 @@ def transform_procedure_call(
     pc, proc_decl = _resolve_virtual_call(pc)
     if proc_decl is None:
         proc_decl = _get_callee_declaration(pc, declarations)
+    if proc_decl is None:
+        proc_decl = _find_inlined_method(pc)
     pc = call_args_matcher.match_args(pc, proc_decl)
     if proc_decl is None:
         return pc
@@ -104,6 +107,24 @@ def _resolve_virtual_call(pc):
     if method.stack_delta != pc.proc_decl.stack_delta:
         return pc, None
     return pc.copy(callee=None, name=method.proc_name), method
+
+
+def _find_inlined_method(pc):
+    """Find declaration of inlined method in the class of the object."""
+    if not pc.is_method or pc.callee_address is not None or not pc.arguments:
+        return None
+    if pc.proc_decl is not None and pc.proc_decl.method_class is not None:
+        return None
+    obj_type = pc.arguments[0].data_type
+    if not isinstance(obj_type, data_types.Pointer32):
+        return None
+    class_type = obj_type.pointee
+    while isinstance(class_type, data_types.ClassType):
+        method = class_type.find_other_method(pc.name)
+        if method is not None:
+            return method
+        class_type = class_type.parent
+    return None
 
 
 def _get_callee_declaration(pc, declarations):
@@ -197,6 +218,9 @@ def _convert_argument_to_parameters_type(argument, parameter, proc_decl):
     c = narrow_constant(argument, parameter.data_type)
     if c is not None:
         return c
+    new_argument = transform_to_first_field(parameter.data_type, argument)
+    if new_argument is not None:
+        return new_argument
     new_argument = expressions.do_reinterpret(parameter.data_type, argument)
     new_argument = explicit_arg_cast(
         proc_decl, new_argument, parameter.data_type) or new_argument

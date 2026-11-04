@@ -178,6 +178,10 @@ class HeaderState:
                 self._declared_types[class_name].add_constructor(
                     decl.proc_decl, decl.default_values)
                 continue
+            if isinstance(decl, _OtherMethod):
+                self._declared_types[class_name].add_other_method(
+                    decl.proc_decl)
+                continue
             if isinstance(decl, ProcedureDeclaration):
                 # Add space for vtable if necessary
                 if (
@@ -206,7 +210,10 @@ class HeaderState:
             if is_static or is_virtual:
                 return parser.parse_cpp_function(
                     class_name, definition, self._declared_types)
-            return self._try_parse_constructor(class_name, definition)
+            constructor = self._try_parse_constructor(class_name, definition)
+            if constructor is not None:
+                return constructor
+            return self._try_parse_other_method(class_name, definition)
         if is_static:
             return
         if definition.startswith("enum"):
@@ -216,6 +223,14 @@ class HeaderState:
         field_type, field_name = parser.parse_cpp_variable_declaration(
             definition, self._declared_types, self._constants)
         return field_type, field_name
+
+    def _try_parse_other_method(self, class_name, definition):
+        try:
+            proc_decl = parser.parse_cpp_function(
+                class_name, definition, self._declared_types)
+        except Exception:
+            return None
+        return _OtherMethod(proc_decl)
 
     def _try_parse_constructor(self, class_name, definition):
         if not definition.startswith(class_name + "("):
@@ -289,6 +304,13 @@ class HeaderState:
         proc_decl = parser.parse_cpp_function(
             None, declaration, self._declared_types)
         self._external_procedures[alias] = proc_decl
+
+
+class _OtherMethod:
+    """Method which isn't virtual or static, e.g. inline method."""
+
+    def __init__(self, proc_decl):
+        self.proc_decl = proc_decl
 
 
 class _Constructor:

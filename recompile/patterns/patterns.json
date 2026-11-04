@@ -190,6 +190,27 @@
 	},
 	{
 		"instructions": [
+			{"mov":  ["eax", "[ebp%offset-plane%]"]},
+			{"mov":  ["ecx", "[ebp%offset-plane%]"]},
+			{"mov":  ["edx", "[ebp%offset-point%]"]},
+			{"fld":  ["[edx+010h]"]},
+			{"fmul": ["[ecx+014h]"]},
+			{"mov":  ["ecx", "[ebp%offset-plane%]"]},
+			{"mov":  ["edx", "[ebp%offset-point%]"]},
+			{"fld":  ["[edx+008h]"]},
+			{"fmul": ["[ecx+00Ch]"]},
+			{"mov":  ["ecx", "[ebp%offset-plane%]"]},
+			{"mov":  ["edx", "[ebp%offset-point%]"]},
+			{"fld":  ["[edx]"]},
+			{"fmul": ["[ecx+004h]"]},
+			{"faddp": ["st(01h)", "st(00h)"]},
+			{"faddp": ["st(01h)", "st(00h)"]},
+			{"fadd": ["[eax+01Ch]"]}
+		],
+		"action": {"fpu-method-call": {"name": "Distance", "object": "STACKVAR(%offset-plane%, 4)", "argument": "STACKVAR(%offset-point%, 4)"}}
+	},
+	{
+		"instructions": [
 			{"push": ["[esp+004h]"]},
 			{"call": ["%label%"]},
 			{"neg":  ["eax"]},
