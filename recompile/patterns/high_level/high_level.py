@@ -65,8 +65,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = procedure.copy(instrs=instrs)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
-    procedure = extract_inlined_destructor(procedure, inline_procedures)
-    return insert_declarations(procedure, stack_vars)
+    procedure = insert_declarations(procedure, stack_vars)
+    return extract_inlined_destructor(procedure, inline_procedures)
 
 
 def _transform_instructions(instrs, analysis, **kwargs):
