@@ -11,10 +11,29 @@
 /*
 * Module:                 rOpenGL.dll
 * Entry point:            0x1000CEAB
-* VC++ mangling:          ?Read@B_VideoModeSection@@QAEHXZ
+* VC++ mangling:          ?Read@B_VideoModeSection@@UAEHXZ
 */
 #ifndef BLD_NATIVE
 int B_VideoModeSection::Read()
+{
+    return true;
+}
+#endif
+
+/*
+................................................................................
+................................................................................
+................................................................................
+................................................................................
+*/
+
+/*
+* Module:                 rOpenGL.dll
+* Entry point:            0x1000D116
+* VC++ mangling:          ?Write@B_VideoModeSection@@UAEHXZ
+*/
+#ifndef BLD_NATIVE
+int B_VideoModeSection::Write()
 {
     return true;
 }

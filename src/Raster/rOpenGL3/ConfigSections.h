@@ -12,8 +12,19 @@ public:
     {
     }
 
-    virtual ~B_ConfigSection()
+    virtual int Read()
     {
+        return 0;
+    }
+
+    virtual int Write()
+    {
+        return 0;
+    }
+
+    virtual int unknown008()
+    {
+        return 0;
     }
 
 private:
@@ -31,7 +42,13 @@ public:
         Read();
     }
 
-    int Read();
+    virtual int Read();
+    virtual int Write();
+
+    virtual int unknown008()
+    {
+        return 0;
+    }
 
     int isWindow;
     int bpp;
