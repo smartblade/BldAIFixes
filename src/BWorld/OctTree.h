@@ -14,7 +14,7 @@ public:
     int IsPointInside(const B_Vector* point);
 
     B_Sector* sector;
-    int numSurfaces;
+    unsigned int numSurfaces;
     B_Surface* surfaces[64];
     int hasNoIntersections;
 };

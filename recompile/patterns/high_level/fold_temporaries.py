@@ -17,6 +17,9 @@ def fold_temporaries(procedure, declared_types):
       'B_Vector t; x = t = v - w;' -> 'x = v - w;'
     - Copies of arguments of inlined constructors:
       'double t = a; return B_Vector(t, b, c);' -> 'B_Vector(a, b, c)'
+    - Objects of inlined methods:
+      'B_Surface *t = a[i]; if (t->Distance(p) < 0.0)' ->
+      'if (a[i]->Distance(p) < 0.0)'
     Only unnamed variables used once with initial expressions without side
     effects are folded.
     """
@@ -99,6 +102,11 @@ def _transform_instruction(instr, transformer):
             return None
         return instructions.VariableDeclaration(
             instr.identifier, initial.transform(transformer))
+    if isinstance(instr, instructions.IfInstruction):
+        # Temporary used once is used in the clause only
+        return instructions.IfInstruction(
+            instr.if_clause.transform(transformer), instr.if_block,
+            instr.else_block)
     if not isinstance(instr, (
         instructions.Assignment, instructions.CodeInstruction,
         instructions.ReturnInstruction,
@@ -131,7 +139,13 @@ class _VariableReplacer(ExpressionTransformer):
         if self._is_parent_allowed is None:
             return None
         pc = copy_pc()
-        if not _is_construction(pc, None):
+        # Object of inlined method is a temporary too:
+        # 'B_Surface *t = a[i]; t->Distance(p);' -> 'a[i]->Distance(p);'
+        is_object = (
+            pc.is_method and pc.arguments and
+            _is_variable(pc.arguments[0], self._var)
+        )
+        if not _is_construction(pc, None) and not is_object:
             return None
         new_arguments = [self._replace(arg) or arg for arg in pc.arguments]
         if not self.is_replaced:

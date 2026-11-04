@@ -404,6 +404,19 @@ B_SectorSurfaceCache::~B_SectorSurfaceCache()
 {
 }
 
+// address: 0x004534A4
+int B_SectorSurfaceCache::IsPointInside(const B_Vector *point)
+{
+    for (unsigned int i = 0; i < this->numSurfaces; i++)
+    {
+        if (this->surfaces[i]->Distance(point) < 0.0)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 // address: 0x004539A9
 B_GlobalSurfaceCache::B_GlobalSurfaceCache()
 :

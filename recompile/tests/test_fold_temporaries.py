@@ -89,3 +89,21 @@ class TestFoldTemporaries(unittest.TestCase):
             instructions.VariableDeclaration(result, difference),
             instructions.CodeInstruction(call),
         ]))
+
+    def test_object_of_inlined_method_in_condition(self):
+        point = _point()
+        t = expressions.Identifier(data_types.Pointer32(point), "unknown_loc_08")
+        obj = expressions.Identifier(data_types.Pointer32(point), "obj")
+        call = expressions.ProcedureCall(
+            name="Distance", is_method=True, arguments=[t, i32_id("p")])
+        self.assertEqual(
+            "if (obj->Distance(p) < 0)\n{\n    return 0;\n}\n",
+            _emit([
+                instructions.VariableDeclaration(t, obj),
+                instructions.IfInstruction(
+                    expressions.Bin(
+                        Operator.LT, call,
+                        expressions.Constant(data_types.Int32(), 0)),
+                    [instructions.ReturnInstruction(
+                        expressions.Constant(data_types.Int32(), 0))]),
+            ]))

@@ -2613,8 +2613,7 @@ void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
         {
             STACKVAR(-56, 4) = 0x00000000;
         }
-        void *unknown_loc_34 = this->unknown04;
-        unknown_loc_34->Append(STACKVAR(-56, 4));
+        this->unknown04->Append(STACKVAR(-56, 4));
         if ((reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0x00000002) != 0x00000000)
         {
             STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0xFFFFFFFD;
