@@ -385,8 +385,8 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
             }
             else if (distance < sphere->radius)
             {
-                B_Surface *unknown_loc_1C = current_sector->elements[j];
-                cache->elements[cache->count].surfaces[cache->elements[cache->count].numSurfaces] = unknown_loc_1C;
+                B_Surface *surface = current_sector->elements[j];
+                cache->elements[cache->count].surfaces[cache->elements[cache->count].numSurfaces] = surface;
                 cache->elements[cache->count].numSurfaces++;
             }
         }

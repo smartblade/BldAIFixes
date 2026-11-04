@@ -110,6 +110,7 @@
 			"-16": "current_sector",
 			"-20": "j",
 			"-24": "current_surface",
+			"-28": "surface",
 			"-8": "distance"
 		}
 	}
