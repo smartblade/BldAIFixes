@@ -429,4 +429,13 @@ B_GlobalSurfaceCache::B_GlobalSurfaceCache()
 }
 
 // address: 0x00453AC0
-// p00453AC0: scalar deleting destructor
+// B_OctantNodeBase: scalar deleting destructor
+
+class B_OctantNodeBase
+{
+    // address: inline
+    virtual ~B_OctantNodeBase()
+    {
+        gbl_node_count--;
+    }
+};

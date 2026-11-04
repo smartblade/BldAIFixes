@@ -295,7 +295,3 @@ B_GlobalSurfaceCache::B_GlobalSurfaceCache()
 {
 }
 
-
-B_OctantNodeBase::~B_OctantNodeBase()
-{
-}
