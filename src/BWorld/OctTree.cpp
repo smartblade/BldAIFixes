@@ -118,10 +118,10 @@ B_OctTree::~B_OctTree()
 /*
 * Module:                 Blade.exe
 * Entry point:            0x004507D5
-* VC++ mangling:          ?DeleteRoot@B_OctTree@@QAEXXZ
+* VC++ mangling:          ?Clear@B_OctTree@@QAEXXZ
 */
 
-void B_OctTree::DeleteRoot()
+void B_OctTree::Clear()
 {
 }
 

@@ -102,11 +102,11 @@ int B_SectorListNode::GetTypeID()
 // address: 0x004507B9
 B_OctTree::~B_OctTree()
 {
-    this->DeleteRoot();
+    this->Clear();
 }
 
 // address: 0x004507D5
-void B_OctTree::DeleteRoot()
+void B_OctTree::Clear()
 {
     if (this->m_root != nullptr)
     {

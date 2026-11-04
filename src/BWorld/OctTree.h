@@ -115,7 +115,7 @@ public:
     ~B_OctTree();
 
     // Name is not known: deletes the root node
-    void DeleteRoot();
+    void Clear();
 
     void Build(const B_Map&, double);
 
