@@ -200,8 +200,8 @@ public:
     double aecGap;
     PyObject *menuTgapFunc;
     int isInputActive;
-    B_PtrArray<B_AfterFrameFunc> afterFrameFuncs;
-    B_PtrArray<B_StringValue> values;
+    B_PtrArray3<B_AfterFrameFunc> afterFrameFuncs;
+    B_PtrArray3<B_StringValue> values;
     char screenShotFileName[256];
     int screenShotWidth;
     int screenShotHeight;

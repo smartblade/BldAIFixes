@@ -122,13 +122,14 @@ public:
         }
     }
 
-    B_PtrArray(unsigned int increment = 16, int deleteItems = true)
+    B_PtrArray(int increment = 16, int deleteItems = true)
+    :
+        elements(NULL),
+        size(0),
+        increment(increment),
+        num_alloc(0),
+        deleteItems(deleteItems)
     {
-        elements = NULL;
-        size = 0;
-        this->increment = increment;
-        num_alloc = 0;
-        this->deleteItems = deleteItems;
     }
 
     TYPE *operator[](unsigned int index)
@@ -309,5 +310,23 @@ public:
     }
 };
 
+
+/*
+* Intermediate array classes. Their constructors set their own vtables after
+* the B_PtrArray constructor, the vtables contain only scalar deleting
+* destructors, and the destructors don't set the vtables again (the classes
+* have no user-defined destructors). The original names are unknown.
+*/
+
+template<class TYPE>
+class B_PtrArray2 : public B_PtrArray<TYPE>
+{
+};
+
+
+template<class TYPE>
+class B_PtrArray3 : public B_PtrArray2<TYPE>
+{
+};
 
 #endif /* ARRAY_H */
