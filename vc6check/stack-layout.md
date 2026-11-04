@@ -52,6 +52,49 @@ void f()
 }
 ```
 
+## Variables of inlined procedures
+
+An inlined procedure gets its own part of the stack frame after the
+variables and temporaries of the procedure expanding it, in the order of
+the expansion:
+
+1. local variables of the inlined procedure, in the order of the rules
+   above;
+2. variables and temporaries of the procedures expanded in it (the
+   converted arguments, local variables, return values);
+3. temporaries holding the values of its arguments, if an argument is an
+   expression and not a variable;
+4. the temporary of its return value (`return 1;` and `return 0;` in two
+   branches write the same temporary).
+
+`CreateTriggerSector` (`0x0042B97A`) of `Blade.exe` calls inline
+`AddTriggerSector(sector)`, which calls inline
+`AddTriggerSector(sector, sector->Id().String())`, which calls inline
+`B_PtrArray::Find`:
+
+| Offset | Variable |
+|---|---|
+| `-0x5C` | `found`, local variable of `AddTriggerSector(sector, name)` |
+| `-0x64` | `B_Name` converted from `name` for `Find(const B_Name &)` |
+| `-0x68` | `i` of `Find` |
+| `-0x6C` | the return value of `Find` |
+| `-0x70` | `name`, the argument `sector->Id().String()` |
+| `-0x74` | the return value of `AddTriggerSector(sector, name)` |
+
+Declared as a local variable before `found`, `name` would be placed right
+after `found` (same bucket 13, declared earlier), before the temporaries
+of `Find`. So a temporary after the temporaries of a nested inlined
+procedure, used like a variable, is an argument of an inlined procedure.
+
+Arguments are evaluated from right to left: `B_Vector(points[i * 2],
+floor_height, points[i * 2 + 1])` stores `z` and then `x` to temporaries
+(`floor_height` is a variable and is read directly) before the expanded
+constructor copies them to the vector.
+
+A `B_Vector` declared in the block of a loop is placed with the variables
+of nested blocks, above the temporaries; a temporary `B_Vector` passed to
+a call is placed among the temporaries.
+
 ## Consequences for recompiled code
 
 The offsets of the original binary restrict the declarations:
