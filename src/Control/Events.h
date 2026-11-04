@@ -3,6 +3,7 @@
 #define EVENTS_H
 
 #include <array.h>
+#include <Hash.h>
 #include <BBLibc/Name.h>
 
 #include <Control/EventFuncC.h>
@@ -44,7 +45,8 @@ public:
     int GetEventIndex(const char *event_name);
     const B_Name &GetEventName(int eventIndex);
 private:
-    B_PtrArray<B_Event> events;
+    B_SharedPtrArray<B_Event> events;
+    B_Hash<B_Event> eventsByName;
 };
 
 #endif /* EVENTS_H */
