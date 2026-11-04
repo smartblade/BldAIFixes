@@ -6,6 +6,8 @@ import expressions
 from expressions.operator import operators
 
 operator_regexp = re.compile(r'^operator\s*(?P<op>\S+)$')
+# Name of parameters written without names, e.g. unused parameters
+UNNAMED_PARAMETER = "__"
 
 
 class ProcedureDeclaration:
@@ -168,7 +170,11 @@ class ProcedureDeclaration:
         param_index = 0
         for parameter_type, parameter_name in self._parameters:
             param_index += 1
-            parameter_name = _make_parameter_name(parameter_name, param_index)
+            if parameter_name == UNNAMED_PARAMETER:
+                parameter_name = None
+            else:
+                parameter_name = _make_parameter_name(
+                    parameter_name, param_index)
             parameter = parameter_type.make_variable_declaration(
                 parameter_name, self._method_class
             )
@@ -215,6 +221,6 @@ class ProcedureDeclaration:
 
 
 def _make_parameter_name(parameter_name, parameter_index):
-    if parameter_name is not None:
+    if parameter_name is not None and parameter_name != UNNAMED_PARAMETER:
         return parameter_name
     return "arg_{}".format(parameter_index)
