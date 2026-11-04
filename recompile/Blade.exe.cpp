@@ -130,7 +130,7 @@ void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsL
 }
 
 // address: 0x00452082
-void LeafNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *outList, double halfSize)
+void LeafNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *outList, double)
 {
     if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
     {
@@ -171,7 +171,7 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
 }
 
 // address: 0x00452232
-void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *outList, double halfSize)
+void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *outList, double)
 {
     for (unsigned int i = 0; i < this->size; i++)
     {
