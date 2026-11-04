@@ -46,13 +46,27 @@ def declarations(body, name):
     for match in re.finditer(r'(?<![\w.>])' + re.escape(name) + r'\b', body):
         before = body[:match.start()].rstrip()
         after = body[match.end():].lstrip()[:1]
-        previous = re.search(r'([A-Za-z_]\w*|[*&>])$', before)
+        previous = re.search(r'([A-Za-z_]\w*|[*&>,])$', before)
         if (
-            previous and after in ("=", ";", "(", "[", ",", ")") and
-            previous.group(1) not in SKIPPED_PREVIOUS_WORDS
+            not previous or after not in ("=", ";", "(", "[", ",", ")") or
+            previous.group(1) in SKIPPED_PREVIOUS_WORDS
         ):
-            result.append(match.start())
+            continue
+        if previous.group(1) == "," and not _is_declarator_list(before):
+            continue
+        result.append(match.start())
     return result
+
+
+def _is_declarator_list(before):
+    """Whether a name after a comma is a declarator, e.g. 'int a, b'."""
+    statement = re.split(r'[;{}]', before)[-1]
+    depth = 0
+    for ch in statement:
+        depth += {"(": 1, ")": -1}.get(ch, 0)
+        if depth < 0:
+            return False
+    return depth == 0 and re.match(r'\s*[A-Za-z_]\w*[\w\s:<>*&]*\s[*&]*[A-Za-z_]', statement) is not None
 
 
 def check_procedure(source_lines, variables, lines):
@@ -77,36 +91,53 @@ def check_procedure(source_lines, variables, lines):
         by_name.setdefault(vc6_listing.variable_name(listing_name), []).append(
             (int(suffix) if suffix else -1, listing_name))
     found = {}
+    inlined = []
     for name, listing_names in by_name.items():
         positions = declarations(body, name)
-        if len(positions) < len(listing_names):
-            return None
-        # Variables of the same name are numbered in order of declarations
-        for (_, listing_name), position in zip(
-            sorted(listing_names), positions
-        ):
-            found[listing_name] = (blocks[position], name, position)
-    order = sorted(
-        locals_, key=lambda n: stack_layout.order_key(*found[n]))
+        # A variable of the body of the procedure has no number in the
+        # listing, variables of nested blocks are numbered in order of
+        # declarations, variables of inlined procedures have the highest
+        # numbers
+        listing_names = sorted(listing_names)
+        if listing_names[0][0] == -1:
+            body_positions = [p for p in positions if blocks[p] == 0]
+            if not body_positions:
+                return None
+            found[listing_names[0][1]] = (0, name, body_positions[0])
+            positions.remove(body_positions[0])
+            listing_names = listing_names[1:]
+        for index, (_, listing_name) in enumerate(listing_names):
+            if index < len(positions):
+                position = positions[index]
+                found[listing_name] = (blocks[position], name, position)
+            else:
+                inlined.append(listing_name)
+    if len(found) < 2:
+        return None
+    order = sorted(found, key=lambda n: stack_layout.order_key(*found[n]))
     offsets = [locals_[n] for n in order]
     valid = all(a > b for a, b in zip(offsets, offsets[1:]))
+    # Variables of inlined procedures are placed after the variables of
+    # the source
+    if inlined and max(locals_[n] for n in inlined) > min(offsets):
+        valid = False
     details = [
         (found[n][1], locals_[n], found[n][0], stack_layout.bucket(found[n][1]))
         for n in order
-    ]
+    ] + [(vc6_listing.variable_name(n), locals_[n], "inlined") for n in inlined]
     return details, valid
 
 
 def find_source(listing_path, source_dir):
+    """Source of Dir_Name.asm: Name.cpp or Dir/Name.cpp in source_dir."""
     base = os.path.splitext(os.path.basename(listing_path))[0]
-    candidates = [base]
-    if "_" in base:
-        candidates.append(os.path.join(*base.split("_", 1)))
-    for candidate in candidates:
-        for ext in (".cpp", ".CPP", ".c"):
-            path = os.path.join(source_dir, candidate + ext)
-            if os.path.exists(path):
-                return path
+    for root, _, files in os.walk(source_dir):
+        relative = os.path.relpath(root, source_dir)
+        prefix = "" if relative == "." else relative.replace(os.sep, "_") + "_"
+        for file_name in files:
+            name, ext = os.path.splitext(file_name)
+            if ext.lower() in (".cpp", ".c") and prefix + name == base:
+                return os.path.join(root, file_name)
     return None
 
 

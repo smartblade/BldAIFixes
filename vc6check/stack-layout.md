@@ -73,11 +73,17 @@ The offsets of the original binary restrict the declarations:
 - The hash function is derived from the order of 1466 names and checked on
   600 random names of 1 to 31 characters (letters, digits and `_`), all
   buckets match.
-- All BBLibc sources (21 files) and 41 other files of BldMystery are
-  compiled, the order of the local variables in the listings (`/FAs`) is
-  compared with the rules: 63 procedures with two or more local variables
+- All sources of `Blade.exe` (49 files), `BBLibc.dll` (21 files) and
+  `rOpenGL.dll` (9 files) of BldMystery are compiled (in `App.cpp` and
+  `WinClock.cpp` constructions not supported by Visual C++ 6.0 are
+  replaced), the order of the local variables in the listings (`/FAs`) is
+  compared with the rules. Of 113 procedures with two or more local
+  variables 100 are checked by `check_stack_layout.py` and all of them
   match, including `operator >>` of `B_World` with 13 variables in
-  8 nested blocks and variables of the same names in different blocks.
+  8 nested blocks, variables of the same names in different blocks and
+  variables of inlined procedures. `B_3DRasterDevice::WriteText` defined in
+  `RasterDevice.h` matches too. The rest are methods of templates and
+  procedures with variables of inlined procedures only.
 - `BuildSurfaceCache` with `distance` declared in the body of the
   procedure has the same stack frame as in `Blade.exe` (built with
   12.00.8799), so the rules are the same for both builds at least in this
