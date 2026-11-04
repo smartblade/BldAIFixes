@@ -82,3 +82,36 @@ The offsets of the original binary restrict the declarations:
   procedure has the same stack frame as in `Blade.exe` (built with
   12.00.8799), so the rules are the same for both builds at least in this
   case.
+
+## Scripts
+
+- `stack_layout.py`: the hash of names (`bucket`) and the key of the order
+  of variables in the stack frame (`order_key`).
+- `check_hash.py`: compiles procedures with variables of random (or given)
+  names and compares the buckets found from the listing with
+  `stack_layout.bucket`.
+- `check_stack_layout.py`: checks the rules on listings of compiled
+  sources: local variables of each procedure sorted by `order_key` must
+  have decreasing offsets. Blocks and declarations are found in the
+  source by a simple parser, procedures it can't handle are skipped.
+
+`cl.exe` is run as the command in the `VC6_CL` environment variable (`cl`
+by default). On Linux it can be run with Wine:
+
+```sh
+export WINEPATH="Z:$VC6/VC98/Bin;Z:$VC6/Common/MSDev98/Bin"
+export VC6_CL="wine CL.EXE"
+python3 vc6check/check_hash.py
+python3 vc6check/check_hash.py distance current_surface i
+```
+
+Listings for `check_stack_layout.py` are made with `/FAs`, a listing
+`Name.asm` is checked with `Name.cpp` of the sources directory (or
+`Dir_Name.asm` with `Dir/Name.cpp`):
+
+```bat
+set CFLAGS=/Zp4 /MD /Od /Ob1 /Gd /W3 /FAs /Falistings\
+vc6check\build.bat C:\path\to\BldMystery
+python vc6check\check_stack_layout.py listings C:\path\to\BldMystery\src\BBLibc
+```
+
