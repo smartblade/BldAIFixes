@@ -12,6 +12,7 @@ from .fields_destroying import discover_fields_destroying
 from .fields_initialization import discover_fields_initialization
 from .inlined_base_structors import remove_inlined_base_structors
 from .member_array_construction import remove_member_array_construction
+from .scalar_deleting_destructor import extract_inlined_destructor
 from .transform_class_returns import transform_class_returns
 from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
@@ -90,7 +91,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = insert_declarations(procedure, stack_vars)
     procedure = restore_local_constructions(procedure)
     procedure = fold_temporaries(procedure, declarations.declared_types)
-    return split_jumped_declarations(procedure)
+    procedure = split_jumped_declarations(procedure)
+    return extract_inlined_destructor(procedure, inline_procedures)
 
 
 def _transform_instructions(instrs, analysis, **kwargs):

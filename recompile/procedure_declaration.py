@@ -28,6 +28,9 @@ class ProcedureDeclaration:
         self._is_default_constructor_closure = (
             proc_name == "default constructor closure"
         )
+        self._is_scalar_deleting_destructor = (
+            proc_name == "scalar deleting destructor"
+        )
         self._stack_variable = None
 
     def copy(self, parameters=None):
@@ -93,6 +96,10 @@ class ProcedureDeclaration:
     @property
     def is_default_constructor_closure(self):
         return self._is_default_constructor_closure
+
+    @property
+    def is_scalar_deleting_destructor(self):
+        return self._is_scalar_deleting_destructor
 
     @property
     def stack_delta(self):

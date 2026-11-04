@@ -12,6 +12,8 @@ from .bind_stack_variables import bind_stack_variables
 class ProceduresDict:
     def __init__(self):
         self._classes = {}
+        # Procedures already converted to high level code
+        self._high_level_procedures = set()
 
     def add_destructor(self, destructor_class, this_offset, instrs):
         method_name = "~{}".format(destructor_class.class_name)
@@ -39,9 +41,18 @@ class ProceduresDict:
         proc_dict[method_name] = Procedure(
             proc_info, None, proc_decl, instrs, None)
 
+    def add_high_level_procedure(self, method_class, procedure):
+        proc_dict = self._classes.setdefault(method_class.class_name, {})
+        method_name = procedure.proc_decl.proc_name
+        assert method_name not in proc_dict
+        proc_dict[method_name] = procedure
+        self._high_level_procedures.add(id(procedure))
+
     def make_high_level_code(self, declarations):
         for class_methods in self._classes.values():
             for name, procedure in class_methods.items():
+                if id(procedure) in self._high_level_procedures:
+                    continue
                 class_methods[name] = high_level.make_high_level_code(
                     procedure, declarations, None)
 
