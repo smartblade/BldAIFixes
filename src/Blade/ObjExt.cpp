@@ -1753,6 +1753,27 @@ int DrawBOD(
 }
 
 
+inline int AddTriggerSector(B_TriggerSector *sector, const char *name)
+{
+    assert(name);
+    bool found = B_world.triggerSectors.Find(name) != NULL;
+    if (!found)
+    {
+        B_world.triggerSectors.Append(sector);
+        return 1;
+    }
+    /* FIXME memory leak (sector is not deleted) */
+    return 0;
+}
+
+
+inline int AddTriggerSector(B_TriggerSector *sector)
+{
+    assert(sector);
+    return AddTriggerSector(sector, sector->Id().String());
+}
+
+
 /*
 * Module:                 Blade.exe
 * Entry point:            0x0042B97A
@@ -1761,51 +1782,19 @@ int DrawBOD(
 int CreateTriggerSector(
     const char *trigger_sector_name, const char *group_name,
     double floor_height, double roof_height, int num_points,
-    point_2d_t *points
+    double *points
 )
 {
-    B_TriggerSector *TS = new B_TriggerSector(
+    B_TriggerSector *sector = new B_TriggerSector(
         trigger_sector_name, group_name, floor_height, roof_height);
-    if (TS == NULL)
+    if (sector == NULL)
         return 0;
     for (int i = 0; i < num_points; i++)
     {
-        double y = points[i].y;
-        double x = points[i].x;
-        TS->AddPoint(B_Vector(x, floor_height, y), num_points);
+        B_Vector point(points[i * 2], floor_height, points[i * 2 + 1]);
+        sector->AddPoint(point, num_points);
     }
-    assert(TS);
-    char * name = TS->Id().String();
-    assert(name);
-
-    bool found;
-    {
-        B_TriggerSector *foundElement;
-        B_Name tsName(name);
-        for (unsigned int i = 0; i < B_world.triggerSectors.size; i++)
-        {
-            if (tsName == B_world.triggerSectors.elements[i]->Id())
-            {
-                foundElement = B_world.triggerSectors.elements[i];
-                goto after_search;
-            }
-        }
-        foundElement = NULL;
-after_search:
-        found = (foundElement != NULL);
-    }
-    int code;
-    if (!found)
-    {
-        B_world.triggerSectors.Append(TS);
-        code = 1;
-    }
-    else
-    {
-        /* FIXME memory leak (TS was not deleted) */
-        code = 0;
-    }
-    return code;
+    return AddTriggerSector(sector);
 }
 
 

@@ -321,7 +321,7 @@ LIB_EXP int nMaterials(void);
 LIB_EXP int CreateTriggerSector(
     const char *trigger_sector_name, const char *group_name,
     double floor_height, double roof_height, int num_points,
-    point_2d_t *points
+    double *points
 );
 LIB_EXP int SetTriggerSectorFunc(
         const char *trigger_sector_name, const char *func_type, PyObject *func

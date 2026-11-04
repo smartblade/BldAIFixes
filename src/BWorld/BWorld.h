@@ -47,8 +47,8 @@ public:
     float minY;
     float maxX;
     float maxY;
-    float maxH;
     float minH;
+    float maxH;
     float floorHeight;
     float roofHeight;
     array_t<B_Vector> points;

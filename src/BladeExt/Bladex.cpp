@@ -2863,7 +2863,7 @@ PyObject *bex_AddTriggerSector(PyObject *self, PyObject *args) {
 
         code = CreateTriggerSector(
                 trigger_sector_name, group_name, floor_height, roof_height,
-                num_points, points
+                num_points, (double *)points
         );
 
         free(points);

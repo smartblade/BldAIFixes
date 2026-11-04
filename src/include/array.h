@@ -24,11 +24,12 @@ public:
         }
 
         array_t()
+        :
+            elements(NULL),
+            size(0),
+            increment(1),
+            num_alloc(0)
         {
-            elements = NULL;
-            size = 0;
-            increment = 1;
-            num_alloc = 0;
         }
 
         TYPE &operator[](unsigned int index)
