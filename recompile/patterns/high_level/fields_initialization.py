@@ -5,6 +5,7 @@ from instructions.extract_vtbl_addr_from_assign import\
     extract_vtbl_addr_from_assign
 
 from .get_fields import get_fields
+from .inlined_member_construction import has_default_constructor
 
 
 def discover_fields_initialization(procedure):
@@ -127,6 +128,9 @@ def _go_to_field(field_index, fields, initialized_field):
         if field_name is None and initialized_f_name is not None:
             continue
         if isinstance(data_type, data_types.ClassType):
+            # Field with default constructor is constructed implicitly
+            if field_name is not None and has_default_constructor(data_type):
+                continue
             return -1
     return -1
 

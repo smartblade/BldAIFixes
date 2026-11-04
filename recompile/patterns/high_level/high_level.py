@@ -11,6 +11,7 @@ from .call_arguments_matcher import CallArgumentsMatcher
 from .fields_destroying import discover_fields_destroying
 from .fields_initialization import discover_fields_initialization
 from .inlined_base_structors import remove_inlined_base_structors
+from .inlined_member_construction import remove_inlined_member_construction
 from .member_array_construction import remove_member_array_construction
 from .scalar_deleting_destructor import extract_inlined_destructor
 from .transform_class_returns import transform_class_returns
@@ -85,6 +86,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = procedure.copy(instrs=instrs)
     procedure = remove_inlined_base_structors(procedure)
     procedure = remove_member_array_construction(procedure)
+    procedure = remove_inlined_member_construction(procedure)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
     procedure = split_class_return_assignments(procedure)
