@@ -1,6 +1,7 @@
 
 #include <BWorld/BWorld.h>
 #include <AnalyticGeometry/Polygon.h>
+#include <BBLibc/NDataBase.h>
 #include <BBLibc/ParticleGType.h>
 #include <bld_abstract_net.h>
 #include <Control/anim.h>
@@ -174,7 +175,7 @@ extern int gbl_action_areas_bit_mask;
 * Module:                 Blade.exe
 * Data address:           0x007072A8
 */
-extern B_PtrArray<anim_t> gbl_anims;
+extern B_NDataBase<anim_t> gbl_anims;
 
 /*
 * Module:                 Blade.exe
@@ -198,7 +199,7 @@ extern B_Events gbl_events;
 * Module:                 Blade.exe
 * Data address:           0x00736158
 */
-extern B_PtrArray<B_ParticleGType> gbl_particle_types;
+extern B_NDataBase<B_ParticleGType> gbl_particle_types;
 
 /*
 * Module:                 Blade.exe
@@ -216,13 +217,13 @@ extern B_Sound no_sound;
 * Module:                 Blade.exe
 * Data address:           0x007D1650
 */
-extern B_PtrArray<B_Combustion> gbl_combustion_data;
+extern B_NDataBase<B_Combustion> gbl_combustion_data;
 
 /*
 * Module:                 Blade.exe
 * Data address:           0x007D40D0
 */
-extern B_PtrArray<B_SolidMask> gbl_solid_masks;
+extern B_PtrArray3<B_SolidMask> gbl_solid_masks;
 
 /*
 * Module:                 Blade.exe
