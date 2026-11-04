@@ -38,6 +38,8 @@ are in `.data`. In the original `Blade.exe` the constants are read from
 
 Rules of placing local variables in the stack frame by Visual C++ 6.0 are
 described in [stack-layout.md](stack-layout.md).
+Copies of inline functions compiled by Visual C++ 6.0 are described in
+[inline-functions.md](inline-functions.md).
 
 ## Usage
 
