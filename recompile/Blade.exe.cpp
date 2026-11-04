@@ -91,6 +91,7 @@ B_SectorListNode::B_SectorListNode()
 // address: 0x0045050B
 B_SectorListNode::~B_SectorListNode()
 {
+    this->Clear(false);
 }
 
 // address: 0x004506B5
