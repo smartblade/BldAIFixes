@@ -34,7 +34,12 @@ def extract_inlined_destructor(procedure, inline_procedures):
     if (
         len(instrs) < 3 or
         not isinstance(instrs[-2], instructions.IfInstruction) or
-        not isinstance(instrs[-1], instructions.TemporaryRegisterDefinition)
+        not isinstance(
+            instrs[-1],
+            (
+                instructions.TemporaryRegisterDefinition,
+                instructions.ReturnInstruction,
+            ))
     ):
         return procedure
     destructor_instrs = instrs[:-2]
