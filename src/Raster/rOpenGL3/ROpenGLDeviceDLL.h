@@ -9,6 +9,7 @@
 #include <GL/gl.h>
 #define BUILD_LIB
 #include <export.h>
+#undef BUILD_LIB
 
 class B_BitMap;
 class B_Resource;
