@@ -133,3 +133,21 @@ class TestCppDemangling(unittest.TestCase):
 
     def test_not_mangled_name(self):
         self.assertIsNone(parser.demangle_cpp("initBBLibc", {}))
+
+    def test_unnamed_parameters(self):
+        proc_decl = parser.demangle_cpp(
+            "?CollectSectorsInBox@LeafNode@@UAEXABVB_BoundingBox@@"
+            "PAVB_OctTreeSectorsList@@N@Z", {})
+        param_ids = list(proc_decl.get_parameters_ids().values())[1:]
+        names = ["__", "outList", "__"]
+        proc_decl = proc_decl.copy(parameters=[
+            (param_id.data_type, name)
+            for param_id, name in zip(param_ids, names)
+        ])
+        self.assertEqual(
+            "virtual void CollectSectorsInBox("
+            "const B_BoundingBox &, B_OctTreeSectorsList *outList, double)",
+            proc_decl.get_declaration())
+        self.assertEqual(
+            ["this", "arg_1", "outList", "arg_3"],
+            list(proc_decl.get_parameters_ids()))
