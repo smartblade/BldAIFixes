@@ -105,9 +105,9 @@ int SetSaveInfo(PyObject *info)
 PyObject *GetSaveInfo()
 {
     PyObject *info;
-    int nextEntitySuffix;
-    nextEntitySuffix = B_world.nextEntitySuffix;
-    info = Py_BuildValue("(i,(i))", 1, nextEntitySuffix);
+    int entitySuffix;
+    entitySuffix = B_world.nextEntitySuffix;
+    info = Py_BuildValue("(i,(i))", 1, entitySuffix);
     return info;
 }
 
@@ -1340,9 +1340,10 @@ int SetRootWidget(B_Widget *widget)
 
 B_Widget *GetRootWidget()
 {
+    B_Widget *rootWidget;
     B_App *App = GetApplication();
     assert(App);
-    B_Widget *rootWidget = App->rootWidget;
+    rootWidget = App->rootWidget;
     return rootWidget;
 }
 
@@ -1412,13 +1413,13 @@ B_BitMap *RM_GetResource(const char *name)
     resource = B_resource_manager.GetResource(4, name);
     if (resource != NULL)
     {
-        B_BitMap24 *bitMap24 = (B_BitMap24 *)&resource->data;
+        B_BitMap24 *rgbBitMap = (B_BitMap24 *)&resource->data;
         B_BitMap *bitMap = new B_BitMap(
-            B_BitMap::BitMapType2, bitMap24->dimension1, bitMap24->dimension2,
+            B_BitMap::BitMapType2, rgbBitMap->dimension1, rgbBitMap->dimension2,
             NULL);
         for(unsigned int i = 0; i < bitMap->dimension1 * bitMap->dimension2; i++)
         {
-            ((byte *)bitMap->data)[i] = ((byte *)bitMap24->data)[i * 3];
+            ((byte *)bitMap->data)[i] = ((byte *)rgbBitMap->data)[i * 3];
         }
         B_resource_manager.FreeResource(resource);
         return bitMap;
@@ -1643,31 +1644,23 @@ int GetTextWH(const char *text, double *w, double *h)
     *w = 0;
     *h = 0;
     B_Name txt(text);
-    B_Font *font = B_3D_raster_device->GetFont();
-    if (font == NULL)
+    B_Font *currentFont = B_3D_raster_device->GetFont();
+    if (currentFont == NULL)
     {
         mout << "WARNING: GetTextWH fails because Font can't be found.";
         return 0;
     }
-    const B_Font::B_CharData *charData = font->GetChars();
-    if (font == NULL)/*FIXME should be charData*/
+    const B_Font::B_CharData *chars = currentFont->GetChars();
+    if (currentFont == NULL)/*FIXME should be chars*/
     {
         mout << "TERRIBLE WARNING: GetTextWH fails because CharData can't be found.";
         return 0;
     }
     for(unsigned int i = 0; i < txt.Length(); i++)
     {
-        double height;
-        *w += charData->charSize[text[i]].width;
-        if (charData->charSize[text[i]].height < *h)
-        {
-            height = *h;
-        }
-        else
-        {
-            height = charData->charSize[text[i]].height;
-        }
-        *h = height;
+        *w += chars->charSize[text[i]].width;
+        *h = (chars->charSize[text[i]].height < *h) ?
+            *h : chars->charSize[text[i]].height;
     }
     *w /= 640.0;
     *h /= 640.0;

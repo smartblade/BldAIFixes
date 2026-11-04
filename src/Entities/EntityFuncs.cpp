@@ -79,16 +79,16 @@ B_Entity *CreateSpark(
 )
 {
     B_Entity *entity = NULL;
-    B_SparkEntity *sparkEntity = NULL;
-    sparkEntity = new B_SparkEntity(
+    B_SparkEntity *spark = NULL;
+    spark = new B_SparkEntity(
         name, spark_point, spark_dir, d_unknown1, d_unknown2, d_unknown3,
         d_unknown4, d_unknown5, B_Color(i_unknown6, i_unknown7, i_unknown8),
         B_Color(i_unknown9, i_unknown10, i_unknown11), d_unknown12,
         d_unknown13, d_unknown14, i_unknown15);
-    if (sparkEntity != NULL)
+    if (spark != NULL)
     {
-        sparkEntity->PutToWorld();
-        entity = sparkEntity;
+        spark->PutToWorld();
+        entity = spark;
     }
     return entity;
 }
@@ -251,8 +251,8 @@ int GetEnemiesVisibleFrom(
     int numEnemies = enemies.size;
     if (numEnemies != 0)
     {
-        char **curName;
-        *enemy_names = curName = (char **)malloc(numEnemies * sizeof(char *));
+        char **nextName;
+        *enemy_names = nextName = (char **)malloc(numEnemies * sizeof(char *));
         if (*enemy_names == NULL)
         {
             mout << "GetEntitiesVisibleFrom() -> Error reserving memory\n";
@@ -260,8 +260,8 @@ int GetEnemiesVisibleFrom(
         }
         for (int i = 0; i < numEnemies; i++)
         {
-            *curName = enemies[i]->name.String();
-            curName++;
+            *nextName = enemies[i]->name.String();
+            nextName++;
         }
     }
     else
@@ -1945,13 +1945,13 @@ int CanISee(
             entity_name);
         return -1;
     }
-    B_Entity *thatEntity = GetEntity(seen_entity_name);
+    B_Entity *seenEntity = GetEntity(seen_entity_name);
     if (thisEntity->IsClassOf(B_ENTITY_CID_PERSON) &&
-        thatEntity != NULL &&
-        thatEntity->IsClassOf(B_ENTITY_CID_PERSON))
+        seenEntity != NULL &&
+        seenEntity->IsClassOf(B_ENTITY_CID_PERSON))
     {
         B_PersonEntity *thisPerson = static_cast<B_PersonEntity *>(thisEntity);
-        B_PersonEntity *thatPerson = static_cast<B_PersonEntity *>(thatEntity);
+        B_PersonEntity *thatPerson = static_cast<B_PersonEntity *>(seenEntity);
         if (thisPerson->CanISee(thatPerson))
         {
             *canISee = true;
@@ -2550,20 +2550,20 @@ const char *GetChild(const char *entity_name, int index)
 
 int CreateBipedData(const char *biped_name, const char *kind)
 {
-    B_BipedData *biped = gbl_bipeds.Find(biped_name);
-    if (biped != NULL)
+    B_BipedData *existingBiped = gbl_bipeds.Find(biped_name);
+    if (existingBiped != NULL)
     {
         mout << "EntityFuncs.cpp->CreateBipeData. Biped already created. Skipped... \n";
         return 1;
     }
-    B_BipedData *newBiped = new B_BipedData(biped_name, kind);
-    gbl_bipeds.Append(newBiped);
+    B_BipedData *biped = new B_BipedData(biped_name, kind);
+    gbl_bipeds.Append(biped);
     for (int i = 0; i < gbl_en_control.NumCharTypes(); i++)
     {
         if (!stricmp(gbl_en_control.GetCharType(i)->name.String(), kind))
         {
-            gbl_en_control.GetCharType(i)->biped = newBiped;
-            newBiped->charType = gbl_en_control.GetCharType(i);
+            gbl_en_control.GetCharType(i)->biped = biped;
+            biped->charType = gbl_en_control.GetCharType(i);
         }
     }
     return 1;
@@ -3003,17 +3003,17 @@ int SetAuraGradient(
     if (entity->IsClassOf(B_ENTITY_CID_AURA))
     {
         B_AuraEntity *auraEntity = static_cast<B_AuraEntity *>(entity);
-        B_AuraGradient &gradient = auraEntity->GetGradient(gap);
-        gradient.r = r1;
-        gradient.g = g1;
-        gradient.b = b1;
-        gradient.alpha = alpha1;
-        gradient.dR = (r2 - r1);
-        gradient.dG = (g2 - g1);
-        gradient.dB = (b2 - b1);
-        gradient.dAlpha = (alpha2 - alpha1);
-        gradient.endingPoint = ending_point;
-        gradient.startingPoint = starting_point;
+        B_AuraGradient &auraGradient = auraEntity->GetGradient(gap);
+        auraGradient.r = r1;
+        auraGradient.g = g1;
+        auraGradient.b = b1;
+        auraGradient.alpha = alpha1;
+        auraGradient.dR = (r2 - r1);
+        auraGradient.dG = (g2 - g1);
+        auraGradient.dB = (b2 - b1);
+        auraGradient.dAlpha = (alpha2 - alpha1);
+        auraGradient.endingPoint = ending_point;
+        auraGradient.startingPoint = starting_point;
         return 1;
     }
     return -2;

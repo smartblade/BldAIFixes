@@ -460,18 +460,18 @@ void B_OpenGLRasterDevice::StartScene(B_ViewPose *cameraPose)
     {
         glEnable(GL_LIGHTING);
         glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 0);
-        float specular[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-        float unknown05Ch[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-        float unknown024h[] = { 0.8f, 0.8f, 0.2f, 1.0f };
-        float unknown014h[] = { 0.1f, 0.5f, 0.8f, 1.0f };
-        float white[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-        float unknown004h = 0.0f;
+        float noSpecular[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        float unknown5Ch[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float unknown24h[] = { 0.8f, 0.8f, 0.2f, 1.0f };
+        float unknown14h[] = { 0.1f, 0.5f, 0.8f, 1.0f };
+        float whiteMaterial[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float unknown04h = 0.0f;
         float shininess = 5.0f;
-        float unknown038 = 100.0f;
+        float unknown038h = 100.0f;
         float emission[] = { 0.01f, 0.01f, 0.01f, 0.0f };
-        glMaterialfv(GL_FRONT, GL_AMBIENT, white);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
-        glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+        glMaterialfv(GL_FRONT, GL_AMBIENT, whiteMaterial);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteMaterial);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, noSpecular);
         glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
         glMaterialfv(GL_FRONT, GL_EMISSION, emission);
     }
@@ -887,7 +887,14 @@ void B_OpenGLRasterDevice::RasterParticles(
     B_Particle *particles, unsigned int numParticles,
     B_ParticleGType *particleType)
 {
-    int multiply = false;
+    B_Particle *particle;
+    unsigned int i;
+    int bMultiply;
+    float y;
+    float x;
+    float size;
+    B_ParticleElement *element;
+    bMultiply = false;
     switch (particleType->operation_type)
     {
     case B_PARTICLE_GTYPE_BLEND:
@@ -910,13 +917,13 @@ void B_OpenGLRasterDevice::RasterParticles(
             RASTER_MODE_TEXTURE |
             RASTER_MODE_DEPTH_READ_ONLY
         );
-        multiply = true;
+        bMultiply = true;
         break;
     default:
         this->SetMode(RASTER_MODE_TEXTURE | RASTER_MODE_DEPTH_READ_ONLY);
         break;
     }
-    if (multiply && this->BWRender != 0)
+    if (bMultiply && this->BWRender != 0)
     {
         glDisable(GL_REGISTER_COMBINERS_NV);
     }
@@ -925,18 +932,18 @@ void B_OpenGLRasterDevice::RasterParticles(
     {
         this->DisableFog();
     }
-    B_Particle *particle = particles;
-    B_ParticleElement *element = NULL;
+    particle = particles;
+    element = NULL;
     this->SetActiveTexture(particleType->bmpHandle);
     glBegin(GL_QUADS);
-    for (unsigned int i = 0; i < numParticles; i++)
+    for (i = 0; i < numParticles; i++)
     {
         if (particle->z > 0.5)
         {
             element = &particleType->a00C[particle->time];
-            float x = particle->x;
-            float y = particle->y;
-            float size = element->size;
+            x = particle->x;
+            y = particle->y;
+            size = element->size;
             if (size < 1.0f)
             {
                 size = 1.0f;
@@ -959,7 +966,7 @@ void B_OpenGLRasterDevice::RasterParticles(
     {
         this->EnableFog();
     }
-    if (multiply && this->BWRender != 0)
+    if (bMultiply && this->BWRender != 0)
     {
         glEnable(GL_REGISTER_COMBINERS_NV);
     }

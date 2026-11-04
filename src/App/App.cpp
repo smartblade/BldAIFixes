@@ -944,9 +944,8 @@ void B_App::ReassignCombustionData()
     /* FIXME dangerous code */
     for(unsigned int i = 0; i < gbl_combustion_data.size; i++)
     {
-        B_ParticleGType *particleType = gbl_particle_types.Find(
-            gbl_combustion_particle_names[i]);
-        gbl_combustion_data.elements[i]->particleType = particleType;
+        gbl_combustion_data.elements[i]->particleType =
+            gbl_particle_types.Find(gbl_combustion_particle_names[i]);
     }
     delete[] gbl_combustion_particle_names;
 }

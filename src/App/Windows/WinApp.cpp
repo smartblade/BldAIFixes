@@ -151,17 +151,17 @@ HWND B_WinApp::NewWindow()
 HWND B_WinApp::NewWindowForClientRectangle()
 {
     int width, height;
-    RECT rect;
-    rect.left = 0;
-    rect.top = 0;
-    rect.right = clientRectWidth;
-    rect.bottom = clientRectHeight;
+    RECT windowRect;
+    windowRect.left = 0;
+    windowRect.top = 0;
+    windowRect.right = clientRectWidth;
+    windowRect.bottom = clientRectHeight;
     if (AdjustWindowRectEx(
-        &rect, (WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME),
+        &windowRect, (WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME),
         false, WS_EX_LEFT))
     {
-        width = rect.right - rect.left;
-        height = rect.bottom - rect.top;
+        width = windowRect.right - windowRect.left;
+        height = windowRect.bottom - windowRect.top;
     }
     else
     {
@@ -528,10 +528,10 @@ bool B_WinApp::GetCameraView(B_CameraView *cameraView)
 void B_WinApp::ReadLevel(const char *file_name)
 {
     HCURSOR waitCursor = LoadCursor(NULL, IDC_WAIT);
-    HCURSOR currentCursor = GetCursor();
+    HCURSOR prevCursor = GetCursor();
     SetCursor(waitCursor);
     B_App::ReadLevel(file_name);
-    SetCursor(currentCursor);
+    SetCursor(prevCursor);
 }
 
 
@@ -621,10 +621,12 @@ LRESULT B_WinApp::WindowProcedure(
         }
         case WM_COMMAND:
         {
-            int menuId = LOWORD(wParam);
-            if (menuId != 40001/*File->Exit*/)
-                break;
-            PostQuitMessage(0);
+            switch (LOWORD(wParam))
+            {
+                case 40001: /* File->Exit */
+                    PostQuitMessage(0);
+                    break;
+            }
             break;
         }
     }
@@ -731,13 +733,13 @@ LRESULT CALLBACK WindowProcedure(
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     B_App *App;
-    char *cmd;
+    char *commandLine;
     MSG msg;
 
-    cmd = lpCmdLine;
+    commandLine = lpCmdLine;
 
     LoadNetModule("NetBlade\\Netblade.dll");
-    App = CreateApplication(hInstance, nCmdShow, cmd);
+    App = CreateApplication(hInstance, nCmdShow, commandLine);
 
     assert(App);
 

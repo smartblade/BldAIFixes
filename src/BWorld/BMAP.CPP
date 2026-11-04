@@ -82,14 +82,14 @@ void B_Sector::CalculateBoundingBox()
 
 B_IDataFile &operator >>(B_IDataFile &file, B_Sector &sector)
 {
-    unsigned int numSurfaces;
+    unsigned int nSurfaces;
     B_Name atmosphereName;
 
     file >> atmosphereName;
     sector.atmosphere = B_3D_raster_device->GetAtmosphere(atmosphereName);
     file >> sector.lights;
-    file >> numSurfaces;
-    for (unsigned int i = 0; i < numSurfaces; i++)
+    file >> nSurfaces;
+    for (unsigned int i = 0; i < nSurfaces; i++)
     {
         B_Surface *surface = ReadSurface(file);
         if (surface->GetPolygon()->numVertices < 3)
