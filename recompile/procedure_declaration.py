@@ -80,6 +80,10 @@ class ProcedureDeclaration:
         return not self._is_static and self._method_class is not None
 
     @property
+    def is_const(self):
+        return self._is_const
+
+    @property
     def is_constructor(self):
         if self._method_class is None:
             return False

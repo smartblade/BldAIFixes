@@ -46,23 +46,7 @@
 	"00452388": {
 		"varnames": {
 			"-8": "childHalfSize",
-			"-16": "childOffset",
-			"-40": "childCenter",
-			"-64": "newLocalPos",
-			"-88": "childCenter",
-			"-112": "newLocalPos",
-			"-136": "childCenter",
-			"-160": "newLocalPos",
-			"-184": "childCenter",
-			"-208": "newLocalPos",
-			"-232": "childCenter",
-			"-256": "newLocalPos",
-			"-280": "childCenter",
-			"-304": "newLocalPos",
-			"-328": "childCenter",
-			"-352": "newLocalPos",
-			"-376": "childCenter",
-			"-400": "newLocalPos"
+			"-16": "childCenterOffset"
 		},
 		"constants": {
 			"2.0": {

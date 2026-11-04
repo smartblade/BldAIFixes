@@ -53,7 +53,10 @@ def _try_fold(block, index, uses):
     if not var.name.startswith(_unnamed_prefix) or uses.get(var.name) != 1:
         return None
     use_index = index + 1
-    while use_index < len(block) and _is_declaration(block[use_index]):
+    while (
+        use_index < len(block) and _is_declaration(block[use_index]) and
+        not _uses_variable(block[use_index], var)
+    ):
         use_index += 1
     if use_index >= len(block):
         return None
@@ -65,10 +68,13 @@ def _try_fold(block, index, uses):
         if _has_side_effects(initial):
             return None
         if isinstance(var.data_type, data_types.ClassType):
-            if not _is_construction(initial, var.data_type):
+            if _is_construction(initial, var.data_type):
+                initial = _typed_construction(initial, var.data_type)
+            elif not _is_const_method_call(initial):
                 return None
-            transformer = _VariableReplacer(
-                var, _typed_construction(initial, var.data_type), None)
+            # Object returned by const operator is a temporary too:
+            # 'B_Vector t = v - w; f(t);' -> 'f(v - w);'
+            transformer = _VariableReplacer(var, initial, None)
         else:
             transformer = _VariableReplacer(var, initial, _is_construction)
     new_use = _transform_instruction(use, transformer)
@@ -87,6 +93,12 @@ def _typed_construction(construction, class_type):
 
 def _transform_instruction(instr, transformer):
     # Temporaries are used by simple instructions only
+    if isinstance(instr, instructions.VariableDeclaration):
+        initial = instr.initial_expression
+        if initial is None:
+            return None
+        return instructions.VariableDeclaration(
+            instr.identifier, initial.transform(transformer))
     if not isinstance(instr, (
         instructions.Assignment, instructions.CodeInstruction,
         instructions.ReturnInstruction,
@@ -163,6 +175,14 @@ def _is_construction(e, class_type):
     return e.name == class_type.class_name
 
 
+def _is_const_method_call(e):
+    """Check for call of const method, e.g. 'operator -' of B_Vector."""
+    return (
+        isinstance(e, expressions.ProcedureCall) and
+        e.proc_decl is not None and e.proc_decl.is_const
+    )
+
+
 def _is_variable(e, var):
     return isinstance(e, expressions.Identifier) and e.name == var.name
 
@@ -175,6 +195,10 @@ def _is_declaration(instr):
         isinstance(instr, instructions.VariableDeclaration) and
         instr.identifier.name.startswith(_unnamed_prefix)
     )
+
+
+def _uses_variable(instr, var):
+    return _count_uses([instr]).get(var.name, 0) > 0
 
 
 def _count_uses(instrs):
@@ -221,7 +245,7 @@ def _has_side_effects(e):
         ):
             found.append(sub_e)
         elif isinstance(sub_e, expressions.ProcedureCall) and not (
-            _is_construction(sub_e, None)
+            _is_construction(sub_e, None) or _is_const_method_call(sub_e)
         ):
             found.append(sub_e)
 

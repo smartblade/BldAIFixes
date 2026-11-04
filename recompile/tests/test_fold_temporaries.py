@@ -1,10 +1,12 @@
 import unittest
 
+from calling_convention import CallingConvention
 import data_types
 import expressions
 from expressions.operator import Operator
 import instructions
 from patterns.high_level.fold_temporaries import fold_temporaries
+from procedure_declaration import ProcedureDeclaration
 from tests.builder import i32_id
 from writer import Writer
 
@@ -64,4 +66,26 @@ class TestFoldTemporaries(unittest.TestCase):
         self.assertIn("int x = a;", _emit([
             instructions.VariableDeclaration(t, i32_id("a")),
             instructions.ReturnInstruction(_construction(t, i32_id("c"))),
+        ]))
+
+    def test_object_returned_by_const_operator(self):
+        point = _point()
+        center = expressions.Identifier(point, "unknown_loc_18")
+        result = expressions.Identifier(point, "unknown_loc_30")
+        pos = expressions.Identifier(point, "pos")
+        minus = ProcedureDeclaration(
+            "operator -", CallingConvention.THISCALL, point,
+            [(data_types.Reference(point), "that")], point, is_const=True)
+        difference = expressions.ProcedureCall(
+            operator=Operator.SUB, name="operator -", is_method=True,
+            arguments=[pos, expressions.MakeReference(center)],
+            proc_decl=minus)
+        call = expressions.ProcedureCall(
+            name="f", arguments=[expressions.MakeReference(result)])
+        self.assertEqual("f(pos - B_Point(a, b));\n", _emit([
+            instructions.VariableDeclaration(
+                center, _construction(i32_id("a"), i32_id("b")),
+                is_direct_initialization=True),
+            instructions.VariableDeclaration(result, difference),
+            instructions.CodeInstruction(call),
         ]))
