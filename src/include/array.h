@@ -16,10 +16,7 @@ public:
         {
             if (num_alloc != 0)
             {
-                delete [] elements;
-                elements = NULL;
-                size = 0;
-                num_alloc = 0;
+                Clear();
             }
         }
 
@@ -317,13 +314,19 @@ public:
 
 /*
 * Intermediate array classes. Their constructors set their own vtables after
-* the B_PtrArray constructor, the vtables contain only scalar deleting
+* the B_PtrArray (array_t) constructor, the vtables contain only scalar deleting
 * destructors, and the destructors don't set the vtables again (the classes
 * have no user-defined destructors). The original names are unknown.
 */
 
 template<class TYPE>
 class B_PtrArray2 : public B_PtrArray<TYPE>
+{
+};
+
+
+template<class TYPE>
+class array_t2 : public array_t<TYPE>
 {
 };
 

@@ -18,7 +18,7 @@ class B_Sound;
 class B_YSoundDev;
 
 
-class B_Combustion : public B_NamedObj
+class B_Combustion : public B_NamedObj, public B_PtrArray2<void>
 {
 public:
     B_Combustion() : unknown0024(0)
@@ -30,7 +30,6 @@ public:
         double speed, double livetime
     );
 private:
-    B_PtrArray<void> a00C;
     int unknown0024;
     char unknown_fields028[32];
 public:

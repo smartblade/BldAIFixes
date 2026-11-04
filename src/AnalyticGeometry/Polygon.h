@@ -21,7 +21,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_WorldPoint &point);
 class B_WorldPoints
 {
 public:
-    array_t<B_WorldPoint> points;
+    array_t2<B_WorldPoint> points;
 };
 
 B_IDataFile &operator >>(B_IDataFile &file, B_WorldPoints &wordPoints);

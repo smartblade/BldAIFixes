@@ -124,17 +124,17 @@ public:
         return entities.Get(i);
     }
 
-    B_PtrArray<B_TriggerSector> triggerSectors;
+    B_PtrArray3<B_TriggerSector> triggerSectors;
     B_Hash<B_Entity> entities;
     int nextEntitySuffix;
-    B_PtrArray<B_SubscriptionList> subscriptions;
+    B_PtrArray3<B_SubscriptionList> subscriptions;
     char unknownFields1840[28];
     B_Name world_file_name;
     char unknownFields1864[24];
     int unknown187C;
     int unknown1880;
     char unknownFields1884[40];
-    B_PtrArray<atmosphere_t> atmospheres;
+    B_PtrArray3<atmosphere_t> atmospheres;
     B_Map map;
     B_OctTree octTree;
     B_Vector unknown18FC;
