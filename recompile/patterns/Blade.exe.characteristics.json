@@ -63,8 +63,8 @@
 	"00452845": {
 		"varnames": {
 			"-56": "childHalfSize",
-			"-64": "childOffset",
-			"-48": "childBox"
+			"-64": "childCenterOffset",
+			"-48": "childBoundingBox"
 		},
 		"constants": {
 			"2.0": {
