@@ -231,7 +231,8 @@ class _CppDemangler:
         "O": _Operator("operator>"),
         "Y": _Operator("operator+="),
         "_": {
-            "F": _Operator("default constructor closure")
+            "F": _Operator("default constructor closure"),
+            "G": _Operator("scalar deleting destructor"),
         }
     }
 

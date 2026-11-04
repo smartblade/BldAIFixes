@@ -131,5 +131,11 @@ class TestCppDemangling(unittest.TestCase):
             "PyObject *CallPythonObject(PyObject *arg_1, PyObject *arg_2)",
             self._declaration("?CallPythonObject@@YAPAUPyObject@@PAU1@0@Z"))
 
+    def test_scalar_deleting_destructor(self):
+        proc_decl = parser.demangle_cpp("??_GB_OctantNodeBase@@UAEPAXI@Z", {})
+        self.assertTrue(proc_decl.is_scalar_deleting_destructor)
+        self.assertEqual("B_OctantNodeBase", proc_decl.method_class.class_name)
+        self.assertEqual(4, proc_decl.stack_delta)
+
     def test_not_mangled_name(self):
         self.assertIsNone(parser.demangle_cpp("initBBLibc", {}))

@@ -10,6 +10,7 @@ from .apply_parameters_names import apply_parameters_names
 from .call_arguments_matcher import CallArgumentsMatcher
 from .fields_destroying import discover_fields_destroying
 from .fields_initialization import discover_fields_initialization
+from .scalar_deleting_destructor import extract_inlined_destructor
 from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
 from .transform_assignment import transform_assignment
@@ -64,6 +65,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = procedure.copy(instrs=instrs)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
+    procedure = extract_inlined_destructor(procedure, inline_procedures)
     return insert_declarations(procedure, stack_vars)
 
 
