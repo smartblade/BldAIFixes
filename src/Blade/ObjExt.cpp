@@ -1030,26 +1030,14 @@ int GetMutilationLevel()
 
 void AnmAddEvent(const char *anm_name, const char *event_name, double event_frame)
 {
-    anim_t *foundAnim;
-    B_Name name(anm_name);
-    for (unsigned int i = 0; i < gbl_anims.size; i++)
+    anim_t *anim = gbl_anims.Find(anm_name);
+    if (anim == NULL)
     {
-        if (name == gbl_anims.elements[i]->Id())
-        {
-            foundAnim = gbl_anims.elements[i];
-            goto after_search;
-        }
+        anim = LoadFromHDAnim(anm_name);
     }
-    foundAnim = NULL;
-
-after_search:
-    if (foundAnim == NULL)
+    if (anim != NULL)
     {
-        foundAnim = LoadFromHDAnim(anm_name);
-    }
-    if (foundAnim != NULL)
-    {
-        foundAnim->AddEvent(event_name, event_frame);
+        anim->AddEvent(event_name, event_frame);
     }
 }
 
@@ -1061,22 +1049,10 @@ after_search:
 
 void AnmDelEvent(const char *anm_name, const char *event_name)
 {
-    anim_t *foundAnim;
-    B_Name name(anm_name);
-    for (unsigned int i = 0; i < gbl_anims.size; i++)
+    anim_t *anim = gbl_anims.Find(anm_name);
+    if (anim != NULL)
     {
-        if (name == gbl_anims.elements[i]->Id())
-        {
-            foundAnim = gbl_anims.elements[i];
-            goto after_search;
-        }
-    }
-    foundAnim = NULL;
-
-after_search:
-    if (foundAnim != NULL)
-    {
-        foundAnim->DelEvent(event_name);
+        anim->DelEvent(event_name);
     }
 }
 
@@ -1088,22 +1064,10 @@ after_search:
 
 void AnmClearEvents(const char *anm_name)
 {
-    anim_t *foundAnim;
-    B_Name name(anm_name);
-    for (unsigned int i = 0; i < gbl_anims.size; i++)
+    anim_t *anim = gbl_anims.Find(anm_name);
+    if (anim != NULL)
     {
-        if (name == gbl_anims.elements[i]->Id())
-        {
-            foundAnim = gbl_anims.elements[i];
-            goto after_search;
-        }
-    }
-    foundAnim = NULL;
-
-after_search:
-    if (foundAnim != NULL)
-    {
-        foundAnim->ClearEvents();
+        anim->ClearEvents();
     }
 }
 
@@ -1115,21 +1079,9 @@ after_search:
 
 double AnmGetEventFrame(const char *anm_name, const char *event_name)
 {
-    anim_t *foundAnim;
-    B_Name name(anm_name);
-    for (unsigned int i = 0; i < gbl_anims.size; i++)
-    {
-        if (name == gbl_anims.elements[i]->Id())
-        {
-            foundAnim = gbl_anims.elements[i];
-            goto after_search;
-        }
-    }
-    foundAnim = NULL;
-
-after_search:
-    if (foundAnim != NULL)
-        return foundAnim->GetEventFrame(event_name);
+    anim_t *anim = gbl_anims.Find(anm_name);
+    if (anim != NULL)
+        return anim->GetEventFrame(event_name);
     return -1.0;
 }
 
@@ -1144,65 +1096,25 @@ int AddParticleGType(
     int duration
 )
 {
-    bool found;
-    {
-        int foundIndex;
-        B_Name name(new_type);
-        for (unsigned int i = 0; i < gbl_particle_types.size; i++)
-        {
-            if (name == gbl_particle_types.elements[i]->Id())
-            {
-                foundIndex = i;
-                goto after_search;
-            }
-        }
-        foundIndex = -1;
-
-after_search:
-        found = (foundIndex != -1);
-    }
+    bool found = gbl_particle_types.FindItemIndex(new_type) != -1;
     if (found)
         return 1;
-    B_ParticleGType *newParticleType = new B_ParticleGType(
+    B_ParticleGType *particleType = new B_ParticleGType(
         new_type,
         parent_type,
         operation_type,
         duration);
-    if (newParticleType == NULL)
+    if (particleType == NULL)
         return 0;
-    for (int i = 0; i < duration + 1; i++)
+    for (unsigned int i = 0; i < duration + 1; i++)
     {
-        newParticleType->a00C.elements[i].r = 128;
-        newParticleType->a00C.elements[i].g = 128;
-        newParticleType->a00C.elements[i].b = 128;
-        newParticleType->a00C.elements[i].alpha = 128;
-        newParticleType->a00C.elements[i].size = 100.0f;
+        particleType->a00C.elements[i].r = 128;
+        particleType->a00C.elements[i].g = 128;
+        particleType->a00C.elements[i].b = 128;
+        particleType->a00C.elements[i].alpha = 128;
+        particleType->a00C.elements[i].size = 100.0f;
     }
-    if (gbl_particle_types.num_alloc > gbl_particle_types.size)
-    {
-        gbl_particle_types.elements[gbl_particle_types.size] = newParticleType;
-        gbl_particle_types.size++;
-    }
-    else
-    {
-        gbl_particle_types.num_alloc += gbl_particle_types.increment;
-        if (gbl_particle_types.size != 0)
-        {
-            B_ParticleGType ** elements = new B_ParticleGType *[gbl_particle_types.num_alloc];
-            for (unsigned int i = 0; i < gbl_particle_types.size; i++)
-            {
-                elements[i] = gbl_particle_types.elements[i];
-            }
-            delete gbl_particle_types.elements;
-            gbl_particle_types.elements = elements;
-        }
-        else
-        {
-            gbl_particle_types.elements = new B_ParticleGType *[gbl_particle_types.num_alloc];
-        }
-        gbl_particle_types.elements[gbl_particle_types.size] = newParticleType;
-        gbl_particle_types.size++;
-    }
+    gbl_particle_types.Append(particleType);
     return 1;
 }
 
@@ -1216,28 +1128,14 @@ int SetParticleGVal(
     const char *type, int i, int r, int g, int b, int alpha, double size
 )
 {
-    B_ParticleGType *foundElement;
+    B_ParticleGType *particleType = gbl_particle_types.Find(type);
+    if (particleType != NULL && (unsigned int)i < particleType->a00C.size)
     {
-        B_Name name(type);
-        for (unsigned int i = 0; i < gbl_particle_types.size; i++)
-        {
-            if (name == gbl_particle_types.elements[i]->Id())
-            {
-                foundElement = gbl_particle_types.elements[i];
-                goto after_search;
-            }
-        }
-        foundElement = NULL;
-after_search:
-        ;
-    }
-    if (foundElement != NULL && (unsigned int)i < foundElement->a00C.size)
-    {
-        foundElement->a00C.elements[i].r = r;
-        foundElement->a00C.elements[i].g = g;
-        foundElement->a00C.elements[i].b = b;
-        foundElement->a00C.elements[i].alpha = alpha;
-        foundElement->a00C.elements[i].size = size;
+        particleType->a00C.elements[i].r = r;
+        particleType->a00C.elements[i].g = g;
+        particleType->a00C.elements[i].b = b;
+        particleType->a00C.elements[i].alpha = alpha;
+        particleType->a00C.elements[i].size = size;
     }
     return 1;
 }
@@ -1287,28 +1185,14 @@ int GetParticleGVal(
     double *size
 )
 {
-    B_ParticleGType *foundElement;
+    B_ParticleGType *particleType = gbl_particle_types.Find(type);
+    if (particleType != NULL)
     {
-        B_Name name(type);
-        for (unsigned int i = 0; i < gbl_particle_types.size; i++)
-        {
-            if (name == gbl_particle_types.elements[i]->Id())
-            {
-                foundElement = gbl_particle_types.elements[i];
-                goto after_search;
-            }
-        }
-        foundElement = NULL;
-after_search:
-        ;
-    }
-    if (foundElement != NULL)
-    {
-        *r = foundElement->a00C.elements[index].r;
-        *g = foundElement->a00C.elements[index].g;
-        *b = foundElement->a00C.elements[index].b;
-        *alpha = foundElement->a00C.elements[index].alpha;
-        *size = foundElement->a00C.elements[index].size;
+        *r = particleType->a00C.elements[index].r;
+        *g = particleType->a00C.elements[index].g;
+        *b = particleType->a00C.elements[index].b;
+        *alpha = particleType->a00C.elements[index].alpha;
+        *size = particleType->a00C.elements[index].size;
         return 1;
     }
     return 0;
@@ -1474,53 +1358,12 @@ int AddCombustionDataFor(
         double speed, double livetime
 )
 {
-    bool notFound;
-    {
-        B_Combustion *foundElement;
-        B_Name name(object_kind);
-        for (unsigned int i = 0; i < gbl_combustion_data.size; i++)
-        {
-            if (name == gbl_combustion_data.elements[i]->Id())
-            {
-                foundElement = gbl_combustion_data.elements[i];
-                goto after_search;
-            }
-        }
-        foundElement = NULL;
-after_search:
-        notFound = (foundElement == NULL);
-    }
+    bool notFound = gbl_combustion_data.Find(object_kind) == NULL;
     if (notFound)
     {
-        B_Combustion *newCombustion = new B_Combustion(
+        gbl_combustion_data.Append(new B_Combustion(
             object_kind, fire_kind, upper_treshol, lower_treshold,
-            flame_height, flame_size, speed, livetime);
-        B_PtrArray<B_Combustion> *array = &gbl_combustion_data;
-        if (array->num_alloc > array->size)
-        {
-            array->elements[array->size] = newCombustion;
-            array->size++;
-        }
-        else
-        {
-            array->num_alloc += array->increment;
-            if (array->size != 0)
-            {
-                B_Combustion ** elements = new B_Combustion *[array->num_alloc];
-                for (unsigned int i = 0; i < array->size; i++)
-                {
-                    elements[i] = array->elements[i];
-                }
-                delete array->elements;
-                array->elements = elements;
-            }
-            else
-            {
-                array->elements = new B_Combustion *[array->num_alloc];
-            }
-            array->elements[array->size] = newCombustion;
-            array->size++;
-        }
+            flame_height, flame_size, speed, livetime));
         return 1;
     }
     return 0;
