@@ -66,17 +66,17 @@ B_OpenGLRasterDevice::B_OpenGLRasterDevice(HWND window, HMODULE rasterModule)
     this->textureMagnificationFunc = GL_LINEAR;
     this->textureMinifyingFunc = GL_LINEAR;
     this->GetVideoModes();
-    char cfgFile[256];
-    strcpy(cfgFile, GetConfigDirectory());
-    strcat(cfgFile, "/rOpenGL.ini");
-    B_VideoModeSection videoModeSection(cfgFile);
-    if (!videoModeSection.isWindow)
+    char configFile[256];
+    strcpy(configFile, GetConfigDirectory());
+    strcat(configFile, "/rOpenGL.ini");
+    B_VideoModeSection iniSection(configFile);
+    if (!iniSection.isWindow)
     {
         this->SetVideoModeParameters(
-            videoModeSection.bpp,
-            videoModeSection.width,
-            videoModeSection.height,
-            videoModeSection.frequency);
+            iniSection.bpp,
+            iniSection.width,
+            iniSection.height,
+            iniSection.frequency);
     }
     this->fogColor[2] = 0.7f;
     this->fogColor[1] = 0.7f;
@@ -93,17 +93,17 @@ B_OpenGLRasterDevice::B_OpenGLRasterDevice(HWND window, HMODULE rasterModule)
     mout << vararg("  Vendor: %s.\n", glGetString(GL_VENDOR));
     mout << vararg("  Renderer: %s.\n", glGetString(GL_RENDERER));
     mout << vararg("  Version: %s.\n", glGetString(GL_VERSION));
-    GLint maxTextureSize;
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-    mout << vararg("  MaxTextureSize: %d.\n", maxTextureSize);
-    GLint stencilBits;
-    glGetIntegerv(GL_STENCIL_BITS, &stencilBits);
-    mout << vararg("  StencilBits: %d.\n", stencilBits);
-    GLint redBits, greenBits, blueBits;
+    GLint maxTexSize;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
+    mout << vararg("  MaxTextureSize: %d.\n", maxTexSize);
+    GLint stencil;
+    glGetIntegerv(GL_STENCIL_BITS, &stencil);
+    mout << vararg("  StencilBits: %d.\n", stencil);
+    GLint redBits, green, blueBits;
     glGetIntegerv(GL_RED_BITS, &redBits);
-    glGetIntegerv(GL_GREEN_BITS, &greenBits);
+    glGetIntegerv(GL_GREEN_BITS, &green);
     glGetIntegerv(GL_BLUE_BITS, &blueBits);
-    mout << vararg("  ColorBits: %d %d %d.\n", redBits, greenBits, blueBits);
+    mout << vararg("  ColorBits: %d %d %d.\n", redBits, green, blueBits);
     GLint depthBits;
     glGetIntegerv(GL_DEPTH_BITS, &depthBits);
     mout << vararg("  DepthBits: %d.\n", depthBits);
@@ -119,7 +119,7 @@ B_OpenGLRasterDevice::B_OpenGLRasterDevice(HWND window, HMODULE rasterModule)
     this->depthMode = 0;
     this->textureMode = false;
     this->blendMode = 0;
-    GLfloat pixels[] =
+    GLfloat pixelData[] =
     {
         0.2f, 0.2f, 0.2f,
         0.2f, 0.2f, 0.2f,
@@ -158,8 +158,8 @@ B_OpenGLRasterDevice::B_OpenGLRasterDevice(HWND window, HMODULE rasterModule)
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage1D(
-        GL_TEXTURE_1D, 0, GL_RGB, sizeof(pixels) / (sizeof(pixels[0]) * 3),
-        0, GL_RGB, GL_FLOAT, &pixels);
+        GL_TEXTURE_1D, 0, GL_RGB, sizeof(pixelData) / (sizeof(pixelData[0]) * 3),
+        0, GL_RGB, GL_FLOAT, &pixelData);
     this->LoadBitmapWinResource(105, 2002);
     this->LoadBitmapWinResource(108, 2003);
     this->LoadBitmapWinResource(103, 2004);
@@ -175,8 +175,8 @@ B_OpenGLRasterDevice::B_OpenGLRasterDevice(HWND window, HMODULE rasterModule)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glScalef(2.0 / this->width, 2.0 / this->height, 1.0);
-    glTranslatef(-(this->width / 2.0), -(this->height / 2.0), 0.0);
+    glScalef(2.0f / this->width, 2.0f / this->height, 1.0f);
+    glTranslatef(-(this->width / 2.0f), -(this->height / 2.0f), 0.0f);
     glViewport(0, 0, this->width, this->height);
     glEndList();
     glNewList(GL_LIST_END_2D, GL_COMPILE);
