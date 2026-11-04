@@ -13,13 +13,22 @@ def insert_declarations(procedure, stack_vars):
 class _IdentifiersCollector(ExpressionTransformer):
     def __init__(self, local_stack_variables):
         self._local_variables_set = _make_variables_set(local_stack_variables)
+        self._offsets = dict(
+            (identifier, offset)
+            for offset, identifier in local_stack_variables.items()
+            if offset < 0
+        )
         self._cur_path = []
         self._cur_instr = None
         self._ids = {}
         self._to_be_declared_before = {}
+        self._scope_indices = {}
+        self._blocks = []
+        self._cur_scope_index = None
 
     def collect_identifiers(self, instrs):
         self._collect(None, instrs)
+        self._hoist_declarations()
         for identifier, (path, instr) in self._ids.items():
             ids = self._to_be_declared_before.get(instr)
             if ids is None:
@@ -29,6 +38,16 @@ class _IdentifiersCollector(ExpressionTransformer):
 
     def _collect(self, parent_instr, instrs):
         self._cur_path.append((parent_instr, instrs))
+        prev_scope_index = self._cur_scope_index
+        # A labeled block is not a scope of C++
+        if (
+            self._cur_scope_index is None or
+            not isinstance(parent_instr, instructions.LabeledBlock)
+        ):
+            self._cur_scope_index = len(self._scope_indices)
+        self._scope_indices[id(instrs)] = self._cur_scope_index
+        # Keep blocks alive: their ids are keys of the scope indices
+        self._blocks.append(instrs)
         for instr in instrs:
             self._cur_instr = instr
             if isinstance(instr, instructions.IfInstruction):
@@ -43,6 +62,7 @@ class _IdentifiersCollector(ExpressionTransformer):
                 self._collect(instr, instr.instructions)
             else:
                 instr.visit(self._on_visit)
+        self._cur_scope_index = prev_scope_index
         self._cur_path.pop()
 
     def _on_visit(self, e):
@@ -52,6 +72,49 @@ class _IdentifiersCollector(ExpressionTransformer):
             not e.is_implicit
         ):
             self._update_id_path(e, self._cur_path, self._cur_instr)
+
+    def _hoist_declarations(self):
+        """Move declarations up to blocks matching the stack layout.
+
+        Visual C++ 6.0 places variables of a procedure body first, then
+        variables of nested blocks in preorder (see vc6check/stack-layout.md
+        in branch claude/vc6-compare). A variable placed above a variable of
+        a preceding block is declared at the start of their common block.
+        """
+        changed = True
+        while changed:
+            changed = False
+            for identifier, (path, instr) in self._ids.items():
+                offset = self._offsets.get(identifier)
+                if offset is None:
+                    continue
+                scope = self._scope_index(path)
+                for other, (other_path, _) in self._ids.items():
+                    other_offset = self._offsets.get(other)
+                    if (
+                        other_offset is None or other_offset >= offset or
+                        self._scope_index(other_path) >= scope
+                    ):
+                        continue
+                    common_len = _common_prefix_length(path, other_path)
+                    # Declare at the start of the block of C++
+                    while (
+                        common_len > 1 and
+                        isinstance(
+                            path[common_len - 1][0],
+                            instructions.LabeledBlock)
+                    ):
+                        common_len -= 1
+                    block = path[common_len - 1][1]
+                    self._ids[identifier] = path[:common_len], block[0]
+                    changed = True
+                    break
+                if changed:
+                    break
+
+    def _scope_index(self, path):
+        parent_instr, instrs = path[-1]
+        return self._scope_indices[id(instrs)]
 
     def _update_id_path(self, identifier, new_path, new_instr):
         if identifier not in self._ids:
@@ -63,7 +126,7 @@ class _IdentifiersCollector(ExpressionTransformer):
             new_instr, path = existing_path[len(new_path)]
         else:
             new_instr = existing_instr
-        self._ids[identifier] = new_path, new_instr
+        self._ids[identifier] = tuple(new_path), new_instr
 
     def pre_transform_block_instructions(self, block_instructions, **kwargs):
         chain = block_instructions.interval(0)
@@ -84,6 +147,16 @@ class _IdentifiersCollector(ExpressionTransformer):
                     instructions.VariableDeclaration(identifier, None))
         new_instructions.append(instr)
         chain.replace_instructions(new_instructions)
+
+
+def _common_prefix_length(first_path, second_path):
+    length = 0
+    while (
+        length < len(first_path) and length < len(second_path) and
+        first_path[length][1] is second_path[length][1]
+    ):
+        length += 1
+    return length
 
 
 def _find_common_path(first_path, second_path):
