@@ -6,6 +6,23 @@ template<class T>
 class B_Hash
 {
 public:
+    B_Hash()
+    {
+        size = 0;
+        deleteItems = true;
+        lastItem = NULL;
+    }
+
+    ~B_Hash()
+    {
+        lastItem = NULL;
+        for (int i = 0; i < 256; i++)
+        {
+            hash[i].Clear(deleteItems);
+        }
+        size = 0;
+    }
+
     void Add(T *item)
     {
         int hashValue = HashValue(item->Id());
@@ -99,8 +116,8 @@ public:
     }
 
     unsigned int size;
-    B_PtrArray<T> hash[256];
-    int unknown1804;
+    B_PtrArray3<T> hash[256];
+    int deleteItems;
     T *lastItem;
 };
 
