@@ -10,7 +10,6 @@ class atmosphere_t : public B_NamedObj
 {
 public:
         atmosphere_t();
-        ~atmosphere_t();
 public:
         B_Color color;
         float intensity;

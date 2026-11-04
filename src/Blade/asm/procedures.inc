@@ -562,8 +562,8 @@ externdef ??0atmosphere_t@@QAE@XZ: near
 l0042D090 equ ??0atmosphere_t@@QAE@XZ
 externdef ??5@YAAAVB_IDataFile@@AAV0@PAVatmosphere_t@@@Z: near
 l0042D175 equ ??5@YAAAVB_IDataFile@@AAV0@PAVatmosphere_t@@@Z
-externdef ??1atmosphere_t@@UAE@XZ: near
-l0042D1B0 equ ??1atmosphere_t@@UAE@XZ
+externdef ??_Gatmosphere_t@@UAEPAXI@Z: near
+l0042D1B0 equ ??_Gatmosphere_t@@UAEPAXI@Z
 externdef ??5@YAAAVB_IDataFile@@AAV0@AAVB_SectorLights@@@Z: near
 l0042E011 equ ??5@YAAAVB_IDataFile@@AAV0@AAVB_SectorLights@@@Z
 externdef ??0B_Sector@@QAE@XZ: near

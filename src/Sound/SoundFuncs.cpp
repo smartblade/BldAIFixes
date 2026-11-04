@@ -554,7 +554,7 @@ int SetSoundIntProperty(int property_kind, B_Sound *sound, int value)
     switch (property_kind)
     {
         case SND_INT_SEND_NOTIFY:
-            sound->sendNotify = (value != 0);
+            sound->sendNotify = value ? true : false;
             return true;
         default:
             return false;

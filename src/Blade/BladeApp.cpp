@@ -11,8 +11,7 @@
 
 B_App* CreateApplication(HINSTANCE module, int nCmdShow, char *cmdLine)
 {
-    B_BladeApp *new_application = new B_BladeApp(module, nCmdShow, cmdLine);
-    gbl_application = new_application;
+    gbl_application = new B_BladeApp(module, nCmdShow, cmdLine);
 
     return gbl_application;
 }

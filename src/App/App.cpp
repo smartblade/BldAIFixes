@@ -670,7 +670,7 @@ bool B_App::ProcessEvents()
 void B_App::End()
 {
     mout << "B_App::End()...\n";
-    mout.DisconnectChannel("Salida");
+    B_MessageChannel *channel = mout.DisconnectChannel("Salida");
 }
 
 

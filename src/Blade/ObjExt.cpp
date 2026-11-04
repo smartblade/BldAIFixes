@@ -83,16 +83,25 @@ void DoneLoadGame()
 
 int SetSaveInfo(PyObject *info)
 {
-    int saveInfoFlag;
+    int saveVersion;
     PyObject *data;
     int nextEntitySuffix;
-    if (!PyArg_ParseTuple(info, "iO", &saveInfoFlag, &data))
+    if (!PyArg_ParseTuple(info, "iO", &saveVersion, &data))
         return 0;
-    if (saveInfoFlag != 1)
-        return 0;
-    if (!PyArg_ParseTuple(data, "i", &nextEntitySuffix))
-        return 0;
-    B_world.nextEntitySuffix = nextEntitySuffix;
+    switch (saveVersion)
+    {
+        case 1:
+            if (PyArg_ParseTuple(data, "i", &nextEntitySuffix))
+            {
+                int suffix = nextEntitySuffix;
+                B_world.nextEntitySuffix = suffix;
+            }
+            else
+            {
+                return 0;
+            }
+            break;
+    }
     return 0;
 }
 
@@ -303,8 +312,8 @@ const char *GetRaceName(int index)
 {
     if (index >= 0 && (unsigned int)index < gbl_bipeds.size)
     {
-        B_BipedData *race = gbl_bipeds.elements[index];
-        return race->Id().String();
+        B_BipedData *race = gbl_bipeds[index];
+        return race->name.String();
     }
     return NULL;
 }
@@ -966,8 +975,8 @@ int SetAecGap(double aec_gap)
 
 double GetAecGap()
 {
-    double aecGap = GetApplication()->aecGap;
-    return aecGap;
+    double aecGap;
+    return aecGap = GetApplication()->aecGap;
 }
 
 
@@ -1465,7 +1474,8 @@ void UpdateAGTexture(long bmpHandle)
 
 const char *GetWorldFileName(void)
 {
-    return B_world.world_file_name;
+    const char *fileName = B_world.world_file_name;
+    return fileName;
 }
 
 
@@ -2141,5 +2151,5 @@ const char *GetLastPlayerCType()
 {
     B_App *App = GetApplication();
     assert(App);
-    return App->lastPlayerCType;
+    return App->lastPlayerCType.String();
 }

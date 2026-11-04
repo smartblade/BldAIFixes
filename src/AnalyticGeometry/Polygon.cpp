@@ -102,7 +102,10 @@ B_Polygon::B_Polygon()
 B_Polygon::~B_Polygon()
 {
     this->numVertices = 0;
-    delete [] this->vertices;
+    if (this->vertices != NULL)
+    {
+        delete [] this->vertices;
+    }
 }
 
 
@@ -122,7 +125,10 @@ B_Polygon::~B_Polygon()
 
 B_IDataFile &operator >>(B_IDataFile &file, B_Polygon &polygon)
 {
-    delete [] polygon.vertices;
+    if (polygon.vertices != NULL)
+    {
+        delete [] polygon.vertices;
+    }
     file >> polygon.numVertices;
     polygon.vertices = new unsigned int[polygon.numVertices];
     for (unsigned int i = 0; i < polygon.numVertices; i++)
