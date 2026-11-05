@@ -38,19 +38,21 @@ public:
 #define B_PARTICLE_GTYPE_MUL           3
 
 
-class B_ParticleGType : public B_NamedObj
+class B_ParticleGType : public B_NamedObj, public array_t<B_ParticleElement>
 {
 public:
     LIB_EXP virtual ~B_ParticleGType();
-    LIB_EXP B_ParticleGType() : duration(0), bmpHandle(-1), operation_type(0)
+    LIB_EXP B_ParticleGType()
     {
+        duration = 0;
+        bmpHandle = -1;
+        operation_type = 0;
     }
     LIB_EXP B_ParticleGType(
         const B_Name &new_type, const B_Name &parent_type,
         unsigned long operation_type, unsigned int duration);
 
 public:
-    array_t<B_ParticleElement> a00C;
     unsigned int duration;
     int bmpHandle;
     int operation_type;

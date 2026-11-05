@@ -153,11 +153,7 @@ int SaveParticleSystemsData(const char *filename)
     B_ODataFile file(filename, O_BINARY);
     if (!file.OK())
         return 0;
-    file << gbl_particle_types.size;
-    for (unsigned int i = 0; i < gbl_particle_types.size; i++)
-    {
-        file << *gbl_particle_types.elements[i];
-    }
+    file << gbl_particle_types;
     return 1;
 }
 
@@ -172,29 +168,7 @@ int LoadParticleSystemsData(const char *filename)
     B_IDataFile file(filename, O_BINARY);
     if (!file.OK())
         return 0;
-    if (gbl_particle_types.num_alloc != 0)
-    {
-            for (unsigned int i = 0; i < gbl_particle_types.size; i++)
-            {
-                    B_ParticleGType * p_type = gbl_particle_types.elements[i];
-                    delete p_type;
-            }
-            delete(gbl_particle_types.elements);
-            gbl_particle_types.elements = NULL;
-            gbl_particle_types.size = 0;
-            gbl_particle_types.num_alloc = 0;
-    }
-    file >> gbl_particle_types.size;
-    gbl_particle_types.num_alloc = ((gbl_particle_types.increment + gbl_particle_types.size - 1) / gbl_particle_types.increment) * gbl_particle_types.increment;
-    if (gbl_particle_types.num_alloc != 0)
-    {
-        gbl_particle_types.elements = new B_ParticleGType * [gbl_particle_types.num_alloc];
-        for(unsigned int i = 0; i < gbl_particle_types.size; i++)
-        {
-            gbl_particle_types.elements[i] = new B_ParticleGType();
-            file >> *gbl_particle_types.elements[i];
-        }
-    }
+    file >> gbl_particle_types;
     return 1;
 }
 
@@ -209,11 +183,7 @@ int SaveCombustionData(const char *file_name)
     B_ODataFile file(file_name, O_BINARY);
     if (!file.OK())
         return 0;
-    file << gbl_combustion_data.size;
-    for (unsigned int i = 0; i < gbl_combustion_data.size; i++)
-    {
-        file << *gbl_combustion_data.elements[i];
-    }
+    file << gbl_combustion_data;
     return 1;
 }
 
@@ -228,29 +198,7 @@ int LoadCombustionData(const char *file_name)
     B_IDataFile file(file_name, O_BINARY);
     if (!file.OK())
         return 0;
-    if (gbl_combustion_data.num_alloc != 0)
-    {
-            for (unsigned int i = 0; i < gbl_combustion_data.size; i++)
-            {
-                    B_Combustion * comb = gbl_combustion_data.elements[i];
-                    delete comb;
-            }
-            delete(gbl_combustion_data.elements);
-            gbl_combustion_data.elements = NULL;
-            gbl_combustion_data.size = 0;
-            gbl_combustion_data.num_alloc = 0;
-    }
-    file >> gbl_combustion_data.size;
-    gbl_combustion_data.num_alloc = ((gbl_combustion_data.increment + gbl_combustion_data.size - 1) / gbl_combustion_data.increment) * gbl_combustion_data.increment;
-    if (gbl_combustion_data.num_alloc != 0)
-    {
-        gbl_combustion_data.elements = new B_Combustion * [gbl_combustion_data.num_alloc];
-        for(unsigned int i = 0; i < gbl_combustion_data.size; i++)
-        {
-            gbl_combustion_data.elements[i] = new B_Combustion();
-            file >> *gbl_combustion_data.elements[i];
-        }
-    }
+    file >> gbl_combustion_data;
     return 1;
 }
 
@@ -1119,11 +1067,11 @@ int AddParticleGType(
         return 0;
     for (unsigned int i = 0; i < duration + 1; i++)
     {
-        particleType->a00C.elements[i].r = 128;
-        particleType->a00C.elements[i].g = 128;
-        particleType->a00C.elements[i].b = 128;
-        particleType->a00C.elements[i].alpha = 128;
-        particleType->a00C.elements[i].size = 100.0f;
+        particleType->elements[i].r = 128;
+        particleType->elements[i].g = 128;
+        particleType->elements[i].b = 128;
+        particleType->elements[i].alpha = 128;
+        particleType->elements[i].size = 100.0f;
     }
     gbl_particle_types.Append(particleType);
     return 1;
@@ -1140,13 +1088,13 @@ int SetParticleGVal(
 )
 {
     B_ParticleGType *particleType = gbl_particle_types.Find(type);
-    if (particleType != NULL && (unsigned int)i < particleType->a00C.size)
+    if (particleType != NULL && (unsigned int)i < particleType->size)
     {
-        particleType->a00C.elements[i].r = r;
-        particleType->a00C.elements[i].g = g;
-        particleType->a00C.elements[i].b = b;
-        particleType->a00C.elements[i].alpha = alpha;
-        particleType->a00C.elements[i].size = size;
+        particleType->elements[i].r = r;
+        particleType->elements[i].g = g;
+        particleType->elements[i].b = b;
+        particleType->elements[i].alpha = alpha;
+        particleType->elements[i].size = size;
     }
     return 1;
 }
@@ -1199,11 +1147,11 @@ int GetParticleGVal(
     B_ParticleGType *particleType = gbl_particle_types.Find(type);
     if (particleType != NULL)
     {
-        *r = particleType->a00C.elements[index].r;
-        *g = particleType->a00C.elements[index].g;
-        *b = particleType->a00C.elements[index].b;
-        *alpha = particleType->a00C.elements[index].alpha;
-        *size = particleType->a00C.elements[index].size;
+        *r = particleType->elements[index].r;
+        *g = particleType->elements[index].g;
+        *b = particleType->elements[index].b;
+        *alpha = particleType->elements[index].alpha;
+        *size = particleType->elements[index].size;
         return 1;
     }
     return 0;

@@ -946,7 +946,7 @@ void B_OpenGLRasterDevice::RasterParticles(
     {
         if (particle->z > 0.5)
         {
-            element = &particleType->a00C[particle->time];
+            element = &(*particleType)[particle->time];
             x = particle->x;
             y = particle->y;
             size = element->size;

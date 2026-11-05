@@ -21,8 +21,9 @@ class B_YSoundDev;
 class B_Combustion : public B_NamedObj, public B_PtrArray2<void>
 {
 public:
-    B_Combustion() : unknown0024(0)
+    B_Combustion()
     {
+        unknown0024 = 0;
     }
     B_Combustion(
         const B_Name &object_kind, const B_Name &fire_kind, double upper_treshol,

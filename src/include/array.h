@@ -6,6 +6,7 @@
 #include <bld_system.h>
 
 class B_IDataFile;
+class B_ODataFile;
 class B_Name;
 
 template<class TYPE>
@@ -263,19 +264,22 @@ public:
 };
 
 template<class TYPE>
+B_ODataFile &operator <<(B_ODataFile &file, B_PtrArray<TYPE> &arr)
+{
+    file << arr.size;
+    for (unsigned int i = 0; i < arr.size; i++)
+    {
+        file << *arr.elements[i];
+    }
+    return file;
+}
+
+template<class TYPE>
 B_IDataFile &operator >>(B_IDataFile &file, B_PtrArray<TYPE> &arr)
 {
     if (arr.num_alloc != 0)
     {
-        for (unsigned int i = 0; i < arr.size; i++)
-        {
-            TYPE *elem = arr.elements[i];
-            delete elem;
-        }
-        delete(arr.elements);
-        arr.elements = NULL;
-        arr.size = 0;
-        arr.num_alloc = 0;
+        arr.Clear(true);
     }
     file >> arr.size;
     arr.num_alloc = ((arr.increment + arr.size - 1) / arr.increment) * arr.increment;
