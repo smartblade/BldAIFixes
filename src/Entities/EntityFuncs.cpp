@@ -2831,8 +2831,7 @@ int SetSolidMask(const char *kind, int mask)
     }
     else
     {
-        B_SolidMask *newSolidMask = new B_SolidMask(kind, mask);
-        gbl_solid_masks.Append(newSolidMask);
+        gbl_solid_masks.Append(new B_SolidMask(kind, mask));
     }
     return true;
 }
