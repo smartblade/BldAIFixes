@@ -114,7 +114,21 @@ public:
     virtual void MakeCons();
 
     B_Color operator +(B_Color const &color) const;
-    B_Color operator *(float coef) const;
+
+
+    /*
+    * Module:                 BBLibc.dll
+    * Entry point:            0x10006950
+    * VC++ mangling:          ??DB_Color@@QBE?AV0@M@Z
+    */
+
+    B_Color operator *(float coef) const
+    {
+        return B_Color(
+            static_cast<byte>(r * coef), static_cast<byte>(g * coef),
+            static_cast<byte>(b * coef));
+    }
+
     B_Color operator /(float f)const;
     float DistanceTo(const B_Color &arg_1);
 

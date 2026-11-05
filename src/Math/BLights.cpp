@@ -19,10 +19,11 @@
 B_IDataFile &operator >>(B_IDataFile &file, B_LightSource &light)
 {
     file >> light.color >> light.intensity >> light.precision;
-    float max_intensity = max(
+    double max_intensity = max(
         light.color.r,
         max(light.color.g, light.color.b));
-    light.color = light.color * (255.0 / max_intensity);
+    max_intensity = 255.0 / max_intensity;
+    light.color = light.color * max_intensity;
     return file;
 }
 

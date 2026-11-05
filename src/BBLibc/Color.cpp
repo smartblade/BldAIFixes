@@ -29,19 +29,6 @@ B_Color B_Color::operator +(B_Color const &color) const
 
 /*
 * Module:                 BBLibc.dll
-* Entry point:            0x10006950
-* VC++ mangling:          ??DB_Color@@QBE?AV0@M@Z
-*/
-#ifndef BLD_NATIVE
-B_Color B_Color::operator *(float coef) const
-{
-    return B_Color(static_cast<byte>(r * coef), static_cast<byte>(g * coef), static_cast<byte>(b * coef));
-}
-#endif
-
-
-/*
-* Module:                 BBLibc.dll
 * Entry point:            0x100069E0
 * VC++ mangling:          ??KB_Color@@QBE?AV0@M@Z
 */

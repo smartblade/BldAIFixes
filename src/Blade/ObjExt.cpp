@@ -1638,21 +1638,21 @@ int GetScreenRect(
 )
 {
     B_CameraView cameraView;
-    float coef1 = 1.0f;
-    float coef2 = 1.0f;
-    cameraView.xCentre = (1.0f - coef1) * 0.5f + 0.001f;
-    cameraView.yCentre = (1.0f - coef1) * 0.5f * 0.75f + 0.001f;
-    cameraView.width = 0.998f * coef1;
-    cameraView.height = 0.748f * coef1;
-    cameraView.unknown010 = coef2;
-    cameraView.z = 0.65 * coef1;
+    float b = 1.0f;
+    float a = 1.0f;
+    cameraView.xCentre = (1.0f - a) * 0.5f + 0.001f;
+    cameraView.yCentre = (1.0f - a) * 0.5f * 0.75f + 0.001f;
+    cameraView.width = 0.998f * a;
+    cameraView.height = 0.748f * a;
+    cameraView.unknown010 = b;
+    cameraView.z = 0.65 * a;
     cameraView.UpdateViewPyramid();
     *x_min = cameraView.xCentre - cameraView.width * 0.5;
     *y_min = cameraView.yCentre - cameraView.height * 0.5;
     *x_max = cameraView.xCentre + cameraView.width * 0.5;
     *y_max = cameraView.yCentre + cameraView.height * 0.5;
-    int result = 0;
-    return result;
+    int retVal = 0;
+    return retVal;
 }
 
 
@@ -1667,24 +1667,24 @@ int GetScreenXY(
 )
 {
     B_CameraView cameraView;
-    float coef1 = 1.0f;
-    float coef2 = 1.0f;
-    cameraView.xCentre = (1.0f - coef1) * 0.5f + 0.001f;
-    cameraView.yCentre = (1.0f - coef1) * 0.5f * 0.75f + 0.001f;
-    cameraView.width = 0.998f * coef1;
-    cameraView.height = 0.748f * coef1;
-    cameraView.unknown010 = coef2;
-    cameraView.z = 0.65 * coef1;
+    float b = 1.0f;
+    float a = 1.0f;
+    cameraView.xCentre = (1.0f - a) * 0.5f + 0.001f;
+    cameraView.yCentre = (1.0f - a) * 0.5f * 0.75f + 0.001f;
+    cameraView.width = 0.998f * a;
+    cameraView.height = 0.748f * a;
+    cameraView.unknown010 = b;
+    cameraView.z = 0.65 * a;
     cameraView.UpdateViewPyramid();
-    B_Vector map_point(map_x, map_y, map_z);
-    B_Vector screenPoint = map_point * GetApplication()->viewPose.fromWorld;
-    if (fabs(screenPoint.z) < 0.01)
-        screenPoint.z = 0.01;
-    double factor = cameraView.z / screenPoint.z;
-    *screen_x = screenPoint.x * factor;
-    *screen_y = screenPoint.y * factor;
-    int result = 0;
-    return result;
+    B_Vector mapCoord(map_x, map_y, map_z);
+    B_Vector camPoint = mapCoord * GetApplication()->viewPose.fromWorld;
+    if (fabs(camPoint.z) < 0.01)
+        camPoint.z = 0.01;
+    double factor = cameraView.z / camPoint.z;
+    *screen_x = camPoint.x * factor;
+    *screen_y = camPoint.y * factor;
+    int retVal = 0;
+    return retVal;
 }
 
 

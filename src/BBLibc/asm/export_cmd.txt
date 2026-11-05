@@ -71,7 +71,6 @@
 /EXPORT:?LoadPackedData@B_ResourceManager@@QAEHHPBD@Z=l1000644A
 /EXPORT:??4B_ResourceManager@@QAEAAV0@ABV0@@Z=??4B_ResourceManager@@QAEAAV0@ABV0@@Z
 /EXPORT:??HB_Color@@QBE?AV0@ABV0@@Z=??HB_Color@@QBE?AV0@ABV0@@Z
-/EXPORT:??DB_Color@@QBE?AV0@M@Z=??DB_Color@@QBE?AV0@M@Z
 /EXPORT:??KB_Color@@QBE?AV0@M@Z=??KB_Color@@QBE?AV0@M@Z
 /EXPORT:??8B_Color@@QAEIABV0@@Z=??8B_Color@@QAEIABV0@@Z
 /EXPORT:??9B_Color@@QAEIABV0@@Z=??9B_Color@@QAEIABV0@@Z

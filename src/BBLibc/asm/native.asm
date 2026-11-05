@@ -9260,53 +9260,7 @@ l100068D0 ENDP
 ;
 ;* Export: ??DB_Color@@QBE?AV0@M@Z, 007C
 ;
-l10006950 PROC
-           push ebp
-           mov ebp, esp
-           sub esp, 00000001Ch
-           mov dword ptr [ebp-010h], ecx
-           mov eax, dword ptr [ebp-010h]
-           xor ecx, ecx
-           mov cl, byte ptr [eax+006h]
-           mov dword ptr [ebp-014h], ecx
-           fild dword ptr [ebp-014h]
-           fmul dword ptr [ebp+00Ch]
-           call l10041630; [BICRT._ftol].
-           mov byte ptr [ebp-00Ch], al
-           mov edx, dword ptr [ebp-010h]
-           xor eax, eax
-           mov al, byte ptr [edx+005h]
-           mov dword ptr [ebp-018h], eax
-           fild dword ptr [ebp-018h]
-           fmul dword ptr [ebp+00Ch]
-           call l10041630; [BICRT._ftol].
-           mov byte ptr [ebp-008h], al
-           mov ecx, dword ptr [ebp-010h]
-           xor edx, edx
-           mov dl, byte ptr [ecx+004h]
-           mov dword ptr [ebp-01Ch], edx
-           fild dword ptr [ebp-01Ch]
-           fmul dword ptr [ebp+00Ch]
-           call l10041630; [BICRT._ftol].
-           mov byte ptr [ebp-004h], al
-           mov eax, dword ptr [ebp+008h]
-           mov cl, byte ptr [ebp-004h]
-           mov byte ptr [eax+004h], cl
-           mov edx, dword ptr [ebp+008h]
-           mov al, byte ptr [ebp-008h]
-           mov byte ptr [edx+005h], al
-           mov ecx, dword ptr [ebp+008h]
-           mov dl, byte ptr [ebp-00Ch]
-           mov byte ptr [ecx+006h], dl
-           mov eax, dword ptr [ebp+008h]
-           mov dword ptr [eax], offset g100421F0
-           mov ecx, dword ptr [ebp+008h]
-           call l1000921A
-           mov eax, dword ptr [ebp+008h]
-           mov esp, ebp
-           pop ebp
-           ret 00008h
-l10006950 ENDP
+           call l10006950; Implemented in c++ code
 ;
            int 03h
            int 03h
