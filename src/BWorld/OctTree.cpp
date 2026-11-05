@@ -513,27 +513,35 @@ void B_OctantNode::CollectSectorsAtPoint(
 )
 {
     double childHalfSize = halfSize / 2.0;
-    double childOffset = halfSize / 4.0;
+    double childCenterOffset = halfSize / 4.0;
     if (localPos.x < 10.0)
     {
         if (localPos.y < 10.0)
         {
             if (localPos.z < 10.0 && this->children[0] != nullptr)
             {
-                B_Vector childCenter(-childOffset, -childOffset, -childOffset);
                 this->children[0]->CollectSectorsAtPoint(
-                    localPos - childCenter,
-                    outList,
-                    childHalfSize
+                    localPos -
+                    B_Vector(
+                        -childCenterOffset,
+                        -childCenterOffset,
+                        -childCenterOffset
+                    ),
+                        outList,
+                        childHalfSize
                 );
             }
             if (localPos.z > -10.0 && this->children[1] != nullptr)
             {
-                B_Vector childCenter(-childOffset, -childOffset, childOffset);
                 this->children[1]->CollectSectorsAtPoint(
-                    localPos - childCenter,
-                    outList,
-                    childHalfSize
+                    localPos -
+                    B_Vector(
+                        -childCenterOffset,
+                        -childCenterOffset,
+                        childCenterOffset
+                    ),
+                        outList,
+                        childHalfSize
                 );
             }
         }
@@ -541,20 +549,28 @@ void B_OctantNode::CollectSectorsAtPoint(
         {
             if (localPos.z < 10.0 && this->children[2] != nullptr)
             {
-                B_Vector childCenter(-childOffset, childOffset, -childOffset);
                 this->children[2]->CollectSectorsAtPoint(
-                    localPos - childCenter,
-                    outList,
-                    childHalfSize
+                    localPos -
+                    B_Vector(
+                        -childCenterOffset,
+                        childCenterOffset,
+                        -childCenterOffset
+                    ),
+                        outList,
+                        childHalfSize
                 );
             }
             if (localPos.z > -10.0 && this->children[3] != nullptr)
             {
-                B_Vector childCenter(-childOffset, childOffset, childOffset);
                 this->children[3]->CollectSectorsAtPoint(
-                    localPos - childCenter,
-                    outList,
-                    childHalfSize
+                    localPos -
+                    B_Vector(
+                        -childCenterOffset,
+                        childCenterOffset,
+                        childCenterOffset
+                    ),
+                        outList,
+                        childHalfSize
                 );
             }
         }
@@ -565,20 +581,28 @@ void B_OctantNode::CollectSectorsAtPoint(
         {
             if (localPos.z < 10.0 && this->children[4] != nullptr)
             {
-                B_Vector childCenter(childOffset, -childOffset, -childOffset);
                 this->children[4]->CollectSectorsAtPoint(
-                    localPos - childCenter,
-                    outList,
-                    childHalfSize
+                    localPos -
+                    B_Vector(
+                        childCenterOffset,
+                        -childCenterOffset,
+                        -childCenterOffset
+                    ),
+                        outList,
+                        childHalfSize
                 );
             }
             if (localPos.z > -10.0 && this->children[5] != nullptr)
             {
-                B_Vector childCenter(childOffset, -childOffset, childOffset);
                 this->children[5]->CollectSectorsAtPoint(
-                    localPos - childCenter,
-                    outList,
-                    childHalfSize
+                    localPos -
+                    B_Vector(
+                        childCenterOffset,
+                        -childCenterOffset,
+                        childCenterOffset
+                    ),
+                        outList,
+                        childHalfSize
                 );
             }
         }
@@ -586,20 +610,28 @@ void B_OctantNode::CollectSectorsAtPoint(
         {
             if (localPos.z < 10.0 && this->children[6] != nullptr)
             {
-                B_Vector childCenter(childOffset, childOffset, -childOffset);
                 this->children[6]->CollectSectorsAtPoint(
-                    localPos - childCenter,
-                    outList,
-                    childHalfSize
+                    localPos -
+                    B_Vector(
+                        childCenterOffset,
+                        childCenterOffset,
+                        -childCenterOffset
+                    ),
+                        outList,
+                        childHalfSize
                 );
             }
             if (localPos.z > -10.0 && this->children[7] != nullptr)
             {
-                B_Vector childCenter(childOffset, childOffset, childOffset);
                 this->children[7]->CollectSectorsAtPoint(
-                    localPos - childCenter,
-                    outList,
-                    childHalfSize
+                    localPos -
+                    B_Vector(
+                        childCenterOffset,
+                        childCenterOffset,
+                        childCenterOffset
+                    ),
+                        outList,
+                        childHalfSize
                 );
             }
         }
