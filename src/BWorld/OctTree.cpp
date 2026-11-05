@@ -367,7 +367,7 @@ void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsL
 {
     if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
     {
-        this->sectors->lastQueryId = gbl_oct_tree_query_id; // mark as "processed"
+        this->sectors->lastQueryId = gbl_oct_tree_query_id;
         if (outList->size < 512)
         {
             outList->sectors[outList->size] = this->sectors;
@@ -730,7 +730,6 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
                 current_surface->p;
             if (-sphere->radius > distance)
             {
-                // the sphere is outside of the sector: skip the sector
                 j = current_sector->size + 1;
             }
             else if (distance < sphere->radius)
@@ -743,7 +742,6 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
         {
             if (cache->elements[cache->count].numSurfaces == 0)
             {
-                // the sphere is inside of the sector and touches none of its surfaces
                 cache->elements[cache->count].hasNoIntersections = 1;
                 cache->count++;
                 return 1;
