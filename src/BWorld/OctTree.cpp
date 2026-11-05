@@ -1003,6 +1003,25 @@ B_SectorSurfaceCache::~B_SectorSurfaceCache()
 
 /*
 * Module:                 Blade.exe
+* Entry point:            0x004534A4
+* VC++ mangling:          ?IsPointInside@B_SectorSurfaceCache@@QAEHPBVB_Vector@@@Z
+*/
+
+int B_SectorSurfaceCache::IsPointInside(const B_Vector *point)
+{
+    for (unsigned int i = 0; i < this->numSurfaces; i++)
+    {
+        if (this->surfaces[i]->Distance(point) < 0.0)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+/*
+* Module:                 Blade.exe
 * Entry point:            0x004539A9
 * VC++ mangling:          ??0B_GlobalSurfaceCache@@QAE@XZ
 */

@@ -744,6 +744,8 @@ externdef ??0B_SectorSurfaceCache@@QAE@XZ: near
 l0045346F equ ??0B_SectorSurfaceCache@@QAE@XZ
 externdef ??1B_SectorSurfaceCache@@UAE@XZ: near
 l00453490 equ ??1B_SectorSurfaceCache@@UAE@XZ
+externdef ?IsPointInside@B_SectorSurfaceCache@@QAEHPBVB_Vector@@@Z: near
+l004534A4 equ ?IsPointInside@B_SectorSurfaceCache@@QAEHPBVB_Vector@@@Z
 externdef ??0B_GlobalSurfaceCache@@QAE@XZ: near
 l004539A9 equ ??0B_GlobalSurfaceCache@@QAE@XZ
 externdef ??0B_Surface@@QAE@XZ: near
