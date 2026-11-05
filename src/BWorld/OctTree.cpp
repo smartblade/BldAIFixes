@@ -368,7 +368,7 @@ void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsL
     if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
     {
         this->sectors->lastQueryId = gbl_oct_tree_query_id; // mark as "processed"
-        if (outList->size < 0x200)
+        if (outList->size < 512)
         {
             outList->sectors[outList->size] = this->sectors;
             outList->size++;
@@ -403,7 +403,7 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *
         {
             intersects = 1;
         }
-        if (intersects != 0 && outList->size < 0x200)
+        if (intersects != 0 && outList->size < 512)
         {
             outList->sectors[outList->size] = this->sectors;
             outList->size++;
@@ -426,7 +426,7 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
             this->elements[i]->isActive != 0)
         {
             this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
-            if (outList->size < 0x200)
+            if (outList->size < 512)
             {
                 outList->sectors[outList->size] = this->elements[i];
                 outList->size++;
@@ -465,7 +465,7 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSecto
             {
                 intersects = 1;
             }
-            if (intersects != 0 && outList->size < 0x200)
+            if (intersects != 0 && outList->size < 512)
             {
                 outList->sectors[outList->size] = this->elements[i];
                 outList->size++;
