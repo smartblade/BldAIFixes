@@ -957,12 +957,7 @@ int B_OctTreeSectorsList::BuildSurfaceCache(
         for (j = 0; j < current_sector->size; j++)
         {
             B_Surface *current_surface = current_sector->elements[j];
-            distance = sphere->center.z * current_surface->normal.z +
-                (
-                    sphere->center.y * current_surface->normal.y +
-                    sphere->center.x * current_surface->normal.x
-                ) +
-                current_surface->p;
+            distance = current_surface->Distance(&sphere->center);
             if (-sphere->radius > distance)
             {
                 j = current_sector->size + 1;
