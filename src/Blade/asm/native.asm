@@ -107824,72 +107824,7 @@ l0044F052 ENDP
 ;* Call:
 ; 00499AA2 
 ;
-l004534A4 PROC
-           push ebp
-           mov ebp, esp
-           sub esp, 00000000Ch
-           mov dword ptr [ebp-00Ch], ecx
-           mov dword ptr [ebp-004h], 000000000h
-           jmp l004534BF
-;
-;* Jump:
-; 00453515(U) 
-;
-l004534B6: mov eax, dword ptr [ebp-004h]
-           add eax, 000000001h
-           mov dword ptr [ebp-004h], eax
-;
-;* Jump:
-; 004534B4(U) 
-;
-l004534BF: mov ecx, dword ptr [ebp-00Ch]
-           mov edx, dword ptr [ebp-004h]
-           cmp edx, [ecx+008h]
-           jnb l00453517
-           mov eax, dword ptr [ebp-004h]
-           mov ecx, dword ptr [ebp-00Ch]
-           mov edx, dword ptr [ecx+eax*04h+00Ch]
-           mov dword ptr [ebp-008h], edx
-           mov eax, dword ptr [ebp-008h]
-           mov ecx, dword ptr [ebp-008h]
-           mov edx, dword ptr [ebp+008h]
-           fld qword ptr [edx+010h]
-           fmul qword ptr [ecx+014h]
-           mov ecx, dword ptr [ebp-008h]
-           mov edx, dword ptr [ebp+008h]
-           fld qword ptr [edx+008h]
-           fmul qword ptr [ecx+00Ch]
-           mov ecx, dword ptr [ebp-008h]
-           mov edx, dword ptr [ebp+008h]
-           fld qword ptr [edx]
-           fmul qword ptr [ecx+004h]
-           faddp st(01h), st(00h)
-           faddp st(01h), st(00h)
-           fadd qword ptr [eax+01Ch]
-           fcomp qword ptr [g005BD728]
-           fnstsw ax
-           test ah, 001h
-           je l00453515
-           xor eax, eax
-           jmp l0045351C
-;
-;* Jump:
-; 0045350F(C) 
-;
-l00453515: jmp l004534B6
-;
-;* Jump:
-; 004534C8(C) 
-;
-l00453517: mov eax, 000000001h
-;
-;* Jump:
-; 00453513(U) 
-;
-l0045351C: mov esp, ebp
-           pop ebp
-           ret 00004h
-l004534A4 ENDP
+           call l004534A4; Implemented in c++ code
 ;
            push ebp
            mov ebp, esp
