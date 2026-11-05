@@ -33,15 +33,15 @@ public:
     int Remove(const B_Name &key, int deleteItem)
     {
         unsigned int hashValue = HashValue(key);
-        int index = hash[hashValue].FindItemIndex(key);
-        if (index != -1)
+        int idx = hash[hashValue].FindItemIndex(key);
+        if (idx != -1)
         {
             size--;
             if (lastItem != NULL && lastItem->Id() == key)
             {
                 lastItem = NULL;
             }
-            hash[hashValue].Remove(index, deleteItem);
+            hash[hashValue].Remove(idx, deleteItem);
             return true;
         }
         return false;
@@ -52,10 +52,10 @@ public:
         if (lastItem != NULL && !strcmp(lastItem->Id().String(), key))
             return lastItem;
         int hashValue = HashValue(key);
-        int index = FindItemIndex(hash[hashValue], key);
-        if (index != -1)
+        int idx = FindItemIndex(hash[hashValue], key);
+        if (idx != -1)
         {
-            lastItem = hash[hashValue][index];
+            lastItem = hash[hashValue][idx];
             return lastItem;
         }
         return NULL;
@@ -89,22 +89,23 @@ public:
 
     unsigned int HashValue(const B_Name &key)
     {
-        unsigned int hashValue = 0;
+        unsigned int sum = 0;
         int len = key.Length();
         const char *str = key.String();
         for (int i = 0; i < len; i++)
         {
-            hashValue += str[i];
+            sum += str[i];
         }
-        hashValue = hashValue & 0xFF;
-        return hashValue;
+        sum = sum & 0xFF;
+        return sum;
     }
 
     int FindItemIndex(const B_PtrArray<T> &items, const char *key)
     {
          for(unsigned int i = 0; i < items.size; i++)
          {
-             if (!strcmp(key, items.elements[i]->Id().String()))
+             const char *itemKey = items.elements[i]->Id().String();
+             if (!strcmp(key, itemKey))
                  return i;
          }
          return -1;

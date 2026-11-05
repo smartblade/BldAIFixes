@@ -100,6 +100,30 @@ public:
     int LoadEntitiesData(const char *filename);
     const char *GetTriggerSectorName(int index);
 
+    B_PtrArray3<B_TriggerSector> triggerSectors;
+    B_Hash<B_Entity> entities;
+    int nextEntitySuffix;
+    B_PtrArray3<B_SubscriptionList> subscriptions;
+    char unknownFields1840[28];
+    B_Name world_file_name;
+    char unknownFields1864[24];
+    int unknown187C;
+    int unknown1880;
+    char unknownFields1884[40];
+    B_PtrArray3<atmosphere_t> atmospheres;
+    B_Map map;
+    B_OctTree octTree;
+    B_Vector unknown18FC;
+    double unknown1914;
+    void *unknown191C;
+    B_PtrArray<light_t> lights;
+    char unknownFields1938[28];
+    B_Vector initial_point_position;
+    B_Vector initial_point_orientation;
+
+    /* the inline methods are after the fields: their asserts have line
+     * numbers above 127 like in the original, so the compiler pushes the
+     * line numbers as 32-bit values */
     unsigned int NumEntities()
     {
         return entities.Size();
@@ -123,27 +147,6 @@ public:
         assert(i>=0);
         return entities.Get(i);
     }
-
-    B_PtrArray3<B_TriggerSector> triggerSectors;
-    B_Hash<B_Entity> entities;
-    int nextEntitySuffix;
-    B_PtrArray3<B_SubscriptionList> subscriptions;
-    char unknownFields1840[28];
-    B_Name world_file_name;
-    char unknownFields1864[24];
-    int unknown187C;
-    int unknown1880;
-    char unknownFields1884[40];
-    B_PtrArray3<atmosphere_t> atmospheres;
-    B_Map map;
-    B_OctTree octTree;
-    B_Vector unknown18FC;
-    double unknown1914;
-    void *unknown191C;
-    B_PtrArray<light_t> lights;
-    char unknownFields1938[28];
-    B_Vector initial_point_position;
-    B_Vector initial_point_orientation;
 };
 
 B_IDataFile& operator >>(B_IDataFile& file, B_World *gs);
