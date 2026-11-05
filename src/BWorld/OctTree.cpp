@@ -45,7 +45,8 @@ void B_BoundingBox::CollectIntersectingSectors(
         B_Sector *sector = sectors.elements[i];
         if (this->Intersects(sector))
         {
-            outBuffer.Append(sectors.elements[i]);
+            B_Sector *newElement = sectors.elements[i];
+            outBuffer.Append(newElement);
         }
     }
 }
