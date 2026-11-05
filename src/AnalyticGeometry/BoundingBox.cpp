@@ -32,7 +32,7 @@ B_BoundingBox::B_BoundingBox()
 * VC++ mangling:          ??0B_BoundingBox@@QAE@ABVB_Vector@@0@Z
 */
 
-B_BoundingBox::B_BoundingBox(const B_Vector& minCoords, const B_Vector& maxCoords)
+B_BoundingBox::B_BoundingBox(const B_Vector &minCoords, const B_Vector &maxCoords)
     : minCoords(minCoords), maxCoords(maxCoords)
 {
 }
@@ -44,7 +44,7 @@ B_BoundingBox::B_BoundingBox(const B_Vector& minCoords, const B_Vector& maxCoord
 */
 
 #ifndef BLD_NATIVE
-unsigned int B_BoundingBox::Intersects(const B_Sector* sector) const
+unsigned int B_BoundingBox::Intersects(const B_Sector *sector) const
 {
     return 0;
 }
@@ -57,11 +57,11 @@ unsigned int B_BoundingBox::Intersects(const B_Sector* sector) const
 * VC++ mangling:          ?CollectIntersectingSectors@B_BoundingBox@@QAEXABV?$B_PtrArray@VB_Sector@@@@AAV2@@Z
 */
 
-void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector>& sectors, B_PtrArray<B_Sector>& outBuffer)
+void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &sectors, B_PtrArray<B_Sector> &outBuffer)
 {
     for (unsigned int i = 0; i < sectors.size; ++i)
     {
-        B_Sector* sector = sectors.elements[i];
+        B_Sector *sector = sectors.elements[i];
 
         if (this->Intersects(sector))
         {
