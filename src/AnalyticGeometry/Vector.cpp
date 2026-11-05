@@ -90,12 +90,6 @@ B_Vector B_Vector::operator +(const B_Vector &that) const
 
 B_Vector B_Vector::operator -(const B_Vector &that) const
 {
-    /*B_Vector result;
-    result.x = x - that.x;
-    result.y = y - that.y;
-    result.z = z - that.z;
-    return result;*/
-
     return B_Vector(this->x - that.x, this->y - that.y, this->z - that.z);
 }
 
