@@ -35,7 +35,10 @@ unsigned int B_BoundingBox::Intersects(const B_Sector *sector) const
 * VC++ mangling:          ?CollectIntersectingSectors@B_BoundingBox@@QAEXABV?$B_Array@VB_Sector@@@@AAV2@@Z
 */
 
-void B_BoundingBox::CollectIntersectingSectors(const B_Array<B_Sector> &sectors, B_Array<B_Sector> &outBuffer)
+void B_BoundingBox::CollectIntersectingSectors(
+    const B_Array<B_Sector> &sectors,
+    B_Array<B_Sector> &outBuffer
+)
 {
     for (unsigned int i = 0; i < sectors.size; i++)
     {
@@ -237,7 +240,11 @@ void B_OctTree::Clear()
 * VC++ mangling:          ?BuildNode@@YAPAVB_OctantNodeBase@@ABV?$B_Array@VB_Sector@@@@NABVB_BoundingBox@@@Z
 */
 
-B_OctantNodeBase *BuildNode(const B_Array<B_Sector> &map, double sizeThreshold, const B_BoundingBox &worldBB)
+B_OctantNodeBase *BuildNode(
+    const B_Array<B_Sector> &map,
+    double sizeThreshold,
+    const B_BoundingBox &worldBB
+)
 {
     if (map.size == 0)
         return nullptr;
@@ -247,7 +254,10 @@ B_OctantNodeBase *BuildNode(const B_Array<B_Sector> &map, double sizeThreshold, 
         leaf->sectors = map.elements[0];
         return leaf;
     }
-    if (worldBB.maxCoords.x - worldBB.minCoords.x < sizeThreshold || map.size < 8)
+    if (
+        worldBB.maxCoords.x - worldBB.minCoords.x < sizeThreshold ||
+        map.size < 8
+    )
     {
         B_SectorListNode *node = new B_SectorListNode();
         for (unsigned int i = 0; i < map.size; i++)
@@ -265,33 +275,39 @@ B_OctantNodeBase *BuildNode(const B_Array<B_Sector> &map, double sizeThreshold, 
         childBB.CollectIntersectingSectors(map, outBuffer);
         node->children[0] = BuildNode(outBuffer, sizeThreshold, childBB);
         outBuffer.Clear(false);
-        childBB.minCoords = B_Vector(worldBB.minCoords.x, worldBB.minCoords.y, center.z);
+        childBB.minCoords =
+            B_Vector(worldBB.minCoords.x, worldBB.minCoords.y, center.z);
         childBB.maxCoords = B_Vector(center.x, center.y, worldBB.maxCoords.z);
         childBB.CollectIntersectingSectors(map, outBuffer);
         node->children[1] = BuildNode(outBuffer, sizeThreshold, childBB);
         outBuffer.Clear(false);
-        childBB.minCoords = B_Vector(worldBB.minCoords.x, center.y, worldBB.minCoords.z);
+        childBB.minCoords =
+            B_Vector(worldBB.minCoords.x, center.y, worldBB.minCoords.z);
         childBB.maxCoords = B_Vector(center.x, worldBB.maxCoords.y, center.z);
         childBB.CollectIntersectingSectors(map, outBuffer);
         node->children[2] = BuildNode(outBuffer, sizeThreshold, childBB);
         outBuffer.Clear(false);
         childBB.minCoords = B_Vector(worldBB.minCoords.x, center.y, center.z);
-        childBB.maxCoords = B_Vector(center.x, worldBB.maxCoords.y, worldBB.maxCoords.z);
+        childBB.maxCoords =
+            B_Vector(center.x, worldBB.maxCoords.y, worldBB.maxCoords.z);
         childBB.CollectIntersectingSectors(map, outBuffer);
         node->children[3] = BuildNode(outBuffer, sizeThreshold, childBB);
         outBuffer.Clear(false);
-        childBB.minCoords = B_Vector(center.x, worldBB.minCoords.y, worldBB.minCoords.z);
+        childBB.minCoords =
+            B_Vector(center.x, worldBB.minCoords.y, worldBB.minCoords.z);
         childBB.maxCoords = B_Vector(worldBB.maxCoords.x, center.y, center.z);
         childBB.CollectIntersectingSectors(map, outBuffer);
         node->children[4] = BuildNode(outBuffer, sizeThreshold, childBB);
         outBuffer.Clear(false);
         childBB.minCoords = B_Vector(center.x, worldBB.minCoords.y, center.z);
-        childBB.maxCoords = B_Vector(worldBB.maxCoords.x, center.y, worldBB.maxCoords.z);
+        childBB.maxCoords =
+            B_Vector(worldBB.maxCoords.x, center.y, worldBB.maxCoords.z);
         childBB.CollectIntersectingSectors(map, outBuffer);
         node->children[5] = BuildNode(outBuffer, sizeThreshold, childBB);
         outBuffer.Clear(false);
         childBB.minCoords = B_Vector(center.x, center.y, worldBB.minCoords.z);
-        childBB.maxCoords = B_Vector(worldBB.maxCoords.x, worldBB.maxCoords.y, center.z);
+        childBB.maxCoords =
+            B_Vector(worldBB.maxCoords.x, worldBB.maxCoords.y, center.z);
         childBB.CollectIntersectingSectors(map, outBuffer);
         node->children[6] = BuildNode(outBuffer, sizeThreshold, childBB);
         outBuffer.Clear(false);
@@ -344,12 +360,27 @@ void B_OctTree::Build(const B_Map &map, double minNodeSize)
             maxZ = max(maxZ, gbl_world_points.points[i].v.z);
             minZ = min(minZ, gbl_world_points.points[i].v.z);
         }
-        this->m_halfSize = max(maxX - minX, max(maxY - minY, maxZ - minZ)) + 2.0 * minNodeSize;
+        this->m_halfSize =
+            max(maxX - minX, max(maxY - minY, maxZ - minZ)) + 2.0 * minNodeSize;
         this->m_center.x = (maxX + minX) * 0.5;
         this->m_center.y = (maxY + minY) * 0.5;
         this->m_center.z = (maxZ + minZ) * 0.5;
-        bb.minCoords = this->m_center - 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
-        bb.maxCoords = this->m_center + 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
+        bb.minCoords =
+            this->m_center -
+                0.5 *
+                    B_Vector(
+                        this->m_halfSize,
+                        this->m_halfSize,
+                        this->m_halfSize
+                    );
+        bb.maxCoords =
+            this->m_center +
+                0.5 *
+                    B_Vector(
+                        this->m_halfSize,
+                        this->m_halfSize,
+                        this->m_halfSize
+                    );
     }
     this->m_root = BuildNode(map, minNodeSize, bb);
     mout << vararg("OctTree with %d nodes.\n", gbl_node_count);
@@ -363,9 +394,16 @@ void B_OctTree::Build(const B_Map &map, double minNodeSize)
 * VC++ mangling:          ?CollectSectorsAtPoint@LeafNode@@UAEXABVB_Vector@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
+void LeafNode::CollectSectorsAtPoint(
+    const B_Vector &localPos,
+    B_OctTreeSectorsList *outList,
+    double halfSize
+)
 {
-    if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
+    if (
+        this->sectors->lastQueryId != gbl_oct_tree_query_id &&
+        this->sectors->isActive != 0
+    )
     {
         this->sectors->lastQueryId = gbl_oct_tree_query_id;
         if (outList->size < 512)
@@ -383,19 +421,27 @@ void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsL
 * VC++ mangling:          ?CollectSectorsInBox@LeafNode@@UAEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void LeafNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *outList, double)
+void LeafNode::CollectSectorsInBox(
+    const B_BoundingBox &, B_OctTreeSectorsList *outList,
+    double
+)
 {
-    if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
+    if (
+        this->sectors->lastQueryId != gbl_oct_tree_query_id &&
+        this->sectors->isActive != 0
+    )
     {
         this->sectors->lastQueryId = gbl_oct_tree_query_id;
         B_BoundingBox *sectorBB = &this->sectors->boundingBox;
         int intersects;
-        if (gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x ||
+        if (
+            gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x ||
             gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y ||
             gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z ||
             gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x ||
             gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y ||
-            gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z)
+            gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z
+        )
         {
             intersects = 0;
         }
@@ -418,12 +464,18 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *
 * VC++ mangling:          ?CollectSectorsAtPoint@B_SectorListNode@@UAEXABVB_Vector@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
+void B_SectorListNode::CollectSectorsAtPoint(
+    const B_Vector &localPos,
+    B_OctTreeSectorsList *outList,
+    double halfSize
+)
 {
     for (unsigned int i = 0; i < this->size; i++)
     {
-        if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id &&
-            this->elements[i]->isActive != 0)
+        if (
+            this->elements[i]->lastQueryId != gbl_oct_tree_query_id &&
+            this->elements[i]->isActive != 0
+        )
         {
             this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
             if (outList->size < 512)
@@ -442,22 +494,29 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
 * VC++ mangling:          ?CollectSectorsInBox@B_SectorListNode@@UAEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *outList, double)
+void B_SectorListNode::CollectSectorsInBox(
+    const B_BoundingBox &, B_OctTreeSectorsList *outList,
+    double
+)
 {
     for (unsigned int i = 0; i < this->size; i++)
     {
-        if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id &&
-            this->elements[i]->isActive != 0)
+        if (
+            this->elements[i]->lastQueryId != gbl_oct_tree_query_id &&
+            this->elements[i]->isActive != 0
+        )
         {
             this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
             B_BoundingBox *sectorBB = &this->elements[i]->boundingBox;
             int intersects;
-            if (gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x ||
+            if (
+                gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x ||
                 gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y ||
                 gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z ||
                 gbl_current_query_box->maxCoords.x < sectorBB->minCoords.x ||
                 gbl_current_query_box->maxCoords.y < sectorBB->minCoords.y ||
-                gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z)
+                gbl_current_query_box->maxCoords.z < sectorBB->minCoords.z
+            )
             {
                 intersects = 0;
             }
@@ -491,7 +550,8 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSecto
 void B_OctantNode::CollectSectorsAtPoint(
     const B_Vector &localPos,
     B_OctTreeSectorsList *outList,
-    double halfSize)
+    double halfSize
+)
 {
     double childHalfSize = halfSize / 2.0;
     double childOffset = halfSize / 4.0;
@@ -502,12 +562,20 @@ void B_OctantNode::CollectSectorsAtPoint(
             if (localPos.z < 10.0 && this->children[0] != nullptr)
             {
                 B_Vector childCenter(-childOffset, -childOffset, -childOffset);
-                this->children[0]->CollectSectorsAtPoint(localPos - childCenter, outList, childHalfSize);
+                this->children[0]->CollectSectorsAtPoint(
+                    localPos - childCenter,
+                    outList,
+                    childHalfSize
+                );
             }
             if (localPos.z > -10.0 && this->children[1] != nullptr)
             {
                 B_Vector childCenter(-childOffset, -childOffset, childOffset);
-                this->children[1]->CollectSectorsAtPoint(localPos - childCenter, outList, childHalfSize);
+                this->children[1]->CollectSectorsAtPoint(
+                    localPos - childCenter,
+                    outList,
+                    childHalfSize
+                );
             }
         }
         if (localPos.y > -10.0)
@@ -515,12 +583,20 @@ void B_OctantNode::CollectSectorsAtPoint(
             if (localPos.z < 10.0 && this->children[2] != nullptr)
             {
                 B_Vector childCenter(-childOffset, childOffset, -childOffset);
-                this->children[2]->CollectSectorsAtPoint(localPos - childCenter, outList, childHalfSize);
+                this->children[2]->CollectSectorsAtPoint(
+                    localPos - childCenter,
+                    outList,
+                    childHalfSize
+                );
             }
             if (localPos.z > -10.0 && this->children[3] != nullptr)
             {
                 B_Vector childCenter(-childOffset, childOffset, childOffset);
-                this->children[3]->CollectSectorsAtPoint(localPos - childCenter, outList, childHalfSize);
+                this->children[3]->CollectSectorsAtPoint(
+                    localPos - childCenter,
+                    outList,
+                    childHalfSize
+                );
             }
         }
     }
@@ -531,12 +607,20 @@ void B_OctantNode::CollectSectorsAtPoint(
             if (localPos.z < 10.0 && this->children[4] != nullptr)
             {
                 B_Vector childCenter(childOffset, -childOffset, -childOffset);
-                this->children[4]->CollectSectorsAtPoint(localPos - childCenter, outList, childHalfSize);
+                this->children[4]->CollectSectorsAtPoint(
+                    localPos - childCenter,
+                    outList,
+                    childHalfSize
+                );
             }
             if (localPos.z > -10.0 && this->children[5] != nullptr)
             {
                 B_Vector childCenter(childOffset, -childOffset, childOffset);
-                this->children[5]->CollectSectorsAtPoint(localPos - childCenter, outList, childHalfSize);
+                this->children[5]->CollectSectorsAtPoint(
+                    localPos - childCenter,
+                    outList,
+                    childHalfSize
+                );
             }
         }
         if (localPos.y > -10.0)
@@ -544,12 +628,20 @@ void B_OctantNode::CollectSectorsAtPoint(
             if (localPos.z < 10.0 && this->children[6] != nullptr)
             {
                 B_Vector childCenter(childOffset, childOffset, -childOffset);
-                this->children[6]->CollectSectorsAtPoint(localPos - childCenter, outList, childHalfSize);
+                this->children[6]->CollectSectorsAtPoint(
+                    localPos - childCenter,
+                    outList,
+                    childHalfSize
+                );
             }
             if (localPos.z > -10.0 && this->children[7] != nullptr)
             {
                 B_Vector childCenter(childOffset, childOffset, childOffset);
-                this->children[7]->CollectSectorsAtPoint(localPos - childCenter, outList, childHalfSize);
+                this->children[7]->CollectSectorsAtPoint(
+                    localPos - childCenter,
+                    outList,
+                    childHalfSize
+                );
             }
         }
     }
@@ -562,7 +654,11 @@ void B_OctantNode::CollectSectorsAtPoint(
 * VC++ mangling:          ?CollectSectorsInBox@B_OctantNode@@UAEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *outList, double halfSize)
+void B_OctantNode::CollectSectorsInBox(
+    const B_BoundingBox &bb,
+    B_OctTreeSectorsList *outList,
+    double halfSize
+)
 {
     double childHalfSize = halfSize / 2.0;
     double childOffset = halfSize / 4.0;
@@ -573,30 +669,62 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
         {
             if (bb.minCoords.z < 10.0 && this->children[0] != nullptr)
             {
-                childBox.minCoords = bb.minCoords - B_Vector(-childOffset, -childOffset, -childOffset);
-                childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, -childOffset, -childOffset);
-                this->children[0]->CollectSectorsInBox(childBox, outList, childHalfSize);
+                childBox.minCoords =
+                    bb.minCoords -
+                        B_Vector(-childOffset, -childOffset, -childOffset);
+                childBox.maxCoords =
+                    bb.maxCoords -
+                        B_Vector(-childOffset, -childOffset, -childOffset);
+                this->children[0]->CollectSectorsInBox(
+                    childBox,
+                    outList,
+                    childHalfSize
+                );
             }
             if (bb.maxCoords.z > -10.0 && this->children[1] != nullptr)
             {
-                childBox.minCoords = bb.minCoords - B_Vector(-childOffset, -childOffset, childOffset);
-                childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, -childOffset, childOffset);
-                this->children[1]->CollectSectorsInBox(childBox, outList, childHalfSize);
+                childBox.minCoords =
+                    bb.minCoords -
+                        B_Vector(-childOffset, -childOffset, childOffset);
+                childBox.maxCoords =
+                    bb.maxCoords -
+                        B_Vector(-childOffset, -childOffset, childOffset);
+                this->children[1]->CollectSectorsInBox(
+                    childBox,
+                    outList,
+                    childHalfSize
+                );
             }
         }
         if (bb.maxCoords.y > -10.0)
         {
             if (bb.minCoords.z < 10.0 && this->children[2] != nullptr)
             {
-                childBox.minCoords = bb.minCoords - B_Vector(-childOffset, childOffset, -childOffset);
-                childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, childOffset, -childOffset);
-                this->children[2]->CollectSectorsInBox(childBox, outList, childHalfSize);
+                childBox.minCoords =
+                    bb.minCoords -
+                        B_Vector(-childOffset, childOffset, -childOffset);
+                childBox.maxCoords =
+                    bb.maxCoords -
+                        B_Vector(-childOffset, childOffset, -childOffset);
+                this->children[2]->CollectSectorsInBox(
+                    childBox,
+                    outList,
+                    childHalfSize
+                );
             }
             if (bb.maxCoords.z > -10.0 && this->children[3] != nullptr)
             {
-                childBox.minCoords = bb.minCoords - B_Vector(-childOffset, childOffset, childOffset);
-                childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, childOffset, childOffset);
-                this->children[3]->CollectSectorsInBox(childBox, outList, childHalfSize);
+                childBox.minCoords =
+                    bb.minCoords -
+                        B_Vector(-childOffset, childOffset, childOffset);
+                childBox.maxCoords =
+                    bb.maxCoords -
+                        B_Vector(-childOffset, childOffset, childOffset);
+                this->children[3]->CollectSectorsInBox(
+                    childBox,
+                    outList,
+                    childHalfSize
+                );
             }
         }
     }
@@ -606,30 +734,62 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
         {
             if (bb.minCoords.z < 10.0 && this->children[4] != nullptr)
             {
-                childBox.minCoords = bb.minCoords - B_Vector(childOffset, -childOffset, -childOffset);
-                childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, -childOffset, -childOffset);
-                this->children[4]->CollectSectorsInBox(childBox, outList, childHalfSize);
+                childBox.minCoords =
+                    bb.minCoords -
+                        B_Vector(childOffset, -childOffset, -childOffset);
+                childBox.maxCoords =
+                    bb.maxCoords -
+                        B_Vector(childOffset, -childOffset, -childOffset);
+                this->children[4]->CollectSectorsInBox(
+                    childBox,
+                    outList,
+                    childHalfSize
+                );
             }
             if (bb.maxCoords.z > -10.0 && this->children[5] != nullptr)
             {
-                childBox.minCoords = bb.minCoords - B_Vector(childOffset, -childOffset, childOffset);
-                childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, -childOffset, childOffset);
-                this->children[5]->CollectSectorsInBox(childBox, outList, childHalfSize);
+                childBox.minCoords =
+                    bb.minCoords -
+                        B_Vector(childOffset, -childOffset, childOffset);
+                childBox.maxCoords =
+                    bb.maxCoords -
+                        B_Vector(childOffset, -childOffset, childOffset);
+                this->children[5]->CollectSectorsInBox(
+                    childBox,
+                    outList,
+                    childHalfSize
+                );
             }
         }
         if (bb.maxCoords.y > -10.0)
         {
             if (bb.minCoords.z < 10.0 && this->children[6] != nullptr)
             {
-                childBox.minCoords = bb.minCoords - B_Vector(childOffset, childOffset, -childOffset);
-                childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, childOffset, -childOffset);
-                this->children[6]->CollectSectorsInBox(childBox, outList, childHalfSize);
+                childBox.minCoords =
+                    bb.minCoords -
+                        B_Vector(childOffset, childOffset, -childOffset);
+                childBox.maxCoords =
+                    bb.maxCoords -
+                        B_Vector(childOffset, childOffset, -childOffset);
+                this->children[6]->CollectSectorsInBox(
+                    childBox,
+                    outList,
+                    childHalfSize
+                );
             }
             if (bb.maxCoords.z > -10.0 && this->children[7] != nullptr)
             {
-                childBox.minCoords = bb.minCoords - B_Vector(childOffset, childOffset, childOffset);
-                childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, childOffset, childOffset);
-                this->children[7]->CollectSectorsInBox(childBox, outList, childHalfSize);
+                childBox.minCoords =
+                    bb.minCoords -
+                        B_Vector(childOffset, childOffset, childOffset);
+                childBox.maxCoords =
+                    bb.maxCoords -
+                        B_Vector(childOffset, childOffset, childOffset);
+                this->children[7]->CollectSectorsInBox(
+                    childBox,
+                    outList,
+                    childHalfSize
+                );
             }
         }
     }
@@ -651,17 +811,26 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
 * VC++ mangling:          ?FindSectorsAtPoint@B_OctTree@@UBEXABVB_Vector@@PAVB_OctTreeSectorsList@@@Z
 */
 
-void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsList *outList) const
+void B_OctTree::FindSectorsAtPoint(
+    const B_Vector &worldPos,
+    B_OctTreeSectorsList *outList
+) const
 {
     outList->size = 0;
     B_Vector localPos = worldPos - this->m_center;
     gbl_oct_tree_query_id++;
-    if (this->m_root != nullptr &&
+    if (
+        this->m_root != nullptr &&
         fabs(localPos.x) < this->m_halfSize + 10.0 &&
-        fabs(localPos.y) < this->m_halfSize + 10.0 &&
-        fabs(localPos.z) < this->m_halfSize + 10.0)
+            fabs(localPos.y) < this->m_halfSize + 10.0 &&
+                fabs(localPos.z) < this->m_halfSize + 10.0
+    )
     {
-        this->m_root->CollectSectorsAtPoint(localPos, outList, this->m_halfSize);
+        this->m_root->CollectSectorsAtPoint(
+            localPos,
+            outList,
+            this->m_halfSize
+        );
     }
 }
 
@@ -673,19 +842,27 @@ void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsLis
 * VC++ mangling:          ?FindSectorsInBox@B_OctTree@@UBEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@@Z
 */
 
-void B_OctTree::FindSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *out) const
+void B_OctTree::FindSectorsInBox(
+    const B_BoundingBox &bb,
+    B_OctTreeSectorsList *out
+) const
 {
     out->size = 0;
     gbl_oct_tree_query_id++;
     gbl_current_query_box = &bb;
-    B_BoundingBox localBB(bb.minCoords - this->m_center, bb.maxCoords - this->m_center);
-    if (this->m_root != nullptr &&
+    B_BoundingBox localBB(
+        bb.minCoords - this->m_center,
+        bb.maxCoords - this->m_center
+    );
+    if (
+        this->m_root != nullptr &&
         localBB.maxCoords.x > -this->m_halfSize * 0.5 - 10.0 &&
         localBB.maxCoords.y > -this->m_halfSize * 0.5 - 10.0 &&
         localBB.maxCoords.z > -this->m_halfSize * 0.5 - 10.0 &&
         localBB.minCoords.x < this->m_halfSize * 0.5 + 10.0 &&
         localBB.minCoords.y < this->m_halfSize * 0.5 + 10.0 &&
-        localBB.minCoords.z < this->m_halfSize * 0.5 + 10.0)
+        localBB.minCoords.z < this->m_halfSize * 0.5 + 10.0
+    )
     {
         this->m_root->CollectSectorsInBox(localBB, out, this->m_halfSize);
     }
@@ -712,7 +889,10 @@ B_OctTreeSectorsList::B_OctTreeSectorsList()
 * VC++ mangling:          ?BuildSurfaceCache@B_OctTreeSectorsList@@QAEHPAVB_GlobalSurfaceCache@@PBVB_Sphere@@@Z
 */
 
-int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B_Sphere *sphere)
+int B_OctTreeSectorsList::BuildSurfaceCache(
+    B_GlobalSurfaceCache *cache,
+    const B_Sphere *sphere
+)
 {
     cache->count = 0;
     unsigned int i = 0;
@@ -726,7 +906,10 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
         {
             B_Surface *current_surface = current_sector->elements[j];
             double distance = sphere->center.z * current_surface->normal.z +
-                (sphere->center.y * current_surface->normal.y + sphere->center.x * current_surface->normal.x) +
+                (
+                    sphere->center.y * current_surface->normal.y +
+                    sphere->center.x * current_surface->normal.x
+                ) +
                 current_surface->p;
             if (-sphere->radius > distance)
             {
@@ -734,7 +917,8 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
             }
             else if (distance < sphere->radius)
             {
-                cache->elements[cache->count].surfaces[cache->elements[cache->count].numSurfaces] = current_sector->elements[j];
+                cache->elements[cache->count].surfaces[cache->elements[cache->count].numSurfaces] =
+                    current_sector->elements[j];
                 cache->elements[cache->count].numSurfaces++;
             }
         }
