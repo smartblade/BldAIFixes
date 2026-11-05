@@ -380,13 +380,10 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *
             intersects = 1;
         }
 
-        if (intersects != 0)
+        if (intersects != 0 && outList->size < 0x200)
         {
-            if (outList->size < 0x200)
-            {
-                outList->sectors[outList->size] = this->sectors;
-                outList->size++;
-            }
+            outList->sectors[outList->size] = this->sectors;
+            outList->size++;
         }
     }
 }
@@ -403,7 +400,8 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
     for (unsigned int i = 0; i < this->size; i++)
     {
 
-        if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id && this->elements[i]->isActive != 0)
+        if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id &&
+            this->elements[i]->isActive != 0)
         {
             this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
 
@@ -452,13 +450,10 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSecto
                 intersects = 1;
             }
 
-            if (intersects != 0)
+            if (intersects != 0 && outList->size < 0x200)
             {
-                if (outList->size < 0x200)
-                {
-                    outList->sectors[outList->size] = this->elements[i];
-                    outList->size++;
-                }
+                outList->sectors[outList->size] = this->elements[i];
+                outList->size++;
             }
         }
     }
@@ -574,45 +569,33 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
     {
         if (bb.minCoords.y < 10.0)
         {
-            if (bb.minCoords.z < 10.0)
+            if (bb.minCoords.z < 10.0 && this->children[0])
             {
-                if (this->children[0])
-                {
-                    childBox.minCoords = bb.minCoords - B_Vector(-childOffset, -childOffset, -childOffset);
-                    childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, -childOffset, -childOffset);
-                    this->children[0]->CollectSectorsInBox(childBox, outList, childHalfSize);
-                }
+                childBox.minCoords = bb.minCoords - B_Vector(-childOffset, -childOffset, -childOffset);
+                childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, -childOffset, -childOffset);
+                this->children[0]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
-            if (bb.maxCoords.z > -10.0)
+            if (bb.maxCoords.z > -10.0 && this->children[1])
             {
-                if (this->children[1])
-                {
-                    childBox.minCoords = bb.minCoords - B_Vector(-childOffset, -childOffset, childOffset);
-                    childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, -childOffset, childOffset);
-                    this->children[1]->CollectSectorsInBox(childBox, outList, childHalfSize);
-                }
+                childBox.minCoords = bb.minCoords - B_Vector(-childOffset, -childOffset, childOffset);
+                childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, -childOffset, childOffset);
+                this->children[1]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
         }
 
         if (bb.maxCoords.y > -10.0)
         {
-            if (bb.minCoords.z < 10.0)
+            if (bb.minCoords.z < 10.0 && this->children[2])
             {
-                if (this->children[2])
-                {
-                    childBox.minCoords = bb.minCoords - B_Vector(-childOffset, childOffset, -childOffset);
-                    childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, childOffset, -childOffset);
-                    this->children[2]->CollectSectorsInBox(childBox, outList, childHalfSize);
-                }
+                childBox.minCoords = bb.minCoords - B_Vector(-childOffset, childOffset, -childOffset);
+                childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, childOffset, -childOffset);
+                this->children[2]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
-            if (bb.maxCoords.z > -10.0)
+            if (bb.maxCoords.z > -10.0 && this->children[3])
             {
-                if (this->children[3])
-                {
-                    childBox.minCoords = bb.minCoords - B_Vector(-childOffset, childOffset, childOffset);
-                    childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, childOffset, childOffset);
-                    this->children[3]->CollectSectorsInBox(childBox, outList, childHalfSize);
-                }
+                childBox.minCoords = bb.minCoords - B_Vector(-childOffset, childOffset, childOffset);
+                childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, childOffset, childOffset);
+                this->children[3]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
         }
     }
@@ -621,45 +604,33 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
     {
         if (bb.minCoords.y < 10.0)
         {
-            if (bb.minCoords.z < 10.0)
+            if (bb.minCoords.z < 10.0 && this->children[4])
             {
-                if (this->children[4])
-                {
-                    childBox.minCoords = bb.minCoords - B_Vector(childOffset, -childOffset, -childOffset);
-                    childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, -childOffset, -childOffset);
-                    this->children[4]->CollectSectorsInBox(childBox, outList, childHalfSize);
-                }
+                childBox.minCoords = bb.minCoords - B_Vector(childOffset, -childOffset, -childOffset);
+                childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, -childOffset, -childOffset);
+                this->children[4]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
-            if (bb.maxCoords.z > -10.0)
+            if (bb.maxCoords.z > -10.0 && this->children[5])
             {
-                if (this->children[5])
-                {
-                    childBox.minCoords = bb.minCoords - B_Vector(childOffset, -childOffset, childOffset);
-                    childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, -childOffset, childOffset);
-                    this->children[5]->CollectSectorsInBox(childBox, outList, childHalfSize);
-                }
+                childBox.minCoords = bb.minCoords - B_Vector(childOffset, -childOffset, childOffset);
+                childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, -childOffset, childOffset);
+                this->children[5]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
         }
 
         if (bb.maxCoords.y > -10.0)
         {
-            if (bb.minCoords.z < 10.0)
+            if (bb.minCoords.z < 10.0 && this->children[6])
             {
-                if (this->children[6])
-                {
-                    childBox.minCoords = bb.minCoords - B_Vector(childOffset, childOffset, -childOffset);
-                    childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, childOffset, -childOffset);
-                    this->children[6]->CollectSectorsInBox(childBox, outList, childHalfSize);
-                }
+                childBox.minCoords = bb.minCoords - B_Vector(childOffset, childOffset, -childOffset);
+                childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, childOffset, -childOffset);
+                this->children[6]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
-            if (bb.maxCoords.z > -10.0)
+            if (bb.maxCoords.z > -10.0 && this->children[7])
             {
-                if (this->children[7])
-                {
-                    childBox.minCoords = bb.minCoords - B_Vector(childOffset, childOffset, childOffset);
-                    childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, childOffset, childOffset);
-                    this->children[7]->CollectSectorsInBox(childBox, outList, childHalfSize);
-                }
+                childBox.minCoords = bb.minCoords - B_Vector(childOffset, childOffset, childOffset);
+                childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, childOffset, childOffset);
+                this->children[7]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
         }
     }
@@ -689,14 +660,12 @@ void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsLis
 
     gbl_oct_tree_query_id++;
 
-    if (this->m_root != nullptr)
+    if (this->m_root != nullptr &&
+        fabs(localPos.x) < this->m_halfSize + 10.0 &&
+        fabs(localPos.y) < this->m_halfSize + 10.0 &&
+        fabs(localPos.z) < this->m_halfSize + 10.0)
     {
-        if (fabs(localPos.x) < this->m_halfSize + 10.0 &&
-            fabs(localPos.y) < this->m_halfSize + 10.0 &&
-            fabs(localPos.z) < this->m_halfSize + 10.0)
-        {
-            this->m_root->CollectSectorsAtPoint(localPos, outList, this->m_halfSize);
-        }
+        this->m_root->CollectSectorsAtPoint(localPos, outList, this->m_halfSize);
     }
 }
 
@@ -716,17 +685,15 @@ void B_OctTree::FindSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *
 
     B_BoundingBox localBB(bb.minCoords - this->m_center, bb.maxCoords - this->m_center);
 
-    if (this->m_root != nullptr)
+    if (this->m_root != nullptr &&
+        localBB.maxCoords.x > -this->m_halfSize * 0.5 - 10.0 &&
+        localBB.maxCoords.y > -this->m_halfSize * 0.5 - 10.0 &&
+        localBB.maxCoords.z > -this->m_halfSize * 0.5 - 10.0 &&
+        localBB.minCoords.x < this->m_halfSize * 0.5 + 10.0 &&
+        localBB.minCoords.y < this->m_halfSize * 0.5 + 10.0 &&
+        localBB.minCoords.z < this->m_halfSize * 0.5 + 10.0)
     {
-        if (localBB.maxCoords.x > -this->m_halfSize * 0.5 - 10.0 &&
-            localBB.maxCoords.y > -this->m_halfSize * 0.5 - 10.0 &&
-            localBB.maxCoords.z > -this->m_halfSize * 0.5 - 10.0 &&
-            localBB.minCoords.x < this->m_halfSize * 0.5 + 10.0 &&
-            localBB.minCoords.y < this->m_halfSize * 0.5 + 10.0 &&
-            localBB.minCoords.z < this->m_halfSize * 0.5 + 10.0)
-        {
-            this->m_root->CollectSectorsInBox(localBB, out, this->m_halfSize);
-        }
+        this->m_root->CollectSectorsInBox(localBB, out, this->m_halfSize);
     }
 }
 
