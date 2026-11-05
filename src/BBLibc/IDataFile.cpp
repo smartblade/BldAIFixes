@@ -160,14 +160,15 @@ void B_IDataFile::Open(const char *src, int flags)
         B_IDataFile::n_open_files++;
         if (B_IDataFile::OnOpenFunc != nullptr)
         {
-            PyObject *args = PyTuple_New(2);
+            PyObject *argsObj = PyTuple_New(2);
             PyObject *nFilesObj = PyInt_FromLong(B_IDataFile::n_opened_files);
             PyObject *fileNameObj = PyString_FromString(this->file_name);
-            PyTuple_SET_ITEM(args, 0, nFilesObj);
-            PyTuple_SET_ITEM(args, 1, fileNameObj);
-            PyObject *result = CallPythonObject(B_IDataFile::OnOpenFunc, args);
-            Py_DECREF(args);
-            Py_XDECREF(result);
+            PyTuple_SET_ITEM(argsObj, 0, nFilesObj);
+            PyTuple_SET_ITEM(argsObj, 1, fileNameObj);
+            PyObject *result = CallPythonObject(B_IDataFile::OnOpenFunc, argsObj);
+            Py_DECREF(argsObj);
+            if (result != NULL)
+                Py_DECREF(result);
         }
     }
     this->ReadCacheBlock();

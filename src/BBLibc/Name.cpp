@@ -9,9 +9,11 @@
 * VC++ mangling:          ??0B_Name@@QAE@XZ
 */
 
-B_Name::B_Name() : string(new char[1]), len(0)
+B_Name::B_Name()
 {
-    *string = 0;
+    this->string = new char[1];
+    *this->string = '\0';
+    this->len = 0;
 }
 
 
@@ -35,10 +37,11 @@ B_Name::B_Name(const char *str)
 * VC++ mangling:          ??0B_Name@@QAE@ABV0@@Z
 */
 
-B_Name::B_Name(const B_Name &src) : len(src.len)
+B_Name::B_Name(const B_Name &src)
 {
-    string = new char[len + 1];
-    strcpy(string, src.string);
+    this->len = src.Length();
+    this->string = new char[this->len + 1];
+    strcpy(this->string, src.string);
 }
 
 
@@ -48,10 +51,11 @@ B_Name::B_Name(const B_Name &src) : len(src.len)
 * VC++ mangling:          ??0B_Name@@QAE@I@Z
 */
 
-B_Name::B_Name(unsigned int len) : len(len)
+B_Name::B_Name(unsigned int len)
 {
-    string = new char[len + 1];
-    string[len] = '\0';
+    this->len = len;
+    this->string = new char[this->len + 1];
+    this->string[this->len] = '\0';
 }
 
 

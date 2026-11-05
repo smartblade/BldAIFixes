@@ -52,7 +52,7 @@ void OutputWin32Error(const char *message)
 
     mout << message;
 
-    LPSTR errorString = nullptr;
+    LPSTR errorString;
     FormatMessage(
         FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
         nullptr, errorCode, 0x400, (LPSTR)&errorString, 0, nullptr);

@@ -39,7 +39,7 @@ const char *vararg(const char *format, ...)
     va_list args;
     va_start(args, format);
 
-    vsprintf(Dest, format, args);
+    int result = vsprintf(Dest, format, args);
 
     va_end(args);
 

@@ -27,7 +27,7 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
     this->fd =
         open(
             file_name,
-            flags | O_WRONLY | O_CREAT | O_TRUNC,
+            flags | (O_WRONLY | O_CREAT | O_TRUNC),
             S_IWRITE | S_IREAD
         );
     if (this->fd == -1)
