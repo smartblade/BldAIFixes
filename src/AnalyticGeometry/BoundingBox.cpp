@@ -59,7 +59,7 @@ unsigned int B_BoundingBox::Intersects(const B_Sector *sector) const
 
 void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &sectors, B_PtrArray<B_Sector> &outBuffer)
 {
-    for (unsigned int i = 0; i < sectors.size; ++i)
+    for (unsigned int i = 0; i < sectors.size; i++)
     {
         B_Sector *sector = sectors.elements[i];
 
