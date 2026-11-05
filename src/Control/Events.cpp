@@ -110,20 +110,24 @@ int B_EventFuncs::CallFunc(B_Entity *entity, unsigned int eventIndex)
     {
         if (this->eventFuncs.elements[i][j].pyFunc != NULL)
         {
-            PyObject *args = PyTuple_New(2);
+            PyObject *argsObj = PyTuple_New(2);
             PyObject *entityName = PyString_FromString(entity->name.String());
             PyObject *eventName = PyString_FromString(
                 gbl_events.GetEventName(eventIndex));
-            PyTuple_SET_ITEM(args, 0, entityName);
-            PyTuple_SET_ITEM(args, 1, eventName);
+            PyTuple_SET_ITEM(argsObj, 0, entityName);
+            PyTuple_SET_ITEM(argsObj, 1, eventName);
             PyObject *result = CallPythonObject(
-                this->eventFuncs.elements[i][j].pyFunc, args);
-            Py_DECREF(args);
-            Py_XDECREF(result);
+                this->eventFuncs.elements[i][j].pyFunc, argsObj);
+            Py_DECREF(argsObj);
+            if (result != NULL)
+                Py_DECREF(result);
             return true;
         }
         if (this->eventFuncs.elements[i][j].func != NULL)
-            return this->eventFuncs.elements[i][j].func(entity, eventIndex);
+        {
+            int ret = this->eventFuncs.elements[i][j].func(entity, eventIndex);
+            return ret;
+        }
         return false;
     }
     return false;

@@ -282,7 +282,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_PtrArray<TYPE> &arr)
         arr.Clear(true);
     }
     file >> arr.size;
-    arr.num_alloc = ((arr.increment + arr.size - 1) / arr.increment) * arr.increment;
+    arr.num_alloc = ((arr.size + arr.increment - 1) / arr.increment) * arr.increment;
     if (arr.num_alloc != 0)
     {
         arr.elements = new TYPE * [arr.num_alloc];

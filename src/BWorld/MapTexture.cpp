@@ -31,8 +31,8 @@ B_IDataFile &operator >>(B_IDataFile &file, B_Texture &texture)
     {
         texture.xTransform *= (1.0 / 256.0);
         texture.yTransform *= (1.0 / 256.0);
-        texture.xOffset *= (1.0 / 256.0);
-        texture.yOffset *= (1.0 / 256.0);
+        texture.xOffset *= (1.0f / 256.0f);
+        texture.yOffset *= (1.0f / 256.0f);
     }
     return file;
 }
