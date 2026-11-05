@@ -571,13 +571,13 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
     {
         if (bb.minCoords.y < 10.0)
         {
-            if (bb.minCoords.z < 10.0 && this->children[0])
+            if (bb.minCoords.z < 10.0 && this->children[0] != nullptr)
             {
                 childBox.minCoords = bb.minCoords - B_Vector(-childOffset, -childOffset, -childOffset);
                 childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, -childOffset, -childOffset);
                 this->children[0]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
-            if (bb.maxCoords.z > -10.0 && this->children[1])
+            if (bb.maxCoords.z > -10.0 && this->children[1] != nullptr)
             {
                 childBox.minCoords = bb.minCoords - B_Vector(-childOffset, -childOffset, childOffset);
                 childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, -childOffset, childOffset);
@@ -586,13 +586,13 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
         }
         if (bb.maxCoords.y > -10.0)
         {
-            if (bb.minCoords.z < 10.0 && this->children[2])
+            if (bb.minCoords.z < 10.0 && this->children[2] != nullptr)
             {
                 childBox.minCoords = bb.minCoords - B_Vector(-childOffset, childOffset, -childOffset);
                 childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, childOffset, -childOffset);
                 this->children[2]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
-            if (bb.maxCoords.z > -10.0 && this->children[3])
+            if (bb.maxCoords.z > -10.0 && this->children[3] != nullptr)
             {
                 childBox.minCoords = bb.minCoords - B_Vector(-childOffset, childOffset, childOffset);
                 childBox.maxCoords = bb.maxCoords - B_Vector(-childOffset, childOffset, childOffset);
@@ -604,13 +604,13 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
     {
         if (bb.minCoords.y < 10.0)
         {
-            if (bb.minCoords.z < 10.0 && this->children[4])
+            if (bb.minCoords.z < 10.0 && this->children[4] != nullptr)
             {
                 childBox.minCoords = bb.minCoords - B_Vector(childOffset, -childOffset, -childOffset);
                 childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, -childOffset, -childOffset);
                 this->children[4]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
-            if (bb.maxCoords.z > -10.0 && this->children[5])
+            if (bb.maxCoords.z > -10.0 && this->children[5] != nullptr)
             {
                 childBox.minCoords = bb.minCoords - B_Vector(childOffset, -childOffset, childOffset);
                 childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, -childOffset, childOffset);
@@ -619,13 +619,13 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectors
         }
         if (bb.maxCoords.y > -10.0)
         {
-            if (bb.minCoords.z < 10.0 && this->children[6])
+            if (bb.minCoords.z < 10.0 && this->children[6] != nullptr)
             {
                 childBox.minCoords = bb.minCoords - B_Vector(childOffset, childOffset, -childOffset);
                 childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, childOffset, -childOffset);
                 this->children[6]->CollectSectorsInBox(childBox, outList, childHalfSize);
             }
-            if (bb.maxCoords.z > -10.0 && this->children[7])
+            if (bb.maxCoords.z > -10.0 && this->children[7] != nullptr)
             {
                 childBox.minCoords = bb.minCoords - B_Vector(childOffset, childOffset, childOffset);
                 childBox.maxCoords = bb.maxCoords - B_Vector(childOffset, childOffset, childOffset);
