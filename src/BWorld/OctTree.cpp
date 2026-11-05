@@ -493,8 +493,8 @@ void B_OctantNode::CollectSectorsAtPoint(
     B_OctTreeSectorsList *outList,
     double halfSize)
 {
-    const double childHalfSize = halfSize / 2.0;
-    const double childOffset = halfSize / 4.0;
+    double childHalfSize = halfSize / 2.0;
+    double childOffset = halfSize / 4.0;
     if (localPos.x < 10.0)
     {
         if (localPos.y < 10.0)
