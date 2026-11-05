@@ -1260,29 +1260,30 @@ int B_App::SetAutoGenTexture(const char *textureName, int textureEffect)
 
 bool B_App::RunPythonFile(const char *file_name)
 {
-    FILE *file;
-
-    file = fopen(file_name, "rt");
-
-    if (!file)
+    FILE *file = fopen(file_name, "rt");
+    if (file != NULL)
+    {
+        int status = PyRun_SimpleFile(file, (char *)file_name);
+        if (status == -1)
+        {
+            mout << vararg(
+                "B_App::RunScriptFile() -> Error ejecutando %s\n",
+                file_name);
+        }
+        PyObject *err = PyErr_Occurred();
+        if (err != NULL)
+        {
+            PyErr_Print();
+            PyErr_Clear();
+        }
+        fclose(file);
+        return true;
+    }
+    else
     {
         mout << vararg("No se ha podido encontrar %s\n", file_name);
-        return FALSE;
+        return false;
     }
-    if (PyRun_SimpleFile(file, (char *)file_name) == -1)
-    {
-        mout << vararg(
-            "B_App::RunScriptFile() -> Error ejecutando %s\n",
-            file_name);
-    }
-    if (PyErr_Occurred())
-    {
-        PyErr_Print();
-        PyErr_Clear();
-    }
-    fclose(file);
-
-    return TRUE;
 }
 
 
@@ -1431,12 +1432,13 @@ void B_App::CallCdCb(int arg)
 {
     if (this->CDCallback != NULL)
     {
-        PyObject *args = PyTuple_New(1);
+        PyObject *argsObj = PyTuple_New(1);
         PyObject *argObj = PyInt_FromLong(arg);
-        PyTuple_SET_ITEM(args, 0, argObj);
-        PyObject *result = CallPythonObject(this->CDCallback, args);
-        Py_DECREF(args);
-        Py_XDECREF(result);
+        PyTuple_SET_ITEM(argsObj, 0, argObj);
+        PyObject *result = CallPythonObject(this->CDCallback, argsObj);
+        Py_DECREF(argsObj);
+        if (result != NULL)
+            Py_DECREF(result);
     }
 }
 

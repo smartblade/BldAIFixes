@@ -450,7 +450,7 @@ LIB_EXP boolean GetBrowseResult(int index, bld_server_info *info);
 LIB_EXP boolean BrowseSessions(const char *ip_address);
 LIB_EXP boolean StartServer(
         const char *game_name, const char *player_name, int max_players,
-        boolean TCP
+        bool TCP
 );
 LIB_EXP const char *ServerInfoBlock(void);
 LIB_EXP void CallNetEventSound(const char *entity_name, byte id);

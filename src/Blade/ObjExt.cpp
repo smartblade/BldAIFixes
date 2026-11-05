@@ -725,7 +725,8 @@ int ReadLevel(const char *filename)
 unsigned int ReadBitMap(const char *filename, const char *internalname)
 {
     assert(filename);
-    return B_resource_manager.LocateResourceIn(filename, &B_Name(internalname), 3);
+    B_Name name(internalname);
+    return B_resource_manager.LocateResourceIn(filename, &name, 3);
 }
 
 
@@ -737,7 +738,8 @@ unsigned int ReadBitMap(const char *filename, const char *internalname)
 unsigned int ReadAlphaBitMap(const char *filename, const char *internalname)
 {
     assert(filename);
-    return B_resource_manager.LocateResourceIn(filename, &B_Name(internalname), 4);
+    B_Name name(internalname);
+    return B_resource_manager.LocateResourceIn(filename, &name, 4);
 }
 
 
@@ -1173,11 +1175,11 @@ int GetParticleGType(
 {
     if (index >= 0 && (unsigned int)index < gbl_particle_types.size)
     {
-        B_ParticleGType *particleType = gbl_particle_types.elements[index];
-        *type = particleType->name.String();
-        *parent_type = B_3D_raster_device->BmpName(particleType->bmpHandle);
-        *operation_type = particleType->operation_type;
-        *duration = particleType->duration;
+        *type = gbl_particle_types[index]->name.String();
+        *parent_type = B_3D_raster_device->BmpName(
+            gbl_particle_types[index]->bmpHandle);
+        *operation_type = gbl_particle_types[index]->operation_type;
+        *duration = gbl_particle_types[index]->duration;
         return 1;
     }
     return 0;

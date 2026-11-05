@@ -524,12 +524,12 @@ void ClearPools(void)
 
 boolean StartServer(
         const char *game_name, const char *player_name, int max_players,
-        boolean TCP
+        bool TCP
 )
 {
         bool status;
 
-        status = gbl_net->start_server(game_name, player_name, max_players, TCP != FALSE);
+        status = gbl_net->start_server(game_name, player_name, max_players, TCP);
 
         strcpy(net_game_name, (game_name + 3));
         gbl_net_max_players = max_players - 1;

@@ -65,14 +65,14 @@ public:
     {
         if (size <= index)
             return NULL;
-        unsigned int numItemsBefore = 0;
+        unsigned int numSkipped = 0;
         unsigned int hashValue = 0;
-        while ((numItemsBefore + hash[hashValue].size) <= index)
+        while ((numSkipped + hash[hashValue].size) <= index)
         {
-            numItemsBefore += hash[hashValue].size;
+            numSkipped += hash[hashValue].size;
             hashValue++;
         }
-        return hash[hashValue][index - numItemsBefore];
+        return hash[hashValue][index - numSkipped];
     }
 
     int HashValue(const char *key)
