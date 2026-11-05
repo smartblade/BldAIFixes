@@ -96,7 +96,7 @@ B_Vector B_Vector::operator -(const B_Vector &that) const
     result.z = z - that.z;
     return result;*/
 
-    return B_Vector(x - that.x, y - that.y, z - that.z);
+    return B_Vector(this->x - that.x, this->y - that.y, this->z - that.z);
 }
 
 
