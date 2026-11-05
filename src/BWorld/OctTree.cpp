@@ -216,64 +216,78 @@ B_OctantNodeBase *BuildNode(
         map.size < 8
     )
     {
-        B_SectorListNode *node = new B_SectorListNode();
+        B_SectorListNode *sectorList = new B_SectorListNode();
         for (unsigned int i = 0; i < map.size; i++)
-            node->Append(map[i]);
-        return node;
+            sectorList->Append(map[i]);
+        return sectorList;
     }
     else
     {
-        B_BoundingBox childBB;
+        B_BoundingBox childBoundingBox;
         B_PtrArray<B_Sector> outBuffer;
-        B_OctantNode *node = new B_OctantNode();
-        B_Vector center = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
-        childBB.minCoords = worldBB.minCoords;
-        childBB.maxCoords = center;
-        childBB.CollectIntersectingSectors(map, outBuffer);
-        node->children[0] = BuildNode(outBuffer, sizeThreshold, childBB);
+        B_OctantNode *octantNode = new B_OctantNode();
+        B_Vector boxCenter = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
+        childBoundingBox.minCoords = worldBB.minCoords;
+        childBoundingBox.maxCoords = boxCenter;
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[0] =
+            BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);
-        childBB.minCoords =
-            B_Vector(worldBB.minCoords.x, worldBB.minCoords.y, center.z);
-        childBB.maxCoords = B_Vector(center.x, center.y, worldBB.maxCoords.z);
-        childBB.CollectIntersectingSectors(map, outBuffer);
-        node->children[1] = BuildNode(outBuffer, sizeThreshold, childBB);
+        childBoundingBox.minCoords =
+            B_Vector(worldBB.minCoords.x, worldBB.minCoords.y, boxCenter.z);
+        childBoundingBox.maxCoords =
+            B_Vector(boxCenter.x, boxCenter.y, worldBB.maxCoords.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[1] =
+            BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);
-        childBB.minCoords =
-            B_Vector(worldBB.minCoords.x, center.y, worldBB.minCoords.z);
-        childBB.maxCoords = B_Vector(center.x, worldBB.maxCoords.y, center.z);
-        childBB.CollectIntersectingSectors(map, outBuffer);
-        node->children[2] = BuildNode(outBuffer, sizeThreshold, childBB);
+        childBoundingBox.minCoords =
+            B_Vector(worldBB.minCoords.x, boxCenter.y, worldBB.minCoords.z);
+        childBoundingBox.maxCoords =
+            B_Vector(boxCenter.x, worldBB.maxCoords.y, boxCenter.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[2] =
+            BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);
-        childBB.minCoords = B_Vector(worldBB.minCoords.x, center.y, center.z);
-        childBB.maxCoords =
-            B_Vector(center.x, worldBB.maxCoords.y, worldBB.maxCoords.z);
-        childBB.CollectIntersectingSectors(map, outBuffer);
-        node->children[3] = BuildNode(outBuffer, sizeThreshold, childBB);
+        childBoundingBox.minCoords =
+            B_Vector(worldBB.minCoords.x, boxCenter.y, boxCenter.z);
+        childBoundingBox.maxCoords =
+            B_Vector(boxCenter.x, worldBB.maxCoords.y, worldBB.maxCoords.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[3] =
+            BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);
-        childBB.minCoords =
-            B_Vector(center.x, worldBB.minCoords.y, worldBB.minCoords.z);
-        childBB.maxCoords = B_Vector(worldBB.maxCoords.x, center.y, center.z);
-        childBB.CollectIntersectingSectors(map, outBuffer);
-        node->children[4] = BuildNode(outBuffer, sizeThreshold, childBB);
+        childBoundingBox.minCoords =
+            B_Vector(boxCenter.x, worldBB.minCoords.y, worldBB.minCoords.z);
+        childBoundingBox.maxCoords =
+            B_Vector(worldBB.maxCoords.x, boxCenter.y, boxCenter.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[4] =
+            BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);
-        childBB.minCoords = B_Vector(center.x, worldBB.minCoords.y, center.z);
-        childBB.maxCoords =
-            B_Vector(worldBB.maxCoords.x, center.y, worldBB.maxCoords.z);
-        childBB.CollectIntersectingSectors(map, outBuffer);
-        node->children[5] = BuildNode(outBuffer, sizeThreshold, childBB);
+        childBoundingBox.minCoords =
+            B_Vector(boxCenter.x, worldBB.minCoords.y, boxCenter.z);
+        childBoundingBox.maxCoords =
+            B_Vector(worldBB.maxCoords.x, boxCenter.y, worldBB.maxCoords.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[5] =
+            BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);
-        childBB.minCoords = B_Vector(center.x, center.y, worldBB.minCoords.z);
-        childBB.maxCoords =
-            B_Vector(worldBB.maxCoords.x, worldBB.maxCoords.y, center.z);
-        childBB.CollectIntersectingSectors(map, outBuffer);
-        node->children[6] = BuildNode(outBuffer, sizeThreshold, childBB);
+        childBoundingBox.minCoords =
+            B_Vector(boxCenter.x, boxCenter.y, worldBB.minCoords.z);
+        childBoundingBox.maxCoords =
+            B_Vector(worldBB.maxCoords.x, worldBB.maxCoords.y, boxCenter.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[6] =
+            BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);
-        childBB.minCoords = center;
-        childBB.maxCoords = worldBB.maxCoords;
-        childBB.CollectIntersectingSectors(map, outBuffer);
-        node->children[7] = BuildNode(outBuffer, sizeThreshold, childBB);
+        childBoundingBox.minCoords = boxCenter;
+        childBoundingBox.maxCoords = worldBB.maxCoords;
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[7] =
+            BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);
-        return node;
+        return octantNode;
     }
 }
 
