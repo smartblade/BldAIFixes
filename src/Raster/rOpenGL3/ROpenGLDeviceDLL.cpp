@@ -277,15 +277,19 @@ void B_OpenGLRasterDevice::SetProjection(const B_CameraView &cameraView)
         this->width = this->fullScreenMode->width;
         this->height = this->fullScreenMode->height;
     }
-    else if (GetClientRect(this->window, &clientRectangle))
-    {
-        this->width = abs(clientRectangle.left - clientRectangle.right);
-        this->height = abs(clientRectangle.bottom - clientRectangle.top);
-    }
     else
     {
-        this->width = 640;
-        this->height = 480;
+        BOOL hasClientRect = GetClientRect(this->window, &clientRectangle);
+        if (hasClientRect)
+        {
+            this->width = abs(clientRectangle.left - clientRectangle.right);
+            this->height = abs(clientRectangle.bottom - clientRectangle.top);
+        }
+        else
+        {
+            this->width = 640;
+            this->height = 480;
+        }
     }
     if (
         (this->width != this->projectionWidth) ||
@@ -298,13 +302,13 @@ void B_OpenGLRasterDevice::SetProjection(const B_CameraView &cameraView)
         glViewport(0, 0, this->width, this->height);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        double left = -100.0f * cameraView.width / (2.0f * cameraView.z);
-        double right = -left;
+        double leftClip = -100.0f * cameraView.width / (2.0f * cameraView.z);
+        double rightClip = -leftClip;
         /* FIXME incorrect work for other aspect ratios */
-        double displayRatio = 0.75;
-        double bottom = left * displayRatio;
-        double top = right * displayRatio;
-        glFrustum(left, right, bottom, top, 100.0, 1000000.0);
+        double aspect = 0.75;
+        double bottomClip = leftClip * aspect;
+        double topClip = rightClip * aspect;
+        glFrustum(leftClip, rightClip, bottomClip, topClip, 100.0, 1000000.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glScaled(1.0, -1.0, -1.0);
@@ -365,7 +369,7 @@ void B_OpenGLRasterDevice::Cls(B_Color color)
     }
     else
     {
-        glClearColor(color.r / 255.0, color.g / 255.0, color.b / 255.0, 0.0);
+        glClearColor(color.r * 0.0039216, color.g * 0.0039216, color.b * 0.0039216, 0.0);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 }
@@ -386,7 +390,7 @@ void B_OpenGLRasterDevice::ClsRGB(byte r, byte g, byte b)
     }
     else
     {
-        glClearColor(r / 255.0, g / 255.0, b / 255.0, 0.0);
+        glClearColor(r * 0.0039216, g * 0.0039216, b * 0.0039216, 0.0);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 }
@@ -730,7 +734,8 @@ void B_OpenGLRasterDevice::SetMode(int mode)
     if (this->mode == mode)
         return;
     this->mode = mode;
-    if ((mode & RASTER_MODE_DEPTH_MASK) != this->depthMode)
+    int depthMode = mode & RASTER_MODE_DEPTH_MASK;
+    if (depthMode != this->depthMode)
     {
         if (mode & RASTER_MODE_DEPTH_TEST)
         {
@@ -770,7 +775,7 @@ void B_OpenGLRasterDevice::SetMode(int mode)
             glDepthMask(GL_FALSE);
             glDepthFunc(GL_ALWAYS);
         }
-        this->depthMode = mode & RASTER_MODE_DEPTH_MASK;
+        this->depthMode = depthMode;
     }
     if (
         ((mode & RASTER_MODE_TEXTURE) || (mode & RASTER_MODE_TEXT)) &&
@@ -790,7 +795,8 @@ void B_OpenGLRasterDevice::SetMode(int mode)
             this->textureMode = false;
         }
     }
-    if ((mode & RASTER_MODE_BLEND_MASK) != this->blendMode)
+    int blendMode = mode & RASTER_MODE_BLEND_MASK;
+    if (blendMode != this->blendMode)
     {
         if (mode & RASTER_MODE_BLEND)
         {
@@ -838,7 +844,7 @@ void B_OpenGLRasterDevice::SetMode(int mode)
         {
             glDisable(GL_BLEND);
         }
-        this->blendMode = mode & RASTER_MODE_BLEND_MASK;
+        this->blendMode = blendMode;
     }
 }
 
@@ -1066,8 +1072,8 @@ void B_OpenGLRasterDevice::unknown238()
 int B_OpenGLRasterDevice::AddAtmosphere(
     const B_Name &name, const B_Color &color, float intensity)
 {
-    B_Atmosphere *newAtm = new B_Atmosphere(color, intensity, name);
-    return this->atmospheres.Append(newAtm);
+    return this->atmospheres.Append(
+        new B_Atmosphere(color, intensity, name));
 }
 
 
@@ -1093,7 +1099,7 @@ B_Name B_OpenGLRasterDevice::GetAtmosphereName(int atmosphereHandle)
 {
     if (
         (unsigned int)atmosphereHandle < this->atmospheres.size &&
-        atmosphereHandle >= 0
+        (unsigned int)atmosphereHandle >= 0
     )
         return this->atmospheres[atmosphereHandle]->Id();
     mout << "B_OpenGLRasterDevice::AtmName() -> Handle no v\xE1lido.\n";
@@ -1125,7 +1131,7 @@ void B_OpenGLRasterDevice::GetAtmosphereColor(
     if (atmosphereHandle == -1)
         return;
     B_Atmosphere *atm = this->atmospheres[atmosphereHandle];
-    alpha = 1.0 - exp(-intensityFactor * atm->intensity * this->fogFactor);
+    alpha = 1.0f - (float)exp(-intensityFactor * atm->intensity * this->fogFactor);
     color = atm->color;
 }
 

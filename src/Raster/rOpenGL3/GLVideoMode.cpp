@@ -62,7 +62,8 @@ int B_OpenGLRasterDevice::GetVideoModeDscr(
     int &frequency
 )
 {
-    if (mode_index < 0 || (unsigned int)mode_index >= this->videoModes.size)
+    if ((unsigned int)mode_index < 0 ||
+        (unsigned int)mode_index >= this->videoModes.size)
         return false;
     depth = this->videoModes[mode_index]->depth;
     w = this->videoModes[mode_index]->width;

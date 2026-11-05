@@ -253,45 +253,46 @@ void B_TrisDevice::SplitEdge(B_Edge *edge)
 
 int B_TrisDevice::SplitLightenedEdges()
 {
-    double cameraDist = max(
+    float cameraDist = max(
         0.0, this->currentPointLight->pointToPlane.z);
-    float cameraDistCoef =
-        (cameraDist * cameraDist / 1000.0) + 30000.0;
-    B_Edge *edge = this->edges;
-    unsigned int numEdges = this->numEdges;
-    unsigned int numNewEdges = 0;
-    float planeDistCoef =
+    /* the distance is replaced with the coefficient */
+    cameraDist = cameraDist * cameraDist / 1000.0f;
+    cameraDist += 30000.0f;
+    B_Edge *curEdge = this->edges;
+    unsigned int nEdges = this->numEdges;
+    unsigned int newEdges = 0;
+    float planeCoef =
         this->currentPointLight->planeDist *
         this->currentPointLight->planeDist *
-        this->currentPointLight->planeDist * 0.001;
-    for (unsigned int i = 0; i < numEdges; i++)
+        this->currentPointLight->planeDist * 0.001f;
+    for (unsigned int i = 0; i < nEdges; i++)
     {
-        if (edge->light != this->currentPointLight)
+        if (curEdge->light != this->currentPointLight)
         {
             float minSqrLightDist = min(
-                this->vertices[edge->firstVertexIndex].sqrLightDist,
-                this->vertices[edge->secondVertexIndex].sqrLightDist);
+                this->vertices[curEdge->firstVertexIndex].sqrLightDist,
+                this->vertices[curEdge->secondVertexIndex].sqrLightDist);
             if (
-                (minSqrLightDist + planeDistCoef) * 0.3 +
-                    cameraDistCoef < edge->sqrLen)
+                curEdge->sqrLen >
+                    (minSqrLightDist + planeCoef) * 0.3 + cameraDist)
             {
-                this->SplitEdge(edge);
-                numNewEdges++;
+                this->SplitEdge(curEdge);
+                newEdges++;
             }
             else
             {
-                edge->nextEdge = NULL;
-                edge->light = this->currentPointLight;
+                curEdge->nextEdge = NULL;
+                curEdge->light = this->currentPointLight;
             }
         }
         else
         {
-            edge->nextEdge = NULL;
-            edge->light = this->currentPointLight;
+            curEdge->nextEdge = NULL;
+            curEdge->light = this->currentPointLight;
         }
-        edge++;
+        curEdge++;
     }
-    return numNewEdges;
+    return newEdges;
 }
 
 
@@ -336,79 +337,81 @@ void B_TrisDevice::SplitTriangleOneEdge(B_Triangle *triangle)
 
 void B_TrisDevice::SplitTriangles()
 {
-    B_Triangle *triangle = this->triangles;
-    unsigned int numTriangles = this->numTriangles;
-    for (unsigned int i = 0; i < numTriangles; i++)
+    B_Edge *edge;
+    int invEdge;
+    B_Triangle *tri = this->triangles;
+    unsigned int count = this->numTriangles;
+    for (unsigned int i = 0; i < count; i++)
     {
-        if (triangle->edge1->nextEdge != NULL)
+        if (tri->edge1->nextEdge != NULL)
         {
-            if (triangle->edge2->nextEdge != NULL)
+            if (tri->edge2->nextEdge != NULL)
             {
-                if (triangle->edge3->nextEdge != NULL)
+                if (tri->edge3->nextEdge != NULL)
                 {
-                    this->SplitTriangleThreeEdges(triangle);
+                    this->SplitTriangleThreeEdges(tri);
                 }
                 else
                 {
-                    this->SplitTriangleTwoEdges(triangle);
+                    this->SplitTriangleTwoEdges(tri);
                 }
             }
-            else if (triangle->edge3->nextEdge != NULL)
+            else if (tri->edge3->nextEdge != NULL)
             {
-                B_Edge *edge1 = triangle->edge1;
-                int invEdge1 = triangle->invEdge1;
-                triangle->edge1 = triangle->edge3;
-                triangle->invEdge1 = triangle->invEdge3;
-                triangle->edge3 = triangle->edge2;
-                triangle->invEdge3 = triangle->invEdge2;
-                triangle->edge2 = edge1;
-                triangle->invEdge2 = invEdge1;
-                this->SplitTriangleTwoEdges(triangle);
+                edge = tri->edge1;
+                invEdge = tri->invEdge1;
+                tri->edge1 = tri->edge3;
+                tri->invEdge1 = tri->invEdge3;
+                tri->edge3 = tri->edge2;
+                tri->invEdge3 = tri->invEdge2;
+                tri->edge2 = edge;
+                tri->invEdge2 = invEdge;
+                this->SplitTriangleTwoEdges(tri);
             }
             else
             {
-                this->SplitTriangleOneEdge(triangle);
+                this->SplitTriangleOneEdge(tri);
             }
         }
-        else if (triangle->edge2->nextEdge != NULL)
+        else if (tri->edge2->nextEdge != NULL)
         {
-            if (triangle->edge3->nextEdge != NULL)
+            if (tri->edge3->nextEdge != NULL)
             {
-                B_Edge *edge1 = triangle->edge1;
-                int invEdge1 = triangle->invEdge1;
-                triangle->edge1 = triangle->edge2;
-                triangle->invEdge1 = triangle->invEdge2;
-                triangle->edge2 = triangle->edge3;
-                triangle->invEdge2 = triangle->invEdge3;
-                triangle->edge3 = edge1;
-                triangle->invEdge3 = invEdge1;
-                this->SplitTriangleTwoEdges(triangle);
+                edge = tri->edge1;
+                invEdge = tri->invEdge1;
+                tri->edge1 = tri->edge2;
+                tri->invEdge1 = tri->invEdge2;
+                tri->edge2 = tri->edge3;
+                tri->invEdge2 = tri->invEdge3;
+                tri->edge3 = edge;
+                tri->invEdge3 = invEdge;
+                this->SplitTriangleTwoEdges(tri);
             }
             else
             {
-                B_Edge *edge1 = triangle->edge1;
-                int invEdge1 = triangle->invEdge1;
-                triangle->edge1 = triangle->edge2;
-                triangle->invEdge1 = triangle->invEdge2;
-                triangle->edge2 = triangle->edge3;
-                triangle->invEdge2 = triangle->invEdge3;
-                triangle->edge3 = edge1;
-                triangle->invEdge3 = invEdge1;
-                this->SplitTriangleOneEdge(triangle);
+                edge = tri->edge1;
+                invEdge = tri->invEdge1;
+                tri->edge1 = tri->edge2;
+                tri->invEdge1 = tri->invEdge2;
+                tri->edge2 = tri->edge3;
+                tri->invEdge2 = tri->invEdge3;
+                tri->edge3 = edge;
+                tri->invEdge3 = invEdge;
+                this->SplitTriangleOneEdge(tri);
             }
         }
-        else if (triangle->edge3->nextEdge != NULL)
+        else if (tri->edge3->nextEdge != NULL)
         {
-            B_Edge *edge1 = triangle->edge1;
-            int invEdge1 = triangle->invEdge1;
-            triangle->edge1 = triangle->edge3;
-            triangle->invEdge1 = triangle->invEdge3;
-            triangle->edge3 = triangle->edge2;
-            triangle->invEdge3 = triangle->invEdge2;
-            triangle->edge2 = edge1;
-            triangle->invEdge2 = invEdge1;
-            this->SplitTriangleOneEdge(triangle);
+            edge = tri->edge1;
+            invEdge = tri->invEdge1;
+            tri->edge1 = tri->edge3;
+            tri->invEdge1 = tri->invEdge3;
+            tri->edge3 = tri->edge2;
+            tri->invEdge3 = tri->invEdge2;
+            tri->edge2 = edge;
+            tri->invEdge2 = invEdge;
+            this->SplitTriangleOneEdge(tri);
         }
-        ++triangle;
+        ++tri;
     }
 }
