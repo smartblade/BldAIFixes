@@ -1,3 +1,5 @@
+import struct
+
 import data_types
 import expressions
 from expressions.operator import Operator
@@ -145,7 +147,12 @@ def _get_declaration_from_callee_expression(e):
 
 
 def _merge_split_arguments(arguments, proc_decl):
-    """Merge halves of 8-byte arguments pushed from stack variables."""
+    """Merge halves of 8-byte arguments.
+
+    Halves are pushed from stack variables or as constants, e.g. the
+    constant halves of a double argument moved to the call from an inner
+    call by CallArgumentsMatcher.
+    """
     parameters = list(proc_decl.get_parameters_ids().values())
     if len(arguments) <= len(parameters):
         return arguments
@@ -166,12 +173,28 @@ def _merge_split_arguments(arguments, proc_decl):
             new_arguments.append(
                 expressions.intermediate.Stackvar(low.offset, 8))
             i += 2
+        elif (
+            isinstance(parameter.data_type, data_types.Double) and
+            _is_int32_constant(low) and _is_int32_constant(high)
+        ):
+            value = struct.unpack("<d", struct.pack(
+                "<II", low.value & 0xFFFFFFFF, high.value & 0xFFFFFFFF))[0]
+            new_arguments.append(
+                expressions.Constant(data_types.Double(), value))
+            i += 2
         else:
             new_arguments.append(low)
             i += 1
     if i != len(arguments):
         return arguments
     return new_arguments
+
+
+def _is_int32_constant(e):
+    return (
+        isinstance(e, expressions.Constant) and
+        e.data_type.size == 4 and isinstance(e.value, int)
+    )
 
 
 def _convert_arguments_to_parameters_types(

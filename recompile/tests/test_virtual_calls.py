@@ -73,3 +73,16 @@ class TestVirtualCalls(unittest.TestCase):
             [obj, _stackvar(-8), _stackvar(-4)], method)
         self.assertEqual(
             ["obj", "STACKVAR(-8, 8)"], [a.emit_code() for a in arguments])
+
+    def test_merge_split_double_constant(self):
+        base, derived = _classes()
+        method = base.virtual_methods[2]
+        obj = expressions.Identifier(data_types.Pointer32(base), "obj")
+        # Halves of 0.5 pushed as 'push 0; push 3FE00000h'
+        arguments = _merge_split_arguments([
+            obj,
+            expressions.Constant(data_types.Int32(), 0),
+            expressions.Constant(data_types.Int32(), 0x3FE00000),
+        ], method)
+        self.assertEqual(
+            ["obj", "0.5"], [a.emit_code() for a in arguments])
