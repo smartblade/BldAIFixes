@@ -79,5 +79,3 @@ void B_BoundingBox::CollectIntersectingSectors(
         }
     }
 }
-
-

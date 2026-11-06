@@ -24,6 +24,7 @@
 * Entry point:            0x00450327
 * VC++ mangling:          ??0B_OctantNode@@QAE@XZ
 */
+
 B_OctantNode::B_OctantNode()
 {
     for (unsigned int i = 0; i < 8; i++)
@@ -38,6 +39,7 @@ B_OctantNode::B_OctantNode()
 * Entry point:            0x00450380
 * VC++ mangling:          ??1B_OctantNode@@UAE@XZ
 */
+
 B_OctantNode::~B_OctantNode()
 {
     for (unsigned int i = 0; i < 8; i++)
@@ -56,7 +58,7 @@ B_OctantNode::~B_OctantNode()
 * VC++ mangling:          ?GetTypeID@B_OctantNode@@UAEHXZ
 */
 
-int B_OctantNode::GetTypeID() 
+int B_OctantNode::GetTypeID()
 {
     return B_OCT_NODE_CID_BRANCH;
 }
@@ -91,7 +93,8 @@ LeafNode::~LeafNode()
 * Entry point:            0x0045047C
 * VC++ mangling:          ?GetTypeID@LeafNode@@UAEHXZ
 */
-int LeafNode::GetTypeID() 
+
+int LeafNode::GetTypeID()
 {
     return B_OCT_NODE_CID_LEAF;
 }
@@ -115,7 +118,6 @@ B_SectorListNode::B_SectorListNode()
 * Entry point:            0x0045050B
 * VC++ mangling:          ??1B_SectorListNode@@UAE@XZ
 */
-
 
 B_SectorListNode::~B_SectorListNode()
 {
@@ -197,6 +199,7 @@ void B_OctTree::Clear()
 * Entry point:            0x00450823
 * VC++ mangling:          ?BuildNode@@YAPAVB_OctantNodeBase@@ABV?$B_PtrArray@VB_Sector@@@@NABVB_BoundingBox@@@Z
 */
+
 B_OctantNodeBase *BuildNode(
     const B_PtrArray<B_Sector> &map,
     double sizeThreshold,
@@ -665,6 +668,7 @@ void B_OctantNode::CollectSectorsAtPoint(
 * Entry point:            0x00452845
 * VC++ mangling:          ?CollectSectorsInBox@B_OctantNode@@UAEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@N@Z
 */
+
 void B_OctantNode::CollectSectorsInBox(
     const B_BoundingBox &bb,
     B_OctTreeSectorsList *outList,
@@ -916,6 +920,7 @@ void B_OctTree::FindSectorsAtPoint(
 * Entry point:            0x0045311A
 * VC++ mangling:          ?FindSectorsInBox@B_OctTree@@UBEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@@Z
 */
+
 void B_OctTree::FindSectorsInBox(
     const B_BoundingBox &bb,
     B_OctTreeSectorsList *out
@@ -949,6 +954,7 @@ void B_OctTree::FindSectorsInBox(
 * Entry point:            0x00453264
 * VC++ mangling:          ??0B_OctTreeSectorsList@@QAE@XZ
 */
+
 B_OctTreeSectorsList::B_OctTreeSectorsList()
 :
     size(0)
@@ -961,6 +967,7 @@ B_OctTreeSectorsList::B_OctTreeSectorsList()
 * Entry point:            0x0045327B
 * VC++ mangling:          ?BuildSurfaceCache@B_OctTreeSectorsList@@QAEHPAVB_GlobalSurfaceCache@@PBVB_Sphere@@@Z
 */
+
 int B_OctTreeSectorsList::BuildSurfaceCache(
     B_GlobalSurfaceCache *cache,
     const B_Sphere *sphere
@@ -1018,7 +1025,6 @@ int B_OctTreeSectorsList::BuildSurfaceCache(
 * VC++ mangling:          ??0B_SectorSurfaceCache@@QAE@XZ
 */
 
-
 B_SectorSurfaceCache::B_SectorSurfaceCache()
 :
     numSurfaces(0)
@@ -1031,7 +1037,6 @@ B_SectorSurfaceCache::B_SectorSurfaceCache()
 * Entry point:            0x00453490
 * VC++ mangling:          ??1B_SectorSurfaceCache@@UAE@XZ
 */
-
 
 B_SectorSurfaceCache::~B_SectorSurfaceCache()
 {
