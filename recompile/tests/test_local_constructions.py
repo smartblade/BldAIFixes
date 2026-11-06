@@ -59,3 +59,51 @@ class TestLocalConstructions(unittest.TestCase):
             instructions.VariableDeclaration(p, None),
             _assign_field(p, "x", i32_id("a")),
         ]))
+
+
+def _box():
+    box = data_types.ClassType("B_Box", {
+        0: (data_types.Int32(), "a"),
+        4: (data_types.Int32(), "b"),
+    })
+    box.add_constructor(ProcedureDeclaration(
+        "B_Box", CallingConvention.THISCALL, box,
+        [(data_types.Int32(), "a"), (data_types.Int32(), "b")], None))
+    return box
+
+
+def _call_constructor(var, *arguments):
+    proc_decl = var.data_type.constructors[0]
+    return instructions.CodeInstruction(expressions.ProcedureCall(
+        name=var.data_type.class_name, is_method=True, proc_decl=proc_decl,
+        arguments=[expressions.AddressOf(var)] + list(arguments)))
+
+
+class TestCalledLocalConstructions(unittest.TestCase):
+    """'T v; v.T(args);' with a constructor that is not inlined."""
+
+    def test_construction(self):
+        b = expressions.Identifier(_box(), "b")
+        self.assertEqual("B_Box b(x, y);\n", _emit([
+            instructions.VariableDeclaration(b, None),
+            _call_constructor(b, i32_id("x"), i32_id("y")),
+        ]))
+
+    def test_declarations_of_temporaries_are_kept(self):
+        b = expressions.Identifier(_box(), "b")
+        t = i32_id("t")
+        self.assertEqual("int t;\nB_Box b(t, y);\n", _emit([
+            instructions.VariableDeclaration(b, None),
+            instructions.VariableDeclaration(t, None),
+            _call_constructor(b, t, i32_id("y")),
+        ]))
+
+    def test_argument_uses_object(self):
+        b = expressions.Identifier(_box(), "b")
+        result = _emit([
+            instructions.VariableDeclaration(b, None),
+            _call_constructor(
+                b, expressions.FieldAccess(expressions.AddressOf(b), "a"),
+                i32_id("y")),
+        ])
+        self.assertTrue(result.startswith("B_Box b;\n"), result)

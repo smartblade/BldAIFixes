@@ -352,6 +352,19 @@ void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsLis
     }
 }
 
+// address: 0x0045311A
+void B_OctTree::FindSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *out) const
+{
+    out->size = 0;
+    gbl_oct_tree_query_id++;
+    gbl_current_query_box = &bb;
+    B_BoundingBox localBB(bb.minCoords - this->m_center, bb.maxCoords - this->m_center);
+    if (this->m_root != nullptr && -this->m_halfSize * 0.5 - 10.0 < localBB.maxCoords.x && -this->m_halfSize * 0.5 - 10.0 < localBB.maxCoords.y && -this->m_halfSize * 0.5 - 10.0 < localBB.maxCoords.z && this->m_halfSize * 0.5 + 10.0 > localBB.minCoords.x && this->m_halfSize * 0.5 + 10.0 > localBB.minCoords.y && this->m_halfSize * 0.5 + 10.0 > localBB.minCoords.z)
+    {
+        this->m_root->CollectSectorsInBox(localBB, out, this->m_halfSize);
+    }
+}
+
 // address: 0x00453264
 B_OctTreeSectorsList::B_OctTreeSectorsList()
 :

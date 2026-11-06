@@ -101,7 +101,8 @@ def _transform_instruction(instr, transformer):
         if initial is None:
             return None
         return instructions.VariableDeclaration(
-            instr.identifier, initial.transform(transformer))
+            instr.identifier, initial.transform(transformer),
+            is_direct_initialization=instr.is_direct_initialization)
     if isinstance(instr, instructions.IfInstruction):
         # Temporary used once is used in the clause only
         return instructions.IfInstruction(

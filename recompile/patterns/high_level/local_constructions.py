@@ -10,7 +10,9 @@ def restore_local_constructions(procedure):
 
     'B_Vector v; v.x = a; v.y = b; v.z = c;' is restored as
     'B_Vector v(a, b, c);' if the class has a constructor with parameters
-    of types of its fields.
+    of types of its fields. A call of a constructor that is not inlined
+    right after the declaration, 'B_BoundingBox b; b.B_BoundingBox(x, y);',
+    is restored as 'B_BoundingBox b(x, y);'.
     """
     instrs = _restore_block(list(procedure.instructions))
     return procedure.copy(instrs=instrs)
@@ -26,6 +28,12 @@ def _restore_block(block):
             declaration, num_assignments = construction
             new_block.append(declaration)
             i += 1 + num_assignments
+            continue
+        construction = _make_called_construction(instr, block[i + 1:])
+        if construction is not None:
+            new_instrs, num_instrs = construction
+            new_block.extend(new_instrs)
+            i += 1 + num_instrs
             continue
         new_block.append(instr)
         i += 1
@@ -67,6 +75,53 @@ def _make_construction(instr, next_instrs):
     declaration = instructions.VariableDeclaration(
         var, construction, is_direct_initialization=True)
     return declaration, len(fields)
+
+
+def _make_called_construction(instr, next_instrs):
+    """Restore 'T v; v.T(args);' as 'T v(args);'.
+
+    Declarations of temporaries of the arguments may be between the
+    declaration and the call, they are kept before the construction.
+    Return (instructions, number of replaced next instructions).
+    """
+    if not isinstance(instr, instructions.VariableDeclaration):
+        return None
+    if instr.initial_expression is not None:
+        return None
+    var = instr.identifier
+    if not isinstance(var.data_type, data_types.ClassType):
+        return None
+    k = 0
+    while (
+        k < len(next_instrs) and
+        isinstance(next_instrs[k], instructions.VariableDeclaration) and
+        next_instrs[k].initial_expression is None
+    ):
+        k += 1
+    if k == len(next_instrs):
+        return None
+    call = next_instrs[k]
+    if not isinstance(call, instructions.CodeInstruction):
+        return None
+    pc = call.expression
+    if not isinstance(pc, expressions.ProcedureCall) or not pc.is_method:
+        return None
+    if pc.proc_decl is None or not pc.proc_decl.is_constructor:
+        return None
+    if pc.proc_decl.method_class is not var.data_type:
+        return None
+    if not pc.arguments or not _is_variable(pc.arguments[0], var):
+        return None
+    arguments = pc.arguments[1:]
+    if not arguments:
+        return None
+    if any(_uses_variable(argument, var) for argument in arguments):
+        return None
+    construction = expressions.ProcedureCall(
+        name=var.data_type.class_name, is_method=False, arguments=arguments)
+    declaration = instructions.VariableDeclaration(
+        var, construction, is_direct_initialization=True)
+    return list(next_instrs[:k]) + [declaration], k + 1
 
 
 def _is_variable(e, var):

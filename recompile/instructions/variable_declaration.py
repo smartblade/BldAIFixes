@@ -20,6 +20,10 @@ class VariableDeclaration:
     def initial_expression(self):
         return self._initial_expression
 
+    @property
+    def is_direct_initialization(self):
+        return self._is_direct_initialization
+
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
         if self._initial_expression is not None:
