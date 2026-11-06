@@ -47,17 +47,6 @@
 		"varnames": {
 			"-8": "childHalfSize",
 			"-16": "childCenterOffset"
-		},
-		"constants": {
-			"2.0": {
-				"name": "child_size_divisor"
-			},
-			"4.0": {
-				"name": "child_offset_divisor"
-			},
-			"10.0": {
-				"name": "kOctTreeMargin"
-			}
 		}
 	},
 	"00452845": {
@@ -65,27 +54,11 @@
 			"-56": "childHalfSize",
 			"-64": "childCenterOffset",
 			"-48": "childBoundingBox"
-		},
-		"constants": {
-			"2.0": {
-				"name": "child_size_divisor"
-			},
-			"4.0": {
-				"name": "child_offset_divisor"
-			},
-			"10.0": {
-				"name": "kOctTreeMargin"
-			}
 		}
 	},
 	"00453067": {
 		"varnames": {
 			"-24": "localPos"
-		},
-		"constants": {
-			"10.0": {
-				"name": "kOctTreeMargin"
-			}
 		}
 	},
 	"0045327B": {
