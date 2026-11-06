@@ -22,6 +22,7 @@ from .logical_not import LogicalNot
 from .make_reference import MakeReference
 from .named_constant import NamedConstant
 from .negate import Negate
+from .new_expression import NewExpression
 from .null import Null
 from .pre_decrement import PreDecrement
 from .pre_increment import PreIncrement

@@ -2735,7 +2735,6 @@ int B_ResourceManager::SavePackedData(int arg_1, const char *arg_2)
 int B_ResourceManager::LoadPackedData(int arg_1, const char *arg_2)
 {
     int unknown_loc_402C;
-    B_ObjDscr *unknown_loc_4030;
     if (arg_1 != 1 && arg_1 != 5)
     {
         _assert("class_id==B_CID_OBJDSCR || class_id==B_CID_AUTO_OBJDSCR", "C:\code\GDS\Resource.cpp", 738);
@@ -2753,8 +2752,7 @@ int B_ResourceManager::LoadPackedData(int arg_1, const char *arg_2)
         unknown_loc_401C >> *reinterpret_cast<unsigned int *>(LOCAL(-16420));
         if (STACKVAR(-16420, 4) != 0x00000000)
         {
-            unknown_loc_4030 = reinterpret_cast<B_ObjDscr *>(operator new(0x00000278));
-            STACKVAR(-16424, 4) = unknown_loc_4030 != nullptr ? unknown_loc_4030->B_ObjDscr() : 0x00000000;
+            STACKVAR(-16424, 4) = new B_ObjDscr();
             reinterpret_cast<B_ObjDscr *>(STACKVAR(-16424, 4))->LoadPacked(unknown_loc_401C);
             if (this->AddAutoResource(reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-16424, 4)) + 0x00000004), reinterpret_cast<B_Resource *>(STACKVAR(-16424, 4)), arg_1) == 0)
             {
@@ -19845,8 +19843,7 @@ B_ChannelOFile::B_ChannelOFile(B_Name arg_1, const char *arg_2)
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
     this->unknown0Ch = 1;
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
-    B_ODataFile *unknown_loc_04 = reinterpret_cast<B_ODataFile *>(operator new(0x00004010));
-    ACCESS(this, 16, 4) = unknown_loc_04 != nullptr ? unknown_loc_04->B_ODataFile(arg_2, 16384) : 0x00000000;
+    ACCESS(this, 16, 4) = new B_ODataFile(arg_2, 16384);
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
         this->unknown0Ch = 0;

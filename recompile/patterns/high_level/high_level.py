@@ -37,6 +37,7 @@ from .split_jumped_declarations import split_jumped_declarations
 from .transform_for_loops import transform_for_loops
 from .transform_returns import transform_returns
 from .transform_struct_copy import transform_struct_copy
+from .new_expressions import fold_new_expressions
 from .split_class_return_assignments import split_class_return_assignments
 from .variables_declarations import insert_declarations
 
@@ -70,6 +71,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(instrs, **context)
     instrs = merge_split_copies(instrs)
+    instrs = fold_new_expressions(instrs, analysis)
     analysis.collect_stack_accesses(instrs)
     analysis.fill_stack_variables(
         stack_vars, characteristics.variables_names)
