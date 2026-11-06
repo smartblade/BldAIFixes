@@ -6,6 +6,11 @@ B_Sphere::B_Sphere()
 {
 }
 
+// address: 0x00401548
+B_BoundingBox::B_BoundingBox()
+{
+}
+
 // address: 0x004015C5
 B_BoundingBox::B_BoundingBox(const B_Vector &minCoords, const B_Vector &maxCoords)
 :
@@ -96,6 +101,14 @@ B_SectorListNode::~B_SectorListNode()
 int B_SectorListNode::GetTypeID()
 {
     return B_OCT_NODE_CID_SECTOR_LIST;
+}
+
+// address: 0x004506C5
+B_OctTree::B_OctTree()
+:
+    m_halfSize(0.0),
+    m_root(nullptr)
+{
 }
 
 // address: 0x004507B9
