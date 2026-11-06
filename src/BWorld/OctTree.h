@@ -6,6 +6,24 @@ class B_BoundingBox;
 class B_Sector;
 class B_Surface;
 
+    /*
+    * Module:                 Blade.exe
+    * Data address:           0x005E338C
+    */
+    extern unsigned int gbl_node_count;
+
+    /*
+    * Module:                 Blade.exe
+    * Data address:           0x005E3390
+    */
+    extern const B_BoundingBox* gbl_current_query_box;
+
+    /*
+    * Module:                 Blade.exe
+    * Data address:           0x005E3394
+    */
+    extern unsigned int gbl_oct_tree_query_id;
+
 class B_SectorSurfaceCache {
 public:
     B_SectorSurfaceCache();
@@ -41,8 +59,6 @@ public:
 #define B_OCT_NODE_CID_BRANCH              8801
 #define B_OCT_NODE_CID_LEAF                8802
 #define B_OCT_NODE_CID_SECTOR_LIST         8803
-
-extern unsigned int gbl_node_count;
 
 class B_OctantNodeBase
 {
@@ -131,9 +147,9 @@ class B_OctTree
 {
 public:
     B_OctTree();
+    B_OctTree(const B_Map& map, double minNodeSize);
     ~B_OctTree();
 
-    // Name is not known: deletes the root node
     void Clear();
 
     void Build(const B_Map&, double);

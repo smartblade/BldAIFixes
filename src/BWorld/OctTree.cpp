@@ -45,6 +45,8 @@ int B_OctantNode::GetTypeID()
 */
 
 LeafNode::LeafNode()
+:
+    sectors(nullptr)
 {
 }
 
@@ -77,7 +79,9 @@ int LeafNode::GetTypeID()
 * VC++ mangling:          ??0B_SectorListNode@@QAE@XZ
 */
 
-B_SectorListNode::B_SectorListNode(): B_PtrArray<B_Sector>(1)
+B_SectorListNode::B_SectorListNode()
+:
+    B_PtrArray<B_Sector>(1)
 {
 }
 
@@ -100,6 +104,34 @@ B_SectorListNode::~B_SectorListNode()
 */
 
 int B_SectorListNode::GetTypeID()
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x004506C5
+* VC++ mangling:          ??0B_OctTree@@QAE@XZ
+*/
+
+B_OctTree::B_OctTree()
+:
+    m_halfSize(0.0),
+    m_root(nullptr)
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x00450734
+* VC++ mangling:          ??0B_OctTree@@QAE@ABVB_Map@@N@Z
+*/
+
+B_OctTree::B_OctTree(const B_Map &map, double minNodeSize)
+:
+    m_halfSize(0.0),
+    m_root(nullptr)
 {
 }
 
@@ -132,8 +164,11 @@ void B_OctTree::Clear()
 * VC++ mangling:          ?BuildNode@@YAPAVB_OctantNodeBase@@ABV?$B_PtrArray@VB_Sector@@@@NABVB_BoundingBox@@@Z
 */
 
-// FIXME latest update broke this, need to investigate
-B_OctantNodeBase* BuildNode(const B_PtrArray<B_Sector>& map, double sizeThreshold, const B_BoundingBox& worldBB)
+B_OctantNodeBase *BuildNode(
+    const B_PtrArray<B_Sector> &map,
+    double sizeThreshold,
+    const B_BoundingBox &worldBB
+)
 {
 }
 
@@ -144,7 +179,7 @@ B_OctantNodeBase* BuildNode(const B_PtrArray<B_Sector>& map, double sizeThreshol
 * VC++ mangling:          ?Build@B_OctTree@@QAEXABVB_Map@@N@Z
 */
 
-void B_OctTree::Build(const B_Map& map, double minNodeSize)
+void B_OctTree::Build(const B_Map &map, double minNodeSize)
 {
 }
 
@@ -155,7 +190,11 @@ void B_OctTree::Build(const B_Map& map, double minNodeSize)
 * VC++ mangling:          ?CollectSectorsAtPoint@LeafNode@@UAEXABVB_Vector@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void LeafNode::CollectSectorsAtPoint(const B_Vector& localPos, B_OctTreeSectorsList* outList, double halfSize)
+void LeafNode::CollectSectorsAtPoint(
+    const B_Vector &localPos,
+    B_OctTreeSectorsList *outList,
+    double halfSize
+)
 {
 }
 
@@ -166,7 +205,10 @@ void LeafNode::CollectSectorsAtPoint(const B_Vector& localPos, B_OctTreeSectorsL
 * VC++ mangling:          ?CollectSectorsInBox@LeafNode@@UAEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void LeafNode::CollectSectorsInBox(const B_BoundingBox&, B_OctTreeSectorsList* outList, double)
+void LeafNode::CollectSectorsInBox(
+    const B_BoundingBox &, B_OctTreeSectorsList *outList,
+    double
+)
 {
 }
 
@@ -177,7 +219,11 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox&, B_OctTreeSectorsList* o
 * VC++ mangling:          ?CollectSectorsAtPoint@B_SectorListNode@@UAEXABVB_Vector@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void B_SectorListNode::CollectSectorsAtPoint(const B_Vector& localPos, B_OctTreeSectorsList* outList, double halfSize)
+void B_SectorListNode::CollectSectorsAtPoint(
+    const B_Vector &localPos,
+    B_OctTreeSectorsList *outList,
+    double halfSize
+)
 {
 }
 
@@ -188,7 +234,10 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector& localPos, B_OctTree
 * VC++ mangling:          ?CollectSectorsInBox@B_SectorListNode@@UAEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox&, B_OctTreeSectorsList* outList, double)
+void B_SectorListNode::CollectSectorsInBox(
+    const B_BoundingBox &, B_OctTreeSectorsList *outList,
+    double
+)
 {
 }
 
@@ -200,9 +249,10 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox&, B_OctTreeSector
 */
 
 void B_OctantNode::CollectSectorsAtPoint(
-    const B_Vector& localPos, 
-    B_OctTreeSectorsList* outList,
-    double halfSize)
+    const B_Vector &localPos,
+    B_OctTreeSectorsList *outList,
+    double halfSize
+)
 {
 }
 
@@ -213,7 +263,11 @@ void B_OctantNode::CollectSectorsAtPoint(
 * VC++ mangling:          ?CollectSectorsInBox@B_OctantNode@@UAEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@N@Z
 */
 
-void B_OctantNode::CollectSectorsInBox(const B_BoundingBox& bb, B_OctTreeSectorsList* outList, double halfSize)
+void B_OctantNode::CollectSectorsInBox(
+    const B_BoundingBox &bb,
+    B_OctTreeSectorsList *outList,
+    double halfSize
+)
 {
 }
 
@@ -224,7 +278,10 @@ void B_OctantNode::CollectSectorsInBox(const B_BoundingBox& bb, B_OctTreeSectors
 * VC++ mangling:          ?FindSectorsAtPoint@B_OctTree@@UBEXABVB_Vector@@PAVB_OctTreeSectorsList@@@Z
 */
 
-void B_OctTree::FindSectorsAtPoint(const B_Vector& worldPos, B_OctTreeSectorsList* outList) const
+void B_OctTree::FindSectorsAtPoint(
+    const B_Vector &worldPos,
+    B_OctTreeSectorsList *outList
+) const
 {
 }
 
@@ -235,7 +292,10 @@ void B_OctTree::FindSectorsAtPoint(const B_Vector& worldPos, B_OctTreeSectorsLis
 * VC++ mangling:          ?FindSectorsInBox@B_OctTree@@UBEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@@Z
 */
 
-void B_OctTree::FindSectorsInBox(const B_BoundingBox& bb, B_OctTreeSectorsList* out) const
+void B_OctTree::FindSectorsInBox(
+    const B_BoundingBox &bb,
+    B_OctTreeSectorsList *out
+) const
 {
 }
 
@@ -246,7 +306,9 @@ void B_OctTree::FindSectorsInBox(const B_BoundingBox& bb, B_OctTreeSectorsList* 
 * VC++ mangling:          ??0B_OctTreeSectorsList@@QAE@XZ
 */
 
-B_OctTreeSectorsList::B_OctTreeSectorsList() : size(0) {}
+B_OctTreeSectorsList::B_OctTreeSectorsList()
+:
+    size(0)
 {
 }
 
@@ -257,8 +319,10 @@ B_OctTreeSectorsList::B_OctTreeSectorsList() : size(0) {}
 * VC++ mangling:          ?BuildSurfaceCache@B_OctTreeSectorsList@@QAEHPAVB_GlobalSurfaceCache@@PBVB_Sphere@@@Z
 */
 
-// TODO double check
-int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache* cache, const B_Sphere* sphere)
+int B_OctTreeSectorsList::BuildSurfaceCache(
+    B_GlobalSurfaceCache *cache,
+    const B_Sphere *sphere
+)
 {
 }
 
@@ -270,6 +334,8 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache* cache, const B
 */
 
 B_SectorSurfaceCache::B_SectorSurfaceCache()
+:
+    numSurfaces(0)
 {
 }
 
@@ -291,9 +357,8 @@ B_SectorSurfaceCache::~B_SectorSurfaceCache()
 * VC++ mangling:          ?IsPointInside@B_SectorSurfaceCache@@QAEHPBVB_Vector@@@Z
 */
 
-int B_SectorSurfaceCache::IsPointInside(const B_Vector* point)
+int B_SectorSurfaceCache::IsPointInside(const B_Vector *point)
 {
-    return 0;
 }
 
 
@@ -304,6 +369,7 @@ int B_SectorSurfaceCache::IsPointInside(const B_Vector* point)
 */
 
 B_GlobalSurfaceCache::B_GlobalSurfaceCache()
+:
+    count(0)
 {
 }
-
