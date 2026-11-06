@@ -1,5 +1,6 @@
 import data_types
 import expressions
+from expressions.operator import priorities, is_associative
 
 from .strip_implicit_conversion import strip_implicit_conversion
 
@@ -12,9 +13,9 @@ def write_procedure_call(
     if operator is not None and len(arguments) == 2:
         assert callee is None
         return "{} {} {}".format(
-            arguments[0].emit_code(),
+            _operand_code(arguments[0], operator, is_right=False),
             operator.value,
-            arguments[1].emit_code(),
+            _operand_code(arguments[1], operator, is_right=True),
         )
     if is_method:
         call = _method_access_code(arguments[0], proc_decl, callee, proc_name)
@@ -29,6 +30,37 @@ def write_procedure_call(
     return "{}({})".format(
         call, ", ".join(map(lambda a: a.emit_code(), arguments))
     )
+
+
+def _operand_code(operand, operator, is_right):
+    """Code of operand of binary operator call, in brackets if necessary.
+
+    Operands may be binary expressions or calls of other operators, e.g.
+    '(a + b) * 0.5' for 'operator *(operator +(a, b), 0.5)'.
+    """
+    code = operand.emit_code()
+    operand_operator = _binary_operator(operand)
+    if operand_operator is None:
+        return code
+    if priorities[operator] < priorities[operand_operator] or (
+        is_right and
+        priorities[operator] == priorities[operand_operator] and
+        not is_associative[operator]
+    ):
+        return "({})".format(code)
+    return code
+
+
+def _binary_operator(e):
+    if isinstance(e, expressions.Bin):
+        return e.operator
+    if not isinstance(e, expressions.ProcedureCall):
+        return None
+    if e.proc_decl is None or e.proc_decl.operator is None:
+        return None
+    if len(e.arguments) != 2 or e.callee_expression is not None:
+        return None
+    return e.proc_decl.operator
 
 
 def _is_obj_initialization(obj, proc_decl):
