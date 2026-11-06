@@ -1,8 +1,7 @@
 import json
 import os
 
-from get_procedure_declaration_at import get_procedure_declaration_at
-from get_procedure_declaration_at import has_src_declaration
+from get_procedure_declaration_at import get_procedures_declarations
 from hex_conversion import from_hex, to_hex
 from make_tuple import add_attributes
 from patterns.apply_pattern import apply_pattern
@@ -33,16 +32,10 @@ def process_asm_patterns(lines, declarations):
         declarations, string_constants=string_constants)
     inline_procedures = inline_functions.Dict()
     asm_procedures = _extract_procedures_lines_from_asm(lines)
-    # Get all declarations before building procedures: demangling adds
-    # undeclared types to declared types, so demangle exported names
-    # before parsing declarations from sources
-    proc_decls = {}
-    for proc_addr in sorted(
-        (proc_addr for proc_addr, _ in asm_procedures),
-        key=lambda addr: has_src_declaration(declarations, addr)
-    ):
-        proc_decls[proc_addr] = get_procedure_declaration_at(
-            declarations, proc_addr)
+    # Demangling adds undeclared types to declared types, so get all
+    # declarations before building procedures
+    proc_decls = get_procedures_declarations(
+        declarations, [proc_addr for proc_addr, _ in asm_procedures])
     procedures = []
     for proc_addr, proc_lines in asm_procedures:
         exc, procedure = _build_proc(
