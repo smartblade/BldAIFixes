@@ -35,9 +35,7 @@ class TestMergeSplitCopies(unittest.TestCase):
             call_instr(name="f", arguments=[_stackvar(-512, 8)]),
         ]
         self.assertEqual(
-            "STACKVAR(-512, 8) = STACKVAR(-20, 8);
-f(STACKVAR(-512, 8));
-",
+            "STACKVAR(-512, 8) = STACKVAR(-20, 8);\nf(STACKVAR(-512, 8));\n",
             _emit(instrs))
 
     def test_copies_of_ints(self):
