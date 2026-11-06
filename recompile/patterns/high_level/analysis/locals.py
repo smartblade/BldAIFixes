@@ -299,6 +299,10 @@ class LocalsAnalysis:
             for start, end in self._local_extents.values()
         )
 
+    def set_stackvar_type(self, offset, data_type):
+        """Set type of stack variable known for sure, e.g. created by new."""
+        self._types_by_offset[offset] = data_type
+
     def _update_type(self, offset, data_type):
         if offset >= 0:
             return

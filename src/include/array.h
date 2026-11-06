@@ -105,7 +105,7 @@ public:
     {
     }
 
-    TYPE *operator[](unsigned int index)
+    TYPE *operator[](unsigned int index) const
     {
         return elements[index];
     }

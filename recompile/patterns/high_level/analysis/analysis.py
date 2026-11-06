@@ -43,5 +43,8 @@ class Analysis:
     def collect_stack_accesses(self, *args, **kwargs):
         self._locals_analysis.collect_stack_accesses(*args, **kwargs)
 
+    def set_stackvar_type(self, *args, **kwargs):
+        self._locals_analysis.set_stackvar_type(*args, **kwargs)
+
     def fill_stack_variables(self, *args, **kwargs):
         return self._locals_analysis.fill_stack_variables(*args, **kwargs)

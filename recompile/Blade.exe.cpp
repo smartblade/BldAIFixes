@@ -131,8 +131,6 @@ void B_OctTree::Clear()
 B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &map, double sizeThreshold, const B_BoundingBox &worldBB)
 {
     LeafNode *unknown_loc_04;
-    B_Sector *unknown_loc_1BC;
-    B_Sector *unknown_loc_1C0;
     if (map.size == 0)
     {
         return nullptr;
@@ -140,22 +138,20 @@ B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &map, double sizeThreshol
     if (map.size == 1)
     {
         unknown_loc_04 = new LeafNode();
-        unknown_loc_1BC = reinterpret_cast<B_Sector *>(ACCESS(ARRPTR(map.elements, 1, 0x00000004 * 0x00000000, 0), 0, 4));
-        unknown_loc_04->sectors = unknown_loc_1BC;
+        unknown_loc_04->sectors = map[0];
         return unknown_loc_04;
     }
     if (worldBB.maxCoords.x - worldBB.minCoords.x >= sizeThreshold && map.size >= 8)
     {
         goto l00450ABC;
     }
-    STACKVAR(-12, 4) = new B_SectorListNode();
+    B_SectorListNode *unknown_loc_0C;
+    unknown_loc_0C = new B_SectorListNode();
     for (unsigned int unknown_loc_08 = 0; unknown_loc_08 < map.size; unknown_loc_08++)
     {
-        unknown_loc_1C0 = map.elements[unknown_loc_08];
-        STACKVAR(-472, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000004;
-        STACKVAR(-472, 4)->Append(unknown_loc_1C0);
+        unknown_loc_0C->Append(map[unknown_loc_08]);
     }
-    return reinterpret_cast<B_OctantNodeBase *>(STACKVAR(-12, 4));
+    return unknown_loc_0C;
 l00450ABC:
     B_BoundingBox unknown_loc_6C;
     unknown_loc_6C.B_BoundingBox();

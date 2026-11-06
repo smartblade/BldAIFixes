@@ -23,6 +23,8 @@ class ClassType(DataType):
         self._sorted_offsets = None
         # Type of the parameter of class template
         self.template_param = None
+        # Class template of an instance of the template
+        self.template = None
 
     def __repr__(self):
         return "class {}".format(self._class_name)
@@ -36,7 +38,9 @@ class ClassType(DataType):
 
     def instantiate(self, new_name, arg):
         """Make class of template with parameter type substituted by arg."""
-        return self.substitute(self.template_param, arg, new_name)
+        result = self.substitute(self.template_param, arg, new_name)
+        result.template = self
+        return result
 
     def substitute(self, param, arg, new_name=None):
         """Make class with template parameter type substituted by arg."""
@@ -110,6 +114,11 @@ class ClassType(DataType):
 
     def add_other_method(self, method):
         self._other_methods.append(method)
+
+    @property
+    def other_methods(self):
+        """Not virtual methods declared in the class."""
+        return list(self._other_methods)
 
     def find_other_method(self, method_name):
         """Find not virtual method, None if it's overloaded."""

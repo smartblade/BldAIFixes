@@ -132,7 +132,8 @@ class ProcedureDeclaration:
             return None
         match = operator_regexp.search(self._proc_name)
         if match:
-            return operators[match.group("op")]
+            # Operators without expressions, e.g. operator[], are methods
+            return operators.get(match.group("op"))
         return None
 
     def _get_stack_variables(self):

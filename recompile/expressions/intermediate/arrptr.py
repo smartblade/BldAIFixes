@@ -10,6 +10,22 @@ class Arrptr:
         self._ptr32 = data_types.Pointer32()
 
     @property
+    def base(self):
+        return self._base
+
+    @property
+    def scale(self):
+        return self._scale
+
+    @property
+    def index(self):
+        return self._index
+
+    @property
+    def offset(self):
+        return self._offset
+
+    @property
     def data_type(self):
         return self._ptr32
 
