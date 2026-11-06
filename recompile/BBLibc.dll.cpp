@@ -22207,8 +22207,7 @@ l10034FEB:
         {
             STACKVAR(-1048, 8) = STACKVAR(-544, 8);
         }
-        STACKVAR(-260, 4) = STACKVAR(-1048, 4);
-        STACKVAR(-256, 4) = STACKVAR(-1044, 4);
+        STACKVAR(-260, 8) = STACKVAR(-1048, 8);
         if (reinterpret_cast<double>(STACKVAR(-212, 8)) > reinterpret_cast<double>(STACKVAR(-536, 8)))
         {
             STACKVAR(-1056, 8) = STACKVAR(-212, 8);
@@ -22217,8 +22216,7 @@ l10034FEB:
         {
             STACKVAR(-1056, 8) = STACKVAR(-536, 8);
         }
-        STACKVAR(-212, 4) = STACKVAR(-1056, 4);
-        STACKVAR(-208, 4) = STACKVAR(-1052, 4);
+        STACKVAR(-212, 8) = STACKVAR(-1056, 8);
         if (reinterpret_cast<double>(STACKVAR(-244, 8)) < reinterpret_cast<double>(STACKVAR(-544, 8)))
         {
             STACKVAR(-1064, 8) = STACKVAR(-244, 8);
@@ -22227,8 +22225,7 @@ l10034FEB:
         {
             STACKVAR(-1064, 8) = STACKVAR(-544, 8);
         }
-        STACKVAR(-244, 4) = STACKVAR(-1064, 4);
-        STACKVAR(-240, 4) = STACKVAR(-1060, 4);
+        STACKVAR(-244, 8) = STACKVAR(-1064, 8);
         if (reinterpret_cast<double>(STACKVAR(-252, 8)) < reinterpret_cast<double>(STACKVAR(-536, 8)))
         {
             STACKVAR(-1072, 8) = STACKVAR(-252, 8);
@@ -22237,8 +22234,7 @@ l10034FEB:
         {
             STACKVAR(-1072, 8) = STACKVAR(-536, 8);
         }
-        STACKVAR(-252, 4) = STACKVAR(-1072, 4);
-        STACKVAR(-248, 4) = STACKVAR(-1068, 4);
+        STACKVAR(-252, 8) = STACKVAR(-1072, 8);
         if (reinterpret_cast<double>(STACKVAR(-204, 8)) < reinterpret_cast<double>(STACKVAR(-528, 8)))
         {
             STACKVAR(-1080, 8) = STACKVAR(-204, 8);
@@ -22247,8 +22243,7 @@ l10034FEB:
         {
             STACKVAR(-1080, 8) = STACKVAR(-528, 8);
         }
-        STACKVAR(-204, 4) = STACKVAR(-1080, 4);
-        STACKVAR(-200, 4) = STACKVAR(-1076, 4);
+        STACKVAR(-204, 8) = STACKVAR(-1080, 8);
     }
     if (scale == 0.0)
     {

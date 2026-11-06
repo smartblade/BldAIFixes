@@ -28,6 +28,18 @@ class TestMergeSplitCopies(unittest.TestCase):
             "f(STACKVAR(-16, 8));\nSTACKVAR(-232, 8) = STACKVAR(-16, 8);\n",
             _emit(instrs))
 
+    def test_copy_to_double(self):
+        instrs = [
+            ass(_stackvar(-512), _stackvar(-20)),
+            ass(_stackvar(-508), _stackvar(-16)),
+            call_instr(name="f", arguments=[_stackvar(-512, 8)]),
+        ]
+        self.assertEqual(
+            "STACKVAR(-512, 8) = STACKVAR(-20, 8);
+f(STACKVAR(-512, 8));
+",
+            _emit(instrs))
+
     def test_copies_of_ints(self):
         instrs = [
             ass(_stackvar(-232), _stackvar(-16)),

@@ -186,8 +186,7 @@ l00450C18:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00450C45:
-    STACKVAR(-512, 4) = STACKVAR(-20, 4);
-    STACKVAR(-508, 4) = STACKVAR(-16, 4);
+    STACKVAR(-512, 8) = STACKVAR(-20, 8);
     double unknown_loc_1F8 = worldBB.minCoords.y;
     double unknown_loc_1F0 = worldBB.minCoords.x;
     STACKVAR(-172, 8) = unknown_loc_1F0;
@@ -195,8 +194,7 @@ l00450C45:
     ACCESS(LOCAL(-156), 0, 8) = STACKVAR(-512, 8);
     memcpy(&unknown_loc_6C, LOCAL(-172), 24);
     double unknown_loc_218 = worldBB.maxCoords.z;
-    STACKVAR(-528, 4) = STACKVAR(-28, 4);
-    STACKVAR(-524, 4) = STACKVAR(-24, 4);
+    STACKVAR(-528, 8) = STACKVAR(-28, 8);
     STACKVAR(-520, 4) = STACKVAR(-36, 4);
     STACKVAR(-516, 4) = STACKVAR(-32, 4);
     STACKVAR(-196, 4) = STACKVAR(-520, 4);
@@ -226,15 +224,13 @@ l00450E17:
     STACKVAR(-44, 4) = 0x00000000;
 l00450E44:
     double unknown_loc_240 = worldBB.minCoords.z;
-    STACKVAR(-568, 4) = STACKVAR(-28, 4);
-    STACKVAR(-564, 4) = STACKVAR(-24, 4);
+    STACKVAR(-568, 8) = STACKVAR(-28, 8);
     double unknown_loc_230 = worldBB.minCoords.x;
     STACKVAR(-220, 8) = unknown_loc_230;
     ACCESS(LOCAL(-212), 0, 8) = STACKVAR(-568, 8);
     ACCESS(LOCAL(-204), 0, 8) = unknown_loc_240;
     memcpy(&unknown_loc_6C, LOCAL(-220), 24);
-    STACKVAR(-600, 4) = STACKVAR(-20, 4);
-    STACKVAR(-596, 4) = STACKVAR(-16, 4);
+    STACKVAR(-600, 8) = STACKVAR(-20, 8);
     double unknown_loc_250 = worldBB.maxCoords.y;
     STACKVAR(-584, 4) = STACKVAR(-36, 4);
     STACKVAR(-580, 4) = STACKVAR(-32, 4);
@@ -264,10 +260,8 @@ l00451016:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00451043:
-    STACKVAR(-640, 4) = STACKVAR(-20, 4);
-    STACKVAR(-636, 4) = STACKVAR(-16, 4);
-    STACKVAR(-632, 4) = STACKVAR(-28, 4);
-    STACKVAR(-628, 4) = STACKVAR(-24, 4);
+    STACKVAR(-640, 8) = STACKVAR(-20, 8);
+    STACKVAR(-632, 8) = STACKVAR(-28, 8);
     double unknown_loc_270 = worldBB.minCoords.x;
     STACKVAR(-268, 8) = unknown_loc_270;
     ACCESS(LOCAL(-260), 0, 8) = STACKVAR(-632, 8);
@@ -312,10 +306,8 @@ l00451242:
     ACCESS(LOCAL(-308), 0, 8) = unknown_loc_2B8;
     ACCESS(LOCAL(-300), 0, 8) = unknown_loc_2C0;
     memcpy(&unknown_loc_6C, LOCAL(-316), 24);
-    STACKVAR(-728, 4) = STACKVAR(-20, 4);
-    STACKVAR(-724, 4) = STACKVAR(-16, 4);
-    STACKVAR(-720, 4) = STACKVAR(-28, 4);
-    STACKVAR(-716, 4) = STACKVAR(-24, 4);
+    STACKVAR(-728, 8) = STACKVAR(-20, 8);
+    STACKVAR(-720, 8) = STACKVAR(-28, 8);
     double unknown_loc_2C8 = worldBB.maxCoords.x;
     STACKVAR(-340, 8) = unknown_loc_2C8;
     ACCESS(LOCAL(-332), 0, 8) = STACKVAR(-720, 8);
@@ -342,8 +334,7 @@ l00451415:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00451442:
-    STACKVAR(-768, 4) = STACKVAR(-20, 4);
-    STACKVAR(-764, 4) = STACKVAR(-16, 4);
+    STACKVAR(-768, 8) = STACKVAR(-20, 8);
     double unknown_loc_2F8 = worldBB.minCoords.y;
     STACKVAR(-752, 4) = STACKVAR(-36, 4);
     STACKVAR(-748, 4) = STACKVAR(-32, 4);
@@ -353,8 +344,7 @@ l00451442:
     ACCESS(LOCAL(-348), 0, 8) = STACKVAR(-768, 8);
     memcpy(&unknown_loc_6C, LOCAL(-364), 24);
     double unknown_loc_318 = worldBB.maxCoords.z;
-    STACKVAR(-784, 4) = STACKVAR(-28, 4);
-    STACKVAR(-780, 4) = STACKVAR(-24, 4);
+    STACKVAR(-784, 8) = STACKVAR(-28, 8);
     double unknown_loc_308 = worldBB.maxCoords.x;
     STACKVAR(-388, 8) = unknown_loc_308;
     ACCESS(LOCAL(-380), 0, 8) = STACKVAR(-784, 8);
@@ -382,8 +372,7 @@ l00451615:
     STACKVAR(-44, 4) = 0x00000000;
 l00451642:
     double unknown_loc_340 = worldBB.minCoords.z;
-    STACKVAR(-824, 4) = STACKVAR(-28, 4);
-    STACKVAR(-820, 4) = STACKVAR(-24, 4);
+    STACKVAR(-824, 8) = STACKVAR(-28, 8);
     STACKVAR(-816, 4) = STACKVAR(-36, 4);
     STACKVAR(-812, 4) = STACKVAR(-32, 4);
     STACKVAR(-412, 4) = STACKVAR(-816, 4);
@@ -391,8 +380,7 @@ l00451642:
     ACCESS(LOCAL(-404), 0, 8) = STACKVAR(-824, 8);
     ACCESS(LOCAL(-396), 0, 8) = unknown_loc_340;
     memcpy(&unknown_loc_6C, LOCAL(-412), 24);
-    STACKVAR(-856, 4) = STACKVAR(-20, 4);
-    STACKVAR(-852, 4) = STACKVAR(-16, 4);
+    STACKVAR(-856, 8) = STACKVAR(-20, 8);
     double unknown_loc_350 = worldBB.maxCoords.y;
     double unknown_loc_348 = worldBB.maxCoords.x;
     STACKVAR(-436, 8) = unknown_loc_348;

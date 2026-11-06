@@ -10,8 +10,9 @@ def merge_split_copies(instrs):
         STACKVAR(-232, 4) = STACKVAR(-16, 4);
         STACKVAR(-228, 4) = STACKVAR(-12, 4);
 
-    Merge them to 'STACKVAR(-232, 8) = STACKVAR(-16, 8)' if the source is
-    accessed as 8-byte stack variable elsewhere.
+    Merge them to 'STACKVAR(-232, 8) = STACKVAR(-16, 8)' if the source or
+    the destination is accessed as 8-byte stack variable elsewhere, e.g. a
+    field of a local object copied to an argument of an inlined method.
     """
     qwords = set()
 
@@ -49,7 +50,7 @@ def _try_merge(low, high, qwords):
     high_dst, high_src = high_halves
     if high_dst != low_dst + 4 or high_src != low_src + 4:
         return None
-    if low_src not in qwords:
+    if low_src not in qwords and low_dst not in qwords:
         return None
     # Copies of overlapping halves are not a copy of 8 bytes
     if abs(low_dst - low_src) < 8:
