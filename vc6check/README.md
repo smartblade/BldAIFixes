@@ -36,6 +36,9 @@ are in `.data`. In the original `Blade.exe` the constants are read from
 `.rdata` and `-10.0` is a separate constant, see section 10 of
 `docs/BldMystery-pull-7-review.md` in branch `claude/blade-single-procedure`.
 
+`vc6compare.py` compares all implemented procedures of the three modules,
+see [All implemented procedures](#all-implemented-procedures).
+
 Rules of placing local variables in the stack frame by Visual C++ 6.0 are
 described in [stack-layout.md](stack-layout.md).
 Copies of inline functions, limits of their expansion and other signs of
@@ -84,6 +87,94 @@ MISMATCH ?GetnOpenedFiles@B_IDataFile@@SAHXZ at 0x1000100F, 10 bytes, 0 relocate
 ```
 
 The script exits with code 1 if a procedure does not match or is not found.
+
+## All implemented procedures
+
+`vc6compare.py` compiles all sources of `Blade.exe`, `BBLibc.dll` and
+`rOpenGL.dll` of a BldMystery checkout and compares every procedure marked
+as implemented in C++ in `native.asm` (`call lXXXXXXXX; Implemented in c++
+code`) with the binary (`raw.txt`). It is written in Python and runs on
+Windows (command prompt or Git Bash) and on Linux or macOS with Wine.
+
+Requirements: Python 3, Visual C++ 6.0 and, for the instruction
+differences and the classification of mismatches, the `capstone` package
+(`pip install capstone`) or `ndisasm` of NASM.
+
+On Windows the compiler is `cl` of the environment of `VCVARS32.BAT`. Git
+Bash started from the command prompt after `VCVARS32.BAT` inherits it:
+
+```bat
+"C:\Program Files\Microsoft Visual Studio\VC98\Bin\VCVARS32.BAT"
+python vc6check\vc6compare.py build C:\path\to\BldMystery C:\path\to\work
+python vc6check\vc6compare.py compare C:\path\to\BldMystery C:\path\to\work
+```
+
+```sh
+# Git Bash started from the same command prompt
+python vc6check/vc6compare.py build /c/path/to/BldMystery /c/path/to/work
+```
+
+Another compiler executable is set by `VC6_CL`, e.g.
+`VC6_CL="C:\VC6\VC98\Bin\CL.EXE"`. With Wine `VC6_CL` runs `CL.EXE` by
+`wine`, the paths of the sources are passed as `Z:` paths, `INCLUDE` holds
+the include directory of Visual C++ 6.0:
+
+```sh
+VC=/path/to/vc6   # the directory with VC98 and Common
+export VC6_CL="wine CL.EXE"
+export WINEPATH="Z:$VC/VC98/Bin;Z:$VC/Common/MSDev98/Bin"
+export INCLUDE="Z:$VC/VC98/Include"
+python3 vc6check/vc6compare.py build ~/BldMystery /tmp/vc6work
+python3 vc6check/vc6compare.py compare ~/BldMystery /tmp/vc6work
+```
+
+`build BLDMYSTERY WORK` copies `src` of BldMystery to `WORK/src` and
+patches the copy for Visual C++ 6.0 (`PATCHES` of the script, each patch
+not applied is printed):
+
+- `<assert.h>` of Visual C++ 6.0 is used instead of `bld_assert.h`, like
+  in the original binaries (calls of `_assert` of `msvcrt.dll`),
+- variables declared by `for` are in the enclosing block in Visual C++ 6.0:
+  the second loop of the block doesn't declare `i` again (`array.h`,
+  `App.cpp`),
+- the base class template of `B_SharedPtrArray` has its argument,
+- `WinClock.cpp` declares the intrinsics instead of `<intrin.h>`.
+
+Then it compiles the sources of each module (`MODULES` of the script) in
+parallel to `WORK/obj/MODULE` with the options of the original build
+`/c /MD /Od /Ob1 /Oi /Zp4 /GR- /DBLD_NATIVE /Doverride= /FAs` (and
+`/DBUILD_LIB` for `BBLibc.dll`), listings are written next to the object
+files. `--module` and `--file FILE` (repeatable, relative to `src`)
+compile a part of the sources quickly.
+
+`compare BLDMYSTERY WORK` prints the number of procedures of each module in
+the categories below and lists the procedures that do not match.
+`--json FILE` writes `{module: {procedure: [address, category]}}`.
+
+| Category | Meaning |
+|---|---|
+| `OK` | identical (except bytes changed by the linker) |
+| `LINES` | only line numbers of `assert` differ (an 8-bit `push` for lines below 128) |
+| `STACK` | only offsets of local variables in the stack frame differ |
+| `FRAME` | offsets of local variables and the size of the frame differ |
+| `CODE` | the instructions differ |
+| `MISSING` | the procedure is not found in the compiled object files |
+
+`diff BLDMYSTERY WORK PROCEDURE...` prints the differing instructions of
+procedures (mangled names) of the compiled code (`-`) and the binary
+(`+`), targets of calls and jumps are not compared. `stack BLDMYSTERY WORK
+PROCEDURE` prints offsets of local variables of the compiled procedure,
+the offsets of the same variables in the binary (matched by instructions)
+and the hash buckets of their names (see [stack-layout.md](stack-layout.md));
+`<==` marks variables placed elsewhere in the binary:
+
+```
+?Build@B_OctTree@@QAEXABVB_Map@@N@Z 0x00451A21
+  compiled  binary  variable
+        -8      -8  _min_z$ (bucket 0)
+       -16     -16  _max_x$ (bucket 4)
+       ...
+```
 
 ## libjpeg 6b
 
