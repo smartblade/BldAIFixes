@@ -154,7 +154,6 @@ B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &map, double sizeThreshol
     return unknown_loc_0C;
 l00450ABC:
     B_BoundingBox unknown_loc_6C;
-    unknown_loc_6C.B_BoundingBox();
     STACKVAR(-56, 4) = 0x00000000;
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-48, 4) = 0x00000010;

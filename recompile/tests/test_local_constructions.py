@@ -98,6 +98,16 @@ class TestCalledLocalConstructions(unittest.TestCase):
             _call_constructor(b, t, i32_id("y")),
         ]))
 
+    def test_default_construction(self):
+        b = expressions.Identifier(_box(), "b")
+        default_ctor = ProcedureDeclaration(
+            "B_Box", CallingConvention.THISCALL, b.data_type, [], None)
+        call = instructions.CodeInstruction(expressions.ProcedureCall(
+            name="B_Box", is_method=True, proc_decl=default_ctor,
+            arguments=[expressions.AddressOf(b)]))
+        self.assertEqual("B_Box b;\n", _emit([
+            instructions.VariableDeclaration(b, None), call]))
+
     def test_argument_uses_object(self):
         b = expressions.Identifier(_box(), "b")
         result = _emit([

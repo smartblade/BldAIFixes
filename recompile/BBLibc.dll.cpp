@@ -27725,7 +27725,6 @@ p10040D58
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     B_Name unknown_loc_08;
-    unknown_loc_08.B_Name();
     reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> unknown_loc_08;
     if (ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4) != 0x00000000)
     {
@@ -27878,7 +27877,6 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     void *unknown_loc_24;
     file >> static_cast<B_NamedObj &>(particleType);
     B_Name unknown_loc_08;
-    unknown_loc_08.B_Name();
     file >> particleType.duration >> unknown_loc_08 >> *reinterpret_cast<unsigned long *>(&particleType.operation_type);
     particleType.bmpHandle = reinterpret_cast<int>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(unknown_loc_08.string));
     file >> *reinterpret_cast<unsigned int *>(LOCAL(-12));

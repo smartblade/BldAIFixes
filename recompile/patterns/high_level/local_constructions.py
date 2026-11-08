@@ -78,7 +78,7 @@ def _make_construction(instr, next_instrs):
 
 
 def _make_called_construction(instr, next_instrs):
-    """Restore 'T v; v.T(args);' as 'T v(args);'.
+    """Restore 'T v; v.T(args);' as 'T v(args);', 'T v; v.T();' as 'T v;'.
 
     Declarations of temporaries of the arguments may be between the
     declaration and the call, they are kept before the construction.
@@ -114,7 +114,8 @@ def _make_called_construction(instr, next_instrs):
         return None
     arguments = pc.arguments[1:]
     if not arguments:
-        return None
+        # Called default constructor: 'T v; v.T();' is 'T v;'
+        return list(next_instrs[:k]) + [instr], k + 1
     if any(_uses_variable(argument, var) for argument in arguments):
         return None
     construction = expressions.ProcedureCall(
