@@ -44,4 +44,6 @@ class TestForwardGotos(unittest.TestCase):
             instructions.LabeledBlock("l", [
                 instructions.ReturnInstruction(_id("a"))]),
         ]
-        self.assertIn("goto l;", _emit(transform_forward_gotos(instrs, {})))
+        self.assertEqual(
+            "if (a < 8)\n{\n    b = a;\n}\nreturn a;\n",
+            _emit(transform_forward_gotos(instrs, {})))

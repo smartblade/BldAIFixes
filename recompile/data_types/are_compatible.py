@@ -42,7 +42,8 @@ def are_compatible(child, parent):
 
 def _is_instance_of(child_class, parent_class):
     while child_class.parent is not None:
-        if child_class.parent == parent_class:
+        # Each instance of a class template is a separate class object
+        if data_types.are_same(child_class.parent, parent_class):
             return True
         child_class = child_class.parent
     return False

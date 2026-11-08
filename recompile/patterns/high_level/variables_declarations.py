@@ -136,6 +136,8 @@ class _IdentifiersCollector(ExpressionTransformer):
         A variable of a block declared later is placed first inside the
         hash bucket of its name: of two variables in the same bucket the
         one at the lower address is declared first, before the other.
+        Buckets of a block are placed in ascending order: a variable above
+        a variable of a lower bucket is declared in the enclosing block.
         Unnamed variables have no names of the original code to order.
         """
         changed = True
@@ -154,6 +156,14 @@ class _IdentifiersCollector(ExpressionTransformer):
                         continue
                     if other_path != path:
                         continue
+                    if bucket(other.name) > bucket(identifier.name):
+                        # The other variable can't be above in the block
+                        new_place = self._parent_block_place(other_path)
+                        if new_place is None:
+                            continue
+                        self._ids[other] = new_place
+                        changed = True
+                        break
                     if bucket(other.name) != bucket(identifier.name):
                         continue
                     block = path[-1][1]
@@ -169,6 +179,24 @@ class _IdentifiersCollector(ExpressionTransformer):
                     break
                 if changed:
                     break
+
+    def _parent_block_place(self, path):
+        """(path, first instruction) of the block enclosing the scope."""
+        common_len = len(path) - 1
+        while (
+            common_len > 1 and
+            isinstance(path[common_len - 1][0], instructions.LabeledBlock)
+        ):
+            common_len -= 1
+        if common_len < 1:
+            return None
+        if common_len == 1:
+            first_instr = self._first_body_instr
+        else:
+            first_instr = path[common_len - 1][1][0]
+        if first_instr is None:
+            return None
+        return path[:common_len], first_instr
 
     def _scope_index(self, path):
         parent_instr, instrs = path[-1]

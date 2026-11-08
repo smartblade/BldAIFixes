@@ -22,7 +22,7 @@ from .transform_binary import transform_binary
 from .transform_block_instructions import transform_block_instructions
 from .transform_constant import transform_constant
 from .transform_dereference import transform_dereference
-from .transform_global import transform_global
+from .transform_global import transform_global, transform_mangled_variable
 from .transform_if import transform_if
 from .transform_local import transform_local
 from .transform_make_reference import transform_make_reference
@@ -95,8 +95,6 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     ):
         instrs = _transform_instructions(instrs, **context)
     instrs = transform_for_loops(instrs)
-    # Gotos over loops are eliminated after the loops are restored
-    instrs = goto_eliminator.transform_forward_gotos(instrs, stack_vars)
     instrs = transform_class_returns(proc_decl, instrs)
     procedure = procedure.copy(instrs=instrs)
     procedure = remove_inlined_base_structors(procedure)
@@ -104,6 +102,10 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = fold_conditional_results(procedure)
     procedure = collapse_inlined_clears(procedure)
     procedure = remove_inlined_local_structors(procedure, stack_vars)
+    # Gotos over loops are eliminated after the loops are restored, and
+    # after inlined code with gotos is collapsed
+    procedure = procedure.copy(instrs=goto_eliminator.transform_forward_gotos(
+        procedure.instructions, stack_vars))
     procedure = remove_inlined_member_construction(procedure)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
@@ -196,6 +198,10 @@ class _ExpressionTransformer(ExpressionTransformer):
     @staticmethod
     def transform_arrptr(*args, **kwargs):
         return transform_arrptr(*args, **kwargs)
+
+    @staticmethod
+    def transform_identifier(identifier, declarations, **kwargs):
+        return transform_mangled_variable(identifier, declarations)
 
     @staticmethod
     def transform_global(*args, **kwargs):

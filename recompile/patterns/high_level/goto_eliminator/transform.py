@@ -56,8 +56,9 @@ def transform_forward_gotos(instrs, stack_vars):
     Labels may be nested in labeled blocks of loops at the first
     elimination, they are in the same block when loops are restored:
         if (c) goto l; ...; for (...) {...} return x; l: ...
-    The code jumped over ends with return, the labeled code is the else
-    block: its variables are in a block of the stack frame like in
+    The jumped code is the block of the negated condition. If it ends with
+    return, the labeled code is the else block: its variables are in a
+    block of the stack frame like in
         if (!c) { ...; return x; } else { ... }
     """
     label_uses = collect_label_uses(instrs)
@@ -83,14 +84,15 @@ def _transform_forward_gotos_block(instrs, label_uses):
         if goto.label != labeled_block.label:
             continue
         jumped = instrs[i + 1:-1]
-        if not jumped or not isinstance(
-            jumped[-1], instructions.ReturnInstruction
-        ):
+        if not jumped:
             return instrs
         label_uses[goto.label].remove(goto)
-        else_block = _transform_forward_gotos_block(
+        rest = _transform_forward_gotos_block(
             labeled_block.instructions, label_uses)
-        return instrs[:i] + [instructions.IfInstruction(
-            expressions.do_logical_not(instr.if_clause), jumped,
-            else_block)]
+        clause = expressions.do_logical_not(instr.if_clause)
+        if isinstance(jumped[-1], instructions.ReturnInstruction):
+            return instrs[:i] + [
+                instructions.IfInstruction(clause, jumped, rest)]
+        return instrs[:i] + [
+            instructions.IfInstruction(clause, jumped)] + rest
     return instrs

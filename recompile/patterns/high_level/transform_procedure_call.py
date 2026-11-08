@@ -1,6 +1,7 @@
 import struct
 
 import data_types
+import parser
 import expressions
 from expressions.operator import Operator
 from get_procedure_declaration_at import get_procedure_declaration_at
@@ -134,7 +135,15 @@ def _get_callee_declaration(pc, declarations):
         assert pc.callee_address is None
         return _get_declaration_from_callee_expression(pc.callee_expression)
     if pc.callee_address is None:
-        return declarations.external_procedures.get(pc.name)
+        proc_decl = declarations.external_procedures.get(pc.name)
+        if proc_decl is None and pc.name is not None and pc.name.startswith("?"):
+            # Imported procedure named by its mangled name
+            try:
+                proc_decl = parser.demangle_cpp(
+                    pc.name, declarations.declared_types)
+            except Exception:
+                proc_decl = None
+        return proc_decl
     return get_procedure_declaration_at(declarations, pc.callee_address)
 
 

@@ -1,6 +1,6 @@
 from .collect_declarations_from_headers import collect_declarations_from_headers
 from .collect_symbols_from_sources import SrcSymbols
-from .cpp_demangling import demangle_cpp
+from .cpp_demangling import demangle_cpp, demangle_cpp_variable
 from .cpp_expression import parse_cpp_expression
 from .cpp_function import parse_cpp_function
 from .cpp_headers import parse_cpp_header

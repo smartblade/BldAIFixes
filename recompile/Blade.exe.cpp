@@ -202,46 +202,44 @@ B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &map, double sizeThreshol
 // address: 0x00451A21
 void B_OctTree::Build(const B_Map &map, double minNodeSize)
 {
+    double max_x;
+    double min_x;
+    double max_y;
+    double min_y;
+    double max_z;
+    double min_z;
     if (this->m_root != nullptr)
     {
         delete this->m_root;
     }
     this->m_halfSize = 0.0;
-    B_BoundingBox unknown_loc_50;
-    if (gbl_world_points.points.size == 0)
+    B_BoundingBox worldBB;
+    if (gbl_world_points.points.size != 0)
     {
-        goto l00451FD1;
+        max_x = gbl_world_points.points[0].v.x;
+        min_x = gbl_world_points.points[0].v.x;
+        max_y = gbl_world_points.points[0].v.y;
+        min_y = gbl_world_points.points[0].v.y;
+        max_z = gbl_world_points.points[0].v.z;
+        min_z = gbl_world_points.points[0].v.z;
+        for (unsigned int i = 1; i < gbl_world_points.points.size; i++)
+        {
+            max_x = max(max_x, gbl_world_points.points[i].v.x);
+            min_x = min(min_x, gbl_world_points.points[i].v.x);
+            max_y = max(max_y, gbl_world_points.points[i].v.y);
+            min_y = min(min_y, gbl_world_points.points[i].v.y);
+            max_z = max(max_z, gbl_world_points.points[i].v.z);
+            min_z = min(min_z, gbl_world_points.points[i].v.z);
+        }
+        this->m_halfSize = max(max_x - min_x, max(max_y - min_y, max_z - min_z)) + 2.0 * minNodeSize;
+        this->m_center.x = (max_x + min_x) * 0.5;
+        this->m_center.y = (max_y + min_y) * 0.5;
+        this->m_center.z = (max_z + min_z) * 0.5;
+        worldBB.minCoords = this->m_center - 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
+        worldBB.maxCoords = this->m_center + 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
     }
-    double unknown_loc_10;
-    unknown_loc_10 = gbl_world_points.points[0].v.x;
-    double unknown_loc_58;
-    unknown_loc_58 = gbl_world_points.points[0].v.x;
-    double unknown_loc_18;
-    unknown_loc_18 = gbl_world_points.points[0].v.y;
-    double unknown_loc_60;
-    unknown_loc_60 = gbl_world_points.points[0].v.y;
-    double unknown_loc_20;
-    unknown_loc_20 = gbl_world_points.points[0].v.z;
-    double unknown_loc_08;
-    unknown_loc_08 = gbl_world_points.points[0].v.z;
-    for (unsigned int unknown_loc_64 = 1; unknown_loc_64 < gbl_world_points.points.size; unknown_loc_64++)
-    {
-        unknown_loc_10 = max(unknown_loc_10, gbl_world_points.points[unknown_loc_64].v.x);
-        unknown_loc_58 = min(unknown_loc_58, gbl_world_points.points[unknown_loc_64].v.x);
-        unknown_loc_18 = max(unknown_loc_18, gbl_world_points.points[unknown_loc_64].v.y);
-        unknown_loc_60 = min(unknown_loc_60, gbl_world_points.points[unknown_loc_64].v.y);
-        unknown_loc_20 = max(unknown_loc_20, gbl_world_points.points[unknown_loc_64].v.z);
-        unknown_loc_08 = min(unknown_loc_08, gbl_world_points.points[unknown_loc_64].v.z);
-    }
-    this->m_halfSize = max(unknown_loc_10 - unknown_loc_58, max(unknown_loc_18 - unknown_loc_60, unknown_loc_20 - unknown_loc_08)) + 2.0 * minNodeSize;
-    this->m_center.x = (unknown_loc_10 + unknown_loc_58) * 0.5;
-    this->m_center.y = (unknown_loc_18 + unknown_loc_60) * 0.5;
-    this->m_center.z = (unknown_loc_20 + unknown_loc_08) * 0.5;
-    unknown_loc_50.minCoords = this->m_center - 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
-    unknown_loc_50.maxCoords = this->m_center + 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
-l00451FD1:
-    this->m_root = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(&map), minNodeSize, unknown_loc_50);
-    ??6@YAAAVB_MessageManager@@AAV0@PBD@Z(&?mout@@3VB_MessageManager@@A, ?vararg@@YAPBDPBDZZ(GLOBAL(0x005CFE3C), gbl_node_count));
+    this->m_root = BuildNode(map, minNodeSize, worldBB);
+    mout << vararg("OctTree with %d nodes.\n", gbl_node_count);
 }
 
 // address: 0x0045201F

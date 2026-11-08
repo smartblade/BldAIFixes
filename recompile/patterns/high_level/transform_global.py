@@ -60,3 +60,21 @@ def _expect_not_float_constant(address, var_type, var_name, declarations):
         raise Exception(
             "Global variable {} at 0x{:08X} is read only float "
             "constant.".format(var_name, address))
+
+
+def transform_mangled_variable(identifier, declarations):
+    """Identifier of an imported variable named by its mangled name, e.g.
+    'mout' of '?mout@@3VB_MessageManager@@A'."""
+    if identifier.data_type is not None:
+        return None
+    if not identifier.name.startswith("?"):
+        return None
+    try:
+        variable = parser.demangle_cpp_variable(
+            identifier.name, declarations.declared_types)
+    except Exception:
+        return None
+    if variable is None:
+        return None
+    data_type, name = variable
+    return expressions.Identifier(data_type, name)

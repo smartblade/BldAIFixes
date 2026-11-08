@@ -8,6 +8,13 @@ def demangle_cpp(s, declared_types):
     return demangler.parse()
 
 
+def demangle_cpp_variable(s, declared_types):
+    """Return (data type, name) of a mangled global variable, e.g.
+    '?mout@@3VB_MessageManager@@A', or None."""
+    demangler = _CppDemangler(s, declared_types)
+    return demangler.parse_variable()
+
+
 class _Operator:
     def __init__(self, name=None, is_constructor=False, is_destructor=False):
         self._name = name
@@ -55,16 +62,37 @@ class _CppDemangler:
         else:
             return_type = self._pop_data_type()
         parameters = []
+        is_vararg = False
         if not self._try_pop_char("X"):
             arg_types = []
             while not self._try_pop_char("@"):
+                # 'Z' ends parameters followed by '...'
+                if self._try_pop_char("Z"):
+                    is_vararg = True
+                    break
                 parameter_type = self._pop_data_type(arg_types)
                 parameters.append((parameter_type, None))
         self._expect("Z")
         return ProcedureDeclaration(
             proc_name, calling_convention, method_class, parameters,
             return_type, is_static=is_static, is_virtual=is_virtual,
-            is_const=is_const)
+            is_vararg=is_vararg, is_const=is_const)
+
+    def parse_variable(self):
+        if not self._try_pop_char("?"):
+            return None
+        name = self._pop_identifier()
+        if not self._try_pop_char("@"):
+            return None
+        # Global variable
+        if not self._try_pop_char("3"):
+            return None
+        data_type = self._pop_data_type()
+        if not self._try_pop_char("A"):
+            return None
+        if self._pos != len(self._decl_str):
+            return None
+        return data_type, name
 
     def _pop_procedure_qualified_name(self):
         if self._try_pop_char("?"):

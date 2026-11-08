@@ -128,3 +128,24 @@ class TestDeclarationsInBuckets(unittest.TestCase):
             call_instr(name="f", arguments=[i]),
         ]
         self.assertIn("int i = 2;\n", _emit(instrs, {-36: box_center, -60: i}))
+
+    def test_variable_of_higher_bucket_above_in_block(self):
+        # min_x (bucket 14) above i (bucket 9) can't be in the block of i
+        i = i32_id("i")
+        min_x = i32_id("min_x")
+        instrs = [
+            if_instr(i32_id("c"), [
+                ass(min_x, _const(1)),
+                ass(i, _const(2)),
+                call_instr(name="f", arguments=[min_x, i]),
+            ]),
+        ]
+        self.assertEqual(
+            "int min_x;\n"
+            "if (c)\n"
+            "{\n"
+            "    min_x = 1;\n"
+            "    int i = 2;\n"
+            "    f(min_x, i);\n"
+            "}\n",
+            _emit(instrs, {-88: min_x, -100: i}))
