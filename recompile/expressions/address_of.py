@@ -12,6 +12,8 @@ class AddressOf:
                 expressions.ArrayAccess,
                 expressions.ProcedureCall,
                 expressions.Bin,
+                # Element returned by reference by operator[]
+                expressions.SubscriptOperator,
             )
         )
         # Assignment returns lvalue

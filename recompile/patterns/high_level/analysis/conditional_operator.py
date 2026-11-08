@@ -22,7 +22,8 @@ class ConditionalOperatorAnalysis:
             self._num_uses[offset] = 1
         elif self._num_uses[offset] is not None:
             self._num_uses[offset] += 1
-        if size != 4:
+        # Results of conditional operators are 32-bit values or doubles
+        if size not in (4, 8):
             self._num_uses[offset] = None
 
     def process_local(self, local):
@@ -52,12 +53,12 @@ class ConditionalOperatorAnalysis:
         if_stackvar = if_ass.dst
         if not isinstance(if_stackvar, expressions.intermediate.Stackvar):
             return
-        if if_stackvar.size != 4:
+        if if_stackvar.size not in (4, 8):
             return
         else_stackvar = else_ass.dst
         if not isinstance(else_stackvar, expressions.intermediate.Stackvar):
             return
-        if else_stackvar.size != 4:
+        if else_stackvar.size != if_stackvar.size:
             return
         if if_stackvar.offset != else_stackvar.offset:
             return
@@ -80,7 +81,7 @@ class ConditionalOperatorAnalysis:
         self._candidates.append(if_stackvar.offset)
         if if_stackvar.offset not in self._offsets:
             return
-        _add_stack_var(if_stackvar.offset, stack_vars)
+        _add_stack_var(if_stackvar.offset, if_stackvar.size, stack_vars)
         cond_operator_chain.replace_instructions([next_instr])
 
 
@@ -124,10 +125,10 @@ def _replace_cond_operator(instr, stackvar, cond_operator):
     return instr
 
 
-def _add_stack_var(offset, stack_vars):
+def _add_stack_var(offset, size, stack_vars):
     if offset in stack_vars:
         return
     assert offset < 0
     name = "__cond_result_{:02X}".format(-offset)
-    data_type = data_types.Unknown32()
+    data_type = data_types.unknown_types[size]
     stack_vars[offset] = expressions.Identifier(data_type, name)

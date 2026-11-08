@@ -359,6 +359,13 @@ class LocalsAnalysis:
             self._types_by_offset[offset] = data_type
             return
         if (
+            isinstance(data_type, data_types.UnknownTypes) and
+            data_type.size < existing_type.size
+        ):
+            # A half of a double copied by two moves is merged later, other
+            # narrower accesses remain conflicting in sizes of accesses
+            return
+        if (
             not data_types.are_same(data_type, existing_type) and
             data_types.are_compatible(data_type, existing_type)
         ):

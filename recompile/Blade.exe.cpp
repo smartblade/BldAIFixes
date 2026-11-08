@@ -208,103 +208,35 @@ void B_OctTree::Build(const B_Map &map, double minNodeSize)
     }
     this->m_halfSize = 0.0;
     B_BoundingBox unknown_loc_50;
-    if (ACCESS(GLOBAL(0x005DF8A0), 0, 4) == 0x00000000)
+    if (gbl_world_points.points.size == 0)
     {
         goto l00451FD1;
     }
-    STACKVAR(-16, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 0), 0, 8);
-    STACKVAR(-88, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 0), 0, 8);
-    STACKVAR(-24, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 8), 0, 8);
-    STACKVAR(-96, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 8), 0, 8);
-    STACKVAR(-32, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 16), 0, 8);
-    STACKVAR(-8, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 16), 0, 8);
-    for (unsigned int unknown_loc_64 = 1; unknown_loc_64 < reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x005DF8A0), 0, 4)); unknown_loc_64++)
+    double unknown_loc_10;
+    unknown_loc_10 = gbl_world_points.points[0].v.x;
+    double unknown_loc_58;
+    unknown_loc_58 = gbl_world_points.points[0].v.x;
+    double unknown_loc_18;
+    unknown_loc_18 = gbl_world_points.points[0].v.y;
+    double unknown_loc_60;
+    unknown_loc_60 = gbl_world_points.points[0].v.y;
+    double unknown_loc_20;
+    unknown_loc_20 = gbl_world_points.points[0].v.z;
+    double unknown_loc_08;
+    unknown_loc_08 = gbl_world_points.points[0].v.z;
+    for (unsigned int unknown_loc_64 = 1; unknown_loc_64 < gbl_world_points.points.size; unknown_loc_64++)
     {
-        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 0), 0, 8)) < reinterpret_cast<double>(STACKVAR(-16, 8)))
-        {
-            STACKVAR(-316, 8) = STACKVAR(-16, 8);
-        }
-        else
-        {
-            STACKVAR(-316, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 0), 0, 8));
-        }
-        STACKVAR(-16, 8) = STACKVAR(-316, 8);
-        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 0), 0, 8)) > reinterpret_cast<double>(STACKVAR(-88, 8)))
-        {
-            STACKVAR(-324, 8) = STACKVAR(-88, 8);
-        }
-        else
-        {
-            STACKVAR(-324, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 0), 0, 8));
-        }
-        STACKVAR(-88, 8) = STACKVAR(-324, 8);
-        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 8), 0, 8)) < reinterpret_cast<double>(STACKVAR(-24, 8)))
-        {
-            STACKVAR(-332, 8) = STACKVAR(-24, 8);
-        }
-        else
-        {
-            STACKVAR(-332, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 8), 0, 8));
-        }
-        STACKVAR(-24, 8) = STACKVAR(-332, 8);
-        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 8), 0, 8)) > reinterpret_cast<double>(STACKVAR(-96, 8)))
-        {
-            STACKVAR(-340, 8) = STACKVAR(-96, 8);
-        }
-        else
-        {
-            STACKVAR(-340, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 8), 0, 8));
-        }
-        STACKVAR(-96, 8) = STACKVAR(-340, 8);
-        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 16), 0, 8)) < reinterpret_cast<double>(STACKVAR(-32, 8)))
-        {
-            STACKVAR(-348, 8) = STACKVAR(-32, 8);
-        }
-        else
-        {
-            STACKVAR(-348, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 16), 0, 8));
-        }
-        STACKVAR(-32, 8) = STACKVAR(-348, 8);
-        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 16), 0, 8)) > reinterpret_cast<double>(STACKVAR(-8, 8)))
-        {
-            STACKVAR(-356, 8) = STACKVAR(-8, 8);
-        }
-        else
-        {
-            STACKVAR(-356, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 16), 0, 8));
-        }
-        STACKVAR(-8, 8) = STACKVAR(-356, 8);
+        unknown_loc_10 = max(unknown_loc_10, gbl_world_points.points[unknown_loc_64].v.x);
+        unknown_loc_58 = min(unknown_loc_58, gbl_world_points.points[unknown_loc_64].v.x);
+        unknown_loc_18 = max(unknown_loc_18, gbl_world_points.points[unknown_loc_64].v.y);
+        unknown_loc_60 = min(unknown_loc_60, gbl_world_points.points[unknown_loc_64].v.y);
+        unknown_loc_20 = max(unknown_loc_20, gbl_world_points.points[unknown_loc_64].v.z);
+        unknown_loc_08 = min(unknown_loc_08, gbl_world_points.points[unknown_loc_64].v.z);
     }
-    double unknown_loc_16C;
-    if (reinterpret_cast<double>(STACKVAR(-24, 8)) - reinterpret_cast<double>(STACKVAR(-96, 8)) > reinterpret_cast<double>(STACKVAR(-32, 8)) - reinterpret_cast<double>(STACKVAR(-8, 8)))
-    {
-        unknown_loc_16C = reinterpret_cast<double>(STACKVAR(-24, 8)) - reinterpret_cast<double>(STACKVAR(-96, 8));
-    }
-    else
-    {
-        unknown_loc_16C = reinterpret_cast<double>(STACKVAR(-32, 8)) - reinterpret_cast<double>(STACKVAR(-8, 8));
-    }
-    if (reinterpret_cast<double>(STACKVAR(-16, 8)) - reinterpret_cast<double>(STACKVAR(-88, 8)) > unknown_loc_16C)
-    {
-        STACKVAR(-372, 8) = reinterpret_cast<double>(STACKVAR(-16, 8)) - reinterpret_cast<double>(STACKVAR(-88, 8));
-    }
-    else
-    {
-        double unknown_loc_17C;
-        if (reinterpret_cast<double>(STACKVAR(-24, 8)) - reinterpret_cast<double>(STACKVAR(-96, 8)) > reinterpret_cast<double>(STACKVAR(-32, 8)) - reinterpret_cast<double>(STACKVAR(-8, 8)))
-        {
-            unknown_loc_17C = reinterpret_cast<double>(STACKVAR(-24, 8)) - reinterpret_cast<double>(STACKVAR(-96, 8));
-        }
-        else
-        {
-            unknown_loc_17C = reinterpret_cast<double>(STACKVAR(-32, 8)) - reinterpret_cast<double>(STACKVAR(-8, 8));
-        }
-        STACKVAR(-372, 8) = unknown_loc_17C;
-    }
-    this->m_halfSize = 2.0 * minNodeSize + reinterpret_cast<double>(STACKVAR(-372, 8));
-    this->m_center.x = (reinterpret_cast<double>(STACKVAR(-16, 8)) + reinterpret_cast<double>(STACKVAR(-88, 8))) * 0.5;
-    this->m_center.y = (reinterpret_cast<double>(STACKVAR(-24, 8)) + reinterpret_cast<double>(STACKVAR(-96, 8))) * 0.5;
-    this->m_center.z = (reinterpret_cast<double>(STACKVAR(-32, 8)) + reinterpret_cast<double>(STACKVAR(-8, 8))) * 0.5;
+    this->m_halfSize = max(unknown_loc_10 - unknown_loc_58, max(unknown_loc_18 - unknown_loc_60, unknown_loc_20 - unknown_loc_08)) + 2.0 * minNodeSize;
+    this->m_center.x = (unknown_loc_10 + unknown_loc_58) * 0.5;
+    this->m_center.y = (unknown_loc_18 + unknown_loc_60) * 0.5;
+    this->m_center.z = (unknown_loc_20 + unknown_loc_08) * 0.5;
     unknown_loc_50.minCoords = this->m_center - 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
     unknown_loc_50.maxCoords = this->m_center + 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
 l00451FD1:
@@ -544,7 +476,7 @@ void B_OctTree::FindSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *
     gbl_oct_tree_query_id++;
     gbl_current_query_box = &bb;
     B_BoundingBox localBB(bb.minCoords - this->m_center, bb.maxCoords - this->m_center);
-    if (this->m_root != nullptr && -this->m_halfSize * 0.5 - 10.0 < localBB.maxCoords.x && -this->m_halfSize * 0.5 - 10.0 < localBB.maxCoords.y && -this->m_halfSize * 0.5 - 10.0 < localBB.maxCoords.z && this->m_halfSize * 0.5 + 10.0 > localBB.minCoords.x && this->m_halfSize * 0.5 + 10.0 > localBB.minCoords.y && this->m_halfSize * 0.5 + 10.0 > localBB.minCoords.z)
+    if (this->m_root != nullptr && localBB.maxCoords.x > -this->m_halfSize * 0.5 - 10.0 && localBB.maxCoords.y > -this->m_halfSize * 0.5 - 10.0 && localBB.maxCoords.z > -this->m_halfSize * 0.5 - 10.0 && localBB.minCoords.x < this->m_halfSize * 0.5 + 10.0 && localBB.minCoords.y < this->m_halfSize * 0.5 + 10.0 && localBB.minCoords.z < this->m_halfSize * 0.5 + 10.0)
     {
         this->m_root->CollectSectorsInBox(localBB, out, this->m_halfSize);
     }
@@ -573,7 +505,7 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
         {
             B_Surface *current_surface = current_sector->elements[j];
             distance = current_surface->Distance(&sphere->center);
-            if (-sphere->radius > distance)
+            if (distance < -sphere->radius)
             {
                 j = current_sector->size + 1;
             }

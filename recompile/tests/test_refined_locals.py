@@ -55,3 +55,17 @@ class TestRefinedLocals(unittest.TestCase):
         stack_vars = {}
         analysis.fill_stack_variables(stack_vars, {})
         self.assertNotIn(-12, stack_vars)
+
+    def test_known_type_kept_by_narrower_unknown(self):
+        double_var = expressions.intermediate.Stackvar(-8, 8)
+        analysis = LocalsAnalysis()
+        analysis.process_assignment(
+            double_var, expressions.Identifier(data_types.Double(), "d"))
+        half = expressions.intermediate.Stackvar(-8, 4)
+        analysis.process_assignment(
+            half, expressions.Identifier(data_types.Unknown32(), "u"))
+        analysis.collect_stack_accesses(
+            [instructions.CodeInstruction(double_var)])
+        stack_vars = {}
+        analysis.fill_stack_variables(stack_vars, {})
+        self.assertEqual("double", stack_vars[-8].data_type.get_type_name())

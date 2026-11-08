@@ -37,8 +37,11 @@ from .split_jumped_declarations import split_jumped_declarations
 from .transform_for_loops import transform_for_loops
 from .transform_returns import transform_returns
 from .transform_struct_copy import transform_struct_copy
+from .conditional_results import fold_conditional_results
+from .operands_order import order_operands
 from .inlined_clear import collapse_inlined_clears
 from .inlined_subscripts import restore_inlined_subscripts
+from .inlined_subscripts import restore_subscripts_of_fields
 from .local_structors import remove_inlined_local_structors
 from .new_expressions import fold_new_expressions
 from .other_parent_calls import restore_other_parent_calls
@@ -78,6 +81,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         instrs, analysis.get_double_fields_offsets())
     instrs = fold_new_expressions(instrs, analysis)
     instrs = restore_inlined_subscripts(instrs)
+    instrs = restore_subscripts_of_fields(instrs)
     instrs = restore_other_parent_calls(instrs, analysis)
     analysis.collect_stack_accesses(instrs)
     analysis.fill_stack_variables(
@@ -97,12 +101,14 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = procedure.copy(instrs=instrs)
     procedure = remove_inlined_base_structors(procedure)
     procedure = remove_member_array_construction(procedure)
+    procedure = fold_conditional_results(procedure)
     procedure = collapse_inlined_clears(procedure)
     procedure = remove_inlined_local_structors(procedure, stack_vars)
     procedure = remove_inlined_member_construction(procedure)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
     procedure = split_class_return_assignments(procedure)
+    procedure = order_operands(procedure, stack_vars)
     procedure = insert_declarations(procedure, stack_vars)
     procedure = restore_local_constructions(procedure)
     procedure = fold_temporaries(procedure, declarations.declared_types)

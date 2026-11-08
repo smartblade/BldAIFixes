@@ -22104,7 +22104,6 @@ void B_ObjDscr::SetUpEdges()
 // address: 0x10034D5A
 void B_ObjDscr::Draw(B_3DRasterDevice *raster, float x1, float y1, float x2, float y2, float scale, int i_unknown)
 {
-    double unknown_loc_440;
     if (x1 > x2 || y1 > y2)
     {
         return;
@@ -22201,63 +22200,15 @@ l10034FEB:
     {
         memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-868), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), LOCAL(-172))), 24);
         memcpy(LOCAL(-544), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), 24);
-        if (reinterpret_cast<double>(STACKVAR(-260, 8)) > reinterpret_cast<double>(STACKVAR(-544, 8)))
-        {
-            STACKVAR(-1048, 8) = STACKVAR(-260, 8);
-        }
-        else
-        {
-            STACKVAR(-1048, 8) = STACKVAR(-544, 8);
-        }
-        STACKVAR(-260, 8) = STACKVAR(-1048, 8);
-        if (reinterpret_cast<double>(STACKVAR(-212, 8)) > reinterpret_cast<double>(STACKVAR(-536, 8)))
-        {
-            STACKVAR(-1056, 8) = STACKVAR(-212, 8);
-        }
-        else
-        {
-            STACKVAR(-1056, 8) = STACKVAR(-536, 8);
-        }
-        STACKVAR(-212, 8) = STACKVAR(-1056, 8);
-        if (reinterpret_cast<double>(STACKVAR(-244, 8)) < reinterpret_cast<double>(STACKVAR(-544, 8)))
-        {
-            STACKVAR(-1064, 8) = STACKVAR(-244, 8);
-        }
-        else
-        {
-            STACKVAR(-1064, 8) = STACKVAR(-544, 8);
-        }
-        STACKVAR(-244, 8) = STACKVAR(-1064, 8);
-        if (reinterpret_cast<double>(STACKVAR(-252, 8)) < reinterpret_cast<double>(STACKVAR(-536, 8)))
-        {
-            STACKVAR(-1072, 8) = STACKVAR(-252, 8);
-        }
-        else
-        {
-            STACKVAR(-1072, 8) = STACKVAR(-536, 8);
-        }
-        STACKVAR(-252, 8) = STACKVAR(-1072, 8);
-        if (reinterpret_cast<double>(STACKVAR(-204, 8)) < reinterpret_cast<double>(STACKVAR(-528, 8)))
-        {
-            STACKVAR(-1080, 8) = STACKVAR(-204, 8);
-        }
-        else
-        {
-            STACKVAR(-1080, 8) = STACKVAR(-528, 8);
-        }
-        STACKVAR(-204, 8) = STACKVAR(-1080, 8);
+        STACKVAR(-260, 8) = reinterpret_cast<double>(STACKVAR(-260, 8)) > reinterpret_cast<double>(STACKVAR(-544, 8)) ? STACKVAR(-260, 8) : STACKVAR(-544, 8);
+        STACKVAR(-212, 8) = reinterpret_cast<double>(STACKVAR(-212, 8)) > reinterpret_cast<double>(STACKVAR(-536, 8)) ? STACKVAR(-212, 8) : STACKVAR(-536, 8);
+        STACKVAR(-244, 8) = reinterpret_cast<double>(STACKVAR(-244, 8)) < reinterpret_cast<double>(STACKVAR(-544, 8)) ? STACKVAR(-244, 8) : STACKVAR(-544, 8);
+        STACKVAR(-252, 8) = reinterpret_cast<double>(STACKVAR(-252, 8)) < reinterpret_cast<double>(STACKVAR(-536, 8)) ? STACKVAR(-252, 8) : STACKVAR(-536, 8);
+        STACKVAR(-204, 8) = reinterpret_cast<double>(STACKVAR(-204, 8)) < reinterpret_cast<double>(STACKVAR(-528, 8)) ? STACKVAR(-204, 8) : STACKVAR(-528, 8);
     }
     if (scale == 0.0)
     {
-        if ((x2 - x1) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8))) < (y2 - y1) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8))))
-        {
-            unknown_loc_440 = (x2 - x1) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8)));
-        }
-        else
-        {
-            unknown_loc_440 = (y2 - y1) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8)));
-        }
-        STACKVAR(-40, 8) = unknown_loc_440;
+        STACKVAR(-40, 8) = min((x2 - x1) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8))), (y2 - y1) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8))));
     }
     else
     {

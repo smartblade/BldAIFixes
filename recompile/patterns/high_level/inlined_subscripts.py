@@ -4,6 +4,7 @@ from expression_transformer import ExpressionTransformer
 from expressions.operator import Operator
 import instructions
 from block_visitor import visit_block
+from expressions.do_pointer_dereference import do_pointer_dereference
 
 
 def restore_inlined_subscripts(instrs):
@@ -237,3 +238,56 @@ def _count_stackvar_uses(instrs):
 
     visit_block(instrs, on_visit)
     return uses
+
+
+def restore_subscripts_of_fields(instrs):
+    """Restore fields of elements returned by inlined 'TYPE &operator[]'.
+
+    The inlined operator of array_t returns a reference to the element,
+    the address is computed by the size of the element at run time:
+        *(double *)(points.elements + 32 * i + 8) -> points[i].v.y
+    """
+    from custom_block_transformer import transform_block
+    return transform_block(list(instrs), _FieldSubscriptTransformer())
+
+
+class _FieldSubscriptTransformer(ExpressionTransformer):
+    def transform_access(self, expression, offset, size, **kwargs):
+        if offset != 0:
+            return None
+        if not isinstance(expression, expressions.intermediate.Arrptr):
+            return None
+        if expression.scale != 1:
+            return None
+        product = expression.index
+        if not isinstance(product, expressions.Bin):
+            return None
+        if product.operator != Operator.MUL:
+            return None
+        if not isinstance(product.left, expressions.Constant):
+            return None
+        elements = expression.base
+        if not isinstance(elements, expressions.FieldAccess):
+            return None
+        elements_type = elements.data_type
+        if not isinstance(elements_type, data_types.Pointer32):
+            return None
+        element_type = elements_type.pointee
+        if not isinstance(element_type, data_types.ClassType):
+            return None
+        if product.left.value != element_type.size:
+            return None
+        if element_type.size <= expression.offset:
+            return None
+        index = product.right
+        if isinstance(index, expressions.Constant):
+            index = expressions.Constant(data_types.UInt32(), index.value)
+        subscript = _make_subscript(elements, index)
+        if subscript is None:
+            return None
+        try:
+            field = do_pointer_dereference(
+                expressions.AddressOf(subscript), expression.offset, size)
+        except Exception:
+            return None
+        return field

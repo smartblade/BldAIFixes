@@ -74,3 +74,36 @@ class TestInlinedSubscripts(unittest.TestCase):
     def test_argument_below_object_of_inlined_method(self):
         instrs = self._loop_instrs(-480)
         self.assertEqual(3, len(restore_inlined_subscripts(instrs)))
+
+
+class TestSubscriptsOfFields(unittest.TestCase):
+    def test_field_of_element_returned_by_reference(self):
+        from patterns.high_level.inlined_subscripts import \
+            restore_subscripts_of_fields
+        vector = data_types.ClassType("B_Vector", {
+            0: (data_types.Double(), "x"),
+            8: (data_types.Double(), "y"),
+            16: (data_types.Double(), "z"),
+        })
+        point = data_types.ClassType("B_WorldPoint", {
+            0: (vector, "v"),
+            24: (data_types.Int32(), "a"),
+            28: (data_types.Int32(), "b"),
+        })
+        array = data_types.ClassType("Array", {
+            4: (data_types.Pointer32(point), "elements"),
+        })
+        array.add_other_method(ProcedureDeclaration(
+            "operator []", CallingConvention.THISCALL, array,
+            [(data_types.UInt32(), "index")], data_types.Reference(point)))
+        points = expressions.Identifier(array, "points")
+        i = expressions.Identifier(data_types.UInt32(), "i")
+        access = expressions.intermediate.Access(
+            expressions.intermediate.Arrptr(
+                expressions.FieldAccess(
+                    expressions.AddressOf(points), "elements"),
+                1, expressions.Bin(Operator.MUL, _const(32), i), 8),
+            0, 8)
+        instrs = restore_subscripts_of_fields([
+            instructions.Assignment(_stackvar(-8), access)])
+        self.assertEqual("points[i].v.y", instrs[0].src.emit_code())
