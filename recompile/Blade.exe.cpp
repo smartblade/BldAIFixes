@@ -199,6 +199,119 @@ B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &map, double sizeThreshol
     }
 }
 
+// address: 0x00451A21
+void B_OctTree::Build(const B_Map &map, double minNodeSize)
+{
+    if (this->m_root != nullptr)
+    {
+        delete this->m_root;
+    }
+    this->m_halfSize = 0.0;
+    B_BoundingBox unknown_loc_50;
+    if (ACCESS(GLOBAL(0x005DF8A0), 0, 4) == 0x00000000)
+    {
+        goto l00451FD1;
+    }
+    STACKVAR(-16, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 0), 0, 8);
+    STACKVAR(-88, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 0), 0, 8);
+    STACKVAR(-24, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 8), 0, 8);
+    STACKVAR(-96, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 8), 0, 8);
+    STACKVAR(-32, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 16), 0, 8);
+    STACKVAR(-8, 8) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 0x00000020 * 0x00000000, 16), 0, 8);
+    for (unsigned int unknown_loc_64 = 1; unknown_loc_64 < reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x005DF8A0), 0, 4)); unknown_loc_64++)
+    {
+        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 0), 0, 8)) < reinterpret_cast<double>(STACKVAR(-16, 8)))
+        {
+            STACKVAR(-316, 8) = STACKVAR(-16, 8);
+        }
+        else
+        {
+            STACKVAR(-316, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 0), 0, 8));
+        }
+        STACKVAR(-16, 8) = STACKVAR(-316, 8);
+        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 0), 0, 8)) > reinterpret_cast<double>(STACKVAR(-88, 8)))
+        {
+            STACKVAR(-324, 8) = STACKVAR(-88, 8);
+        }
+        else
+        {
+            STACKVAR(-324, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 0), 0, 8));
+        }
+        STACKVAR(-88, 8) = STACKVAR(-324, 8);
+        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 8), 0, 8)) < reinterpret_cast<double>(STACKVAR(-24, 8)))
+        {
+            STACKVAR(-332, 8) = STACKVAR(-24, 8);
+        }
+        else
+        {
+            STACKVAR(-332, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 8), 0, 8));
+        }
+        STACKVAR(-24, 8) = STACKVAR(-332, 8);
+        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 8), 0, 8)) > reinterpret_cast<double>(STACKVAR(-96, 8)))
+        {
+            STACKVAR(-340, 8) = STACKVAR(-96, 8);
+        }
+        else
+        {
+            STACKVAR(-340, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 8), 0, 8));
+        }
+        STACKVAR(-96, 8) = STACKVAR(-340, 8);
+        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 16), 0, 8)) < reinterpret_cast<double>(STACKVAR(-32, 8)))
+        {
+            STACKVAR(-348, 8) = STACKVAR(-32, 8);
+        }
+        else
+        {
+            STACKVAR(-348, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 16), 0, 8));
+        }
+        STACKVAR(-32, 8) = STACKVAR(-348, 8);
+        if (reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 16), 0, 8)) > reinterpret_cast<double>(STACKVAR(-8, 8)))
+        {
+            STACKVAR(-356, 8) = STACKVAR(-8, 8);
+        }
+        else
+        {
+            STACKVAR(-356, 8) = reinterpret_cast<double>(ACCESS(ARRPTR(ACCESS(GLOBAL(0x005DF89C), 0, 4), 1, 32 * unknown_loc_64, 16), 0, 8));
+        }
+        STACKVAR(-8, 8) = STACKVAR(-356, 8);
+    }
+    double unknown_loc_16C;
+    if (reinterpret_cast<double>(STACKVAR(-24, 8)) - reinterpret_cast<double>(STACKVAR(-96, 8)) > reinterpret_cast<double>(STACKVAR(-32, 8)) - reinterpret_cast<double>(STACKVAR(-8, 8)))
+    {
+        unknown_loc_16C = reinterpret_cast<double>(STACKVAR(-24, 8)) - reinterpret_cast<double>(STACKVAR(-96, 8));
+    }
+    else
+    {
+        unknown_loc_16C = reinterpret_cast<double>(STACKVAR(-32, 8)) - reinterpret_cast<double>(STACKVAR(-8, 8));
+    }
+    if (reinterpret_cast<double>(STACKVAR(-16, 8)) - reinterpret_cast<double>(STACKVAR(-88, 8)) > unknown_loc_16C)
+    {
+        STACKVAR(-372, 8) = reinterpret_cast<double>(STACKVAR(-16, 8)) - reinterpret_cast<double>(STACKVAR(-88, 8));
+    }
+    else
+    {
+        double unknown_loc_17C;
+        if (reinterpret_cast<double>(STACKVAR(-24, 8)) - reinterpret_cast<double>(STACKVAR(-96, 8)) > reinterpret_cast<double>(STACKVAR(-32, 8)) - reinterpret_cast<double>(STACKVAR(-8, 8)))
+        {
+            unknown_loc_17C = reinterpret_cast<double>(STACKVAR(-24, 8)) - reinterpret_cast<double>(STACKVAR(-96, 8));
+        }
+        else
+        {
+            unknown_loc_17C = reinterpret_cast<double>(STACKVAR(-32, 8)) - reinterpret_cast<double>(STACKVAR(-8, 8));
+        }
+        STACKVAR(-372, 8) = unknown_loc_17C;
+    }
+    this->m_halfSize = 2.0 * minNodeSize + reinterpret_cast<double>(STACKVAR(-372, 8));
+    this->m_center.x = (reinterpret_cast<double>(STACKVAR(-16, 8)) + reinterpret_cast<double>(STACKVAR(-88, 8))) * 0.5;
+    this->m_center.y = (reinterpret_cast<double>(STACKVAR(-24, 8)) + reinterpret_cast<double>(STACKVAR(-96, 8))) * 0.5;
+    this->m_center.z = (reinterpret_cast<double>(STACKVAR(-32, 8)) + reinterpret_cast<double>(STACKVAR(-8, 8))) * 0.5;
+    unknown_loc_50.minCoords = this->m_center - 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
+    unknown_loc_50.maxCoords = this->m_center + 0.5 * B_Vector(this->m_halfSize, this->m_halfSize, this->m_halfSize);
+l00451FD1:
+    this->m_root = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(&map), minNodeSize, unknown_loc_50);
+    ??6@YAAAVB_MessageManager@@AAV0@PBD@Z(&?mout@@3VB_MessageManager@@A, ?vararg@@YAPBDPBDZZ(GLOBAL(0x005CFE3C), gbl_node_count));
+}
+
 // address: 0x0045201F
 void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {

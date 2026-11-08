@@ -898,6 +898,32 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src-base%+%tmpreg32-src-index%+%hex-src-low%]"]},
+			{"mov": ["[ebp%offset-dst-low%]", "%tmpreg32-low%"]},
+			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src-base%+%tmpreg32-src-index%+%hex-src-high%]"]},
+			{"mov": ["[ebp%offset-dst-high%]", "%tmpreg32-high%"]}
+		],
+		"action": {"assignment": {"dst": "STACKVAR(EXPECT(%offset-dst-low%, EVAL(%offset-dst-high% - 4)), 8)", "src": "ACCESS(ARRPTR(REGVALUE(%tmpreg32-src-base%), 1, REGVALUE(%tmpreg32-src-index%), EXPECT(EVAL(%hex-src-low%), EVAL(%hex-src-high% - 4))), 0, 8)"}},
+		"restrictions": [
+			"%tmpreg32-low% != %tmpreg32-src-base%",
+			"%tmpreg32-low% != %tmpreg32-src-index%"
+		]
+	},
+	{
+		"instructions": [
+			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src-base%+%tmpreg32-src-index%]"]},
+			{"mov": ["[ebp%offset-dst-low%]", "%tmpreg32-low%"]},
+			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src-base%+%tmpreg32-src-index%+004h]"]},
+			{"mov": ["[ebp%offset-dst-high%]", "%tmpreg32-high%"]}
+		],
+		"action": {"assignment": {"dst": "STACKVAR(EXPECT(%offset-dst-low%, EVAL(%offset-dst-high% - 4)), 8)", "src": "ACCESS(ARRPTR(REGVALUE(%tmpreg32-src-base%), 1, REGVALUE(%tmpreg32-src-index%), 0), 0, 8)"}},
+		"restrictions": [
+			"%tmpreg32-low% != %tmpreg32-src-base%",
+			"%tmpreg32-low% != %tmpreg32-src-index%"
+		]
+	},
+	{
+		"instructions": [
 			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src-base%+%tmpreg32-src-index%*08h]"]},
 			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src-base%+%tmpreg32-src-index%*08h+004h]"]}
 		],
