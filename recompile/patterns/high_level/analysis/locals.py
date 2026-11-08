@@ -148,6 +148,20 @@ class LocalsAnalysis:
         for argument in arguments[:2]:
             if isinstance(argument, expressions.intermediate.Local):
                 self._process_typed_local_use(argument, 0, size.value)
+        # A local copied to an object of a class of the copied size is an
+        # object of the class too, e.g. a temporary 'B_Vector(x, y, z)'
+        # assigned to a field: 'memcpy(&box.minCoords, LOCAL(-172), 24)'.
+        # A destination may be a part of a local of other class.
+        dst, src = arguments[0], arguments[1]
+        dst_type = dst.data_type
+        if (
+            isinstance(src, expressions.intermediate.Local) and
+            isinstance(dst_type, data_types.Pointer32)
+        ):
+            class_type = _class_at_start(dst_type.pointee, size.value)
+            if class_type is not None:
+                self._cur_local_types.setdefault(
+                    src.offset, []).append(class_type)
 
     def _get_min_local_ptr_offset(self, ignore_extents=False):
         min_local_ptr_offset = 0
@@ -299,6 +313,20 @@ class LocalsAnalysis:
             for start, end in self._local_extents.values()
         )
 
+    def get_double_fields_offsets(self):
+        """Offsets of double fields of locals typed by casts to classes."""
+        offsets = set()
+        for offset in self._local_types:
+            class_type = self._get_local_class(offset)
+            if class_type is None:
+                continue
+            for field_offset, (field_type, name) in (
+                class_type.get_all_fields().items()
+            ):
+                if isinstance(field_type, data_types.Double):
+                    offsets.add(offset + field_offset)
+        return offsets
+
     def set_stackvar_type(self, offset, data_type):
         """Set type of stack variable known for sure, e.g. created by new."""
         self._types_by_offset[offset] = data_type
@@ -312,11 +340,16 @@ class LocalsAnalysis:
         existing_type = self._types_by_offset[offset]
         if existing_type is None:
             return
-        if (
-            isinstance(existing_type, data_types.UnknownTypes) and
-            existing_type.size == data_type.size
+        if isinstance(existing_type, data_types.UnknownTypes) and (
+            existing_type.size == data_type.size or (
+                existing_type.size < data_type.size and
+                not isinstance(data_type, data_types.UnknownTypes)
+            )
         ):
-            # Unknown type of the earlier pass is refined
+            # Unknown type of the earlier pass is refined, also by a wider
+            # type: halves of a double copied by two moves before they were
+            # merged. Narrower accesses of the variable remain conflicting
+            # in sizes of stack accesses.
             self._types_by_offset[offset] = data_type
             return
         if (
@@ -337,6 +370,19 @@ class LocalsAnalysis:
                 )
             else:
                 self._types_by_offset[offset] = None
+
+
+def _class_at_start(data_type, size):
+    """Class of the size at the start of the type: the type or its first
+    field, e.g. B_Vector of 'memcpy(&box, v, 24)' copying box.minCoords."""
+    while isinstance(data_type, data_types.ClassType):
+        if data_type.size == size:
+            return data_type
+        fields = data_type.get_all_fields()
+        if 0 not in fields:
+            return None
+        data_type = fields[0][0]
+    return None
 
 
 def _is_unknown_int32(data_type):

@@ -2,7 +2,7 @@ import expressions
 import instructions
 
 
-def merge_split_copies(instrs):
+def merge_split_copies(instrs, double_offsets=()):
     """Merge copies of halves of 8-byte stack variables.
 
     Doubles are copied with two 32-bit moves:
@@ -13,16 +13,38 @@ def merge_split_copies(instrs):
     Merge them to 'STACKVAR(-232, 8) = STACKVAR(-16, 8)' if the source or
     the destination is accessed as 8-byte stack variable elsewhere, e.g. a
     field of a local object copied to an argument of an inlined method.
+    double_offsets are offsets of double fields of local objects known from
+    the analysis. Copies are merged repeatedly: a merged destination may be
+    the source of other copy, e.g. a field copied to a temporary and then to
+    a field of other object.
     """
-    qwords = set()
+    while True:
+        qwords = set(double_offsets)
 
-    def on_visit(e, **kwargs):
-        if isinstance(e, expressions.intermediate.Stackvar) and e.size == 8:
-            qwords.add(e.offset)
+        def on_visit(e, **kwargs):
+            if (
+                isinstance(e, expressions.intermediate.Stackvar) and
+                e.size == 8
+            ):
+                qwords.add(e.offset)
 
-    for instr in instrs:
-        instr.visit(on_visit)
-    return _merge_block(instrs, qwords)
+        for instr in instrs:
+            instr.visit(on_visit)
+        new_instrs = _merge_block(instrs, qwords)
+        if _count_instructions(new_instrs) == _count_instructions(instrs):
+            return new_instrs
+        instrs = new_instrs
+
+
+def _count_instructions(block):
+    count = 0
+    for instr in block:
+        count += 1
+        for attr in ("if_block", "else_block", "block", "instructions"):
+            sub = getattr(instr, attr, None)
+            if isinstance(sub, list):
+                count += _count_instructions(sub)
+    return count
 
 
 def _merge_block(block, qwords):

@@ -162,9 +162,9 @@ l00450ABC:
     STACKVAR(-40, 4) = 0x00000001;
     STACKVAR(-60, 4) = GLOBAL(0x005BDB7C);
     B_OctantNode *unknown_loc_70 = new B_OctantNode();
-    *reinterpret_cast<B_Vector *>(LOCAL(-36)) = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
+    B_Vector unknown_loc_24 = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
     unknown_loc_6C.minCoords = worldBB.minCoords;
-    memcpy(&unknown_loc_6C.maxCoords, LOCAL(-36), 24);
+    unknown_loc_6C.maxCoords = unknown_loc_24;
     unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
     unknown_loc_70->children[0] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
     if (STACKVAR(-44, 4) == 0x00000000)
@@ -186,22 +186,8 @@ l00450C18:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00450C45:
-    STACKVAR(-512, 8) = STACKVAR(-20, 8);
-    double unknown_loc_1F8 = worldBB.minCoords.y;
-    double unknown_loc_1F0 = worldBB.minCoords.x;
-    STACKVAR(-172, 8) = unknown_loc_1F0;
-    ACCESS(LOCAL(-164), 0, 8) = unknown_loc_1F8;
-    ACCESS(LOCAL(-156), 0, 8) = STACKVAR(-512, 8);
-    memcpy(&unknown_loc_6C, LOCAL(-172), 24);
-    double unknown_loc_218 = worldBB.maxCoords.z;
-    STACKVAR(-528, 8) = STACKVAR(-28, 8);
-    STACKVAR(-520, 4) = STACKVAR(-36, 4);
-    STACKVAR(-516, 4) = STACKVAR(-32, 4);
-    STACKVAR(-196, 4) = STACKVAR(-520, 4);
-    STACKVAR(-192, 4) = STACKVAR(-516, 4);
-    ACCESS(LOCAL(-188), 0, 8) = STACKVAR(-528, 8);
-    ACCESS(LOCAL(-180), 0, 8) = unknown_loc_218;
-    memcpy(&unknown_loc_6C.maxCoords, LOCAL(-196), 24);
+    unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, worldBB.minCoords.y, unknown_loc_24.z);
+    unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, unknown_loc_24.y, worldBB.maxCoords.z);
     unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
     unknown_loc_70->children[1] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
     if (STACKVAR(-44, 4) == 0x00000000)
@@ -223,22 +209,8 @@ l00450E17:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00450E44:
-    double unknown_loc_240 = worldBB.minCoords.z;
-    STACKVAR(-568, 8) = STACKVAR(-28, 8);
-    double unknown_loc_230 = worldBB.minCoords.x;
-    STACKVAR(-220, 8) = unknown_loc_230;
-    ACCESS(LOCAL(-212), 0, 8) = STACKVAR(-568, 8);
-    ACCESS(LOCAL(-204), 0, 8) = unknown_loc_240;
-    memcpy(&unknown_loc_6C, LOCAL(-220), 24);
-    STACKVAR(-600, 8) = STACKVAR(-20, 8);
-    double unknown_loc_250 = worldBB.maxCoords.y;
-    STACKVAR(-584, 4) = STACKVAR(-36, 4);
-    STACKVAR(-580, 4) = STACKVAR(-32, 4);
-    STACKVAR(-244, 4) = STACKVAR(-584, 4);
-    STACKVAR(-240, 4) = STACKVAR(-580, 4);
-    ACCESS(LOCAL(-236), 0, 8) = unknown_loc_250;
-    ACCESS(LOCAL(-228), 0, 8) = STACKVAR(-600, 8);
-    memcpy(&unknown_loc_6C.maxCoords, LOCAL(-244), 24);
+    unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, unknown_loc_24.y, worldBB.minCoords.z);
+    unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, worldBB.maxCoords.y, unknown_loc_24.z);
     unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
     unknown_loc_70->children[2] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
     if (STACKVAR(-44, 4) == 0x00000000)
@@ -260,22 +232,8 @@ l00451016:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00451043:
-    STACKVAR(-640, 8) = STACKVAR(-20, 8);
-    STACKVAR(-632, 8) = STACKVAR(-28, 8);
-    double unknown_loc_270 = worldBB.minCoords.x;
-    STACKVAR(-268, 8) = unknown_loc_270;
-    ACCESS(LOCAL(-260), 0, 8) = STACKVAR(-632, 8);
-    ACCESS(LOCAL(-252), 0, 8) = STACKVAR(-640, 8);
-    memcpy(&unknown_loc_6C, LOCAL(-268), 24);
-    double unknown_loc_298 = worldBB.maxCoords.z;
-    double unknown_loc_290 = worldBB.maxCoords.y;
-    STACKVAR(-648, 4) = STACKVAR(-36, 4);
-    STACKVAR(-644, 4) = STACKVAR(-32, 4);
-    STACKVAR(-292, 4) = STACKVAR(-648, 4);
-    STACKVAR(-288, 4) = STACKVAR(-644, 4);
-    ACCESS(LOCAL(-284), 0, 8) = unknown_loc_290;
-    ACCESS(LOCAL(-276), 0, 8) = unknown_loc_298;
-    memcpy(&unknown_loc_6C.maxCoords, LOCAL(-292), 24);
+    unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, unknown_loc_24.y, unknown_loc_24.z);
+    unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, worldBB.maxCoords.y, worldBB.maxCoords.z);
     unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
     unknown_loc_70->children[3] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
     if (STACKVAR(-44, 4) == 0x00000000)
@@ -297,22 +255,8 @@ l00451215:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00451242:
-    double unknown_loc_2C0 = worldBB.minCoords.z;
-    double unknown_loc_2B8 = worldBB.minCoords.y;
-    STACKVAR(-688, 4) = STACKVAR(-36, 4);
-    STACKVAR(-684, 4) = STACKVAR(-32, 4);
-    STACKVAR(-316, 4) = STACKVAR(-688, 4);
-    STACKVAR(-312, 4) = STACKVAR(-684, 4);
-    ACCESS(LOCAL(-308), 0, 8) = unknown_loc_2B8;
-    ACCESS(LOCAL(-300), 0, 8) = unknown_loc_2C0;
-    memcpy(&unknown_loc_6C, LOCAL(-316), 24);
-    STACKVAR(-728, 8) = STACKVAR(-20, 8);
-    STACKVAR(-720, 8) = STACKVAR(-28, 8);
-    double unknown_loc_2C8 = worldBB.maxCoords.x;
-    STACKVAR(-340, 8) = unknown_loc_2C8;
-    ACCESS(LOCAL(-332), 0, 8) = STACKVAR(-720, 8);
-    ACCESS(LOCAL(-324), 0, 8) = STACKVAR(-728, 8);
-    memcpy(&unknown_loc_6C.maxCoords, LOCAL(-340), 24);
+    unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, worldBB.minCoords.y, worldBB.minCoords.z);
+    unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, unknown_loc_24.y, unknown_loc_24.z);
     unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
     unknown_loc_70->children[4] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
     if (STACKVAR(-44, 4) == 0x00000000)
@@ -334,22 +278,8 @@ l00451415:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00451442:
-    STACKVAR(-768, 8) = STACKVAR(-20, 8);
-    double unknown_loc_2F8 = worldBB.minCoords.y;
-    STACKVAR(-752, 4) = STACKVAR(-36, 4);
-    STACKVAR(-748, 4) = STACKVAR(-32, 4);
-    STACKVAR(-364, 4) = STACKVAR(-752, 4);
-    STACKVAR(-360, 4) = STACKVAR(-748, 4);
-    ACCESS(LOCAL(-356), 0, 8) = unknown_loc_2F8;
-    ACCESS(LOCAL(-348), 0, 8) = STACKVAR(-768, 8);
-    memcpy(&unknown_loc_6C, LOCAL(-364), 24);
-    double unknown_loc_318 = worldBB.maxCoords.z;
-    STACKVAR(-784, 8) = STACKVAR(-28, 8);
-    double unknown_loc_308 = worldBB.maxCoords.x;
-    STACKVAR(-388, 8) = unknown_loc_308;
-    ACCESS(LOCAL(-380), 0, 8) = STACKVAR(-784, 8);
-    ACCESS(LOCAL(-372), 0, 8) = unknown_loc_318;
-    memcpy(&unknown_loc_6C.maxCoords, LOCAL(-388), 24);
+    unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, worldBB.minCoords.y, unknown_loc_24.z);
+    unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, unknown_loc_24.y, worldBB.maxCoords.z);
     unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
     unknown_loc_70->children[5] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
     if (STACKVAR(-44, 4) == 0x00000000)
@@ -371,22 +301,8 @@ l00451615:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00451642:
-    double unknown_loc_340 = worldBB.minCoords.z;
-    STACKVAR(-824, 8) = STACKVAR(-28, 8);
-    STACKVAR(-816, 4) = STACKVAR(-36, 4);
-    STACKVAR(-812, 4) = STACKVAR(-32, 4);
-    STACKVAR(-412, 4) = STACKVAR(-816, 4);
-    STACKVAR(-408, 4) = STACKVAR(-812, 4);
-    ACCESS(LOCAL(-404), 0, 8) = STACKVAR(-824, 8);
-    ACCESS(LOCAL(-396), 0, 8) = unknown_loc_340;
-    memcpy(&unknown_loc_6C, LOCAL(-412), 24);
-    STACKVAR(-856, 8) = STACKVAR(-20, 8);
-    double unknown_loc_350 = worldBB.maxCoords.y;
-    double unknown_loc_348 = worldBB.maxCoords.x;
-    STACKVAR(-436, 8) = unknown_loc_348;
-    ACCESS(LOCAL(-428), 0, 8) = unknown_loc_350;
-    ACCESS(LOCAL(-420), 0, 8) = STACKVAR(-856, 8);
-    memcpy(&unknown_loc_6C.maxCoords, LOCAL(-436), 24);
+    unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, unknown_loc_24.y, worldBB.minCoords.z);
+    unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, worldBB.maxCoords.y, unknown_loc_24.z);
     unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
     unknown_loc_70->children[6] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
     if (STACKVAR(-44, 4) == 0x00000000)
@@ -408,7 +324,7 @@ l00451815:
     STACKVAR(-52, 4) = 0x00000000;
     STACKVAR(-44, 4) = 0x00000000;
 l00451842:
-    memcpy(&unknown_loc_6C, LOCAL(-36), 24);
+    unknown_loc_6C.minCoords = unknown_loc_24;
     unknown_loc_6C.maxCoords = worldBB.maxCoords;
     unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
     unknown_loc_70->children[7] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);

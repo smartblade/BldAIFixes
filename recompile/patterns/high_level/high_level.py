@@ -72,7 +72,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(instrs, **context)
-    instrs = merge_split_copies(instrs)
+    instrs = merge_split_copies(
+        instrs, analysis.get_double_fields_offsets())
     instrs = fold_new_expressions(instrs, analysis)
     instrs = restore_inlined_subscripts(instrs)
     instrs = restore_other_parent_calls(instrs, analysis)

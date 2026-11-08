@@ -38,6 +38,23 @@ class TestMergeSplitCopies(unittest.TestCase):
             "STACKVAR(-512, 8) = STACKVAR(-20, 8);\nf(STACKVAR(-512, 8));\n",
             _emit(instrs))
 
+    def test_copy_of_double_field_through_temporary(self):
+        # x of a local vector at -36 is copied to a temporary at -520 and
+        # then to x of a temporary vector at -196
+        instrs = [
+            ass(_stackvar(-520), _stackvar(-36)),
+            ass(_stackvar(-516), _stackvar(-32)),
+            ass(_stackvar(-196), _stackvar(-520)),
+            ass(_stackvar(-192), _stackvar(-516)),
+        ]
+        writer = Writer()
+        for instr in merge_split_copies(instrs, {-36}):
+            instr.emit_code(writer)
+        self.assertEqual(
+            "STACKVAR(-520, 8) = STACKVAR(-36, 8);\n"
+            "STACKVAR(-196, 8) = STACKVAR(-520, 8);\n",
+            writer.get_string())
+
     def test_copies_of_ints(self):
         instrs = [
             ass(_stackvar(-232), _stackvar(-16)),

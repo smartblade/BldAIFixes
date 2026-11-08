@@ -70,3 +70,21 @@ class TestStructLocals(unittest.TestCase):
         self.assertEqual(
             "unknown_loc_30.maxCoords",
             struct_variable_field(stack_vars, -24, None).emit_code())
+
+    def test_temporary_copied_to_first_field(self):
+        """'memcpy(&box, LOCAL(-72), 24)' copies a vector to minCoords."""
+        box = data_types.ClassType("B_BoundingBox", {
+            0: (_vector(), "minCoords"),
+            24: (_vector(), "maxCoords"),
+        })
+        analysis = LocalsAnalysis()
+        temporary = expressions.intermediate.Local(-72)
+        bb = expressions.Identifier(data_types.Pointer32(box), "bb")
+        analysis.process_local(temporary)
+        analysis.process_memory_copy(
+            [bb, temporary, expressions.Constant(data_types.Int32(), 24)])
+        analysis.on_transformation_finished()
+        analysis.collect_stack_accesses([])
+        stack_vars = {}
+        analysis.fill_stack_variables(stack_vars, {})
+        self.assertEqual("B_Vector", stack_vars[-72].data_type.class_name)

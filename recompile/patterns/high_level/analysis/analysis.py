@@ -43,6 +43,9 @@ class Analysis:
     def collect_stack_accesses(self, *args, **kwargs):
         self._locals_analysis.collect_stack_accesses(*args, **kwargs)
 
+    def get_double_fields_offsets(self):
+        return self._locals_analysis.get_double_fields_offsets()
+
     def set_stackvar_type(self, *args, **kwargs):
         self._locals_analysis.set_stackvar_type(*args, **kwargs)
 
