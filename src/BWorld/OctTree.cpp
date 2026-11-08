@@ -247,7 +247,9 @@ B_OctantNodeBase *BuildNode(
 )
 {
     if (map.size == 0)
+    {
         return nullptr;
+    }
     if (map.size == 1)
     {
         LeafNode *leaf = new LeafNode();
@@ -261,7 +263,9 @@ B_OctantNodeBase *BuildNode(
     {
         B_SectorListNode *node = new B_SectorListNode();
         for (unsigned int i = 0; i < map.size; i++)
+        {
             node->Append(map.elements[i]);
+        }
         return node;
     }
     else
