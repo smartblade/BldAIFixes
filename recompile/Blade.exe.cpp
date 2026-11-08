@@ -152,11 +152,11 @@ B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &map, double sizeThreshol
     else
     {
         B_BoundingBox childBoundingBox;
+        B_PtrArray<B_Sector> outBuffer;
         B_OctantNode *octantNode = new B_OctantNode();
         B_Vector boxCenter = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
         childBoundingBox.minCoords = worldBB.minCoords;
         childBoundingBox.maxCoords = boxCenter;
-        B_PtrArray<B_Sector> outBuffer;
         childBoundingBox.CollectIntersectingSectors(map, outBuffer);
         octantNode->children[0] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
         outBuffer.Clear(false);

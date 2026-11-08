@@ -1,6 +1,7 @@
 import expressions
 import instructions
 from expression_transformer import ExpressionTransformer
+from stack_layout import bucket
 
 
 def insert_declarations(procedure, stack_vars):
@@ -127,6 +128,47 @@ class _IdentifiersCollector(ExpressionTransformer):
                     break
                 if changed:
                     break
+        self._order_declarations_in_buckets()
+
+    def _order_declarations_in_buckets(self):
+        """Declare variables of a block in the same bucket in stack order.
+
+        A variable of a block declared later is placed first inside the
+        hash bucket of its name: of two variables in the same bucket the
+        one at the lower address is declared first, before the other.
+        Unnamed variables have no names of the original code to order.
+        """
+        changed = True
+        while changed:
+            changed = False
+            for identifier, (path, instr) in self._ids.items():
+                offset = self._offsets.get(identifier)
+                if offset is None or _is_unnamed(identifier):
+                    continue
+                for other, (other_path, other_instr) in self._ids.items():
+                    if _is_unnamed(other):
+                        continue
+                    other_offset = self._offsets.get(other)
+                    # The other variable is above the identifier
+                    if other_offset is None or other_offset <= offset:
+                        continue
+                    if other_path != path:
+                        continue
+                    if bucket(other.name) != bucket(identifier.name):
+                        continue
+                    block = path[-1][1]
+                    index = _index_in_block(block, instr)
+                    other_index = _index_in_block(block, other_instr)
+                    if index is None or other_index is None:
+                        continue
+                    if other_index >= index:
+                        continue
+                    # Declare the identifier before the other variable
+                    self._ids[identifier] = path, other_instr
+                    changed = True
+                    break
+                if changed:
+                    break
 
     def _scope_index(self, path):
         parent_instr, instrs = path[-1]
@@ -184,6 +226,17 @@ class _IdentifiersCollector(ExpressionTransformer):
             if not any(parent is instr for parent, _ in path):
                 return False
         return True
+
+
+def _is_unnamed(identifier):
+    return identifier.name.startswith("unknown_loc_")
+
+
+def _index_in_block(block, instr):
+    for index, block_instr in enumerate(block):
+        if block_instr is instr:
+            return index
+    return None
 
 
 def _first_body_instr(procedure):

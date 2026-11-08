@@ -115,7 +115,10 @@ class TestLocalStructors(unittest.TestCase):
     def test_construction_by_default_arguments(self):
         result = remove_inlined_local_structors(
             _Procedure(self._construction(16)), self.stack_vars)
-        self.assertEqual([], result.instructions)
+        self.assertEqual(1, len(result.instructions))
+        call = result.instructions[0].expression
+        self.assertEqual("Array", call.name)
+        self.assertEqual(1, len(call.arguments))
 
     def test_construction_by_other_arguments(self):
         instrs = self._construction(1)

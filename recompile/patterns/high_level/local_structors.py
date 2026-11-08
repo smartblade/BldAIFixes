@@ -1,7 +1,9 @@
+from calling_convention import CallingConvention
 import data_types
 import expressions
 from expressions.operator import Operator
 import instructions
+from procedure_declaration import ProcedureDeclaration
 from .goto_eliminator.collect_label_uses import collect_label_uses
 from .inlined_base_structors import _parse_default_value
 from .inlined_clear import _compared_field, _goto_if, _is_freeing
@@ -27,7 +29,10 @@ def remove_inlined_local_structors(procedure, stack_vars):
         t = a.elements; operator delete(t); a.elements = 0; ...
     end:
     Both are implicit in C++: 'B_PtrArray<B_Sector> a;' and the end of the
-    scope.
+    scope. The construction is replaced by a call of the default constructor
+    'a.B_PtrArray<B_Sector>()' declaring the variable at the place of the
+    construction: it is restored as the declaration with locals constructed
+    by called constructors.
     """
     variables = dict(
         (offset, var) for offset, var in stack_vars.items()
@@ -47,8 +52,9 @@ def _remove_block(block, variables, label_uses):
     new_block = []
     i = 0
     while i < len(block):
-        length = _construction_length(block, i, variables)
+        length, var = _construction_length(block, i, variables)
         if length:
+            new_block.append(_default_construction(var))
             i += length
             continue
         result = _destruction(block, i, variables, label_uses)
@@ -82,7 +88,8 @@ def _remove_nested(instr, variables, label_uses):
 
 
 def _construction_length(block, index, variables):
-    """Length of the inlined construction by default arguments or 0."""
+    """(Length, variable) of the inlined construction by default arguments
+    or (0, None)."""
     for offset, var in variables.items():
         class_type = var.data_type
         fields = sorted(class_type.get_all_fields().items())
@@ -106,8 +113,18 @@ def _construction_length(block, index, variables):
                 continue
             if not _are_default_values(class_type, values):
                 continue
-            return count + 1
-    return 0
+            return count + 1, var
+    return 0, None
+
+
+def _default_construction(var):
+    class_type = var.data_type
+    constructor = ProcedureDeclaration(
+        class_type.class_name, CallingConvention.THISCALL, class_type, [],
+        None)
+    return instructions.CodeInstruction(expressions.ProcedureCall(
+        name=class_type.class_name, is_method=True, proc_decl=constructor,
+        arguments=[expressions.AddressOf(var)]))
 
 
 def _destruction(block, index, variables, label_uses):

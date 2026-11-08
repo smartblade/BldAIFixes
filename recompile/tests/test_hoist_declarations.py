@@ -95,3 +95,36 @@ class TestHoistDeclarations(unittest.TestCase):
             "    f(y);\n"
             "}\n",
             _emit(instrs, {-4: y, -8: x}))
+
+
+class TestDeclarationsInBuckets(unittest.TestCase):
+    def test_lower_variable_of_bucket_declared_first(self):
+        # outBuffer and boxCenter are in bucket 0: boxCenter above outBuffer
+        # is declared later
+        out_buffer = i32_id("outBuffer")
+        box_center = i32_id("boxCenter")
+        instrs = [
+            ass(box_center, _const(1)),
+            call_instr(name="f", arguments=[box_center]),
+            ass(out_buffer, _const(2)),
+            call_instr(name="f", arguments=[out_buffer]),
+        ]
+        self.assertEqual(
+            "int outBuffer;\n"
+            "int boxCenter = 1;\n"
+            "f(boxCenter);\n"
+            "outBuffer = 2;\n"
+            "f(outBuffer);\n",
+            _emit(instrs, {-36: box_center, -60: out_buffer}))
+
+    def test_variables_of_other_buckets(self):
+        # i (bucket 9) and boxCenter (bucket 0) are placed by buckets
+        i = i32_id("i")
+        box_center = i32_id("boxCenter")
+        instrs = [
+            ass(box_center, _const(1)),
+            call_instr(name="f", arguments=[box_center]),
+            ass(i, _const(2)),
+            call_instr(name="f", arguments=[i]),
+        ]
+        self.assertIn("int i = 2;\n", _emit(instrs, {-36: box_center, -60: i}))
