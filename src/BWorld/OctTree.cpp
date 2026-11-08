@@ -7,6 +7,31 @@
 
 /*
 * Module:                 Blade.exe
+* Entry point:            0x0044F052
+* VC++ mangling:          ?Intersects@B_BoundingBox@@QBEIPBVB_Sector@@@Z
+*/
+
+unsigned int B_BoundingBox::Intersects(const B_Sector *sector) const
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x004501C1
+* VC++ mangling:          ?CollectIntersectingSectors@B_BoundingBox@@QAEXABV?$B_PtrArray@VB_Sector@@@@AAV2@@Z
+*/
+
+void B_BoundingBox::CollectIntersectingSectors(
+    const B_PtrArray<B_Sector> &sectors,
+    B_PtrArray<B_Sector> &outBuffer
+)
+{
+}
+
+
+/*
+* Module:                 Blade.exe
 * Entry point:            0x00450327
 * VC++ mangling:          ??0B_OctantNode@@QAE@XZ
 */

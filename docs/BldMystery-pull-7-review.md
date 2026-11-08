@@ -13,7 +13,8 @@ suggested patch against `ee43e85` or with suggested code.
 Sections 1-5 are bugs, sections 6-12 are differences of the code generated
 from the pull request from the original binary, section 13 reconstructs a
 procedure called by the octree, section 14 is the code style which makes
-the sources and the output of BldRecompile identical.
+the sources and the output of BldRecompile identical, section 15 is the
+source file of methods of `B_BoundingBox` used by the octree.
 
 All suggestions are applied in branch `claude/pr7-styled` (based on
 `ee43e85`). With them every procedure of the pull request, the scalar
@@ -993,6 +994,73 @@ of BldRecompile output is used:
     {
     }
     ```
+
+## 15. Methods of `B_BoundingBox` used by the octree are in `OctTree.cpp`
+
+`B_BoundingBox::Intersects` (`0x0044F052`) and
+`B_BoundingBox::CollectIntersectingSectors` (`0x004501C1`) are defined in
+`BoundingBox.cpp` of the pull request, but they are compiled in the module
+of the octree.
+
+Visual C++ 6.0 places code of each source file in one continuous block in
+the order of definitions, the linker aligns the block of each module to 16
+bytes and pads it with `int 3`. Of the procedures described in the sources
+of the pull request, 6 directly follow procedures described in other
+files: 5 start at
+aligned addresses, the only one that doesn't is the constructor of
+`B_OctantNode`. `CollectIntersectingSectors` (358 bytes compiled) ends at
+`0x00450327` and the constructor starts there without any padding:
+
+```asm
+           ...
+           ret 00008h
+l004501C1 ENDP                          ; B_BoundingBox::CollectIntersectingSectors
+l00450327 PROC                          ; B_OctantNode::B_OctantNode
+           push ebp
+```
+
+The module starts at `0x0044ED90` after the padding:
+
+```asm
+           int 03h
+           int 03h
+l0044ED90 PROC                          ; dynamic initializer
+           push ebp
+           mov ebp, esp
+           call l0044ED9A
+           pop ebp
+           ret
+l0044ED90 ENDP
+l0044ED9A PROC
+           push ebp
+           mov ebp, esp
+           mov ecx, offset g005E2B88
+           call l00453264               ; B_OctTreeSectorsList::B_OctTreeSectorsList
+           pop ebp
+           ret
+l0044ED9A ENDP
+l0044EDA9 PROC                          ; called by Intersects only
+```
+
+The global `B_OctTreeSectorsList` at `0x005E2B88` (`0x804` bytes) ends at
+`0x005E338C`, the address of `gbl_node_count`: the object is defined in the
+source file of the octree before its other globals, and the procedures
+of the module before the constructor of `B_OctantNode` are its dynamic
+initializer, `0x0044EDA9`, `Intersects` and `CollectIntersectingSectors`.
+The block of the module ends with `B_GlobalSurfaceCache::B_GlobalSurfaceCache`
+(`0x004539A9`), COMDAT copies of inline functions follow it at aligned
+addresses (`0x00453A00`-`0x00453AC0`), `Surface.cpp` starts at `0x00453B10`.
+
+The constructors of `B_Sphere` and `B_BoundingBox` (`0x00401000`,
+`0x00401548`, `0x004015C5`) stay in `BoundingBox.cpp`: they are in the
+first module of `Blade.exe` (`0x00401000`-`0x00402630`, without padding)
+with other procedures of spheres and boxes, e.g. `0x00401051` is
+`B_Sphere::B_Sphere(const B_Vector &, double)`.
+
+Suggested fix: move `Intersects` and `CollectIntersectingSectors` to the
+start of `OctTree.cpp`, before the constructor of `B_OctantNode`.
+`CollectIntersectingSectors` compiled in `OctTree.cpp` is identical to the
+binary.
 
 ## Procedures that match the binary
 
