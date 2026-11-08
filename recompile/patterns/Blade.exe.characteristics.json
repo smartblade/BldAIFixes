@@ -21,6 +21,17 @@
 			"-4": "i"
 		}
 	},
+	"00450823": {
+		"varnames": {
+			"-4": "leaf",
+			"-12": "sectorList",
+			"-8": "i",
+			"-108": "childBoundingBox",
+			"-60": "outBuffer",
+			"-112": "octantNode",
+			"-36": "boxCenter"
+		}
+	},
 	"00452082": {
 		"varnames": {
 			"8": "__",

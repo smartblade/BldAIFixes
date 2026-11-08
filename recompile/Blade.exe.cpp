@@ -130,74 +130,73 @@ void B_OctTree::Clear()
 // address: 0x00450823
 B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &map, double sizeThreshold, const B_BoundingBox &worldBB)
 {
-    LeafNode *unknown_loc_04;
     if (map.size == 0)
     {
         return nullptr;
     }
     if (map.size == 1)
     {
-        unknown_loc_04 = new LeafNode();
-        unknown_loc_04->sectors = map[0];
-        return unknown_loc_04;
+        LeafNode *leaf = new LeafNode();
+        leaf->sectors = map[0];
+        return leaf;
     }
-    if (worldBB.maxCoords.x - worldBB.minCoords.x >= sizeThreshold && map.size >= 8)
+    if (worldBB.maxCoords.x - worldBB.minCoords.x < sizeThreshold || map.size < 8)
     {
-        goto l00450ABC;
+        B_SectorListNode *sectorList = new B_SectorListNode();
+        for (unsigned int i = 0; i < map.size; i++)
+        {
+            sectorList->Append(map[i]);
+        }
+        return sectorList;
     }
-    B_SectorListNode *unknown_loc_0C;
-    unknown_loc_0C = new B_SectorListNode();
-    for (unsigned int unknown_loc_08 = 0; unknown_loc_08 < map.size; unknown_loc_08++)
+    else
     {
-        unknown_loc_0C->Append(map[unknown_loc_08]);
+        B_BoundingBox childBoundingBox;
+        B_OctantNode *octantNode = new B_OctantNode();
+        B_Vector boxCenter = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
+        childBoundingBox.minCoords = worldBB.minCoords;
+        childBoundingBox.maxCoords = boxCenter;
+        B_PtrArray<B_Sector> outBuffer;
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[0] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
+        outBuffer.Clear(false);
+        childBoundingBox.minCoords = B_Vector(worldBB.minCoords.x, worldBB.minCoords.y, boxCenter.z);
+        childBoundingBox.maxCoords = B_Vector(boxCenter.x, boxCenter.y, worldBB.maxCoords.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[1] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
+        outBuffer.Clear(false);
+        childBoundingBox.minCoords = B_Vector(worldBB.minCoords.x, boxCenter.y, worldBB.minCoords.z);
+        childBoundingBox.maxCoords = B_Vector(boxCenter.x, worldBB.maxCoords.y, boxCenter.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[2] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
+        outBuffer.Clear(false);
+        childBoundingBox.minCoords = B_Vector(worldBB.minCoords.x, boxCenter.y, boxCenter.z);
+        childBoundingBox.maxCoords = B_Vector(boxCenter.x, worldBB.maxCoords.y, worldBB.maxCoords.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[3] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
+        outBuffer.Clear(false);
+        childBoundingBox.minCoords = B_Vector(boxCenter.x, worldBB.minCoords.y, worldBB.minCoords.z);
+        childBoundingBox.maxCoords = B_Vector(worldBB.maxCoords.x, boxCenter.y, boxCenter.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[4] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
+        outBuffer.Clear(false);
+        childBoundingBox.minCoords = B_Vector(boxCenter.x, worldBB.minCoords.y, boxCenter.z);
+        childBoundingBox.maxCoords = B_Vector(worldBB.maxCoords.x, boxCenter.y, worldBB.maxCoords.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[5] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
+        outBuffer.Clear(false);
+        childBoundingBox.minCoords = B_Vector(boxCenter.x, boxCenter.y, worldBB.minCoords.z);
+        childBoundingBox.maxCoords = B_Vector(worldBB.maxCoords.x, worldBB.maxCoords.y, boxCenter.z);
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[6] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
+        outBuffer.Clear(false);
+        childBoundingBox.minCoords = boxCenter;
+        childBoundingBox.maxCoords = worldBB.maxCoords;
+        childBoundingBox.CollectIntersectingSectors(map, outBuffer);
+        octantNode->children[7] = BuildNode(outBuffer, sizeThreshold, childBoundingBox);
+        outBuffer.Clear(false);
+        return octantNode;
     }
-    return unknown_loc_0C;
-l00450ABC:
-    B_BoundingBox unknown_loc_6C;
-    B_OctantNode *unknown_loc_70 = new B_OctantNode();
-    B_Vector unknown_loc_24 = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
-    unknown_loc_6C.minCoords = worldBB.minCoords;
-    unknown_loc_6C.maxCoords = unknown_loc_24;
-    B_PtrArray<B_Sector> unknown_loc_3C;
-    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
-    unknown_loc_70->children[0] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
-    unknown_loc_3C.Clear(false);
-    unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, worldBB.minCoords.y, unknown_loc_24.z);
-    unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, unknown_loc_24.y, worldBB.maxCoords.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
-    unknown_loc_70->children[1] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
-    unknown_loc_3C.Clear(false);
-    unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, unknown_loc_24.y, worldBB.minCoords.z);
-    unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, worldBB.maxCoords.y, unknown_loc_24.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
-    unknown_loc_70->children[2] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
-    unknown_loc_3C.Clear(false);
-    unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, unknown_loc_24.y, unknown_loc_24.z);
-    unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, worldBB.maxCoords.y, worldBB.maxCoords.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
-    unknown_loc_70->children[3] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
-    unknown_loc_3C.Clear(false);
-    unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, worldBB.minCoords.y, worldBB.minCoords.z);
-    unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, unknown_loc_24.y, unknown_loc_24.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
-    unknown_loc_70->children[4] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
-    unknown_loc_3C.Clear(false);
-    unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, worldBB.minCoords.y, unknown_loc_24.z);
-    unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, unknown_loc_24.y, worldBB.maxCoords.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
-    unknown_loc_70->children[5] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
-    unknown_loc_3C.Clear(false);
-    unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, unknown_loc_24.y, worldBB.minCoords.z);
-    unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, worldBB.maxCoords.y, unknown_loc_24.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
-    unknown_loc_70->children[6] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
-    unknown_loc_3C.Clear(false);
-    unknown_loc_6C.minCoords = unknown_loc_24;
-    unknown_loc_6C.maxCoords = worldBB.maxCoords;
-    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
-    unknown_loc_70->children[7] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
-    unknown_loc_3C.Clear(false);
-    return unknown_loc_70;
 }
 
 // address: 0x0045201F

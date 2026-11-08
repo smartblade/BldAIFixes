@@ -91,6 +91,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     ):
         instrs = _transform_instructions(instrs, **context)
     instrs = transform_for_loops(instrs)
+    # Gotos over loops are eliminated after the loops are restored
+    instrs = goto_eliminator.transform_forward_gotos(instrs, stack_vars)
     instrs = transform_class_returns(proc_decl, instrs)
     procedure = procedure.copy(instrs=instrs)
     procedure = remove_inlined_base_structors(procedure)
