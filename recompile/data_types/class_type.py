@@ -163,6 +163,9 @@ class ClassType(DataType):
         for method in self._methods:
             if method.is_virtual:
                 return True
+        # Methods of instances of templates are declared in templates
+        if self.template is not None and self.template.has_virtual_methods:
+            return True
         if self._parent is not None:
             return self._parent.has_virtual_methods
         return False

@@ -107,3 +107,23 @@ class TestFoldTemporaries(unittest.TestCase):
                     [instructions.ReturnInstruction(
                         expressions.Constant(data_types.Int32(), 0))]),
             ]))
+
+
+class TestFoldReturnedValue(unittest.TestCase):
+    def test_returned_value(self):
+        node = data_types.ClassType("Node", {0: (data_types.Int32(), "a")})
+        t = expressions.Identifier(data_types.Pointer32(node), "unknown_loc_1B8")
+        node_var = expressions.Identifier(data_types.Pointer32(node), "node")
+        self.assertEqual("return node;\n", _emit([
+            instructions.VariableDeclaration(t, node_var),
+            instructions.ReturnInstruction(t),
+        ]))
+
+    def test_named_variable_is_kept(self):
+        node = data_types.ClassType("Node", {0: (data_types.Int32(), "a")})
+        t = expressions.Identifier(data_types.Pointer32(node), "result")
+        node_var = expressions.Identifier(data_types.Pointer32(node), "node")
+        self.assertIn("result", _emit([
+            instructions.VariableDeclaration(t, node_var),
+            instructions.ReturnInstruction(t),
+        ]))

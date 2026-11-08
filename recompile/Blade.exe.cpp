@@ -154,225 +154,50 @@ B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &map, double sizeThreshol
     return unknown_loc_0C;
 l00450ABC:
     B_BoundingBox unknown_loc_6C;
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-48, 4) = 0x00000010;
-    STACKVAR(-44, 4) = 0x00000000;
-    STACKVAR(-40, 4) = 0x00000001;
-    STACKVAR(-60, 4) = GLOBAL(0x005BDB7C);
     B_OctantNode *unknown_loc_70 = new B_OctantNode();
     B_Vector unknown_loc_24 = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
     unknown_loc_6C.minCoords = worldBB.minCoords;
     unknown_loc_6C.maxCoords = unknown_loc_24;
-    unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
-    unknown_loc_70->children[0] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00450C45;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00450C18;
-    }
-    for (unsigned int unknown_loc_1DC = 0; unknown_loc_1DC < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_1DC++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_1DC, 0), 0, 4);
-    }
-l00450C18:
-    STACKVAR(-488, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-488, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l00450C45:
+    B_PtrArray<B_Sector> unknown_loc_3C;
+    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
+    unknown_loc_70->children[0] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
+    unknown_loc_3C.Clear(false);
     unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, worldBB.minCoords.y, unknown_loc_24.z);
     unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, unknown_loc_24.y, worldBB.maxCoords.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
-    unknown_loc_70->children[1] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00450E44;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00450E17;
-    }
-    for (unsigned int unknown_loc_21C = 0; unknown_loc_21C < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_21C++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_21C, 0), 0, 4);
-    }
-l00450E17:
-    STACKVAR(-552, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-552, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l00450E44:
+    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
+    unknown_loc_70->children[1] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
+    unknown_loc_3C.Clear(false);
     unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, unknown_loc_24.y, worldBB.minCoords.z);
     unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, worldBB.maxCoords.y, unknown_loc_24.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
-    unknown_loc_70->children[2] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00451043;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00451016;
-    }
-    for (unsigned int unknown_loc_25C = 0; unknown_loc_25C < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_25C++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_25C, 0), 0, 4);
-    }
-l00451016:
-    STACKVAR(-616, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-616, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l00451043:
+    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
+    unknown_loc_70->children[2] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
+    unknown_loc_3C.Clear(false);
     unknown_loc_6C.minCoords = B_Vector(worldBB.minCoords.x, unknown_loc_24.y, unknown_loc_24.z);
     unknown_loc_6C.maxCoords = B_Vector(unknown_loc_24.x, worldBB.maxCoords.y, worldBB.maxCoords.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
-    unknown_loc_70->children[3] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00451242;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00451215;
-    }
-    for (unsigned int unknown_loc_29C = 0; unknown_loc_29C < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_29C++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_29C, 0), 0, 4);
-    }
-l00451215:
-    STACKVAR(-680, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-680, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l00451242:
+    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
+    unknown_loc_70->children[3] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
+    unknown_loc_3C.Clear(false);
     unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, worldBB.minCoords.y, worldBB.minCoords.z);
     unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, unknown_loc_24.y, unknown_loc_24.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
-    unknown_loc_70->children[4] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00451442;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00451415;
-    }
-    for (unsigned int unknown_loc_2DC = 0; unknown_loc_2DC < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_2DC++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_2DC, 0), 0, 4);
-    }
-l00451415:
-    STACKVAR(-744, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-744, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l00451442:
+    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
+    unknown_loc_70->children[4] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
+    unknown_loc_3C.Clear(false);
     unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, worldBB.minCoords.y, unknown_loc_24.z);
     unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, unknown_loc_24.y, worldBB.maxCoords.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
-    unknown_loc_70->children[5] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00451642;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00451615;
-    }
-    for (unsigned int unknown_loc_31C = 0; unknown_loc_31C < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_31C++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_31C, 0), 0, 4);
-    }
-l00451615:
-    STACKVAR(-808, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-808, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l00451642:
+    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
+    unknown_loc_70->children[5] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
+    unknown_loc_3C.Clear(false);
     unknown_loc_6C.minCoords = B_Vector(unknown_loc_24.x, unknown_loc_24.y, worldBB.minCoords.z);
     unknown_loc_6C.maxCoords = B_Vector(worldBB.maxCoords.x, worldBB.maxCoords.y, unknown_loc_24.z);
-    unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
-    unknown_loc_70->children[6] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00451842;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00451815;
-    }
-    for (unsigned int unknown_loc_35C = 0; unknown_loc_35C < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_35C++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_35C, 0), 0, 4);
-    }
-l00451815:
-    STACKVAR(-872, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-872, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l00451842:
+    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
+    unknown_loc_70->children[6] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
+    unknown_loc_3C.Clear(false);
     unknown_loc_6C.minCoords = unknown_loc_24;
     unknown_loc_6C.maxCoords = worldBB.maxCoords;
-    unknown_loc_6C.CollectIntersectingSectors(map, *reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)));
-    unknown_loc_70->children[7] = BuildNode(*reinterpret_cast<B_PtrArray<B_Sector> *>(LOCAL(-60)), sizeThreshold, unknown_loc_6C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l0045193E;
-    }
-    if (0x00000000 == 0x00000000)
-    {
-        goto l00451911;
-    }
-    for (unsigned int unknown_loc_36C = 0; unknown_loc_36C < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_36C++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_36C, 0), 0, 4);
-    }
-l00451911:
-    STACKVAR(-888, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-888, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l0045193E:
-    B_OctantNodeBase *unknown_loc_1B8 = unknown_loc_70;
-    STACKVAR(-60, 4) = GLOBAL(0x005BDB7C);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00451A15;
-    }
-    STACKVAR(-908, 4) = STACKVAR(-40, 4);
-    if (STACKVAR(-44, 4) == 0x00000000)
-    {
-        goto l00451A15;
-    }
-    if (STACKVAR(-908, 4) == 0x00000000)
-    {
-        goto l004519E8;
-    }
-    for (unsigned int unknown_loc_37C = 0; unknown_loc_37C < reinterpret_cast<unsigned int>(STACKVAR(-52, 4)); unknown_loc_37C++)
-    {
-        delete ACCESS(ARRPTR(STACKVAR(-56, 4), 4, unknown_loc_37C, 0), 0, 4);
-    }
-l004519E8:
-    STACKVAR(-904, 4) = STACKVAR(-56, 4);
-    operator delete(STACKVAR(-904, 4));
-    STACKVAR(-56, 4) = 0x00000000;
-    STACKVAR(-52, 4) = 0x00000000;
-    STACKVAR(-44, 4) = 0x00000000;
-l00451A15:
-    return unknown_loc_1B8;
+    unknown_loc_6C.CollectIntersectingSectors(map, unknown_loc_3C);
+    unknown_loc_70->children[7] = BuildNode(unknown_loc_3C, sizeThreshold, unknown_loc_6C);
+    unknown_loc_3C.Clear(false);
+    return unknown_loc_70;
 }
 
 // address: 0x0045201F

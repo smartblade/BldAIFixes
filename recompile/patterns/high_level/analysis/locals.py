@@ -290,6 +290,12 @@ class LocalsAnalysis:
                 continue
             if other_offset < offset or end < other_offset + size:
                 return False
+            if (
+                other_offset == offset and size == 4 and
+                class_type.has_virtual_methods
+            ):
+                # The table of virtual methods set by inlined structors
+                continue
             try:
                 field = do_pointer_dereference(
                     ptr, other_offset - offset, size)

@@ -65,6 +65,10 @@ def _try_fold(block, index, uses):
         return None
     use = block[use_index]
     initial = declaration.initial_expression
+    returned = _fold_returned_value(declaration, use)
+    if returned is not None:
+        return block[:index] + block[index + 1:use_index] + [returned] + \
+            block[use_index + 1:]
     if initial is None:
         transformer = _ReturnedTemporaryFolder(var)
     else:
@@ -247,6 +251,24 @@ _increments = tuple(
     for name in ("Increment", "Decrement", "PreIncrement", "PreDecrement")
     if hasattr(expressions, name)
 )
+
+
+def _fold_returned_value(declaration, use):
+    """Fold 'T *t = x; return t;' into 'return x;'.
+
+    Visual C++ saves the returned value to a temporary before destructors
+    of local objects inlined at the end of the scope.
+    """
+    initial = declaration.initial_expression
+    if initial is None or _has_side_effects(initial):
+        return None
+    if not isinstance(use, instructions.ReturnInstruction):
+        return None
+    if not _is_variable(use.expression, declaration.identifier):
+        return None
+    if isinstance(declaration.identifier.data_type, data_types.ClassType):
+        return None
+    return instructions.ReturnInstruction(initial)
 
 
 def _has_side_effects(e):

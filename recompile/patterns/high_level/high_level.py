@@ -37,7 +37,9 @@ from .split_jumped_declarations import split_jumped_declarations
 from .transform_for_loops import transform_for_loops
 from .transform_returns import transform_returns
 from .transform_struct_copy import transform_struct_copy
+from .inlined_clear import collapse_inlined_clears
 from .inlined_subscripts import restore_inlined_subscripts
+from .local_structors import remove_inlined_local_structors
 from .new_expressions import fold_new_expressions
 from .other_parent_calls import restore_other_parent_calls
 from .split_class_return_assignments import split_class_return_assignments
@@ -93,6 +95,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = procedure.copy(instrs=instrs)
     procedure = remove_inlined_base_structors(procedure)
     procedure = remove_member_array_construction(procedure)
+    procedure = collapse_inlined_clears(procedure)
+    procedure = remove_inlined_local_structors(procedure, stack_vars)
     procedure = remove_inlined_member_construction(procedure)
     procedure = discover_fields_initialization(procedure)
     procedure = discover_fields_destroying(procedure)
