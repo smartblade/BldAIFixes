@@ -33,6 +33,7 @@ import os
 import re
 import shlex
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -317,6 +318,7 @@ class ModuleData:
         self.implemented = _read_implemented(asm_dir)
         self._obj_dir = os.path.join(work, "obj", module)
         self._objects = None
+        self._image_range = None
 
     def objects(self):
         if self._objects is None:
@@ -344,6 +346,14 @@ class ModuleData:
                             mask[i] = True
                     return path, code, mask, relocations, relocations_mask
         return None
+
+    def image_range(self):
+        """Range of addresses of the image: raw.txt holds the code only,
+        data of the image follows it (16 MB from the image base)."""
+        if self._image_range is None:
+            base = min(self.memory) & ~0xFFFF
+            self._image_range = (base, base + 0x1000000)
+        return self._image_range
 
     def original(self, address, size):
         return bytes(self.memory.get(address + i, 0) for i in range(size))
@@ -422,12 +432,19 @@ def _classify(data, name, address):
                for i in range(len(code))):
             return "LINES"
         return "OK"
+    # The binary can be longer: line numbers of assert above 127 are 32-bit
+    original = data.original(address, len(code) + 64)
     try:
-        compiled_instrs = [i[1] for i in disassemble(_merge(
-            code, mask, original))]
-        original_instrs = [i[1] for i in disassemble(original)]
+        compiled_instrs, original_instrs = (
+            _normalize_lines([i[1] for i in instrs])
+            for instrs in _disassemble_pair(data, compiled, original))
     except DisassemblerNotFound:
         return "CODE"
+    # The last instruction can be cut: jump tables of switch are at the end
+    compiled_instrs = compiled_instrs[:-1]
+    original_instrs = original_instrs[:len(compiled_instrs)]
+    if compiled_instrs == original_instrs:
+        return "LINES"
     if _normalize_stack(compiled_instrs) == _normalize_stack(
             original_instrs):
         return "STACK"
@@ -437,9 +454,63 @@ def _classify(data, name, address):
     return "CODE"
 
 
-def _merge(code, mask, original):
-    return bytes(original[i] if mask[i] else code[i]
-                 for i in range(len(code)))
+def _normalize_lines(instrs):
+    """Replace line numbers of assert: push line, push file, push
+    expression, call _assert."""
+    instrs = list(instrs)
+    for i in range(len(instrs) - 3):
+        if (
+            re.match(r"^push -?(0x[0-9a-f]+|\d+)$", instrs[i]) and
+            instrs[i + 1] == "push ADDR" and instrs[i + 2] == "push ADDR" and
+            instrs[i + 3] == "call [ADDR]"
+        ):
+            instrs[i] = "push LINE"
+    return instrs
+
+
+RELOCATION_MARKER = 0x7EEEEEEE
+
+
+def _disassemble_pair(data, compiled, original):
+    """Instructions of the compiled and the original procedure, addresses
+    of the binary and fields changed by the linker are written as ADDR."""
+    path, code, mask, relocations, relocations_mask = compiled
+    # Line numbers of assert are taken from the binary, fields changed by
+    # the linker are marked: the binary can be shifted relative to them.
+    merged = bytearray(
+        original[i] if mask[i] and not relocations_mask[i] and
+        i < len(original) else code[i] for i in range(len(code)))
+    # Runs of more than two fields are jump tables of switch: data, they
+    # are taken from the binary.
+    marker = struct.pack("<I", RELOCATION_MARKER)
+    start = None
+    for i in range(len(code) + 1):
+        if i < len(code) and relocations_mask[i]:
+            if start is None:
+                start = i
+            continue
+        if start is not None:
+            for j in range(start, i):
+                merged[j] = (
+                    original[j] if i - start > 8 and j < len(original)
+                    else marker[(j - start) % 4])
+            start = None
+    low, high = data.image_range()
+
+    def addresses(text):
+        def replace(match):
+            value = int(match.group(0), 16)
+            if value == RELOCATION_MARKER or low <= value < high:
+                return "ADDR"
+            return match.group(0)
+        return re.sub(r"0x[0-9a-f]+", replace, text)
+
+    return (
+        [(offset, addresses(text))
+         for offset, text in disassemble(bytes(merged))],
+        [(offset, addresses(text))
+         for offset, text in disassemble(original)],
+    )
 
 
 def _normalize_stack(instrs):
@@ -457,8 +528,8 @@ def _normalize_frame(instrs):
 
 
 def _normalize(instr):
-    # Targets of calls and jumps are addresses of the binary
-    return re.sub(r"^(call|j\w+) .*", r"\1 X", instr)
+    # Targets of direct calls and jumps are addresses of the binary
+    return re.sub(r"^(call|j\w+) (0x[0-9a-f]+|-?\d+)$", r"\1 X", instr)
 
 
 def _print_module_results(module, results):
@@ -536,10 +607,10 @@ def diff(bldmystery, work, modules, names, max_lines):
             if compiled is None:
                 continue
             found = True
-            path, code, mask, relocations, _ = compiled
+            path, code = compiled[:2]
             original = _original_procedure(data, address, len(code))
-            compiled_instrs = disassemble(_merge(code, mask, original))
-            original_instrs = disassemble(original)
+            compiled_instrs, original_instrs = _disassemble_pair(
+                data, compiled, original)
             print("=== {} 0x{:08X} {} (compiled {} bytes, original {})".format(
                 name, address, os.path.basename(path), len(code),
                 len(original)))
@@ -587,11 +658,11 @@ def stack(bldmystery, work, modules, name):
         compiled = data.compiled(name) if address is not None else None
         if compiled is None:
             continue
-        path, code, mask, relocations, _ = compiled
+        path, code = compiled[:2]
         original = data.original(address, len(code) + 64)
-        compiled_instrs = [i[1] for i in disassemble(_merge(
-            code, mask, original))]
-        original_instrs = [i[1] for i in disassemble(original)]
+        compiled_instrs, original_instrs = (
+            [i[1] for i in instrs]
+            for instrs in _disassemble_pair(data, compiled, original))
         pairs = {}
         matcher = difflib.SequenceMatcher(
             None, _normalize_stack(compiled_instrs),
