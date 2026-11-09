@@ -374,7 +374,7 @@ private:
     int viewport[4];
     int drawSunFlare;
     int transformations;
-    B_PtrArray<B_VideoMode> videoModes;
+    B_Array<B_VideoMode> videoModes;
     B_VideoMode *fullScreenMode;
     int unknown086314[6];
     double gamma;

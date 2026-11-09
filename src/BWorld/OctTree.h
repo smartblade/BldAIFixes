@@ -143,7 +143,7 @@ public:
 };
 
 
-class B_SectorListNode : public B_OctantNodeBase, public B_PtrArray<B_Sector>
+class B_SectorListNode : public B_OctantNodeBase, public B_Array<B_Sector>
 {
 public:
 
@@ -177,7 +177,7 @@ public:
 };
 
 
-extern B_OctantNodeBase *BuildNode(const B_PtrArray<B_Sector> &, double sizeThreshold, const B_BoundingBox &);
+extern B_OctantNodeBase *BuildNode(const B_Array<B_Sector> &, double sizeThreshold, const B_BoundingBox &);
 
 
 #endif /* OCT_TREE_H */

@@ -27,7 +27,7 @@ template<class T> class B_NDataBase : public B_PtrArray3<T>
 {
 };
 
-/* reads the array like operator>> of B_PtrArray, num_alloc is computed with
+/* reads the array like operator>> of B_Array, num_alloc is computed with
  * increment first */
 template<class TYPE>
 B_IDataFile &operator >>(B_IDataFile &file, B_NDataBase<TYPE> &arr)

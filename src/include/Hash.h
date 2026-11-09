@@ -100,7 +100,7 @@ public:
         return sum;
     }
 
-    int FindItemIndex(const B_PtrArray<T> &items, const char *key)
+    int FindItemIndex(const B_Array<T> &items, const char *key)
     {
          for(unsigned int i = 0; i < items.size; i++)
          {

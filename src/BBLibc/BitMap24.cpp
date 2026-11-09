@@ -9,7 +9,7 @@
 * VC++ mangling:          ?BitMap24DataList@B_BitMap24@@0V?$B_Array@VB_BitMap24@@@@A
 */
 #ifndef BLD_NATIVE
-B_Array<B_BitMap24> B_BitMap24::BitMap24DataList(1);
+B_Array<B_BitMap24> B_BitMap24::BitMap24DataList(16, false);
 #endif
 
 

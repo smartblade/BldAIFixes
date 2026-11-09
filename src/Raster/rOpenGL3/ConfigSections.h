@@ -56,5 +56,5 @@ public:
     int height;
     int flags;
     int frequency;
-    B_PtrArray<B_VideoMode> videoModes;
+    B_Array<B_VideoMode> videoModes;
 };

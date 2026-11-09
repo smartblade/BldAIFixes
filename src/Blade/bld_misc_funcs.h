@@ -235,7 +235,7 @@ extern EnControl gbl_en_control;
 * Module:                 Blade.exe
 * Data address:           0x007E988C
 */
-extern B_PtrArray<B_AGTexture> gbl_ag_textures;
+extern B_Array<B_AGTexture> gbl_ag_textures;
 
 /*
 * Module:                 Blade.exe

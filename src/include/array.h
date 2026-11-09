@@ -113,10 +113,10 @@ B_IDataFile &operator >>(B_IDataFile &file, array_t<TYPE> &arr)
 }
 
 template<class TYPE>
-class B_PtrArray
+class B_Array
 {
 public:
-    virtual ~B_PtrArray()
+    virtual ~B_Array()
     {
         if (num_alloc != 0)
         {
@@ -124,7 +124,7 @@ public:
         }
     }
 
-    B_PtrArray(int increment = 16, int deleteItems = true)
+    B_Array(int increment = 16, int deleteItems = true)
     :
         elements(NULL),
         size(0),
@@ -239,6 +239,18 @@ public:
         num_alloc = 0;
     }
 
+    int Find(TYPE *element)
+    {
+        for (unsigned int i = 0; i < this->size; i++)
+        {
+            if (this->elements[i] == element)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     TYPE *Find(const B_Name &id)
     {
         for (unsigned int i = 0; i < this->size; i++)
@@ -267,7 +279,7 @@ public:
 };
 
 template<class TYPE>
-B_ODataFile &operator <<(B_ODataFile &file, B_PtrArray<TYPE> &arr)
+B_ODataFile &operator <<(B_ODataFile &file, B_Array<TYPE> &arr)
 {
     file << arr.size;
     for (unsigned int i = 0; i < arr.size; i++)
@@ -278,7 +290,7 @@ B_ODataFile &operator <<(B_ODataFile &file, B_PtrArray<TYPE> &arr)
 }
 
 template<class TYPE>
-B_IDataFile &operator >>(B_IDataFile &file, B_PtrArray<TYPE> &arr)
+B_IDataFile &operator >>(B_IDataFile &file, B_Array<TYPE> &arr)
 {
     if (arr.num_alloc != 0)
     {
@@ -300,7 +312,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_PtrArray<TYPE> &arr)
 
 
 template<class TYPE>
-class B_SharedPtrArray : public B_PtrArray<TYPE>
+class B_SharedPtrArray : public B_Array<TYPE>
 {
 public:
     virtual ~B_SharedPtrArray()
@@ -313,7 +325,7 @@ public:
 
     B_SharedPtrArray(int increment = 16)
         :
-    B_PtrArray(increment)
+    B_Array<TYPE>(increment)
     {
     }
 };
@@ -321,13 +333,13 @@ public:
 
 /*
 * Intermediate array classes. Their constructors set their own vtables after
-* the B_PtrArray (array_t) constructor, the vtables contain only scalar deleting
+* the B_Array (array_t) constructor, the vtables contain only scalar deleting
 * destructors, and the destructors don't set the vtables again (the classes
 * have no user-defined destructors). The original names are unknown.
 */
 
 template<class TYPE>
-class B_PtrArray2 : public B_PtrArray<TYPE>
+class B_PtrArray2 : public B_Array<TYPE>
 {
 };
 

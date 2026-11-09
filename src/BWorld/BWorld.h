@@ -19,7 +19,7 @@
 
 class B_ViewPose;
 
-class B_SubscriptionList : public B_PtrArray<B_Entity>, public B_NamedObj
+class B_SubscriptionList : public B_Array<B_Entity>, public B_NamedObj
 {
 };
 
@@ -53,7 +53,7 @@ public:
     float roofHeight;
     array_t<B_Vector> points;
     array_t<B_Vector> a040;
-    B_PtrArray<void> a054;
+    B_Array<void> a054;
     PyObject *onEnter;
     PyObject *onLeave;
     PyObject *data;
@@ -75,7 +75,7 @@ public:
     void GetEnemiesVisibleFrom(
         const B_Vector &position, double radius,
         const B_Vector &direction, double angle,
-        B_PtrArray<B_Entity> *enemies);
+        B_Array<B_Entity> *enemies);
     int FindSectorIndex(const B_Vector &point);
     int IntersectSegment(
         const B_Vector &startPoint, const B_Vector &endPoint,
@@ -104,7 +104,7 @@ public:
     B_Hash<B_Entity> entities;
     int nextEntitySuffix;
     B_PtrArray3<B_SubscriptionList> subscriptions;
-    B_PtrArray<void*> scheduledFuncs;
+    B_Array<void*> scheduledFuncs;
     int unknown1858;
     B_Name world_file_name;
     int unknownField1864;
@@ -117,7 +117,7 @@ public:
     B_PtrArray3<atmosphere_t> atmospheres;
     B_Map map;
     B_OctTree octTree;
-    B_PtrArray<light_t> lights;
+    B_Array<light_t> lights;
     int unknown1938;
     B_Vector sunVector;
     B_Vector initial_point_position;

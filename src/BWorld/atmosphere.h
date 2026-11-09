@@ -18,7 +18,7 @@ public:
 
 B_IDataFile &operator >>(B_IDataFile &file, atmosphere_t *atm);
 
-/* like operator >> of B_PtrArray, the atmospheres are read by pointers */
+/* like operator >> of B_Array, the atmospheres are read by pointers */
 inline B_IDataFile &operator >>(
     B_IDataFile &file, B_PtrArray3<atmosphere_t> &atmospheres)
 {

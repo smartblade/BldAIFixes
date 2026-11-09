@@ -1334,7 +1334,7 @@ void B_App::ReadArguments(const char *args)
             this->noSound = true;
         }
     }
-    B_PtrArray<B_Name> mapStrings;
+    B_Array<B_Name> mapStrings;
     this->StringSplit(this->mapName, ":", &mapStrings);
     if (mapStrings.size != 2)
     {
@@ -1344,7 +1344,7 @@ void B_App::ReadArguments(const char *args)
     {
         this->mapName = mapStrings[1]->String();
     }
-    B_PtrArray<B_Name> devStrings;
+    B_Array<B_Name> devStrings;
     this->StringSplit(this->rasterName, ":", &devStrings);
     if (devStrings.size != 2)
     {
@@ -1354,7 +1354,7 @@ void B_App::ReadArguments(const char *args)
     {
         this->rasterName = devStrings[1]->String();
     }
-    B_PtrArray<B_Name> sndStrings;
+    B_Array<B_Name> sndStrings;
     this->StringSplit(this->soundDeviceId, ":", &sndStrings);
     if (sndStrings.size != 2)
     {
@@ -1515,11 +1515,11 @@ int B_App::RemoveAfterFrameFunc(const char *name)
 /*
 * Module:                 Blade.exe
 * Entry point:            0x004167E1
-* VC++ mangling:          ?StringSplit@B_App@@UAEXPBD0PAV?$B_PtrArray@VB_Name@@@@@Z
+* VC++ mangling:          ?StringSplit@B_App@@UAEXPBD0PAV?$B_Array@VB_Name@@@@@Z
 */
 
 void B_App::StringSplit(
-    const char *str, const char *sep, B_PtrArray<B_Name> *tokens)
+    const char *str, const char *sep, B_Array<B_Name> *tokens)
 {
     int len = strlen(str);
     char *Temp = new char[len + 1];

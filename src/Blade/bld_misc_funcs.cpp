@@ -692,7 +692,7 @@ B_PtrArray3<B_BipedData> gbl_bipeds;
 B_NDataBase<B_Combustion> gbl_combustion_data;
 B_PtrArray3<B_SolidMask> gbl_solid_masks;
 EnControl gbl_en_control;
-B_PtrArray<B_AGTexture> gbl_ag_textures;
+B_Array<B_AGTexture> gbl_ag_textures;
 char client_map_name[128];
 char net_game_name[128];
 int gbl_net_max_players;

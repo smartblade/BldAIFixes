@@ -32,12 +32,12 @@ unsigned int B_BoundingBox::Intersects(const B_Sector *sector) const
 /*
 * Module:                 Blade.exe
 * Entry point:            0x004501C1
-* VC++ mangling:          ?CollectIntersectingSectors@B_BoundingBox@@QAEXABV?$B_PtrArray@VB_Sector@@@@AAV2@@Z
+* VC++ mangling:          ?CollectIntersectingSectors@B_BoundingBox@@QAEXABV?$B_Array@VB_Sector@@@@AAV2@@Z
 */
 
 void B_BoundingBox::CollectIntersectingSectors(
-    const B_PtrArray<B_Sector> &sectors,
-    B_PtrArray<B_Sector> &outBuffer
+    const B_Array<B_Sector> &sectors,
+    B_Array<B_Sector> &outBuffer
 )
 {
     for (unsigned int i = 0; i < sectors.size; i++)
@@ -147,7 +147,7 @@ int LeafNode::GetTypeID()
 
 B_SectorListNode::B_SectorListNode()
 :
-    B_PtrArray<B_Sector>(1)
+    B_Array<B_Sector>(1)
 {
 }
 
@@ -236,11 +236,11 @@ void B_OctTree::Clear()
 /*
 * Module:                 Blade.exe
 * Entry point:            0x00450823
-* VC++ mangling:          ?BuildNode@@YAPAVB_OctantNodeBase@@ABV?$B_PtrArray@VB_Sector@@@@NABVB_BoundingBox@@@Z
+* VC++ mangling:          ?BuildNode@@YAPAVB_OctantNodeBase@@ABV?$B_Array@VB_Sector@@@@NABVB_BoundingBox@@@Z
 */
 
 B_OctantNodeBase *BuildNode(
-    const B_PtrArray<B_Sector> &map,
+    const B_Array<B_Sector> &map,
     double sizeThreshold,
     const B_BoundingBox &worldBB
 )
@@ -270,7 +270,7 @@ B_OctantNodeBase *BuildNode(
     else
     {
         B_BoundingBox childBoundingBox;
-        B_PtrArray<B_Sector> outBuffer;
+        B_Array<B_Sector> outBuffer;
         B_OctantNode *octantNode = new B_OctantNode();
         B_Vector boxCenter = (worldBB.minCoords + worldBB.maxCoords) * 0.5;
         childBoundingBox.minCoords = worldBB.minCoords;

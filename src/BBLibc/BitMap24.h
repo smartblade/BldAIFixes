@@ -4,120 +4,13 @@
 #define B_BITMAP24_H
 
 #include <bld_system.h>
+#include <array.h>
 
 #ifdef BBLIBC_LIB_EXPORT
 #define BUILD_LIB
 #endif
 #include <export.h>
 #undef BUILD_LIB
-
-/* array of pointers like B_PtrArray without deleteItems */
-template<class TYPE>
-class B_Array
-{
-public:
-    virtual ~B_Array()
-    {
-        delete this->elements;
-    }
-
-    B_Array(int increment)
-    :
-        elements(NULL),
-        size(0),
-        increment(increment),
-        num_alloc(0)
-    {
-    }
-
-    int Append(TYPE *newElement)
-    {
-        if (num_alloc > size)
-        {
-            this->elements[size] = newElement;
-            size++;
-        }
-        else
-        {
-            num_alloc += increment;
-            if (size != 0)
-            {
-                TYPE ** elements = new TYPE *[num_alloc];
-                for (unsigned int i = 0; i < size; i++)
-                {
-                    elements[i] = this->elements[i];
-                }
-                delete this->elements;
-                this->elements = elements;
-            }
-            else
-            {
-                this->elements = new TYPE *[num_alloc];
-            }
-            this->elements[size] = newElement;
-            size++;
-        }
-        return size - 1;
-    }
-
-    int Find(TYPE *element)
-    {
-        for (unsigned int i = 0; i < this->size; i++)
-        {
-            if (this->elements[i] == element)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    void Remove(unsigned int index, int deleteItem)
-    {
-        if (index >= this->size)
-            return;
-        if (deleteItem)
-        {
-            delete this->elements[index];
-        }
-        if (this->size == 1)
-        {
-            delete this->elements;
-            this->elements = NULL;
-            this->size = 0;
-            this->num_alloc = 0;
-            return;
-        }
-        if (this->num_alloc >= (this->size + this->increment - 1))
-        {
-            this->num_alloc -= this->increment;
-            TYPE ** elements = new TYPE *[this->num_alloc];
-            for (unsigned int i = 0; i < index; i++)
-            {
-                elements[i] = this->elements[i];
-            }
-            for (i = index + 1; i < this->size; i++)
-            {
-                elements[i - 1] = this->elements[i];
-            }
-            delete this->elements;
-            this->elements = elements;
-        }
-        else
-        {
-            for (unsigned int i = index + 1; i < this->size; i++)
-            {
-                this->elements[i - 1] = this->elements[i];
-            }
-        }
-        this->size--;
-    }
-
-    TYPE **elements;
-    unsigned int size;
-    int increment;
-    unsigned int num_alloc;
-};
 
 class B_BitMap;
 class B_Color;
