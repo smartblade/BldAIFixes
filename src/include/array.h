@@ -335,11 +335,13 @@ public:
 * Intermediate array classes. Their constructors set their own vtables after
 * the B_Array (array_t) constructor, the vtables contain only scalar deleting
 * destructors, and the destructors don't set the vtables again (the classes
-* have no user-defined destructors). The original names are unknown.
+* have no user-defined destructors). The original names are unknown:
+* B_DataBase is the base of B_NDataBase (named database), B_ObjArray is
+* between it and B_Array.
 */
 
 template<class TYPE>
-class B_PtrArray2 : public B_Array<TYPE>
+class B_ObjArray : public B_Array<TYPE>
 {
 };
 
@@ -351,7 +353,7 @@ class array_t2 : public array_t<TYPE>
 
 
 template<class TYPE>
-class B_PtrArray3 : public B_PtrArray2<TYPE>
+class B_DataBase : public B_ObjArray<TYPE>
 {
 };
 

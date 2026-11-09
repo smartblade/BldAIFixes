@@ -18,7 +18,7 @@ class B_Sound;
 class B_YSoundDev;
 
 
-class B_Combustion : public B_NamedObj, public B_PtrArray2<void>
+class B_Combustion : public B_NamedObj, public B_ObjArray<void>
 {
 public:
     B_Combustion()
@@ -223,7 +223,7 @@ extern B_NDataBase<B_Combustion> gbl_combustion_data;
 * Module:                 Blade.exe
 * Data address:           0x007D40D0
 */
-extern B_PtrArray3<B_SolidMask> gbl_solid_masks;
+extern B_DataBase<B_SolidMask> gbl_solid_masks;
 
 /*
 * Module:                 Blade.exe

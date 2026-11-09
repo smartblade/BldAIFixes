@@ -23,7 +23,7 @@ struct B_ElementCSV : public B_NamedObj
 };
 
 
-template<class T> class B_NDataBase : public B_PtrArray3<T>
+template<class T> class B_NDataBase : public B_DataBase<T>
 {
 };
 

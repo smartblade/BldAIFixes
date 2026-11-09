@@ -100,10 +100,10 @@ public:
     int LoadEntitiesData(const char *filename);
     const char *GetTriggerSectorName(int index);
 
-    B_PtrArray3<B_TriggerSector> triggerSectors;
+    B_DataBase<B_TriggerSector> triggerSectors;
     B_Hash<B_Entity> entities;
     int nextEntitySuffix;
-    B_PtrArray3<B_SubscriptionList> subscriptions;
+    B_DataBase<B_SubscriptionList> subscriptions;
     B_Array<void*> scheduledFuncs;
     int unknown1858;
     B_Name world_file_name;
@@ -114,7 +114,7 @@ public:
     unsigned int currentTick;
     double lastTime;
     char physicsMgr[0x28];
-    B_PtrArray3<atmosphere_t> atmospheres;
+    B_DataBase<atmosphere_t> atmospheres;
     B_Map map;
     B_OctTree octTree;
     B_Array<light_t> lights;

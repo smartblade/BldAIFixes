@@ -117,7 +117,7 @@ public:
     }
 
     unsigned int size;
-    B_PtrArray3<T> hash[256];
+    B_DataBase<T> hash[256];
     int deleteItems;
     T *lastItem;
 };
