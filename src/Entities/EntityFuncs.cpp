@@ -2729,8 +2729,11 @@ int DoAction(const char *entity_name, const char *action_name)
     if (entity->IsClassOf(B_ENTITY_CID_BIPED))
     {
         B_BipedEntity *bipedEntity = static_cast<B_BipedEntity *>(entity);
-        double dUnknown = 0.0;
-        bipedEntity->DoAction(action_name, 0.0, 0, &dUnknown);
+        {
+            B_Name actionName(action_name);
+            double dUnknown = 0.0;
+            bipedEntity->DoAction(actionName, 0.0, 0, &dUnknown);
+        }
         return 1;
     }
     return -2;
@@ -2758,9 +2761,13 @@ int DoActionWI(
     if (entity->IsClassOf(B_ENTITY_CID_BIPED))
     {
         B_BipedEntity *bipedEntity = static_cast<B_BipedEntity *>(entity);
-        double dUnknown = 0.0;
-        bipedEntity->DoActionWI(
-            action_name, interpolation_type, time, unknown1, &dUnknown, 0.0);
+        {
+            B_Name actionName(action_name);
+            double dUnknown = 0.0;
+            bipedEntity->DoActionWI(
+                actionName, interpolation_type, time, unknown1, &dUnknown,
+                0.0);
+        }
         return 1;
     }
     return -2;
