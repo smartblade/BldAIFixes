@@ -85,9 +85,11 @@ public:
     PyObject *frameFunc;
     int unknown050;
     PyObject *hitFunc;
-    char unknownFields058[0x2C];
+    int unknown058;
+    char unknownFields05C[0x28];
     PyObject *func084;
-    char unknownFields088[0xD0];
+    int unknown088;
+    char unknownFields08C[0xCC];
     PyObject *data;
     int sendSectorMsgs;
     int sendTriggerSectorMsgs;

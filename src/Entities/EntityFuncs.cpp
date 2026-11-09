@@ -646,42 +646,56 @@ int UseEntity(const char *entity_name)
 
 int ChangeEntityStatic(const char *entity_name, int is_static)
 {
+    /* declared in the reverse order of their offsets inside a hash
+     * bucket, see vc6check/stack-layout.md of BldRecompile */
+    int unknown088, unknown048;
+    PyObject *func084, *frameFunc;
+    int triggerMsgs, hitData;
+    PyObject *timerFunction;
+    int frameData, sendSector;
+    PyObject *hitFunc;
+    PyObject *entityData;
+
     B_Entity *entity = GetEntity(entity_name);
     if (entity->ClassId() == B_ENTITY_CID_OBJECT && !is_static)
     {
-        B_ObjectEntity *objectEntity = static_cast<B_ObjectEntity *>(entity);
-        B_Name name(objectEntity->name.String());
-        B_Name kind(objectEntity->GetKind());
-        B_Matrix pose = objectEntity->unknown1B8->pose;
-        PyObject *data = objectEntity->data;
-        Py_XINCREF(data);
-        int sendSectorMsgs = objectEntity->sendSectorMsgs;
-        int sendTriggerSectorMsgs = objectEntity->sendTriggerSectorMsgs;
-        PyObject *timerFunc = objectEntity->timerFunc;
-        Py_XINCREF(timerFunc);
-        PyObject *frameFunc = objectEntity->frameFunc;
+        B_ObjectEntity *oldObject = static_cast<B_ObjectEntity *>(entity);
+        B_Name objName(oldObject->name.String());
+        B_Name kind(oldObject->GetKind());
+        B_Matrix pose = oldObject->unknown1B8->pose;
+        entityData = oldObject->data;
+        Py_XINCREF(entityData);
+        sendSector = oldObject->sendSectorMsgs;
+        triggerMsgs = oldObject->sendTriggerSectorMsgs;
+        timerFunction = oldObject->timerFunc;
+        Py_XINCREF(timerFunction);
+        unknown048 = oldObject->unknown048;
+        frameFunc = oldObject->frameFunc;
         Py_XINCREF(frameFunc);
-        PyObject *hitFunc = objectEntity->hitFunc;
+        frameData = oldObject->unknown050;
+        hitFunc = oldObject->hitFunc;
         Py_XINCREF(hitFunc);
-        PyObject *func084 = objectEntity->func084;
+        hitData = oldObject->unknown058;
+        func084 = oldObject->func084;
         Py_XINCREF(func084);
-        B_world.RemoveEntity(name.String(), true);
-        B_PhysicSIEntity *physicEntity = new B_PhysicSIEntity(
-            name, kind, true);
-        if (physicEntity == NULL)
+        unknown088 = oldObject->unknown088;
+        B_world.RemoveEntity(objName.String(), true);
+        B_PhysicSIEntity *newEntity = new B_PhysicSIEntity(
+            objName, kind, true);
+        if (newEntity == NULL)
         {
             mout << "ChangeEntityKind() -> Error al crear B_PhysicSIEntity()\n";
             return false;
         }
-        physicEntity->SetPose(pose);
-        physicEntity->data = data;
-        physicEntity->sendSectorMsgs = sendSectorMsgs;
-        physicEntity->sendTriggerSectorMsgs = sendTriggerSectorMsgs;
-        physicEntity->PutToWorld();
-        physicEntity->timerFunc = timerFunc;
-        physicEntity->frameFunc = frameFunc;
-        physicEntity->hitFunc = hitFunc;
-        physicEntity->func084 = func084;
+        newEntity->SetPose(pose);
+        newEntity->data = entityData;
+        newEntity->sendSectorMsgs = sendSector;
+        newEntity->sendTriggerSectorMsgs = triggerMsgs;
+        newEntity->PutToWorld();
+        newEntity->timerFunc = timerFunction;
+        newEntity->frameFunc = frameFunc;
+        newEntity->hitFunc = hitFunc;
+        newEntity->func084 = func084;
         return true;
     }
     if (entity->ClassId() == B_ENTITY_CID_PHYSIC_OBJECT && is_static)
