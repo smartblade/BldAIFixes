@@ -449,49 +449,49 @@ void B_WinApp::ReadArguments(const char *args)
     B_App::ReadArguments(args);
     for(unsigned int i = 0; i < this->arguments.size; i++)
     {
-        if (*this->arguments.elements[i] == "nomouse")
+        if (*this->arguments[i] == "nomouse")
         {
             this->noMouse = true;
         }
-        else if (*this->arguments.elements[i] == "nodinput")
+        else if (*this->arguments[i] == "nodinput")
         {
             this->noDInput = true;
             this->noMouse = true;
         }
-        else if (*this->arguments.elements[i] == "noexclusivemouse")
+        else if (*this->arguments[i] == "noexclusivemouse")
         {
             this->noExclusiveMouse = true;
         }
-        else if (*this->arguments.elements[i] == "rsoft16b")
+        else if (*this->arguments[i] == "rsoft16b")
         {
             this->rsoft16b = true;
         }
-        else if (*this->arguments.elements[i] == "rOpenGL")
+        else if (*this->arguments[i] == "rOpenGL")
         {
             this->rOpenGL = true;
         }
-        else if (*this->arguments.elements[i] == "r3Dfx")
+        else if (*this->arguments[i] == "r3Dfx")
         {
             this->r3Dfx = true;
         }
-        else if (*this->arguments.elements[i] == "rD3D")
+        else if (*this->arguments[i] == "rD3D")
         {
             this->rD3D = true;
         }
-        else if (*this->arguments.elements[i] == "dedicated")
+        else if (*this->arguments[i] == "dedicated")
         {
             this->noMouse = true;
         }
-        else if (*this->arguments.elements[i] == "quick")
+        else if (*this->arguments[i] == "quick")
         {
             showStartupDialog = false;
         }
         else if (!strncmp(
-            this->arguments.elements[i]->String(),
+            this->arguments[i]->String(),
             "startpath:",
             sizeof("startpath:") - 1))
         {
-            const char *startPathArg = this->arguments.elements[i]->String();
+            const char *startPathArg = this->arguments[i]->String();
             this->startPath = startPathArg + sizeof("startpath:") - 1;
         }
     }

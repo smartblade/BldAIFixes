@@ -1300,58 +1300,57 @@ void B_App::ReadArguments(const char *args)
     static char defaultSoundDeviceId[] = "";
 
     assert(args);
+    const char *argStr = args;
+    int offset = 0;
     this->StringSplit(args, " -", &this->arguments);
     for(unsigned int i = 0; i < this->arguments.size; i++)
     {
-        if (*this->arguments.elements[i] == "nosound")
+        if (*this->arguments[i] == "nosound")
         {
             this->noSound = true;
         }
-        else if (*this->arguments.elements[i] == "cls")
+        else if (*this->arguments[i] == "cls")
         {
             this->cls = true;
         }
-        else if (*this->arguments.elements[i] == "console")
+        else if (*this->arguments[i] == "console")
         {
             this->showConsole = true;
         }
         /* FIXME two "nosound" arguments*/
-        else if (*this->arguments.elements[i] == "nosound")
+        else if (*this->arguments[i] == "nosound")
         {
             this->noSound = true;
         }
         else if (!strncmp(
-            this->arguments.elements[i]->String(),
+            this->arguments[i]->String(),
             "map:",
             sizeof("map:") - 1))
         {
-            const B_Name &map = *this->arguments.elements[i];
-            this->mapName = map;
+            this->mapName = *this->arguments[i];
         }
         else if (!strncmp(
-            this->arguments.elements[i]->String(),
+            this->arguments[i]->String(),
             "dev:",
             sizeof("dev:") - 1))
         {
-            const B_Name &raster = *this->arguments.elements[i];
-            this->rasterName = raster;
+            this->rasterName = *this->arguments[i];
         }
         else if (!strncmp(
-            this->arguments.elements[i]->String(),
+            this->arguments[i]->String(),
             "snd:",
             sizeof("snd:") - 1))
         {
-            const B_Name &snd = *this->arguments.elements[i];
-            this->soundDeviceId = snd;
+            this->soundDeviceId = *this->arguments[i];
         }
         else if (!strncmp(
-            this->arguments.elements[i]->String(),
+            this->arguments[i]->String(),
             "nogamespy",
             4))/* FIXME should be whole world comparison*/
         {
             SetGameSpySupport(false);
         }
-        else if (*this->arguments.elements[i] == "dedicated")
+        else if (*this->arguments[i] == "dedicated")
         {
             SetDedicatedServer(true);
             this->showConsole = true;
@@ -1361,41 +1360,35 @@ void B_App::ReadArguments(const char *args)
             this->noSound = true;
         }
     }
-    B_PtrArray<B_Name> mapTokens;
-    const char *mapString = this->mapName;
-    this->StringSplit(mapString, ":", &mapTokens);
-    if (mapTokens.size != 2)
+    B_PtrArray<B_Name> mapStrings;
+    this->StringSplit(this->mapName, ":", &mapStrings);
+    if (mapStrings.size != 2)
     {
         this->mapName = defaultMapName;
     }
     else
     {
-        const B_Name &map = *mapTokens.elements[1];
-        this->mapName = map.String();
+        this->mapName = mapStrings[1]->String();
     }
-    B_PtrArray<B_Name> rasterTokens;
-    const char *rasterString = this->rasterName;
-    this->StringSplit(rasterString, ":", &rasterTokens);
-    if (rasterTokens.size != 2)
+    B_PtrArray<B_Name> devStrings;
+    this->StringSplit(this->rasterName, ":", &devStrings);
+    if (devStrings.size != 2)
     {
         this->rasterName = defaultRasterName;
     }
     else
     {
-        const B_Name &raster = *rasterTokens.elements[1];
-        this->rasterName = raster.String();
+        this->rasterName = devStrings[1]->String();
     }
-    B_PtrArray<B_Name> sndTokens;
-    const char *sndString = this->soundDeviceId;
-    this->StringSplit(sndString, ":", &sndTokens);
-    if (sndTokens.size != 2)
+    B_PtrArray<B_Name> sndStrings;
+    this->StringSplit(this->soundDeviceId, ":", &sndStrings);
+    if (sndStrings.size != 2)
     {
         this->soundDeviceId = defaultSoundDeviceId;
     }
     else
     {
-        const B_Name &snd = *sndTokens.elements[1];
-        this->soundDeviceId = snd.String();
+        this->soundDeviceId = sndStrings[1]->String();
     }
 }
 
