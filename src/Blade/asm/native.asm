@@ -622257,12 +622257,7 @@ l005ACF84 ENDP
 ;* Call:
 ; 00410235 
 ;
-l005ACFE7 PROC
-           push ebp
-           mov ebp, esp
-           pop ebp
-           ret
-l005ACFE7 ENDP
+           call l005ACFE7; Implemented in c++ code
 ;
 ;* Call:
 ; 005B10BB 

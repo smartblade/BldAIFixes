@@ -41,6 +41,12 @@ public:
     virtual void sound_unknown054();
     virtual void SetListenerPosition(const B_Matrix &pos);
 
+    void SetUnknownFlags(int value)
+    {
+        this->unknown08 = value;
+        this->unknown0C = value;
+    }
+
     int unknown04;
     int unknown08;
     int unknown0C;

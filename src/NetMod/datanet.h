@@ -7,6 +7,7 @@ extern "C"
 {
 
 extern void MarkNetMapSet(void);
+extern void unknown_005ACFE7(void);
 
 }
 

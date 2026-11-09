@@ -1678,6 +1678,8 @@ externdef ?Update@B_ProcTexture@@QAEXXZ: near
 l005AA881 equ ?Update@B_ProcTexture@@QAEXXZ
 externdef _MarkNetMapSet: near
 l005AC791 equ _MarkNetMapSet
+externdef _unknown_005ACFE7: near
+l005ACFE7 equ _unknown_005ACFE7
 externdef _OnEvent: near
 l005AF2CE equ _OnEvent
 externdef _ResetClientMapName: near

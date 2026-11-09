@@ -322,10 +322,10 @@ bool B_WinApp::Start()
 void B_WinApp::LoadLevel(const char *map)
 {
     char buffer[260];
-    double timeBefore, timeAfter;
+    double startTime, endTime;
     static int loadLevelCounter = 0;
 
-    timeBefore = timeGetTime();
+    startTime = timeGetTime();
 
     this->mapName = GetNetMap(map);
     map = this->mapName;
@@ -349,14 +349,14 @@ void B_WinApp::LoadLevel(const char *map)
 
     if (gbl_sound_device)
     {
-        gbl_sound_device->unknown08 = 1;
-        gbl_sound_device->unknown0C = 1;
+        gbl_sound_device->SetUnknownFlags(1);
     }
 
     if (gbl_net->is_net_game())
     {
         if (gbl_net->is_server())
         {
+            unknown_005ACFE7();
             B_App::LoadLevel("Server.py");
             MarkNetMapSet();
         }
@@ -372,13 +372,12 @@ void B_WinApp::LoadLevel(const char *map)
         B_App::LoadLevel("Cfg.py");
     }
 
-    timeAfter = timeGetTime();
-    mout << vararg("Load Time = %f\n", (timeAfter - timeBefore)/1000.0);
+    endTime = timeGetTime();
+    mout << vararg("Load Time = %f\n", (endTime - startTime)/1000.0);
 
     if (gbl_sound_device)
     {
-        gbl_sound_device->unknown08 = 0;
-        gbl_sound_device->unknown0C = 0;
+        gbl_sound_device->SetUnknownFlags(0);
     }
 }
 
