@@ -11,38 +11,112 @@
 #include <export.h>
 #undef BUILD_LIB
 
-template <typename T>
-class LIB_EXP B_Array {
+/* array of pointers like B_PtrArray without deleteItems */
+template<class TYPE>
+class B_Array
+{
 public:
-    B_Array() : data_(nullptr), size_(0), capacity_(0) {}
-
-    B_Array(size_t capacity) : data_(new T[capacity]), size_(0), capacity_(capacity) {}
-
-    virtual ~B_Array() { delete[] data_; }
-
-    // Add an element to the array
-    void push_back(const T &element) {
-        if (size_ == capacity_) {
-            // reallocate with double capacity
-            capacity_ *= 2;
-            T *newData = new T[capacity_];
-            std::copy(data_, data_ + size_, newData);
-            delete[] data_;
-            data_ = newData;
-        }
-        data_[size_++] = element;
+    virtual ~B_Array()
+    {
+        delete this->elements;
     }
 
-    // Access an element at a given index
-    T &operator[](size_t index) { return data_[index]; }
+    B_Array(int increment)
+    :
+        elements(NULL),
+        size(0),
+        increment(increment),
+        num_alloc(0)
+    {
+    }
 
-    // Get the current size of the array
-    size_t size() const { return size_; }
+    int Append(TYPE *newElement)
+    {
+        if (num_alloc > size)
+        {
+            this->elements[size] = newElement;
+            size++;
+        }
+        else
+        {
+            num_alloc += increment;
+            if (size != 0)
+            {
+                TYPE ** elements = new TYPE *[num_alloc];
+                for (unsigned int i = 0; i < size; i++)
+                {
+                    elements[i] = this->elements[i];
+                }
+                delete this->elements;
+                this->elements = elements;
+            }
+            else
+            {
+                this->elements = new TYPE *[num_alloc];
+            }
+            this->elements[size] = newElement;
+            size++;
+        }
+        return size - 1;
+    }
 
-private:
-    T *data_; // pointer to the array data
-    size_t size_; // current size of the array
-    size_t capacity_; // maximum capacity of the array
+    int Find(TYPE *element)
+    {
+        for (unsigned int i = 0; i < this->size; i++)
+        {
+            if (this->elements[i] == element)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void Remove(unsigned int index, int deleteItem)
+    {
+        if (index >= this->size)
+            return;
+        if (deleteItem)
+        {
+            delete this->elements[index];
+        }
+        if (this->size == 1)
+        {
+            delete this->elements;
+            this->elements = NULL;
+            this->size = 0;
+            this->num_alloc = 0;
+            return;
+        }
+        if (this->num_alloc >= (this->size + this->increment - 1))
+        {
+            this->num_alloc -= this->increment;
+            TYPE ** elements = new TYPE *[this->num_alloc];
+            for (unsigned int i = 0; i < index; i++)
+            {
+                elements[i] = this->elements[i];
+            }
+            for (i = index + 1; i < this->size; i++)
+            {
+                elements[i - 1] = this->elements[i];
+            }
+            delete this->elements;
+            this->elements = elements;
+        }
+        else
+        {
+            for (unsigned int i = index + 1; i < this->size; i++)
+            {
+                this->elements[i - 1] = this->elements[i];
+            }
+        }
+        this->size--;
+    }
+
+    TYPE **elements;
+    unsigned int size;
+    int increment;
+    unsigned int num_alloc;
 };
 
 class B_BitMap;
@@ -53,8 +127,40 @@ class B_ODataFile;
 class LIB_EXP B_BitMap24
 {
 public:
-    B_BitMap24(int width = 0, int height = 0);
-    virtual ~B_BitMap24();
+    /*
+    * Module:                 BBLibc.dll
+    * Entry point:            0x10006CB0
+    * VC++ mangling:          ??0B_BitMap24@@QAE@HH@Z
+    */
+    B_BitMap24(int width = 0, int height = 0)
+    {
+        BitMap24DataList.Append(this);
+        this->dimension1 = width;
+        this->dimension2 = height;
+        if (width != 0 && height != 0)
+        {
+            this->data = new char[this->dimension1 * this->dimension2 * 3];
+        }
+        else
+        {
+            this->data = NULL;
+        }
+    }
+
+    /*
+    * Module:                 BBLibc.dll
+    * Entry point:            0x10006E70
+    * VC++ mangling:          ??1B_BitMap24@@UAE@XZ
+    */
+    virtual ~B_BitMap24()
+    {
+        BitMap24DataList.Remove(BitMap24DataList.Find(this), false);
+        if (this->data != NULL)
+        {
+            delete this->data;
+        }
+    }
+
     B_BitMap24(const B_BitMap24 &that);
     static void ClearBitMap24Data();
     B_BitMap24(const B_BitMap &arg_1);
@@ -136,8 +242,8 @@ public:
 #else
     int ReadFromJPEG(const char *arg_1);
 #endif
-    unsigned int dimension1;
-    unsigned int dimension2;
+    int dimension1;
+    int dimension2;
     void *data;
 private:
     static B_Array<B_BitMap24> BitMap24DataList;

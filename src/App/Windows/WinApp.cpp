@@ -255,15 +255,15 @@ bool B_WinApp::Start()
         mout << "ERROR B_WinApp::InitRasterDevice() -> Raster not created.\n";
         return false;
     }
-    B_BitMap24 bitMap;
+    B_BitMap24 logo;
     B_IDataFile file("..\\Data\\Rebel logo.bmp", O_BINARY);
     if (file.OK())
     {
-        file >> bitMap;
+        file >> logo;
         B_3D_raster_device->ClsRGB(0, 0, 0);
         B_3D_raster_device->SetPosition(0.0f, 0.0f);
         B_3D_raster_device->DrawImage(
-            640, 480, "BGR", "Stretch", bitMap.data);
+            640, 480, "BGR", "Stretch", logo.data);
         B_3D_raster_device->SwapBuffers();
         this->ProcessMessage();
     }
@@ -308,7 +308,10 @@ bool B_WinApp::Start()
         mout << "Not using mouse.\n";
     }
     this->mapName = GetNetMap(this->mapName.String());
-    this->LoadLevel(this->mapName.String());
+    {
+        const char *map = this->mapName.String();
+        this->LoadLevel(map);
+    }
     return true;
 }
 

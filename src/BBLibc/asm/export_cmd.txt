@@ -73,9 +73,7 @@
 /EXPORT:??9B_Color@@QAEIABV0@@Z=??9B_Color@@QAEIABV0@@Z
 /EXPORT:?SetColor@B_Color@@QAEXEEE@Z=?SetColor@B_Color@@QAEXEEE@Z
 /EXPORT:??0B_Pal@@QAE@XZ=??0B_Pal@@QAE@XZ
-/EXPORT:??0B_BitMap24@@QAE@HH@Z=??0B_BitMap24@@QAE@HH@Z
 /EXPORT:?Clear@B_BitMap24@@QAEXXZ=?Clear@B_BitMap24@@QAEXXZ
-/EXPORT:??1B_BitMap24@@UAE@XZ=??1B_BitMap24@@UAE@XZ
 /EXPORT:?GetDimension@B_BitMap24@@QBEXAAH0@Z=?GetDimension@B_BitMap24@@QBEXAAH0@Z
 /EXPORT:?GetBits@B_BitMap24@@QBEPBEXZ=?GetBits@B_BitMap24@@QBEPBEXZ
 /EXPORT:??4B_RDataLight@@QAEAAV0@ABV0@@Z=??4B_RDataLight@@QAEAAV0@ABV0@@Z

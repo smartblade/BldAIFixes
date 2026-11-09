@@ -40,7 +40,7 @@ public:
 
     B_MessageChannel()
     :
-        B_NamedObj(B_Name(""))
+        B_NamedObj("")
     {
         this->unknown0Ch = 1;
     }
