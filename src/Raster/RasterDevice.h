@@ -604,16 +604,16 @@ public:
         return NULL;
     }
 
-    virtual void GetSize(int &w, int &h)
+    virtual int GetSize(int &w, int &h)
     {
         if (FullScreen())
         {
             int dummy1, dummy2, dummy3;
-            GetCurrentMode(dummy1, w, h, dummy2, dummy3);
+            return GetCurrentMode(dummy1, w, h, dummy2, dummy3);
         }
         else
         {
-            GetWindowSize(w, h);
+            return GetWindowSize(w, h);
         }
     }
 

@@ -204,13 +204,14 @@ public:
     /*
     * Module:                 rOpenGL.dll
     * Entry point:            0x1002BD70
-    * VC++ mangling:          ?GetSize@B_OpenGLRasterDevice@@UAEXAAH0@Z
+    * VC++ mangling:          ?GetSize@B_OpenGLRasterDevice@@UAEHAAH0@Z
     */
 
-    virtual void GetSize(int &w, int &h)
+    virtual int GetSize(int &w, int &h)
     {
         w = this->width;
         h = this->height;
+        return true;
     }
 
     virtual void unknown204(int);
