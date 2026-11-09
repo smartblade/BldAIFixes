@@ -177,7 +177,7 @@ public:
     bool isActive;
     bool b05D4;
     bool cls;
-    byte currentStatsIndex;
+    char currentStatsIndex;
     float saveToBmp;
     int numSavedBMPs;
     int numFrames;

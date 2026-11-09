@@ -538,15 +538,8 @@ bool B_App::ProcessEvents()
         {
             if (this->b001C)
             {
-                const B_Matrix *pose;
-                if (this->player1 == NULL)
-                {
-                    pose = &this->client->GetPose();
-                }
-                else
-                {
-                    pose = &this->player1->GetPose();
-                }
+                const B_Matrix *pose = (this->player1 == NULL) ?
+                    &this->client->GetPose() : &this->player1->GetPose();
                 gbl_sound_device->SetListenerPosition(*pose);
             }
             else
@@ -563,10 +556,7 @@ bool B_App::ProcessEvents()
     {
         B_CameraView cameraView;
         this->GetCameraView(&cameraView);
-        for (unsigned int i = 0; i < gbl_ag_textures.size; i++)
-        {
-            gbl_ag_textures[i]->needUpdate = true;
-        }
+        InvalidateAGTextures();
         B_ProcTexture::SetTime(this->time);
         B_3D_raster_device->StartScene(&this->viewPose);
         B_3D_raster_device->SetProjection(cameraView);
@@ -587,7 +577,7 @@ bool B_App::ProcessEvents()
         {
             B_3D_raster_device->SetMode(2);
         }
-        worldUpdateTime = worldUpdateTime + this->clock1->GetTime();
+        worldUpdateTime += (float)this->clock1->GetTime();
         for (unsigned int i = 0; i < this->afterFrameFuncs.size; i++)
         {
             B_AfterFrameFunc *func = this->afterFrameFuncs[i];
@@ -600,45 +590,45 @@ bool B_App::ProcessEvents()
         }
         if (this->rootWidget != NULL && !this->needClearLevel)
         {
-            int w = 640;
-            int h = 480;
-            B_3D_raster_device->GetSize(w, h);
-            this->rootWidget->SetSize(w, h);
+            int width = 640;
+            int height = 480;
+            B_3D_raster_device->GetSize(width, height);
+            this->rootWidget->SetSize(width, height);
             B_3D_raster_device->SetTransformation();
-            int clipX, clipY, clipWidth, clipHeight;
-            B_3D_raster_device->GetClipWindow(clipX, clipY, clipWidth, clipHeight);
+            int clipX, clipY, clipW, clipH;
+            B_3D_raster_device->GetClipWindow(clipX, clipY, clipW, clipH);
             this->rootWidget->Draw(0, 0, this->clock2->GetTime());
-            B_3D_raster_device->SetClipWindow(clipX, clipY, clipWidth, clipHeight);
+            B_3D_raster_device->SetClipWindow(clipX, clipY, clipW, clipH);
             B_3D_raster_device->ResetTransformation();
         }
         if (this->saveToBmp != 0.0f)
         {
-            bool isClockActive = this->clock1->IsActive();
+            bool clockActive = this->clock1->IsActive();
             /* FIXME incorrect clause. Time will not stopped. */
-            if (!isClockActive)
+            if (!clockActive)
             {
                 this->clock1->StopTime();
             }
-            B_BitMap24 *bitMap = B_3D_raster_device->GetBitMap24();
-            if (bitMap != NULL)
+            B_BitMap24 *bmp = B_3D_raster_device->GetBitMap24();
+            if (bmp != NULL)
             {
                 if (this->saveToBmp == 1.0f)
                 {
-                    bitMap->SaveToBMP(
+                    bmp->SaveToBMP(
                         vararg("snp%5d.bmp", this->numSavedBMPs));
                     ++this->numSavedBMPs;
                 }
                 else
                 {
-                    bitMap->SaveToBMPSized(
+                    bmp->SaveToBMPSized(
                         this->screenShotFileName,
                         this->screenShotWidth,
                         this->screenShotHeight);
                 }
-                delete bitMap;
+                delete bmp;
                 this->saveToBmp = 0.0f;
             }
-            if (isClockActive)
+            if (clockActive)
             {
                 this->clock1->RestartTime();
             }

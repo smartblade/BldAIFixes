@@ -296,3 +296,13 @@ extern B_WinApp *gbl_application;
 #ifdef __cplusplus
 }
 #endif
+
+/* the textures of the analytic geometry are updated at the next frame, the
+ * original expands it inline in B_App::ProcessEvents */
+inline void InvalidateAGTextures()
+{
+    for (unsigned int i = 0; i < gbl_ag_textures.size; i++)
+    {
+        gbl_ag_textures[i]->needUpdate = true;
+    }
+}
