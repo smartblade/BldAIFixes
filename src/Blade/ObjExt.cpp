@@ -1240,39 +1240,13 @@ int SetActionCameraMovement(
     const char *action_name, double angle, double start_pos, double end_pos
 )
 {
-    B_App *App = GetApplication();
-    assert(App);
-    B_CameraEntity *camera = App->camera;
+    B_App *application = GetApplication();
+    assert(application);
+    B_CameraEntity *camera = application->camera;
     if (camera != NULL)
     {
-        B_CameraMovement *movement = new B_CameraMovement(
-            action_name, angle, start_pos, end_pos);
-        B_PtrArray<B_CameraMovement> *array = &camera->cam.movements;
-        if (array->num_alloc > array->size)
-        {
-            array->elements[array->size] = movement;
-            array->size++;
-        }
-        else
-        {
-            array->num_alloc += array->increment;
-            if (array->size != 0)
-            {
-                B_CameraMovement ** elements = new B_CameraMovement *[array->num_alloc];
-                for (unsigned int i = 0; i < array->size; i++)
-                {
-                    elements[i] = array->elements[i];
-                }
-                delete array->elements;
-                array->elements = elements;
-            }
-            else
-            {
-                array->elements = new B_CameraMovement *[array->num_alloc];
-            }
-            array->elements[array->size] = movement;
-            array->size++;
-        }
+        camera->cam.movements.Append(new B_CameraMovement(
+            action_name, angle, start_pos, end_pos));
     }
     return 1;
 }
