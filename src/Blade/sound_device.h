@@ -27,7 +27,7 @@ public:
     virtual void unknown028();
     virtual void unknown02C();
     virtual bool set_world_size(
-        double a, double b, double x, double d, double e);
+        B_Vector center, double halfSize, double maxDistance);
     virtual void unknown034();
     virtual void unknown038();
     virtual B_Sound *CreateSound(

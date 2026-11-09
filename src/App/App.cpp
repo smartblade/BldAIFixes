@@ -1627,10 +1627,10 @@ int B_App::GetMutilationLevel()
 
 int B_App::LoadWorld(const char *file_name)
 {
-    double timeBefore, timeAfter;
+    double startTime, endTime;
 
     mout << vararg("About to load World %s.\n", file_name);
-    timeBefore = timeGetTime();
+    startTime = timeGetTime();
 
     B_IDataFile * file = new B_IDataFile(file_name, O_BINARY);
     if (!file->OK())
@@ -1641,31 +1641,29 @@ int B_App::LoadWorld(const char *file_name)
     *file >> &B_world;
     delete file;
 
-    timeAfter = timeGetTime();
+    endTime = timeGetTime();
 
     mout << vararg(
         "World %s loaded (%f seconds).\n",
         file_name,
-        (timeAfter - timeBefore)/1000.0
+        (endTime - startTime)/1000.0
     );
 
-    B_world.world_file_name = B_Name(file_name);
+    B_world.world_file_name = file_name;
 
     if (gbl_sound_device)
     {
         mout << "About to set world size for sound device\n";
 
-        timeBefore = timeGetTime();
+        startTime = timeGetTime();
 
         gbl_sound_device->set_world_size(
-            B_world.octTree.m_center.x, B_world.octTree.m_center.y,
-            B_world.octTree.m_center.z, B_world.octTree.m_halfSize,
-            5000.0);
+            B_world.octTree.m_center, B_world.octTree.m_halfSize, 30000.0);
 
-        timeAfter = timeGetTime();
+        endTime = timeGetTime();
         mout << vararg(
             "set world size done (%f seconds).\n",
-            (timeAfter - timeBefore)/1000.0
+            (endTime - startTime)/1000.0
         );
     }
 
