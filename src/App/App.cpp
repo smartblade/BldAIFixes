@@ -818,98 +818,86 @@ void B_App::TakeSnapShot()
 
 void B_App::ReadLevel(const char * file_name)
 {
-    double timeBefore, timeAfter;
-    char itemKind[256], itemName[256];
+    double startTime, finishTime;
+    char section[256], fileName[256];
 
     mout << vararg("Abriendo archivo csv.dat\n");
-    timeBefore = timeGetTime();
+    startTime = timeGetTime();
     ReadCSV("..\\csv.dat", &B_csvs);
-    timeAfter = timeGetTime();
+    finishTime = timeGetTime();
     mout << vararg(
         "csv.dat loaded (%f seconds).\n",
-        (timeAfter - timeBefore)/1000.0);
+        (finishTime - startTime)/1000.0);
 
-    timeBefore = timeAfter;
+    startTime = finishTime;
     mout << vararg("Abriendo archivo %s", file_name);
 
-    FILE *file = fopen(file_name, "r");
-    if (file == NULL)
+    FILE *fileHandle = fopen(file_name, "r");
+    if (fileHandle == NULL)
     {
         mout << "No se puede abrir archivo\n";
         return;
     }
 
-    int status = fscanf(file, "%s -> %s", itemKind, itemName);
+    int status = fscanf(fileHandle, "%s -> %s", section, fileName);
     while ((status != 0) && (status != EOF))
     {
-        if (!strcmp(itemKind, "Bitmaps"))
+        anim_t *anim;
+        B_IDataFile *animFile;
+
+        if (!strcmp(section, "Bitmaps"))
         {
-            B_resource_manager.LocateResourceIn(B_Name(itemName), NULL, 2);
+            B_Name name(fileName);
+            B_resource_manager.LocateResourceIn(name, NULL, 2);
         }
-        else if (!strcmp(itemKind, "ChromaBitmaps"))
+        if (!strcmp(section, "ChromaBitmaps"))
         {
             this->ExitWithError("Blade", "ChromaBitmaps no longer supported.");
         }
-        else if (!strcmp(itemKind, "WorldDome"))
+        else if (!strcmp(section, "WorldDome"))
         {
-            B_resource_manager.LocateResourceIn(B_Name(itemName), NULL, 2);
+            {
+                B_Name name(fileName);
+                B_resource_manager.LocateResourceIn(name, NULL, 2);
+            }
             B_3D_raster_device->update_dome();
         }
-        else if (!strcmp(itemKind, "World"))
+        else if (!strcmp(section, "World"))
         {
-            this->LoadWorld(itemName);
+            this->LoadWorld(fileName);
         }
-        else if (!strcmp(itemKind, "ANM"))
+        else if (!strcmp(section, "ANM"))
         {
-            B_IDataFile * file = new B_IDataFile(itemName, O_BINARY);
-            if (file->OK())
+            animFile = new B_IDataFile(fileName, O_BINARY);
+            if (animFile->OK())
             {
-                anim_t *anim = new anim_t();
-                (*file) >> anim;
-                if (gbl_anims.num_alloc <= gbl_anims.size)
-                {
-                    gbl_anims.num_alloc += gbl_anims.increment;
-                    if (gbl_anims.size != 0)
-                    {
-                        anim_t **elements = new anim_t *[gbl_anims.num_alloc];
-                        for(unsigned int i = 0; i < gbl_anims.size; i++)
-                        {
-                            elements[i] = gbl_anims.elements[i];
-                        }
-                        delete gbl_anims.elements;
-                        gbl_anims.elements = elements;
-                    }
-                    else
-                    {
-                        gbl_anims.elements = new anim_t *[gbl_anims.num_alloc];
-                    }
-                }
-                gbl_anims.elements[gbl_anims.size] = anim;
-                gbl_anims.size++;
+                anim = new anim_t();
+                (*animFile) >> anim;
+                gbl_anims.Append(anim);
             }
             else
             {
-                mout << vararg("ERROR opening animation %s\n", itemName);
+                mout << vararg("ERROR opening animation %s\n", fileName);
             }
-            delete file;
+            delete animFile;
         }
-        else if (!strcmp(itemKind, "Objs"))
+        else if (!strcmp(section, "Objs"))
         {
             this->ExitWithError("Blade", "Objs no longer supported.");
         }
-        else if (!strcmp(itemKind, "LoadGammaC"))
+        else if (!strcmp(section, "LoadGammaC"))
         {
             this->ExitWithError("Blade", "LoadGammaC no longer supported.");
         }
-        status = fscanf(file, "%s -> %s", itemKind, itemName);
+        status = fscanf(fileHandle, "%s -> %s", section, fileName);
         this->ProcessMessage();
     }
-    fclose(file);
-    timeAfter = timeGetTime();
+    fclose(fileHandle);
+    finishTime = timeGetTime();
     mout << vararg(
         ".lvl %s loaded (%f seconds).\n",
         file_name,
-        (timeAfter - timeBefore)/1000.0);
+        (finishTime - startTime)/1000.0);
 }
 
 
