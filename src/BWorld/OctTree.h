@@ -41,7 +41,8 @@ extern "C" {
 #endif
 
 
-class B_SectorSurfaceCache {
+class B_SectorSurfaceCache
+{
 public:
     B_SectorSurfaceCache();
     virtual ~B_SectorSurfaceCache();
@@ -55,7 +56,8 @@ public:
 };
 
 
-class B_GlobalSurfaceCache {
+class B_GlobalSurfaceCache
+{
 public:
     B_GlobalSurfaceCache();
 
@@ -137,7 +139,7 @@ public:
     virtual int GetTypeID() override;
     virtual ~LeafNode() override;
     virtual void CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *, double) override;
-    virtual void CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList * outList, double halfSize) override;
+    virtual void CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize) override;
 
     B_Sector *sectors;
 };

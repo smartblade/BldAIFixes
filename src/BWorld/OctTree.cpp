@@ -69,8 +69,9 @@ void B_BoundingBox::CollectIntersectingSectors(
 
 B_OctantNode::B_OctantNode()
 {
-    for (unsigned int i = 0; i < 8; ++i) {
-        children[i] = nullptr;
+    for (unsigned int i = 0; i < 8; i++)
+    {
+        this->children[i] = nullptr;
     }
 }
 
@@ -83,9 +84,11 @@ B_OctantNode::B_OctantNode()
 
 B_OctantNode::~B_OctantNode()
 {
-    for (unsigned int i = 0; i < 8; ++i) {
-        if (children[i] != nullptr) {
-            delete children[i];
+    for (unsigned int i = 0; i < 8; i++)
+    {
+        if (this->children[i] != nullptr)
+        {
+            delete this->children[i];
         }
     }
 }
@@ -97,7 +100,7 @@ B_OctantNode::~B_OctantNode()
 * VC++ mangling:          ?GetTypeID@B_OctantNode@@UAEHXZ
 */
 
-int B_OctantNode::GetTypeID() 
+int B_OctantNode::GetTypeID()
 {
     return B_OCT_NODE_CID_BRANCH;
 }
@@ -110,7 +113,7 @@ int B_OctantNode::GetTypeID()
 */
 
 LeafNode::LeafNode()
-: 
+:
     sectors(nullptr)
 {
 }
@@ -133,7 +136,7 @@ LeafNode::~LeafNode()
 * VC++ mangling:          ?GetTypeID@LeafNode@@UAEHXZ
 */
 
-int LeafNode::GetTypeID() 
+int LeafNode::GetTypeID()
 {
     return B_OCT_NODE_CID_LEAF;
 }
@@ -160,7 +163,7 @@ B_SectorListNode::B_SectorListNode()
 
 B_SectorListNode::~B_SectorListNode()
 {
-    Clear(false);
+    this->Clear(false);
 }
 
 
@@ -173,7 +176,7 @@ B_SectorListNode::~B_SectorListNode()
 int B_SectorListNode::GetTypeID()
 {
     return B_OCT_NODE_CID_SECTOR_LIST;
-};
+}
 
 
 /*
@@ -183,8 +186,8 @@ int B_SectorListNode::GetTypeID()
 */
 
 B_OctTree::B_OctTree()
-: 
-    m_halfSize(0.0), 
+:
+    m_halfSize(0.0),
     m_root(nullptr)
 {
 }
@@ -201,7 +204,7 @@ B_OctTree::B_OctTree(const B_Map &map, double minNodeSize)
     m_halfSize(0.0), 
     m_root(nullptr)
 {
-    Build(map, minNodeSize);
+    this->Build(map, minNodeSize);
 }
 
 
@@ -213,7 +216,7 @@ B_OctTree::B_OctTree(const B_Map &map, double minNodeSize)
 
 B_OctTree::~B_OctTree()
 {
-    Clear();
+    this->Clear();
 }
 
 
@@ -225,9 +228,9 @@ B_OctTree::~B_OctTree()
 
 void B_OctTree::Clear()
 {
-    if (this->m_root != nullptr) {
+    if (this->m_root != nullptr)
+    {
         delete this->m_root;
-
         this->m_root = nullptr;
     }
 }
@@ -420,10 +423,9 @@ void B_OctTree::Build(const B_Map &map, double minNodeSize)
 
 void LeafNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
-
-    if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0) {
+    if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
+    {
         this->sectors->lastQueryId = gbl_oct_tree_query_id; // mark as "processed"
-
         if (outList->size < 0x200)
         {
             outList->sectors[outList->size] = this->sectors;
@@ -444,11 +446,8 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *
     if (this->sectors->lastQueryId != gbl_oct_tree_query_id && this->sectors->isActive != 0)
     {
         this->sectors->lastQueryId = gbl_oct_tree_query_id;
-
         B_BoundingBox *sectorBB = &this->sectors->boundingBox;
-
         int intersects;
-
         if (gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x ||
             gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y ||
             gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z ||
@@ -462,7 +461,6 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *
         {
             intersects = 1;
         }
-
         if (intersects != 0)
         {
             if (outList->size < 0x200)
@@ -483,12 +481,14 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *
 
 void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
-    for (unsigned int i = 0; i < this->size; ++i) {
-
-        if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id && this->elements[i]->isActive != 0) {
+    for (unsigned int i = 0; i < this->size; i++)
+    {
+        if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id && this->elements[i]->isActive != 0)
+        {
             this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
 
-            if (outList->size < 0x200) {
+            if (outList->size < 0x200)
+            {
                 outList->sectors[outList->size] = this->elements[i];
                 outList->size++;
             }
@@ -505,17 +505,14 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
 
 void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSectorsList *outList, double)
 {
-    for (unsigned int i = 0; i < this->size; ++i) {
-
+    for (unsigned int i = 0; i < this->size; i++)
+    {
         if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id &&
-            this->elements[i]->isActive != 0) {
-
+            this->elements[i]->isActive != 0)
+        {
             this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
-
             B_BoundingBox *sectorBB = &this->elements[i]->boundingBox;
-
             int intersects;
-
             if (gbl_current_query_box->minCoords.x > sectorBB->maxCoords.x ||
                 gbl_current_query_box->minCoords.y > sectorBB->maxCoords.y ||
                 gbl_current_query_box->minCoords.z > sectorBB->maxCoords.z ||
@@ -529,10 +526,10 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSecto
             {
                 intersects = 1;
             }
-
             if (intersects != 0)
             {
-                if (outList->size < 0x200) {
+                if (outList->size < 0x200)
+                {
                     outList->sectors[outList->size] = this->elements[i];
                     outList->size++;
                 }
@@ -918,16 +915,15 @@ void B_OctantNode::CollectSectorsInBox(
 void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsList *outList) const
 {
     outList->size = 0;
-
-    B_Vector localPos = worldPos - m_center;
-
+    B_Vector localPos = worldPos - this->m_center;
     gbl_oct_tree_query_id++;
-
-    if (m_root != nullptr) {
+    if (this->m_root != nullptr)
+    {
         if (fabs(localPos.x) < this->m_halfSize + 10.0 &&
             fabs(localPos.y) < this->m_halfSize + 10.0 &&
-            fabs(localPos.z) < this->m_halfSize + 10.0) {
-            m_root->CollectSectorsAtPoint(localPos, outList, m_halfSize);
+            fabs(localPos.z) < this->m_halfSize + 10.0)
+        {
+            this->m_root->CollectSectorsAtPoint(localPos, outList, this->m_halfSize);
         }
     }
 }
@@ -943,20 +939,19 @@ void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsLis
 void B_OctTree::FindSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *out) const
 {
     out->size = 0;
-
     gbl_oct_tree_query_id++;
     gbl_current_query_box = &bb;
-
-    B_BoundingBox localBB(bb.minCoords - m_center, bb.maxCoords - m_center);
-
-    if (m_root != nullptr) {
-        if (localBB.maxCoords.x > -m_halfSize * 0.5 - 10.0 &&
-            localBB.maxCoords.y > -m_halfSize * 0.5 - 10.0 &&
-            localBB.maxCoords.z > -m_halfSize * 0.5 - 10.0 &&
-            localBB.minCoords.x < m_halfSize * 0.5 + 10.0 &&
-            localBB.minCoords.y < m_halfSize * 0.5 + 10.0 &&
-            localBB.minCoords.z < m_halfSize * 0.5 + 10.0) {
-            m_root->CollectSectorsInBox(localBB, out, m_halfSize);
+    B_BoundingBox localBB(bb.minCoords - this->m_center, bb.maxCoords - this->m_center);
+    if (this->m_root != nullptr)
+    {
+        if (localBB.maxCoords.x > -this->m_halfSize * 0.5 - 10.0 &&
+            localBB.maxCoords.y > -this->m_halfSize * 0.5 - 10.0 &&
+            localBB.maxCoords.z > -this->m_halfSize * 0.5 - 10.0 &&
+            localBB.minCoords.x < this->m_halfSize * 0.5 + 10.0 &&
+            localBB.minCoords.y < this->m_halfSize * 0.5 + 10.0 &&
+            localBB.minCoords.z < this->m_halfSize * 0.5 + 10.0)
+        {
+            this->m_root->CollectSectorsInBox(localBB, out, this->m_halfSize);
         }
     }
 }
@@ -970,8 +965,8 @@ void B_OctTree::FindSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *
 */
 
 B_OctTreeSectorsList::B_OctTreeSectorsList()
-: 
-    size(0) 
+:
+    size(0)
 {
 }
 
@@ -1039,9 +1034,8 @@ int B_OctTreeSectorsList::BuildSurfaceCache(
 * VC++ mangling:          ??0B_SectorSurfaceCache@@QAE@XZ
 */
 
-
 B_SectorSurfaceCache::B_SectorSurfaceCache()
-: 
+:
     numSurfaces(0)
 {
 }
@@ -1064,8 +1058,8 @@ B_SectorSurfaceCache::~B_SectorSurfaceCache()
 * VC++ mangling:          ??0B_GlobalSurfaceCache@@QAE@XZ
 */
 
-B_GlobalSurfaceCache::B_GlobalSurfaceCache() 
-: 
+B_GlobalSurfaceCache::B_GlobalSurfaceCache()
+:
     count(0)
 {
 }
