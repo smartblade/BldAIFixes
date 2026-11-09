@@ -112,10 +112,10 @@ int TestClimb(B_Entity *entity, unsigned int eventIndex)
     double climbH = personEntity->GetFloorHeight(NULL, NULL) - topFloorPos.y;
     B_Vector leftHandPos, rightHandPos, topPersonPos;
     if (
-        climbH >= personEntity->per.charType->GetMedGrabDist() &&
-        climbH <= personEntity->per.charType->GetMaxGrabDist())
+        climbH >= personEntity->per.GetCharType()->GetMedGrabDist() &&
+        climbH <= personEntity->per.GetCharType()->GetMaxGrabDist())
     {
-        B_BipedAction *highClmbAction = personEntity->data->actions.Find(
+        B_BipedAction *highClmbAction = personEntity->GetBipedData()->actions.Find(
             "clmb_high_1h");
         if (highClmbAction == NULL)
             return false;
@@ -195,10 +195,10 @@ int TestClimb(B_Entity *entity, unsigned int eventIndex)
         }
     }
     else if (
-        climbH >= personEntity->per.charType->GetMinGrabDist() &&
-        climbH <= personEntity->per.charType->GetMedGrabDist())
+        climbH >= personEntity->per.GetCharType()->GetMinGrabDist() &&
+        climbH <= personEntity->per.GetCharType()->GetMedGrabDist())
     {
-        B_BipedAction *medClmbAction = personEntity->data->actions.Find(
+        B_BipedAction *medClmbAction = personEntity->GetBipedData()->actions.Find(
             "clmb_medium_1h");
         if (medClmbAction == NULL)
             return false;
@@ -260,10 +260,10 @@ int TestClimb(B_Entity *entity, unsigned int eventIndex)
         }
     }
     else if (
-        climbH >= personEntity->per.charType->maxStairDist &&
-        climbH <= personEntity->per.charType->GetMinGrabDist())
+        personEntity->per.GetCharType()->maxStairDist <= climbH &&
+        climbH <= personEntity->per.GetCharType()->GetMinGrabDist())
     {
-        B_BipedAction *medLowClmbAction = personEntity->data->actions.Find(
+        B_BipedAction *medLowClmbAction = personEntity->GetBipedData()->actions.Find(
             "clmb_medlow_1h");
         if (medLowClmbAction == NULL)
             return false;
@@ -282,7 +282,7 @@ int TestClimb(B_Entity *entity, unsigned int eventIndex)
         rFootRelPos = Rotate(rFootRelPos, personEntity->GetPose());
         leanRelPos = Rotate(leanRelPos, personEntity->GetPose());
         endRelPos = Rotate(endRelPos, personEntity->GetPose());
-        if (rFootRelPos.y < lFootRelPos.y)
+        if (lFootRelPos.y > rFootRelPos.y)
         {
             footRelPos = rFootRelPos;
         }
@@ -298,8 +298,8 @@ int TestClimb(B_Entity *entity, unsigned int eventIndex)
         topFloorPos = lowClmbTopFloorPos;
         climbH = personEntity->GetFloorHeight(NULL, NULL) - topFloorPos.y;
         if (
-            climbH > personEntity->per.charType->maxStairDist &&
-            climbH < personEntity->per.charType->GetMinGrabDist() &&
+            personEntity->per.GetCharType()->maxStairDist < climbH &&
+            personEntity->per.GetCharType()->GetMinGrabDist() > climbH &&
             !personEntity->IsIncorrectPosition(topFloorPos + endRelPos))
         {
             B_ClimbingData *climbingData = new B_ClimbingData();

@@ -59,6 +59,10 @@ public:
     virtual int GetNodeIndex(const B_Name &nodeName);
     virtual void unknown_method0EC();
     double GetAngle();
+    B_BipedData *GetBipedData()
+    {
+        return this->data;
+    }
     void DoAction(
         const B_Name &action_name, double unknown1, int iUnknown,
         double *dUnknown

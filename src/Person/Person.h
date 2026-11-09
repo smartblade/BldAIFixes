@@ -14,6 +14,11 @@ class B_Person
 public:
     void LaunchAnimation(const char *animationName, double time);
 
+    B_CharType *GetCharType()
+    {
+        return this->charType;
+    }
+
     char unknownFields1224[0x50];
     B_Name animName;
     char unknownFields1278[0x8B0];
