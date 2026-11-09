@@ -505,10 +505,14 @@ public:
     {
         if (this->currentFont == NULL)
             return false;
+        /* the original has a second check here with a condition known to
+         * be false at compile time, the condition is unknown */
+        if (false)
+            return false;
         float textScaleX, textScaleY;
         const B_Font::B_CharData *charData = this->currentFont->GetChars();
         this->SetActiveTexture(this->currentFont->GethBitmap());
-        const char *curChar = text;
+        const char *textCursor = text;
         if (this->textMode & TEXT_MODE_SCALE)
         {
             textScaleX = this->textScaleX;
@@ -524,48 +528,49 @@ public:
         if (this->textMode & TEXT_MODE_SHADOW)
         {
             B_Color textColor = this->GetTextColor();
-            float xPos, yPos;
-            this->GetPosition(xPos, yPos);
+            float x, y;
+            this->GetPosition(x, y);
             this->SetPosition(
-                this->textShadowX + xPos,
-                this->textShadowY + yPos);
-            this->SetTextColor(B_Color(0, 0, 0));
+                this->textShadowX + x,
+                this->textShadowY + y);
+            B_Color blackColor(0, 0, 0);
+            this->SetTextColor(blackColor);
             this->SetMode(RASTER_MODE_TEXT);
-            while (*curChar != '\0')
+            while (*textCursor != '\0')
             {
                 this->DrawChar(
-                    charData->charSize[*curChar],
+                    charData->charSize[(unsigned char)*textCursor],
                     textScaleX, textScaleY, 0);
-                curChar++;
+                textCursor++;
             }
-            this->SetPosition(xPos, yPos);
+            this->SetPosition(x, y);
             this->SetTextColor(textColor);
         }
         if (this->textMode & TEXT_MODE_BLUR)
         {
-            float xPos, yPos;
-            this->GetPosition(xPos, yPos);
-            curChar = text;
+            float x, y;
+            this->GetPosition(x, y);
+            textCursor = text;
             this->SetMode(RASTER_MODE_TEXT);
-            while (*curChar != '\0')
+            while (*textCursor != '\0')
             {
                 this->DrawChar(
-                    charData->charSize[*curChar],
+                    charData->charSize[(unsigned char)*textCursor],
                     textScaleX, textScaleY, this->textMode);
-                curChar++;
+                textCursor++;
             }
-            this->SetPosition(xPos, yPos);
+            this->SetPosition(x, y);
         }
         if (this->textMode & TEXT_MODE_TEXT)
         {
-            curChar = text;
+            textCursor = text;
             this->SetMode(RASTER_MODE_TEXT);
-            while (*curChar != '\0')
+            while (*textCursor != '\0')
             {
                 this->DrawChar(
-                    charData->charSize[*curChar],
+                    charData->charSize[(unsigned char)*textCursor],
                     textScaleX, textScaleY, 0);
-                curChar++;
+                textCursor++;
             }
         }
         this->unknown070();
