@@ -42,6 +42,13 @@ public:
         return bitmapHandle;
     }
 
+    /* inline check of the font which always returns 0 (WriteText of
+     * rOpenGL.dll), the original name and meaning are unknown */
+    int unknownCheck() const
+    {
+        return 0;
+    }
+
 private:
     long bitmapHandle;
     char unknown_fields[24];

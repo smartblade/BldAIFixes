@@ -505,9 +505,7 @@ public:
     {
         if (this->currentFont == NULL)
             return false;
-        /* the original has a second check here with a condition known to
-         * be false at compile time, the condition is unknown */
-        if (false)
+        if (this->currentFont->unknownCheck())
             return false;
         float textScaleX, textScaleY;
         const B_Font::B_CharData *charData = this->currentFont->GetChars();
