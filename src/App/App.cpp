@@ -723,8 +723,6 @@ void B_App::CloseLevel(const char *statement, const char *newMap)
 
 void B_App::LoadLevel(const char *script)
 {
-    B_CameraEntity *camera;
-
     this->SetAppMode("Game");
 
     this->InitPythonPath();
@@ -743,9 +741,7 @@ void B_App::LoadLevel(const char *script)
 
     if (!this->camera)
     {
-        camera = new B_CameraEntity(0, "Camera");
-
-        this->camera = camera;
+        this->camera = new B_CameraEntity(0, "Camera");
         this->camera->unknownPtrFromApplication = &this->unknownPtrForCamera;
     }
 
