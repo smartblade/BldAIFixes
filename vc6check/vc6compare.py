@@ -94,8 +94,13 @@ PATCHES = [
     ),
     (
         "App/App.cpp",
-        "        for (unsigned int i = 0; i < this->afterFrameFuncs.size; i++)",
-        "        for (i = 0; i < this->afterFrameFuncs.size; i++)",
+        # Only after the loop over gbl_ag_textures declaring 'i'
+        lambda text: _replace_after(
+            text,
+            "for (unsigned int i = 0; i < gbl_ag_textures.size; i++)",
+            "        for (unsigned int i = 0; i < this->afterFrameFuncs.size;",
+            "        for (i = 0; i < this->afterFrameFuncs.size;"),
+        None,
         "a variable of 'for' is in the enclosing block in Visual C++ 6.0",
     ),
     (
