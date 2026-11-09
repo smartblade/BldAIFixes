@@ -43,6 +43,7 @@ from .inlined_clear import collapse_inlined_clears
 from .inlined_subscripts import restore_inlined_subscripts
 from .inlined_subscripts import restore_subscripts_of_fields
 from .local_structors import remove_inlined_local_structors
+from .matrix_definitions import collapse_matrix_definitions
 from .new_expressions import fold_new_expressions
 from .other_parent_calls import restore_other_parent_calls
 from .split_class_return_assignments import split_class_return_assignments
@@ -115,6 +116,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = restore_local_constructions(procedure)
     procedure = fold_temporaries(procedure, declarations.declared_types)
     procedure = split_jumped_declarations(procedure)
+    procedure = collapse_matrix_definitions(procedure)
     return extract_inlined_destructor(procedure, inline_procedures)
 
 

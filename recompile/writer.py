@@ -14,6 +14,14 @@ class Writer:
     def indent_length(self):
         return self._indent_length
 
+    def fits(self, line, indent=None):
+        """Check if the line fits at the indent without wrapping."""
+        indent = indent if indent is not None else self._indent
+        return (
+            self._max_line_len is None or
+            indent * self._indent_length + len(line) <= self._max_line_len
+        )
+
     def write_line(self, line="", indent=None):
         indent = indent if indent is not None else self._indent
         if line:

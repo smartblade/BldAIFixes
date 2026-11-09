@@ -38,6 +38,9 @@ def do_pointer_dereference(expression, offset, size):
         return _dereference_array_element(expression, pointee, offset, size)
     if isinstance(pointee, data_types.Array) and offset == 0:
         data_type = pointee.element_type
+        if size is not None and data_type.size > size:
+            # Access to the start of an element, e.g. of an array of arrays
+            return _dereference_array_element(expression, pointee, 0, size)
         if size is not None and data_type.size != size:
             raise Exception(
                 "Data type size expected to be {} but was: {}.".format(

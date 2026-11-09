@@ -29,12 +29,18 @@ def _collect_procedures_from_file(file_name, lines):
             class_name = match.group("class")
         if line.startswith("};"):
             class_name = None
-        if line.find("/*") >= 0:
+        # Comments in a body of a procedure are not metadata
+        in_body = (
+            cur_definition is not None and
+            cur_definition.definition_start_line is not None and
+            cur_definition.definition_end_line is None
+        )
+        if not in_body and line.find("/*") >= 0:
             meta = True
             module = None
             cur_definition = _DefinitionState()
             cur_definition.metadata_start_line = line_index
-        if line.find("*/") >= 0:
+        if not in_body and line.find("*/") >= 0:
             meta = False
             definition = ""
             if (

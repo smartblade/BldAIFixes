@@ -23,16 +23,26 @@ def parse_cpp_variable_declaration(s, declared_types, constants=None):
 
 
 def _extract_array_size(field_type, field_name, constants):
-    match = array_size_regexp.search(field_name)
-    if not match:
-        return field_type, field_name
-    size_str = match.group("size")
+    """Arrays of several dimensions are arrays of arrays: 'm[4][2]' is an
+    array of 4 arrays of 2 elements."""
+    sizes = []
+    while True:
+        match = array_size_regexp.search(field_name)
+        if not match:
+            break
+        sizes.insert(0, _parse_array_size(match.group("size"), constants))
+        field_name = match.group("name")
+    for size in reversed(sizes):
+        field_type = data_types.Array(field_type, size)
+    return field_type, field_name
+
+
+def _parse_array_size(size_str, constants):
     if size_str.startswith("0x"):
-        size = from_hex(size_str)
-    elif size_str[0].isdigit():
-        size = int(size_str)
-    else:
-        size = constants and constants.get_value(size_str)
-        if size is None:
-            raise Exception("Can't parse array size: {}.".format(size_str))
-    return data_types.Array(field_type, size), match.group("name")
+        return from_hex(size_str)
+    if size_str[0].isdigit():
+        return int(size_str)
+    size = constants and constants.get_value(size_str)
+    if size is None:
+        raise Exception("Can't parse array size: {}.".format(size_str))
+    return size

@@ -8,6 +8,7 @@ from .for_instruction import ForInstruction
 from .goto import Goto
 from .if_instruction import IfInstruction
 from .labeled_block import LabeledBlock
+from .matrix_definition import MatrixDefinition
 from .procedure_info import ProcedureInfo
 from .return_instruction import ReturnInstruction
 from .switch import Switch

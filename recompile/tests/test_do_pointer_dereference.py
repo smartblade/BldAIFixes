@@ -14,7 +14,27 @@ def _node_pointer():
     return expressions.Identifier(data_types.Pointer32(node), "node")
 
 
+def _matrix_pointer():
+    matrix = data_types.ClassType("B_Matrix", {
+        0: (data_types.Array(data_types.Array(data_types.Double(), 4), 4),
+            "m"),
+    })
+    return expressions.Identifier(data_types.Pointer32(matrix), "this")
+
+
 class TestDoPointerDereference(unittest.TestCase):
+    def test_first_element_of_array_of_arrays(self):
+        e = do_pointer_dereference(_matrix_pointer(), 0, 8)
+        self.assertEqual("this->m[0][0]", e.emit_code())
+
+    def test_element_of_first_array_of_arrays(self):
+        e = do_pointer_dereference(_matrix_pointer(), 8, 8)
+        self.assertEqual("this->m[0][1]", e.emit_code())
+
+    def test_element_of_array_of_arrays(self):
+        e = do_pointer_dereference(_matrix_pointer(), 0x68, 8)
+        self.assertEqual("this->m[3][1]", e.emit_code())
+
     def test_first_element_of_array_field(self):
         e = do_pointer_dereference(_node_pointer(), 4, 4)
         self.assertEqual("node->children[0]", e.emit_code())
