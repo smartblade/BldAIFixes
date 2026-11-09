@@ -408,97 +408,39 @@ B_IDataFile& operator >>(B_IDataFile& file, B_World *world)
         unsigned int i;
 
         world->lastTime = 0;
-        B_PtrArray<atmosphere_t> *atms = &world->atmospheres;
-        if (atms->num_alloc != 0)
-        {
-                for (i = 0; i < atms->size; i++)
-                {
-                        atmosphere_t * atm = atms->elements[i];
-                        delete atm;
-                }
-                delete(atms->elements);
-                atms->elements = NULL;
-                atms->size = 0;
-                atms->num_alloc = 0;
-        }
-        file >> atms->size;
-        atms->num_alloc = ((atms->increment + atms->size - 1) / atms->increment) * atms->increment;
-        if (atms->num_alloc != 0)
-        {
-                atms->elements = new atmosphere_t * [atms->num_alloc];
-                for(i = 0; i < atms->size; i++)
-                {
-                        atms->elements[i] = new atmosphere_t();
-                        file >> atms->elements[i];
-                }
-        }
+        file >> world->atmospheres;
 
         if (B_3D_raster_device)
                 B_3D_raster_device->unknown084();
 
-        for(i = 0; i < atms->size; i++)
+        for(i = 0; i < world->atmospheres.size; i++)
         {
-                atmosphere_t * atm = (atmosphere_t *)atms->elements[i];
+                atmosphere_t *atm = world->atmospheres.elements[i];
                 B_3D_raster_device->AddAtmosphere(atm->Id(), atm->color, atm->intensity);
         }
 
         file >> gbl_world_points;
         file >> world->map;
 
-        B_PtrArray<light_t> *lights = &world->lights;
-        if (lights->num_alloc != 0)
-        {
-                for (i = 0; i < lights->size; i++)
-                {
-                        light_t * light = (light_t *)lights->elements[i];
-                        delete light;
-                }
-                delete(lights->elements);
-                lights->elements = NULL;
-                lights->size = 0;
-                lights->num_alloc = 0;
-        }
+        world->lights.Clear(true);
 
         file >> num_lights;
 
         for(i = 0; i < num_lights; i++)
         {
-                light_t *light = read_light(&file);
-                B_PtrArray<light_t> *lights = &world->lights;
-                if (lights->num_alloc <= lights->size)
-                {
-                        lights->num_alloc += lights->increment;
-                        if (lights->size != 0)
-                        {
-                                light_t **elements = new light_t *[lights->num_alloc];
-                                for(unsigned int j = 0; j < lights->size; j++)
-                                {
-                                        elements[j] = lights->elements[j]; 
-                                }
-                                delete lights->elements;
-                                lights->elements = elements;
-                        }
-                        else
-                        {
-                                lights->elements = new light_t *[lights->num_alloc];
-                        }
-                }
-                lights->elements[i] = light;
-                lights->size++;
+                world->lights.Append(read_light(&file));
         }
 
         for(i = 0; i < num_lights; i++)
         {
-                light_t *light = world->lights.elements[i];
-                light->unknown008();
+                world->lights[i]->unknown008();
         }
 
         file >> world->initial_point_position >> world->initial_point_orientation;
 
         for(i = 0; i < world->map.size; i++)
         {
-                B_Sector *sector = world->map.elements[i];
-                file >> sector->groupId;
+                file >> world->map.elements[i]->groupId;
         }
 
         world->octTree.Build(world->map, 5000.0);
