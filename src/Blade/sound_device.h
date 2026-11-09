@@ -4,6 +4,7 @@
 #define SOUND_DEVICE_H
 
 
+#include <AnalyticGeometry/Vector.h>
 #include <Sound/Sound.h>
 
 

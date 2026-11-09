@@ -47,25 +47,25 @@ public:
 
         void Resize(unsigned int newSize, int keepElements)
         {
-            unsigned int minSize;
             int newAlloc =
                 ((newSize + this->increment - 1) / this->increment)
                 * this->increment;
-            if (this->size < newSize)
-            {
-                minSize = this->size;
-            }
-            else
-            {
-                minSize = newSize;
-            }
+            unsigned int minSize =
+                (this->size < newSize) ? this->size : newSize;
+            TYPE *oldData;
             if (this->num_alloc != newAlloc)
             {
-                TYPE *oldElements = this->elements;
+                oldData = this->elements;
                 this->num_alloc = newAlloc;
                 if (this->num_alloc != 0)
                 {
                     this->elements = new TYPE[this->num_alloc];
+                    /* the original checks the new elements here, the
+                     * check does nothing */
+                    if (this->elements == NULL)
+                    {
+                        this->elements = this->elements;
+                    }
                 }
                 else
                 {
@@ -75,10 +75,13 @@ public:
                 {
                     for (unsigned int i = 0; i < minSize; i++)
                     {
-                        this->elements[i] = oldElements[i];
+                        this->elements[i] = oldData[i];
                     }
                 }
-                delete [] oldElements;
+                if (oldData != NULL)
+                {
+                    delete [] oldData;
+                }
             }
             this->size = newSize;
         }
