@@ -373,7 +373,10 @@ def _collect_cpp_declarations(
     incomplete_types, external_procedures
 ):
     for (root, dirs, files) in os.walk(src_path):
-        for file in files:
+        # The order of os.walk depends on the file system, later
+        # declarations override earlier ones: the order of Windows
+        dirs.sort(key=str.upper)
+        for file in sorted(files, key=str.upper):
             if (
                 file.lower().endswith(".cpp") or
                 file.lower().endswith(".h") or
