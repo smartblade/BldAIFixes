@@ -4137,7 +4137,7 @@ p10009060
 float B_Color::DistanceTo(const B_Color &arg_1)
 {
     int unknown_loc_08 = reinterpret_cast<int>((static_cast<any_int32>(this->r) - static_cast<any_int32>(arg_1.r)) * (static_cast<any_int32>(this->r) - static_cast<any_int32>(arg_1.r)) + (static_cast<any_int32>(this->g) - static_cast<any_int32>(arg_1.g)) * (static_cast<any_int32>(this->g) - static_cast<any_int32>(arg_1.g)) + (static_cast<any_int32>(this->b) - static_cast<any_int32>(arg_1.b)) * (static_cast<any_int32>(this->b) - static_cast<any_int32>(arg_1.b)));
-    REGDEF(ST(0)=static_cast<double>(unknown_loc_08))
+    return static_cast<double>(unknown_loc_08);
 }
 
 // address: 0x100091A4

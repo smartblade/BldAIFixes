@@ -46,12 +46,88 @@ B_Matrix::B_Matrix(const B_Vector &axis, double angle)
     )
 }
 
+// address: 0x00405227
+B_Matrix::B_Matrix(const B_Plane &plane)
+{
+    this->m[0][0] = 1.0 - 2.0 * plane.normal.x * plane.normal.x;
+    this->m[1][0] = -2.0 * plane.normal.x * plane.normal.y;
+    this->m[2][0] = -2.0 * plane.normal.x * plane.normal.z;
+    this->m[3][0] = -2.0 * plane.normal.x * plane.p;
+    this->m[0][1] = -2.0 * plane.normal.y * plane.normal.x;
+    this->m[1][1] = 1.0 - 2.0 * plane.normal.y * plane.normal.y;
+    this->m[2][1] = -2.0 * plane.normal.y * plane.normal.z;
+    this->m[3][1] = -2.0 * plane.normal.y * plane.p;
+    this->m[0][2] = -2.0 * plane.normal.z * plane.normal.x;
+    this->m[1][2] = -2.0 * plane.normal.z * plane.normal.y;
+    this->m[2][2] = 1.0 - 2.0 * plane.normal.z * plane.normal.z;
+    this->m[3][2] = -2.0 * plane.normal.z * plane.p;
+    this->m[0][3] = 0.0;
+    this->m[1][3] = 0.0;
+    this->m[2][3] = 0.0;
+    this->m[3][3] = 1.0;
+}
+
 // address: 0x0040578A
 void B_Matrix::SetOrigin(const B_Vector *origin)
 {
     this->m[3][0] = origin->x;
     this->m[3][1] = origin->y;
     this->m[3][2] = origin->z;
+}
+
+// address: 0x004057CC
+double B_Matrix::ScaleX() const
+{
+    return sqrt(this->m[0][0] * this->m[0][0] + this->m[0][1] * this->m[0][1] + this->m[0][2] * this->m[0][2]);
+}
+
+// address: 0x00405802
+double B_Matrix::ScaleY() const
+{
+    return sqrt(this->m[1][0] * this->m[1][0] + this->m[1][1] * this->m[1][1] + this->m[1][2] * this->m[1][2]);
+}
+
+// address: 0x0040583A
+double B_Matrix::ScaleZ() const
+{
+    return sqrt(this->m[2][0] * this->m[2][0] + this->m[2][1] * this->m[2][1] + this->m[2][2] * this->m[2][2]);
+}
+
+// address: 0x00405872
+void B_Matrix::SetScale(double scale)
+{
+    double lenX = this->ScaleX();
+    double lenY = this->ScaleY();
+    double lenZ = this->ScaleZ();
+    double kX = scale / lenX;
+    double kY = scale / lenY;
+    double kZ = scale / lenZ;
+    this->m[0][0] = kX * this->m[0][0];
+    this->m[0][1] = kX * this->m[0][1];
+    this->m[0][2] = kX * this->m[0][2];
+    this->m[1][0] = kY * this->m[1][0];
+    this->m[1][1] = kY * this->m[1][1];
+    this->m[1][2] = kY * this->m[1][2];
+    this->m[2][0] = kZ * this->m[2][0];
+    this->m[2][1] = kZ * this->m[2][1];
+    this->m[2][2] = kZ * this->m[2][2];
+}
+
+// address: 0x004059EF
+void B_Matrix::RemoveScale()
+{
+    double lenX = this->ScaleX();
+    double lenY = this->ScaleY();
+    double lenZ = this->ScaleZ();
+    this->m[0][0] /= lenX;
+    this->m[0][1] /= lenX;
+    this->m[0][2] /= lenX;
+    this->m[1][0] /= lenY;
+    this->m[1][1] /= lenY;
+    this->m[1][2] /= lenY;
+    this->m[2][0] /= lenZ;
+    this->m[2][1] /= lenZ;
+    this->m[2][2] /= lenZ;
 }
 
 // address: 0x00405AA2
@@ -92,6 +168,22 @@ B_Matrix *B_Matrix::Invert(B_Matrix *outMatrix) const
     temp.m[3][2] = -translation.z;
     *outMatrix = temp;
     return outMatrix;
+}
+
+// address: 0x00405F0D
+int operator ==(const B_Matrix &a, const B_Matrix &b)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (fabs(a.m[i][j] - b.m[i][j]) > 0.001)
+            {
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
 
 // address: 0x00405F87

@@ -9,3 +9,9 @@ class Return(characteristics.Identifier):
     @property
     def is_boolean(self):
         return self._json_dict.get("boolean") == "yes"
+
+    @property
+    def is_not_boolean(self):
+        """The value is an integer even if the procedure is a comparison
+        operator: '"boolean": "no"'."""
+        return self._json_dict.get("boolean") == "no"

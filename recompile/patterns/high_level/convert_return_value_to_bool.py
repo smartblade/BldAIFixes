@@ -4,6 +4,8 @@ from expressions.operator import comparison
 
 
 def convert_return_value_to_bool(proc_decl, characteristics, return_value):
+    if characteristics.ret.is_not_boolean:
+        return return_value
     if not characteristics.ret.is_boolean and not _is_boolean_return(proc_decl):
         return return_value
     if not isinstance(return_value, expressions.Constant):

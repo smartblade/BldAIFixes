@@ -113,8 +113,8 @@ proc_a(
     ),
     proc_c(
         very_long_identifier_a +
-        very_long_identifier_b +
-        very_long_identifier_c * very_long_identifier_d
+            very_long_identifier_b +
+            very_long_identifier_c * very_long_identifier_d
     )
 );
 """

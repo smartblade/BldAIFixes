@@ -1,6 +1,6 @@
 from enum import Enum, auto
 
-from expressions.operator import operators, priorities
+from expressions.operator import Operator, operators, priorities
 import parser.wrap.tokens as tokens
 
 
@@ -18,6 +18,10 @@ class _State:
         self._list = []
         self._op_list = []
         self.operator_priority = None
+        # Brackets of a call: 'f(...)', not of a condition or a group
+        self.is_call = False
+        # A comma separates arguments directly inside the brackets
+        self.has_comma = False
 
     def __repr__(self):
         return "{}({})".format(self.__class__, self._kind)
@@ -62,6 +66,18 @@ class _States:
 
     def add_char(self, c):
         self._buffer.append(c)
+
+    def mark_comma(self):
+        """Mark the innermost brackets as containing several arguments."""
+        for state in reversed(self._states):
+            if state.kind == _StateKind.BRACKETS:
+                state.has_comma = True
+                return
+
+    def is_after_name(self):
+        """The buffer ends with a name, '(' after it opens a call."""
+        return bool(self._buffer) and (
+            self._buffer[-1].isalnum() or self._buffer[-1] == "_")
 
     def close_state(self, allow_brackets=False):
         if self.cur_state.kind == _StateKind.BRACKETS and not allow_brackets:
@@ -118,7 +134,8 @@ def parse_line(line):
             _add_string_char(states, c)
             continue
         if c == "(":
-            states.new_state(_StateKind.BRACKETS)
+            is_call = states.is_after_name()
+            states.new_state(_StateKind.BRACKETS).is_call = is_call
         elif c == ")":
             states.flush_buffer()
             _close_brackets(states)
@@ -128,6 +145,8 @@ def parse_line(line):
             states.add_char(c)
         operator = states.pop_operator()
         if operator is not None:
+            if operator == Operator.COMMA:
+                states.mark_comma()
             states.flush_buffer()
             _add_operator(states, operator)
     states.flush_buffer()
@@ -178,7 +197,8 @@ def _make_brackets_token(state, token):
     assert state.kind == _StateKind.BRACKETS
     if token is None:
         return tokens.AnyCodeToken("()")
-    return tokens.BracketsToken(token)
+    return tokens.BracketsToken(
+        token, is_single_argument=state.is_call and not state.has_comma)
 
 
 def _make_op_list_token(state, token):

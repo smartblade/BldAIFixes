@@ -111,9 +111,14 @@ def _rewrite_return(proc_decl, characteristics, regdef, return_instr):
         return_value = regdef.pop_reg_value("eax")
     elif _is_al_return_type(data_type):
         return_value = regdef.pop_reg_value("al")
+    elif _is_fpu_return_type(data_type) and regdef.has_fpu_values():
+        # Floating point values are returned in ST(0) as double, 'return'
+        # converts them to float
+        return_value = regdef.pop_fpu()
     else:
         return
-    return_value = expressions.do_reinterpret(data_type, return_value)
+    if not _is_fpu_return_type(data_type):
+        return_value = expressions.do_reinterpret(data_type, return_value)
     return_value = convert_return_value_to_bool(
         proc_decl, characteristics, return_value)
     return_value = convert_to_implicit_cast(return_value, data_type)
@@ -171,3 +176,7 @@ def _is_al_return_type(data_type):
         isinstance(data_type, data_types.Char) or
         isinstance(data_type, data_types.UChar)
     )
+
+
+def _is_fpu_return_type(data_type):
+    return isinstance(data_type, (data_types.Double, data_types.Float))

@@ -121,7 +121,14 @@ class WrapManager:
 
     def add_brackets(self, brackets):
         self._add_opening_bracket()
-        self._wrap_token(brackets.token, indentation_required=False)
+        # Continuation lines of the only argument of a call are indented
+        # like those of each of several arguments, continuation lines of a
+        # condition are not
+        indentation_required = (
+            brackets.is_single_argument and
+            isinstance(brackets.token, tokens.OperatorSeparatedList))
+        self._wrap_token(
+            brackets.token, indentation_required=indentation_required)
         self._add_closing_bracket()
 
     def add_op_separated_list(self, op_list):
@@ -146,3 +153,4 @@ class WrapManager:
         else:
             self._add_text_to_current_line(s.string)
         self._add_text_to_current_line('"')
+

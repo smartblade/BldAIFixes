@@ -42,6 +42,9 @@ class TemporaryRegisterDefinition:
     def pop_fpu(self):
         return self._fpu_stack.pop()
 
+    def has_fpu_values(self):
+        return bool(self._fpu_stack)
+
     def is_empty(self):
         return not self._reg_values and not self._fpu_stack
 
