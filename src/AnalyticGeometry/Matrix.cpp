@@ -251,21 +251,21 @@ double B_Matrix::ScaleZ() const
 
 void B_Matrix::SetScale(double scale)
 {
-    double scaleX = this->ScaleX();
-    double scaleY = this->ScaleY();
-    double scaleZ = this->ScaleZ();
-    double factorX = scale / scaleX;
-    double factorY = scale / scaleY;
-    double factorZ = scale / scaleZ;
-    this->m[0][0] = factorX * this->m[0][0];
-    this->m[0][1] = factorX * this->m[0][1];
-    this->m[0][2] = factorX * this->m[0][2];
-    this->m[1][0] = factorY * this->m[1][0];
-    this->m[1][1] = factorY * this->m[1][1];
-    this->m[1][2] = factorY * this->m[1][2];
-    this->m[2][0] = factorZ * this->m[2][0];
-    this->m[2][1] = factorZ * this->m[2][1];
-    this->m[2][2] = factorZ * this->m[2][2];
+    double lenX = this->ScaleX();
+    double lenY = this->ScaleY();
+    double lenZ = this->ScaleZ();
+    double kX = scale / lenX;
+    double kY = scale / lenY;
+    double kZ = scale / lenZ;
+    this->m[0][0] = kX * this->m[0][0];
+    this->m[0][1] = kX * this->m[0][1];
+    this->m[0][2] = kX * this->m[0][2];
+    this->m[1][0] = kY * this->m[1][0];
+    this->m[1][1] = kY * this->m[1][1];
+    this->m[1][2] = kY * this->m[1][2];
+    this->m[2][0] = kZ * this->m[2][0];
+    this->m[2][1] = kZ * this->m[2][1];
+    this->m[2][2] = kZ * this->m[2][2];
 }
 
 
@@ -287,18 +287,18 @@ void B_Matrix::SetScale(double scale)
 
 void B_Matrix::RemoveScale()
 {
-    double scaleX = this->ScaleX();
-    double scaleY = this->ScaleY();
-    double scaleZ = this->ScaleZ();
-    this->m[0][0] /= scaleX;
-    this->m[0][1] /= scaleX;
-    this->m[0][2] /= scaleX;
-    this->m[1][0] /= scaleY;
-    this->m[1][1] /= scaleY;
-    this->m[1][2] /= scaleY;
-    this->m[2][0] /= scaleZ;
-    this->m[2][1] /= scaleZ;
-    this->m[2][2] /= scaleZ;
+    double lenX = this->ScaleX();
+    double lenY = this->ScaleY();
+    double lenZ = this->ScaleZ();
+    this->m[0][0] /= lenX;
+    this->m[0][1] /= lenX;
+    this->m[0][2] /= lenX;
+    this->m[1][0] /= lenY;
+    this->m[1][1] /= lenY;
+    this->m[1][2] /= lenY;
+    this->m[2][0] /= lenZ;
+    this->m[2][1] /= lenZ;
+    this->m[2][2] /= lenZ;
 }
 
 
