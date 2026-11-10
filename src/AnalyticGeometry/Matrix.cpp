@@ -774,7 +774,7 @@ void TransformPlane(B_Plane &out, const B_Plane &in, const B_Matrix &matrix)
 
 B_IDataFile &operator >>(B_IDataFile &file, B_Matrix &matrix)
 {
-    file.Read(&matrix, sizeof(matrix));
+    file.Read(&matrix, sizeof(B_Matrix));
     return file;
 }
 
@@ -789,7 +789,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_Matrix &matrix)
 
 B_ODataFile &operator <<(B_ODataFile &file, const B_Matrix &matrix)
 {
-    file.Write(&matrix, sizeof(matrix));
+    file.Write(&matrix, sizeof(B_Matrix));
     return file;
 }
 
