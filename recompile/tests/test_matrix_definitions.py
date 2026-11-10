@@ -59,6 +59,18 @@ class TestMatrixDefinitions(unittest.TestCase):
         self.assertEqual("    element_15", lines[16])
         self.assertEqual(")", lines[17])
 
+    def test_one_long_row(self):
+        names = ["element_{}".format(i) for i in range(4)] + [
+            "e{}".format(i) for i in range(4, 16)]
+        block, _ = _collapse_block(
+            _assignments(names), "m", "DEFINE_MATRIX", 4, 4)
+        lines = _emit(block[0]).split("\n")
+        self.assertEqual("    element_0,", lines[1])
+        self.assertEqual("    e4,", lines[5])
+        self.assertEqual("    e14,", lines[15])
+        self.assertEqual("    e15", lines[16])
+        self.assertEqual(")", lines[17])
+
     def test_wrong_order(self):
         names = ["e{}".format(i) for i in range(16)]
         assignments = _assignments(names)

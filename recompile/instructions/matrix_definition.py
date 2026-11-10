@@ -6,8 +6,8 @@ class MatrixDefinition:
         0.0, 1.0
     )
 
-    A row is written on one line if it fits, otherwise each element of the
-    row is on its own line.
+    Each row is written on one line if all rows fit, otherwise each element
+    of the matrix is on its own line.
     """
 
     def __init__(self, macro_name, rows):
@@ -39,16 +39,19 @@ class MatrixDefinition:
 
     def emit_code(self, writer):
         writer.write_line("{}(".format(self._macro_name))
+        rows = [
+            [element.emit_code() for element in row] for row in self._rows]
+        lines = [
+            ", ".join(row) + ("" if index == len(rows) - 1 else ",")
+            for index, row in enumerate(rows)
+        ]
         with writer.indent():
-            for row_index, row in enumerate(self._rows):
-                is_last_row = row_index == len(self._rows) - 1
-                elements = [element.emit_code() for element in row]
-                line = ", ".join(elements) + ("" if is_last_row else ",")
-                if writer.fits(line):
-                    writer.write_line(line)
-                    continue
-                for element_index, element in enumerate(elements):
-                    is_last = (
-                        is_last_row and element_index == len(elements) - 1)
-                    writer.write_line(element + ("" if is_last else ","))
+            if not all(writer.fits(line) for line in lines):
+                elements = [element for row in rows for element in row]
+                lines = [
+                    element + ("" if index == len(elements) - 1 else ",")
+                    for index, element in enumerate(elements)
+                ]
+            for line in lines:
+                writer.write_line(line)
         writer.write_line(")")
