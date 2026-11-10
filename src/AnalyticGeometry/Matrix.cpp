@@ -2,6 +2,7 @@
 
 #include <bld_system.h>
 #include <AnalyticGeometry/Vector.h>
+#include <AnalyticGeometry/Plane.h>
 #include <BBLibc/IDataFile.h>
 #include <BBLibc/ODataFile.h>
 #include <math.h>
@@ -36,6 +37,7 @@ B_Matrix::B_Matrix()
     )
 }
 
+
 /*
 * Module:                 rOpenGL.dll
 * Entry point:            0x1000354D
@@ -62,6 +64,7 @@ B_Matrix::B_Matrix(double scale)
 ................................................................................
 */
 
+
 /*
 * Module:                 rOpenGL.dll
 * Entry point:            0x1000377F
@@ -80,11 +83,6 @@ B_Matrix::B_Matrix(const B_Vector &v)
     )
 }
 
-/*
-* m[1][1] of the rotation matrix is y * y + (x * x + z * z) * c in the
-* original, for an axis of length 1 it equals y * y * (1.0 - c) + c like the
-* other elements of the diagonal.
-*/
 
 /*
 * Module:                 rOpenGL.dll
@@ -114,7 +112,10 @@ B_Matrix::B_Matrix(const B_Vector &axis, double angle)
         y * z * (1.0 - c) - x * s,
         z * z * (1.0 - c) + c,
         0.0,
-        0.0, 0.0, 0.0, 1.0
+        0.0,
+        0.0,
+        0.0,
+        1.0
     )
 }
 
@@ -125,6 +126,7 @@ B_Matrix::B_Matrix(const B_Vector &axis, double angle)
 ................................................................................
 ................................................................................
 */
+
 
 /*
 * Module:                 rOpenGL.dll
@@ -138,6 +140,7 @@ B_Vector B_Matrix::TranslationVector() const
 {
     return B_Vector(this->m[3][0], this->m[3][1], this->m[3][2]);
 }
+
 
 /*
 * Module:                 rOpenGL.dll
@@ -161,6 +164,314 @@ void B_Matrix::SetOrigin(const B_Vector *origin)
 ................................................................................
 ................................................................................
 */
+
+
+/*
+* Module:                 rOpenGL.dll
+* Entry point:            0x100042F2
+* Module:                 Blade.exe
+* Entry point:            0x00405AA2
+* VC++ mangling:          ?InvertRigid@B_Matrix@@QAEXAAV1@@Z
+*/
+
+void B_Matrix::InvertRigid(B_Matrix &out)
+{
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        for (unsigned int j = 0; j < 3; j++)
+        {
+            out.m[i][j] = this->m[j][i];
+        }
+    }
+    B_Vector translation(this->m[3][0], this->m[3][1], this->m[3][2]);
+    translation = Rotate(translation, out);
+    out.m[3][0] = -translation.x;
+    out.m[3][1] = -translation.y;
+    out.m[3][2] = -translation.z;
+}
+
+
+/*
+* Module:                 rOpenGL.dll
+* Entry point:            0x100043F9
+* Module:                 Blade.exe
+* Entry point:            0x00405BA9
+* VC++ mangling:          ?Invert@B_Matrix@@QBEPAV1@PAV1@@Z
+*/
+
+B_Matrix *B_Matrix::Invert(B_Matrix *outMatrix) const
+{
+    B_Matrix temp;
+    double det =
+        this->m[0][0] * this->m[1][1] * this->m[2][2] +
+            this->m[0][1] * this->m[1][2] * this->m[2][0] +
+            this->m[1][0] * this->m[2][1] * this->m[0][2] -
+            this->m[0][2] * this->m[1][1] * this->m[2][0] -
+            this->m[0][1] * this->m[1][0] * this->m[2][2] -
+            this->m[1][2] * this->m[2][1] * this->m[0][0];
+    temp.m[0][0] =
+        (this->m[1][1] * this->m[2][2] - this->m[1][2] * this->m[2][1]) / det;
+    temp.m[1][0] =
+        -(this->m[1][0] * this->m[2][2] - this->m[1][2] * this->m[2][0]) / det;
+    temp.m[2][0] =
+        (this->m[1][0] * this->m[2][1] - this->m[1][1] * this->m[2][0]) / det;
+    temp.m[0][1] =
+        -(this->m[0][1] * this->m[2][2] - this->m[0][2] * this->m[2][1]) / det;
+    temp.m[1][1] =
+        (this->m[0][0] * this->m[2][2] - this->m[0][2] * this->m[2][0]) / det;
+    temp.m[2][1] =
+        -(this->m[0][0] * this->m[2][1] - this->m[0][1] * this->m[2][0]) / det;
+    temp.m[0][2] =
+        (this->m[0][1] * this->m[1][2] - this->m[0][2] * this->m[1][1]) / det;
+    temp.m[1][2] =
+        -(this->m[0][0] * this->m[1][2] - this->m[0][2] * this->m[1][0]) / det;
+    temp.m[2][2] =
+        (this->m[0][0] * this->m[1][1] - this->m[0][1] * this->m[1][0]) / det;
+    B_Vector translation(this->m[3][0], this->m[3][1], this->m[3][2]);
+    translation = Rotate(translation, temp);
+    temp.m[3][0] = -translation.x;
+    temp.m[3][1] = -translation.y;
+    temp.m[3][2] = -translation.z;
+    *outMatrix = temp;
+    return outMatrix;
+}
+
+
+/*
+................................................................................
+................................................................................
+................................................................................
+................................................................................
+*/
+
+
+/*
+* Module:                 rOpenGL.dll
+* Entry point:            0x100047D7
+* Module:                 Blade.exe
+* Entry point:            0x00405F87
+* VC++ mangling:          ??D@YA?AVB_Matrix@@ABV0@0@Z
+*/
+
+B_Matrix operator *(const B_Matrix &a, const B_Matrix &b)
+{
+    B_Matrix result;
+    result.m[0][0] =
+        a.m[0][0] * b.m[0][0] +
+            a.m[0][1] * b.m[1][0] +
+            a.m[0][2] * b.m[2][0] +
+            a.m[0][3] * b.m[3][0];
+    result.m[0][1] =
+        a.m[0][0] * b.m[0][1] +
+            a.m[0][1] * b.m[1][1] +
+            a.m[0][2] * b.m[2][1] +
+            a.m[0][3] * b.m[3][1];
+    result.m[0][2] =
+        a.m[0][0] * b.m[0][2] +
+            a.m[0][1] * b.m[1][2] +
+            a.m[0][2] * b.m[2][2] +
+            a.m[0][3] * b.m[3][2];
+    result.m[0][3] =
+        a.m[0][0] * b.m[0][3] +
+            a.m[0][1] * b.m[1][3] +
+            a.m[0][2] * b.m[2][3] +
+            a.m[0][3] * b.m[3][3];
+    result.m[1][0] =
+        a.m[1][0] * b.m[0][0] +
+            a.m[1][1] * b.m[1][0] +
+            a.m[1][2] * b.m[2][0] +
+            a.m[1][3] * b.m[3][0];
+    result.m[1][1] =
+        a.m[1][0] * b.m[0][1] +
+            a.m[1][1] * b.m[1][1] +
+            a.m[1][2] * b.m[2][1] +
+            a.m[1][3] * b.m[3][1];
+    result.m[1][2] =
+        a.m[1][0] * b.m[0][2] +
+            a.m[1][1] * b.m[1][2] +
+            a.m[1][2] * b.m[2][2] +
+            a.m[1][3] * b.m[3][2];
+    result.m[1][3] =
+        a.m[1][0] * b.m[0][3] +
+            a.m[1][1] * b.m[1][3] +
+            a.m[1][2] * b.m[2][3] +
+            a.m[1][3] * b.m[3][3];
+    result.m[2][0] =
+        a.m[2][0] * b.m[0][0] +
+            a.m[2][1] * b.m[1][0] +
+            a.m[2][2] * b.m[2][0] +
+            a.m[2][3] * b.m[3][0];
+    result.m[2][1] =
+        a.m[2][0] * b.m[0][1] +
+            a.m[2][1] * b.m[1][1] +
+            a.m[2][2] * b.m[2][1] +
+            a.m[2][3] * b.m[3][1];
+    result.m[2][2] =
+        a.m[2][0] * b.m[0][2] +
+            a.m[2][1] * b.m[1][2] +
+            a.m[2][2] * b.m[2][2] +
+            a.m[2][3] * b.m[3][2];
+    result.m[2][3] =
+        a.m[2][0] * b.m[0][3] +
+            a.m[2][1] * b.m[1][3] +
+            a.m[2][2] * b.m[2][3] +
+            a.m[2][3] * b.m[3][3];
+    result.m[3][0] =
+        a.m[3][0] * b.m[0][0] +
+            a.m[3][1] * b.m[1][0] +
+            a.m[3][2] * b.m[2][0] +
+            a.m[3][3] * b.m[3][0];
+    result.m[3][1] =
+        a.m[3][0] * b.m[0][1] +
+            a.m[3][1] * b.m[1][1] +
+            a.m[3][2] * b.m[2][1] +
+            a.m[3][3] * b.m[3][1];
+    result.m[3][2] =
+        a.m[3][0] * b.m[0][2] +
+            a.m[3][1] * b.m[1][2] +
+            a.m[3][2] * b.m[2][2] +
+            a.m[3][3] * b.m[3][2];
+    result.m[3][3] =
+        a.m[3][0] * b.m[0][3] +
+            a.m[3][1] * b.m[1][3] +
+            a.m[3][2] * b.m[2][3] +
+            a.m[3][3] * b.m[3][3];
+    return result;
+}
+
+
+/*
+* Module:                 rOpenGL.dll
+* Entry point:            0x10004B88
+* Module:                 Blade.exe
+* Entry point:            0x00406338
+* VC++ mangling:          ?MulRot_406338@@YA?AVB_Matrix@@ABV1@0@Z
+*/
+
+B_Matrix MulRot_406338(const B_Matrix &a, const B_Matrix &b)
+{
+    B_Matrix result;
+    result.m[0][0] =
+        a.m[0][0] * b.m[0][0] + a.m[0][1] * b.m[1][0] + a.m[0][2] * b.m[2][0];
+    result.m[0][1] =
+        a.m[0][0] * b.m[0][1] + a.m[0][1] * b.m[1][1] + a.m[0][2] * b.m[2][1];
+    result.m[0][2] =
+        a.m[0][0] * b.m[0][2] + a.m[0][1] * b.m[1][2] + a.m[0][2] * b.m[2][2];
+    result.m[0][3] = a.m[0][3];
+    result.m[1][0] =
+        a.m[1][0] * b.m[0][0] + a.m[1][1] * b.m[1][0] + a.m[1][2] * b.m[2][0];
+    result.m[1][1] =
+        a.m[1][0] * b.m[0][1] + a.m[1][1] * b.m[1][1] + a.m[1][2] * b.m[2][1];
+    result.m[1][2] =
+        a.m[1][0] * b.m[0][2] + a.m[1][1] * b.m[1][2] + a.m[1][2] * b.m[2][2];
+    result.m[1][3] = a.m[1][3];
+    result.m[2][0] =
+        a.m[2][0] * b.m[0][0] + a.m[2][1] * b.m[1][0] + a.m[2][2] * b.m[2][0];
+    result.m[2][1] =
+        a.m[2][0] * b.m[0][1] + a.m[2][1] * b.m[1][1] + a.m[2][2] * b.m[2][1];
+    result.m[2][2] =
+        a.m[2][0] * b.m[0][2] + a.m[2][1] * b.m[1][2] + a.m[2][2] * b.m[2][2];
+    result.m[2][3] = a.m[2][3];
+    result.m[3][0] = a.m[3][0];
+    result.m[3][1] = a.m[3][1];
+    result.m[3][2] = a.m[3][2];
+    result.m[3][3] = a.m[3][3];
+    return result;
+}
+
+
+/*
+* Module:                 rOpenGL.dll
+* Entry point:            0x10004D97
+* Module:                 Blade.exe
+* Entry point:            0x00406547
+* VC++ mangling:          ?MatrixMultiply@@YAXPAVB_Matrix@@PBV1@1@Z
+*/
+
+void MatrixMultiply(B_Matrix *out, const B_Matrix *a, const B_Matrix *b)
+{
+    out->m[0][0] =
+        a->m[0][0] * b->m[0][0] +
+            a->m[0][1] * b->m[1][0] +
+            a->m[0][2] * b->m[2][0] +
+            a->m[0][3] * b->m[3][0];
+    out->m[0][1] =
+        a->m[0][0] * b->m[0][1] +
+            a->m[0][1] * b->m[1][1] +
+            a->m[0][2] * b->m[2][1] +
+            a->m[0][3] * b->m[3][1];
+    out->m[0][2] =
+        a->m[0][0] * b->m[0][2] +
+            a->m[0][1] * b->m[1][2] +
+            a->m[0][2] * b->m[2][2] +
+            a->m[0][3] * b->m[3][2];
+    out->m[0][3] =
+        a->m[0][0] * b->m[0][3] +
+            a->m[0][1] * b->m[1][3] +
+            a->m[0][2] * b->m[2][3] +
+            a->m[0][3] * b->m[3][3];
+    out->m[1][0] =
+        a->m[1][0] * b->m[0][0] +
+            a->m[1][1] * b->m[1][0] +
+            a->m[1][2] * b->m[2][0] +
+            a->m[1][3] * b->m[3][0];
+    out->m[1][1] =
+        a->m[1][0] * b->m[0][1] +
+            a->m[1][1] * b->m[1][1] +
+            a->m[1][2] * b->m[2][1] +
+            a->m[1][3] * b->m[3][1];
+    out->m[1][2] =
+        a->m[1][0] * b->m[0][2] +
+            a->m[1][1] * b->m[1][2] +
+            a->m[1][2] * b->m[2][2] +
+            a->m[1][3] * b->m[3][2];
+    out->m[1][3] =
+        a->m[1][0] * b->m[0][3] +
+            a->m[1][1] * b->m[1][3] +
+            a->m[1][2] * b->m[2][3] +
+            a->m[1][3] * b->m[3][3];
+    out->m[2][0] =
+        a->m[2][0] * b->m[0][0] +
+            a->m[2][1] * b->m[1][0] +
+            a->m[2][2] * b->m[2][0] +
+            a->m[2][3] * b->m[3][0];
+    out->m[2][1] =
+        a->m[2][0] * b->m[0][1] +
+            a->m[2][1] * b->m[1][1] +
+            a->m[2][2] * b->m[2][1] +
+            a->m[2][3] * b->m[3][1];
+    out->m[2][2] =
+        a->m[2][0] * b->m[0][2] +
+            a->m[2][1] * b->m[1][2] +
+            a->m[2][2] * b->m[2][2] +
+            a->m[2][3] * b->m[3][2];
+    out->m[2][3] =
+        a->m[2][0] * b->m[0][3] +
+            a->m[2][1] * b->m[1][3] +
+            a->m[2][2] * b->m[2][3] +
+            a->m[2][3] * b->m[3][3];
+    out->m[3][0] =
+        a->m[3][0] * b->m[0][0] +
+            a->m[3][1] * b->m[1][0] +
+            a->m[3][2] * b->m[2][0] +
+            a->m[3][3] * b->m[3][0];
+    out->m[3][1] =
+        a->m[3][0] * b->m[0][1] +
+            a->m[3][1] * b->m[1][1] +
+            a->m[3][2] * b->m[2][1] +
+            a->m[3][3] * b->m[3][1];
+    out->m[3][2] =
+        a->m[3][0] * b->m[0][2] +
+            a->m[3][1] * b->m[1][2] +
+            a->m[3][2] * b->m[2][2] +
+            a->m[3][3] * b->m[3][2];
+    out->m[3][3] =
+        a->m[3][0] * b->m[0][3] +
+            a->m[3][1] * b->m[1][3] +
+            a->m[3][2] * b->m[2][3] +
+            a->m[3][3] * b->m[3][3];
+}
+
 
 /*
 * Module:                 rOpenGL.dll
@@ -187,6 +498,7 @@ B_Vector operator *(const B_Vector &vector, const B_Matrix &matrix)
             matrix.m[3][2]
     );
 }
+
 
 /*
 * Module:                 rOpenGL.dll
@@ -215,6 +527,7 @@ void TransformPoint(B_Vector &out, const B_Vector &v, const B_Matrix &matrix)
             matrix.m[3][2];
 }
 
+
 /*
 * Module:                 rOpenGL.dll
 * Entry point:            0x100052B7
@@ -238,6 +551,7 @@ void Rotate(B_Vector &out, const B_Vector &v, const B_Matrix &rotateMatrix)
             v.y * rotateMatrix.m[1][2] +
             v.z * rotateMatrix.m[2][2];
 }
+
 
 /*
 * Module:                 rOpenGL.dll
@@ -264,11 +578,34 @@ B_Vector Rotate(const B_Vector &v, const B_Matrix &rotateMatrix)
 
 
 /*
-................................................................................
-................................................................................
-................................................................................
-................................................................................
+* Module:                 rOpenGL.dll
+* Entry point:            0x100053F7
+* Module:                 Blade.exe
+* Entry point:            0x00406BA7
+* VC++ mangling:          ?TransformPlane@@YAXAAVB_Plane@@ABV1@ABVB_Matrix@@@Z
 */
+
+void TransformPlane(B_Plane &out, const B_Plane &in, const B_Matrix &matrix)
+{
+    out.normal.x =
+        in.normal.x * matrix.m[0][0] +
+            in.normal.y * matrix.m[1][0] +
+            in.normal.z * matrix.m[2][0];
+    out.normal.y =
+        in.normal.x * matrix.m[0][1] +
+            in.normal.y * matrix.m[1][1] +
+            in.normal.z * matrix.m[2][1];
+    out.normal.z =
+        in.normal.x * matrix.m[0][2] +
+            in.normal.y * matrix.m[1][2] +
+            in.normal.z * matrix.m[2][2];
+    out.p =
+        in.p -
+            out.normal.x * matrix.m[3][0] -
+            out.normal.y * matrix.m[3][1] -
+            out.normal.z * matrix.m[3][2];
+}
+
 
 /*
 * Module:                 rOpenGL.dll
@@ -283,6 +620,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_Matrix &matrix)
     file.Read(&matrix, sizeof(B_Matrix));
     return file;
 }
+
 
 /*
 * Module:                 rOpenGL.dll

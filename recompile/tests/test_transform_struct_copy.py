@@ -47,3 +47,19 @@ class TestTransformStructCopy(unittest.TestCase):
         other = expressions.Identifier(data_types.Reference(box), "other")
         self.assertIsNone(transform_struct_copy(
             _memcpy(this, expressions.AddressOf(other), 48)))
+
+    def test_copy_to_object_pointed_by_pointer(self):
+        vector, box = _types()
+        out = expressions.Identifier(data_types.Pointer32(box), "out")
+        temp = expressions.Identifier(box, "temp")
+        instr = transform_struct_copy(
+            _memcpy(out, expressions.AddressOf(temp), 48))
+        self.assertEqual("*out = temp;\n", _emit(instr))
+
+    def test_copy_to_returned_object(self):
+        vector, box = _types()
+        result = expressions.Identifier(
+            data_types.Pointer32(box), "__result")
+        temp = expressions.Identifier(box, "temp")
+        self.assertIsNone(transform_struct_copy(
+            _memcpy(result, expressions.AddressOf(temp), 48)))

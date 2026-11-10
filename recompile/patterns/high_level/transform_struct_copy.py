@@ -9,7 +9,8 @@ def transform_struct_copy(expression, **kwargs):
 
     Structures are copied with 'rep movsd' compiled to memcpy. The copy of
     the whole object to '*this' is not transformed: it is the code of
-    'operator =' or of the copy constructor.
+    'operator =' or of the copy constructor. The copy to '*__result' is
+    the return of an object by value.
     """
     pc = expression
     if not isinstance(pc, expressions.ProcedureCall) or pc.name != "memcpy":
@@ -25,9 +26,25 @@ def transform_struct_copy(expression, **kwargs):
         return None
     if not data_types.are_same(dst.data_type, src.data_type):
         return None
-    if not isinstance(dst, (expressions.FieldAccess, expressions.Identifier)):
+    if not _is_copy_destination(dst):
         return None
     return instructions.Assignment(dst, src)
+
+
+def _is_copy_destination(dst):
+    """A field, a variable or an object addressed by a pointer: '*out'.
+
+    '*this' and '*__result' (an object returned by value) are not.
+    """
+    if isinstance(dst, (expressions.FieldAccess, expressions.Identifier)):
+        return True
+    if not isinstance(dst, expressions.Dereference):
+        return False
+    ptr = dst.expression
+    return (
+        isinstance(ptr, expressions.Identifier) and
+        ptr.name not in ("this", "__result")
+    )
 
 
 _casts = (expressions.ImplicitCast, expressions.ReinterpretCast)

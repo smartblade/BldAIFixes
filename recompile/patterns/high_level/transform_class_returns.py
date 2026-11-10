@@ -16,7 +16,9 @@ def transform_class_returns(proc_decl, instrs):
     if result is None:
         return instrs
     body = list(instrs[:-1])
-    new_body = _transform_copy_construction(result, class_type, body)
+    new_body = _transform_struct_copy_return(class_type, body)
+    if new_body is None:
+        new_body = _transform_copy_construction(result, class_type, body)
     if new_body is None:
         new_body = _transform_fields_construction(result, class_type, body)
     if new_body is None:
@@ -36,6 +38,43 @@ def _get_returned_result(instr):
     if result.name != "__result":
         return None
     return result
+
+
+def _transform_struct_copy_return(class_type, body):
+    """'memcpy(__result, &local, sizeof(C))' -> 'return local;'
+
+    A class without a copy constructor is copied by 'rep movsd'.
+    """
+    if not body or not isinstance(body[-1], instructions.CodeInstruction):
+        return None
+    pc = body[-1].expression
+    if not isinstance(pc, expressions.ProcedureCall) or pc.name != "memcpy":
+        return None
+    if len(pc.arguments) != 3:
+        return None
+    dst, src, size = [_strip_casts(argument) for argument in pc.arguments]
+    if not _is_result(dst):
+        return None
+    if not isinstance(size, expressions.Constant):
+        return None
+    if size.value != class_type.size:
+        return None
+    if not isinstance(src, expressions.AddressOf):
+        return None
+    value = src.expression
+    if not isinstance(value, expressions.Identifier):
+        return None
+    if not data_types.are_same(value.data_type, class_type):
+        return None
+    return body[:-1] + [instructions.ReturnInstruction(value)]
+
+
+def _strip_casts(e):
+    while isinstance(
+        e, (expressions.ImplicitCast, expressions.ReinterpretCast)
+    ):
+        e = e.expression
+    return e
 
 
 def _transform_copy_construction(result, class_type, body):

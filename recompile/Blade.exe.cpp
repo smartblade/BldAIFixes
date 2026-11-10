@@ -54,6 +54,113 @@ void B_Matrix::SetOrigin(const B_Vector *origin)
     this->m[3][2] = origin->z;
 }
 
+// address: 0x00405AA2
+void B_Matrix::InvertRigid(B_Matrix &out)
+{
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        for (unsigned int j = 0; j < 3; j++)
+        {
+            out.m[i][j] = this->m[j][i];
+        }
+    }
+    B_Vector translation(this->m[3][0], this->m[3][1], this->m[3][2]);
+    translation = Rotate(translation, out);
+    out.m[3][0] = -translation.x;
+    out.m[3][1] = -translation.y;
+    out.m[3][2] = -translation.z;
+}
+
+// address: 0x00405BA9
+B_Matrix *B_Matrix::Invert(B_Matrix *outMatrix) const
+{
+    B_Matrix temp;
+    double det = this->m[0][0] * this->m[1][1] * this->m[2][2] + this->m[0][1] * this->m[1][2] * this->m[2][0] + this->m[1][0] * this->m[2][1] * this->m[0][2] - this->m[0][2] * this->m[1][1] * this->m[2][0] - this->m[0][1] * this->m[1][0] * this->m[2][2] - this->m[1][2] * this->m[2][1] * this->m[0][0];
+    temp.m[0][0] = (this->m[1][1] * this->m[2][2] - this->m[1][2] * this->m[2][1]) / det;
+    temp.m[1][0] = -(this->m[1][0] * this->m[2][2] - this->m[1][2] * this->m[2][0]) / det;
+    temp.m[2][0] = (this->m[1][0] * this->m[2][1] - this->m[1][1] * this->m[2][0]) / det;
+    temp.m[0][1] = -(this->m[0][1] * this->m[2][2] - this->m[0][2] * this->m[2][1]) / det;
+    temp.m[1][1] = (this->m[0][0] * this->m[2][2] - this->m[0][2] * this->m[2][0]) / det;
+    temp.m[2][1] = -(this->m[0][0] * this->m[2][1] - this->m[0][1] * this->m[2][0]) / det;
+    temp.m[0][2] = (this->m[0][1] * this->m[1][2] - this->m[0][2] * this->m[1][1]) / det;
+    temp.m[1][2] = -(this->m[0][0] * this->m[1][2] - this->m[0][2] * this->m[1][0]) / det;
+    temp.m[2][2] = (this->m[0][0] * this->m[1][1] - this->m[0][1] * this->m[1][0]) / det;
+    B_Vector translation(this->m[3][0], this->m[3][1], this->m[3][2]);
+    translation = Rotate(translation, temp);
+    temp.m[3][0] = -translation.x;
+    temp.m[3][1] = -translation.y;
+    temp.m[3][2] = -translation.z;
+    *outMatrix = temp;
+    return outMatrix;
+}
+
+// address: 0x00405F87
+B_Matrix operator *(const B_Matrix &a, const B_Matrix &b)
+{
+    B_Matrix result;
+    result.m[0][0] = a.m[0][0] * b.m[0][0] + a.m[0][1] * b.m[1][0] + a.m[0][2] * b.m[2][0] + a.m[0][3] * b.m[3][0];
+    result.m[0][1] = a.m[0][0] * b.m[0][1] + a.m[0][1] * b.m[1][1] + a.m[0][2] * b.m[2][1] + a.m[0][3] * b.m[3][1];
+    result.m[0][2] = a.m[0][0] * b.m[0][2] + a.m[0][1] * b.m[1][2] + a.m[0][2] * b.m[2][2] + a.m[0][3] * b.m[3][2];
+    result.m[0][3] = a.m[0][0] * b.m[0][3] + a.m[0][1] * b.m[1][3] + a.m[0][2] * b.m[2][3] + a.m[0][3] * b.m[3][3];
+    result.m[1][0] = a.m[1][0] * b.m[0][0] + a.m[1][1] * b.m[1][0] + a.m[1][2] * b.m[2][0] + a.m[1][3] * b.m[3][0];
+    result.m[1][1] = a.m[1][0] * b.m[0][1] + a.m[1][1] * b.m[1][1] + a.m[1][2] * b.m[2][1] + a.m[1][3] * b.m[3][1];
+    result.m[1][2] = a.m[1][0] * b.m[0][2] + a.m[1][1] * b.m[1][2] + a.m[1][2] * b.m[2][2] + a.m[1][3] * b.m[3][2];
+    result.m[1][3] = a.m[1][0] * b.m[0][3] + a.m[1][1] * b.m[1][3] + a.m[1][2] * b.m[2][3] + a.m[1][3] * b.m[3][3];
+    result.m[2][0] = a.m[2][0] * b.m[0][0] + a.m[2][1] * b.m[1][0] + a.m[2][2] * b.m[2][0] + a.m[2][3] * b.m[3][0];
+    result.m[2][1] = a.m[2][0] * b.m[0][1] + a.m[2][1] * b.m[1][1] + a.m[2][2] * b.m[2][1] + a.m[2][3] * b.m[3][1];
+    result.m[2][2] = a.m[2][0] * b.m[0][2] + a.m[2][1] * b.m[1][2] + a.m[2][2] * b.m[2][2] + a.m[2][3] * b.m[3][2];
+    result.m[2][3] = a.m[2][0] * b.m[0][3] + a.m[2][1] * b.m[1][3] + a.m[2][2] * b.m[2][3] + a.m[2][3] * b.m[3][3];
+    result.m[3][0] = a.m[3][0] * b.m[0][0] + a.m[3][1] * b.m[1][0] + a.m[3][2] * b.m[2][0] + a.m[3][3] * b.m[3][0];
+    result.m[3][1] = a.m[3][0] * b.m[0][1] + a.m[3][1] * b.m[1][1] + a.m[3][2] * b.m[2][1] + a.m[3][3] * b.m[3][1];
+    result.m[3][2] = a.m[3][0] * b.m[0][2] + a.m[3][1] * b.m[1][2] + a.m[3][2] * b.m[2][2] + a.m[3][3] * b.m[3][2];
+    result.m[3][3] = a.m[3][0] * b.m[0][3] + a.m[3][1] * b.m[1][3] + a.m[3][2] * b.m[2][3] + a.m[3][3] * b.m[3][3];
+    return result;
+}
+
+// address: 0x00406338
+B_Matrix MulRot_406338(const B_Matrix &a, const B_Matrix &b)
+{
+    B_Matrix result;
+    result.m[0][0] = a.m[0][0] * b.m[0][0] + a.m[0][1] * b.m[1][0] + a.m[0][2] * b.m[2][0];
+    result.m[0][1] = a.m[0][0] * b.m[0][1] + a.m[0][1] * b.m[1][1] + a.m[0][2] * b.m[2][1];
+    result.m[0][2] = a.m[0][0] * b.m[0][2] + a.m[0][1] * b.m[1][2] + a.m[0][2] * b.m[2][2];
+    result.m[0][3] = a.m[0][3];
+    result.m[1][0] = a.m[1][0] * b.m[0][0] + a.m[1][1] * b.m[1][0] + a.m[1][2] * b.m[2][0];
+    result.m[1][1] = a.m[1][0] * b.m[0][1] + a.m[1][1] * b.m[1][1] + a.m[1][2] * b.m[2][1];
+    result.m[1][2] = a.m[1][0] * b.m[0][2] + a.m[1][1] * b.m[1][2] + a.m[1][2] * b.m[2][2];
+    result.m[1][3] = a.m[1][3];
+    result.m[2][0] = a.m[2][0] * b.m[0][0] + a.m[2][1] * b.m[1][0] + a.m[2][2] * b.m[2][0];
+    result.m[2][1] = a.m[2][0] * b.m[0][1] + a.m[2][1] * b.m[1][1] + a.m[2][2] * b.m[2][1];
+    result.m[2][2] = a.m[2][0] * b.m[0][2] + a.m[2][1] * b.m[1][2] + a.m[2][2] * b.m[2][2];
+    result.m[2][3] = a.m[2][3];
+    result.m[3][0] = a.m[3][0];
+    result.m[3][1] = a.m[3][1];
+    result.m[3][2] = a.m[3][2];
+    result.m[3][3] = a.m[3][3];
+    return result;
+}
+
+// address: 0x00406547
+void MatrixMultiply(B_Matrix *out, const B_Matrix *a, const B_Matrix *b)
+{
+    out->m[0][0] = a->m[0][0] * b->m[0][0] + a->m[0][1] * b->m[1][0] + a->m[0][2] * b->m[2][0] + a->m[0][3] * b->m[3][0];
+    out->m[0][1] = a->m[0][0] * b->m[0][1] + a->m[0][1] * b->m[1][1] + a->m[0][2] * b->m[2][1] + a->m[0][3] * b->m[3][1];
+    out->m[0][2] = a->m[0][0] * b->m[0][2] + a->m[0][1] * b->m[1][2] + a->m[0][2] * b->m[2][2] + a->m[0][3] * b->m[3][2];
+    out->m[0][3] = a->m[0][0] * b->m[0][3] + a->m[0][1] * b->m[1][3] + a->m[0][2] * b->m[2][3] + a->m[0][3] * b->m[3][3];
+    out->m[1][0] = a->m[1][0] * b->m[0][0] + a->m[1][1] * b->m[1][0] + a->m[1][2] * b->m[2][0] + a->m[1][3] * b->m[3][0];
+    out->m[1][1] = a->m[1][0] * b->m[0][1] + a->m[1][1] * b->m[1][1] + a->m[1][2] * b->m[2][1] + a->m[1][3] * b->m[3][1];
+    out->m[1][2] = a->m[1][0] * b->m[0][2] + a->m[1][1] * b->m[1][2] + a->m[1][2] * b->m[2][2] + a->m[1][3] * b->m[3][2];
+    out->m[1][3] = a->m[1][0] * b->m[0][3] + a->m[1][1] * b->m[1][3] + a->m[1][2] * b->m[2][3] + a->m[1][3] * b->m[3][3];
+    out->m[2][0] = a->m[2][0] * b->m[0][0] + a->m[2][1] * b->m[1][0] + a->m[2][2] * b->m[2][0] + a->m[2][3] * b->m[3][0];
+    out->m[2][1] = a->m[2][0] * b->m[0][1] + a->m[2][1] * b->m[1][1] + a->m[2][2] * b->m[2][1] + a->m[2][3] * b->m[3][1];
+    out->m[2][2] = a->m[2][0] * b->m[0][2] + a->m[2][1] * b->m[1][2] + a->m[2][2] * b->m[2][2] + a->m[2][3] * b->m[3][2];
+    out->m[2][3] = a->m[2][0] * b->m[0][3] + a->m[2][1] * b->m[1][3] + a->m[2][2] * b->m[2][3] + a->m[2][3] * b->m[3][3];
+    out->m[3][0] = a->m[3][0] * b->m[0][0] + a->m[3][1] * b->m[1][0] + a->m[3][2] * b->m[2][0] + a->m[3][3] * b->m[3][0];
+    out->m[3][1] = a->m[3][0] * b->m[0][1] + a->m[3][1] * b->m[1][1] + a->m[3][2] * b->m[2][1] + a->m[3][3] * b->m[3][1];
+    out->m[3][2] = a->m[3][0] * b->m[0][2] + a->m[3][1] * b->m[1][2] + a->m[3][2] * b->m[2][2] + a->m[3][3] * b->m[3][2];
+    out->m[3][3] = a->m[3][0] * b->m[0][3] + a->m[3][1] * b->m[1][3] + a->m[3][2] * b->m[2][3] + a->m[3][3] * b->m[3][3];
+}
+
 // address: 0x00406903
 B_Vector operator *(const B_Vector &vector, const B_Matrix &matrix)
 {
@@ -80,6 +187,15 @@ void Rotate(B_Vector &out, const B_Vector &v, const B_Matrix &rotateMatrix)
 B_Vector Rotate(const B_Vector &v, const B_Matrix &rotateMatrix)
 {
     return B_Vector(v.x * rotateMatrix.m[0][0] + v.y * rotateMatrix.m[1][0] + v.z * rotateMatrix.m[2][0], v.x * rotateMatrix.m[0][1] + v.y * rotateMatrix.m[1][1] + v.z * rotateMatrix.m[2][1], v.x * rotateMatrix.m[0][2] + v.y * rotateMatrix.m[1][2] + v.z * rotateMatrix.m[2][2]);
+}
+
+// address: 0x00406BA7
+void TransformPlane(B_Plane &out, const B_Plane &in, const B_Matrix &matrix)
+{
+    out.normal.x = in.normal.x * matrix.m[0][0] + in.normal.y * matrix.m[1][0] + in.normal.z * matrix.m[2][0];
+    out.normal.y = in.normal.x * matrix.m[0][1] + in.normal.y * matrix.m[1][1] + in.normal.z * matrix.m[2][1];
+    out.normal.z = in.normal.x * matrix.m[0][2] + in.normal.y * matrix.m[1][2] + in.normal.z * matrix.m[2][2];
+    out.p = in.p - out.normal.x * matrix.m[3][0] - out.normal.y * matrix.m[3][1] - out.normal.z * matrix.m[3][2];
 }
 
 // address: 0x00406C69

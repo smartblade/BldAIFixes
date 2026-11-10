@@ -60,3 +60,24 @@ class TestClassReturns(unittest.TestCase):
         self.assertEqual(1, len(instrs))
         self.assertEqual(
             "B_Vector(a, b)", instrs[0].expression.emit_code())
+
+    def test_return_of_copied_local(self):
+        vector = _parse_vector()
+        result = expressions.Identifier(None, "__result")
+        local = expressions.Identifier(vector, "v")
+        regdef = instructions.TemporaryRegisterDefinition()
+        regdef.define_reg_value("eax", result)
+        memcpy = expressions.ProcedureCall(
+            name="memcpy",
+            arguments=[
+                result,
+                expressions.AddressOf(local),
+                expressions.Constant(None, vector.size),
+            ])
+        instrs = transform_class_returns(_ProcDecl(vector), [
+            instructions.CodeInstruction(memcpy),
+            regdef,
+        ])
+        self.assertEqual(1, len(instrs))
+        self.assertIsInstance(instrs[0], instructions.ReturnInstruction)
+        self.assertEqual("v", instrs[0].expression.emit_code())

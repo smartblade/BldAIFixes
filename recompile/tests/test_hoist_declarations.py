@@ -96,6 +96,29 @@ class TestHoistDeclarations(unittest.TestCase):
             "}\n",
             _emit(instrs, {-4: y, -8: x}))
 
+    def test_unnamed_temporary_below_variable_of_block(self):
+        # An unnamed temporary of inlined code is folded later, it doesn't
+        # move the declaration of a named variable of a nested block
+        distance = i32_id("distance")
+        temporary = i32_id("unknown_loc_10")
+        instrs = [
+            if_instr(i32_id("a"), [
+                ass(distance, _const(1)),
+                call_instr(name="f", arguments=[distance]),
+            ]),
+            ass(temporary, _const(2)),
+            call_instr(name="f", arguments=[temporary]),
+        ]
+        self.assertEqual(
+            "if (a)\n"
+            "{\n"
+            "    int distance = 1;\n"
+            "    f(distance);\n"
+            "}\n"
+            "int unknown_loc_10 = 2;\n"
+            "f(unknown_loc_10);\n",
+            _emit(instrs, {-8: distance, -16: temporary}))
+
 
 class TestDeclarationsInBuckets(unittest.TestCase):
     def test_lower_variable_of_bucket_declared_first(self):

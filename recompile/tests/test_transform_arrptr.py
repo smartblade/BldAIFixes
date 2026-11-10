@@ -50,3 +50,24 @@ class TestTransformArrptr(unittest.TestCase):
         e = transform_arrptr(base, 4, i32_id("i"), 0)
         self.assertEqual("&elements[i]", e.emit_code())
         self.assertIsNone(transform_arrptr(base, 8, i32_id("i"), 0))
+
+    def test_element_of_row_of_matrix(self):
+        matrix = data_types.ClassType("B_Matrix", {
+            0: (data_types.Array(
+                data_types.Array(data_types.Double(), 4), 4), "m"),
+        })
+        out = expressions.Identifier(data_types.Reference(matrix), "out")
+        this = expressions.Identifier(data_types.Pointer32(matrix), "this")
+        # 'reinterpret_cast<int>(out) + 32 * i' is the address of out.m[i]
+        row = expressions.Bin(
+            Operator.ADD,
+            expressions.ReinterpretCast(data_types.Int32(), out),
+            expressions.Bin(
+                Operator.MUL, expressions.Constant(data_types.Int32(), 32),
+                i32_id("i")))
+        e = transform_arrptr(row, 8, i32_id("j"), 0)
+        self.assertEqual("&out.m[i][j]", e.emit_code())
+        row = transform_arrptr(this, 32, i32_id("j"), 0)
+        self.assertEqual("&this->m[j]", row.emit_code())
+        e = transform_arrptr(row, 8, i32_id("i"), 0)
+        self.assertEqual("&this->m[j][i]", e.emit_code())

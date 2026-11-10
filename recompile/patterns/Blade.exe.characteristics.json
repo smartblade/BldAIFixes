@@ -8,6 +8,30 @@
 			"-40": "z"
 		}
 	},
+	"00405AA2": {
+		"varnames": {
+			"-4": "i",
+			"-32": "j",
+			"-28": "translation"
+		}
+	},
+	"00405BA9": {
+		"varnames": {
+			"-128": "temp",
+			"-160": "det",
+			"-152": "translation"
+		}
+	},
+	"00405F87": {
+		"varnames": {
+			"-128": "result"
+		}
+	},
+	"00406338": {
+		"varnames": {
+			"-128": "result"
+		}
+	},
 	"0044F052": {
 		"return": {
 			"boolean": "yes"

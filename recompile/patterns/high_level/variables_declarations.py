@@ -102,6 +102,11 @@ class _IdentifiersCollector(ExpressionTransformer):
                     continue
                 scope = self._scope_index(path)
                 for other, (other_path, _) in self._ids.items():
+                    # Locals of a reconstructed procedure are named in
+                    # its characteristics, unnamed locals are temporaries
+                    # of inlined code folded later
+                    if _is_unnamed(other) and not _is_unnamed(identifier):
+                        continue
                     other_offset = self._offsets.get(other)
                     if (
                         other_offset is None or other_offset >= offset or
