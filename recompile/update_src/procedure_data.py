@@ -47,12 +47,7 @@ class ProcedureData:
                 return self.prev_src_definition.end_line
             if self.prev_src_definition.definition_end_line is None:
                 return self.prev_src_definition.definition_start_line
-            end_line = self.prev_src_definition.definition_end_line + 1
-            # After '#endif' of a definition excluded from the native build
-            lines = self._file.lines if self._file is not None else []
-            if end_line < len(lines) and lines[end_line].strip() == "#endif":
-                end_line += 1
-            return end_line
+            return self.prev_src_definition.definition_end_line + 1
         assert self.next_src_definition is not None
         if self.is_declaration:
             return self.next_src_definition.start_line - 1
