@@ -81,3 +81,14 @@ class TestVirtualStubs(unittest.TestCase):
             "l004B46A8 PROC",
         ]
         self.assertEqual([0x004B4680], get_object_files_starts(lines))
+
+    def test_vtables_of_bases_and_class(self):
+        from update_src.virtual_stubs import find_vtables
+        lines = [
+            "mov dword ptr [ebp-004h], ecx",
+            "mov eax, dword ptr [ebp-004h]",
+            "mov dword ptr [eax], offset g005BE4A8",
+            "mov ecx, dword ptr [ebp-004h]",
+            "mov dword ptr [ecx], offset g005BE480",
+        ]
+        self.assertEqual([0x005BE4A8, 0x005BE480], find_vtables(lines))

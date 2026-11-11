@@ -45,6 +45,68 @@ def _get_metadata_and_and_procedure_stub(
         metadata, procedure_code, else_code)
 
 
+class _StaticStubVariable:
+    """'static T stub;' returned by reference from a stub."""
+
+    def __init__(self, identifier):
+        self._identifier = identifier
+
+    def visit(self, on_expression_visited, **kwargs):
+        pass
+
+    def transform(self, transformer, **kwargs):
+        return self
+
+    def emit_code(self, writer):
+        writer.write_line("static {} {};".format(
+            self._identifier.data_type.get_type_name(),
+            self._identifier.name))
+
+
+def _make_stub_instructions(proc_decl):
+    """Instructions of the body of a stub of the procedure."""
+    reference_stub = _make_reference_return_stub(proc_decl)
+    if reference_stub is not None:
+        return reference_stub
+    return_stub = _make_return_stub(proc_decl)
+    return [] if return_stub is None else [return_stub]
+
+
+def _make_reference_return_stub(proc_decl):
+    """A reference not passed as a parameter: a field of the same type of
+    the object ('return this->pose;') or a static variable of the stub."""
+    return_type = proc_decl.return_type
+    if (
+        not isinstance(return_type, data_types.Reference) or
+        proc_decl.is_constructor
+    ):
+        return None
+    referent = return_type.referent
+    for param in proc_decl.get_parameters_ids().values():
+        if param.data_type is None:
+            continue
+        if data_types.are_same(param.data_type, return_type):
+            return None
+        if (
+            isinstance(param.data_type, data_types.Pointer32) and
+            data_types.are_same(param.data_type.pointee, referent)
+        ):
+            return None
+    if proc_decl.is_instance_method and proc_decl.method_class is not None:
+        this = list(proc_decl.get_parameters_ids().values())[0]
+        for offset, (field_type, field_name) in sorted(
+            proc_decl.method_class.get_all_fields().items()
+        ):
+            if data_types.are_same(field_type, referent):
+                return [instructions.ReturnInstruction(
+                    expressions.FieldAccess(this, field_name))]
+    if not isinstance(referent, data_types.ClassType):
+        return None
+    variable = expressions.Identifier(referent, "stub")
+    return [_StaticStubVariable(variable), instructions.ReturnInstruction(
+        variable)]
+
+
 def _make_return_stub(proc_decl):
     if proc_decl.return_type is None or proc_decl.is_constructor:
         return None
@@ -83,7 +145,7 @@ def _make_return_stub(proc_decl):
 def can_make_stub(proc_decl):
     """The return of a stub of the procedure can be written."""
     try:
-        _make_return_stub(proc_decl)
+        _make_stub_instructions(proc_decl)
     except Exception:
         return False
     return True
@@ -95,10 +157,7 @@ def _make_writer():
 
 def _get_procedure_stub_code(procedure, is_inline):
     writer = _make_writer()
-    instrs = []
-    return_stub = _make_return_stub(procedure.proc_decl)
-    if return_stub is not None:
-        instrs.append(return_stub)
+    instrs = _make_stub_instructions(procedure.proc_decl)
     procedure_stub = Procedure(
         procedure.proc_info, procedure.address, procedure.proc_decl, instrs,
         None)

@@ -57,42 +57,64 @@ def collect_virtual_method_stubs(lines, declarations):
             continue
         if proc_decl is None or not proc_decl.is_constructor:
             continue
-        class_type = proc_decl.method_class
-        methods = class_type.virtual_methods
-        if not methods:
-            continue
-        vtable = find_own_vtable(procedures_lines.get(addr, []))
-        if vtable is None:
-            continue
-        entries = []
-        for index in range(len(methods)):
-            entry = data.get(vtable + 4 * index)
-            if entry is None:
-                break
-            entries.append(entry)
-        if not _match_defined_methods(methods, entries, src_procedures):
-            continue
-        for method, entry in zip(methods, entries):
-            if method.method_class is None:
-                continue
-            if method.method_class.class_name != class_type.class_name:
-                continue
-            if method.is_destructor:
-                continue
-            if entry in src_procedures or entry in stubs:
-                continue
-            # Pure virtual methods are '_purecall' thunks, not procedures
-            if entry not in procedures_lines:
-                continue
-            if not can_make_stub(method):
-                continue
-            is_inline = (
-                _object_file_start(boundaries, entry) !=
-                _object_file_start(boundaries, addr)
-            )
-            stubs[entry] = VirtualStub(
-                Procedure(None, entry, method, [], None), is_inline)
+        for class_type, vtable in _classes_vtables(
+            proc_decl.method_class, procedures_lines.get(addr, [])
+        ):
+            _add_class_stubs(
+                class_type, vtable, addr, data, src_procedures,
+                procedures_lines, boundaries, stubs)
     return [stubs[addr] for addr in sorted(stubs)]
+
+
+def _classes_vtables(class_type, proc_lines):
+    """(class, vtable) of the class of a constructor and of its base
+    classes: the inline constructors of the bases store their vtables
+    before the vtable of the class."""
+    vtables = find_vtables(proc_lines)
+    classes = []
+    cur = class_type
+    while cur is not None and cur.has_virtual_methods:
+        classes.append(cur)
+        cur = cur.parent
+    return list(zip(classes, reversed(vtables)))
+
+
+def _add_class_stubs(
+    class_type, vtable, addr, data, src_procedures, procedures_lines,
+    boundaries, stubs
+):
+    """Stubs of the virtual methods declared in the class."""
+    methods = class_type.virtual_methods
+    if not methods:
+        return
+    entries = []
+    for index in range(len(methods)):
+        entry = data.get(vtable + 4 * index)
+        if entry is None:
+            break
+        entries.append(entry)
+    if not _match_defined_methods(methods, entries, src_procedures):
+        return
+    for method, entry in zip(methods, entries):
+        if method.method_class is None:
+            continue
+        if method.method_class.class_name != class_type.class_name:
+            continue
+        if method.is_destructor:
+            continue
+        if entry in src_procedures or entry in stubs:
+            continue
+        # Pure virtual methods are '_purecall' thunks, not procedures
+        if entry not in procedures_lines:
+            continue
+        if not can_make_stub(method):
+            continue
+        is_inline = (
+            _object_file_start(boundaries, entry) !=
+            _object_file_start(boundaries, addr)
+        )
+        stubs[entry] = VirtualStub(
+            Procedure(None, entry, method, [], None), is_inline)
 
 
 def get_object_files_starts(lines):
@@ -136,13 +158,27 @@ def _match_defined_methods(methods, entries, src_procedures):
 
 
 def find_own_vtable(proc_lines):
-    """Address of the vtable of the class of a constructor: the last vtable
-    stored to the object, at offset 0 of 'this'. Vtables of base classes
-    are stored before it, vtables of fields are stored to other
-    addresses."""
+    """Vtable of the class of a constructor: the last vtable stored to
+    'this', the vtables of the bases are stored before it."""
+    vtables = find_vtables(proc_lines)
+    return vtables[-1] if vtables else None
+
+
+def find_vtables(proc_lines):
+    """Vtables stored to the object at offset 0 of 'this' in order, without
+    repetitions: of the bases, then of the class."""
+    result = []
+    for vtable in _vtable_stores(proc_lines):
+        if vtable not in result:
+            result.append(vtable)
+    return result
+
+
+def _vtable_stores(proc_lines):
+    """Vtables stored to the object at offset 0 of 'this' by a constructor.
+    Vtables of fields are stored to other addresses."""
     this_slot = None
     loaded = {}
-    vtable = None
     for line in proc_lines:
         if line.startswith(";") or not line:
             continue
@@ -160,11 +196,10 @@ def find_own_vtable(proc_lines):
                 this_slot is not None and
                 loaded.get(match.group("reg")) == this_slot
             ):
-                vtable = from_hex(match.group("vtable"))
+                yield from_hex(match.group("vtable"))
             continue
         # Other instructions may change the registers
         loaded = {}
-    return vtable
 
 
 def _get_procedures_lines(lines):
