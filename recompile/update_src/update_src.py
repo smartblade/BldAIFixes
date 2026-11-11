@@ -1,4 +1,5 @@
 import os
+import re
 
 from hex_conversion import to_hex
 import parser
@@ -9,7 +10,12 @@ from .update_inlines import define_nearest_inline_definitions
 from .writer import get_code
 
 
-def update_src(src_path, module_name, procedures, exported_procedures):
+def update_src(
+    src_path, module_name, procedures, exported_procedures,
+    virtual_stubs=()
+):
+    """Update procedures in sources, add stubs of exported procedures and
+    of virtual methods (virtual_stubs) missing in sources."""
     proc_by_addr = {}
     for procedure in procedures:
         proc_by_addr[procedure.address] = procedure
@@ -18,6 +24,9 @@ def update_src(src_path, module_name, procedures, exported_procedures):
         src_files, module_name, exported_procedures, proc_by_addr)
     _define_files_from_adjacent_procedures(procedures_data)
     _define_nearest_src_definitions_for_files(src_files)
+    _add_virtual_stubs(
+        src_files, module_name, exported_procedures, procedures_data,
+        virtual_stubs)
     bind_headers(src_files, procedures_data)
     define_nearest_inline_definitions(src_files, procedures_data)
     updating_procedures = _get_updating_procedures(procedures_data)
@@ -84,6 +93,58 @@ def _define_files_from_adjacent_procedures(procedures_data):
             unset_file_addresses = []
 
 
+def _add_virtual_stubs(
+    src_files, module_name, exported_procedures, procedures_data,
+    virtual_stubs
+):
+    """Stubs of virtual methods are placed in the source file of the
+    constructor of their class between the definitions of the nearest
+    addresses."""
+    definitions_by_file = {}
+    constructor_files = {}
+    for src_file in src_files:
+        definitions = {}
+        for (cur_module, addr), definition in (
+            parser.SrcSymbols.collect_procedures(src_file.lines).items()
+        ):
+            if cur_module != module_name:
+                continue
+            definitions[addr] = definition
+            class_name = _constructor_class_name(definition.declaration)
+            if class_name is not None:
+                constructor_files.setdefault(class_name, src_file)
+        definitions_by_file[id(src_file)] = definitions
+    for procedure in virtual_stubs:
+        if procedure.address in procedures_data:
+            continue
+        src_file = constructor_files.get(
+            procedure.proc_decl.method_class.class_name)
+        if src_file is None:
+            continue
+        definitions = definitions_by_file[id(src_file)]
+        prev_addrs = [a for a in definitions if a < procedure.address]
+        next_addrs = [a for a in definitions if a > procedure.address]
+        procedure_data = ProcedureData(
+            src_file, procedure.address in exported_procedures, None,
+            procedure, False)
+        procedure_data.is_virtual_stub = True
+        if prev_addrs:
+            procedure_data.prev_src_definition = definitions[max(prev_addrs)]
+        else:
+            procedure_data.next_src_definition = definitions[min(next_addrs)]
+        procedures_data[procedure.address] = procedure_data
+
+
+def _constructor_class_name(declaration):
+    """Class of a constructor 'C::C(...)' defined outside of its class."""
+    if declaration is None:
+        return None
+    match = re.search(r"\b(\w+)::(\w+)\s*\(", declaration)
+    if match is None or match.group(1) != match.group(2):
+        return None
+    return match.group(1)
+
+
 def _get_updating_procedures(procedures_data):
     updating_procedures = {}
     for addr, procedure_data in procedures_data.items():
@@ -96,7 +157,10 @@ def _get_updating_procedures(procedures_data):
             if src_definition.declaration is None:
                 continue
         else:
-            if not procedure_data.is_exported:
+            if (
+                not procedure_data.is_exported and
+                not procedure_data.is_virtual_stub
+            ):
                 continue
             if procedure_data.file is None:
                 continue

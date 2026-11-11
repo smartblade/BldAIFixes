@@ -8,6 +8,8 @@ class ProcedureData:
         self.src_definition = src_definition
         self.is_declaration = is_declaration
         self.is_inline = False
+        # Stub of a virtual method missing in sources
+        self.is_virtual_stub = False
         self.procedure = procedure
         self.prev_src_definition = None
         self.next_src_definition = None

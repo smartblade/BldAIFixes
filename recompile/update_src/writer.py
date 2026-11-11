@@ -47,10 +47,18 @@ def _make_return_stub(proc_decl):
         return None
     if isinstance(proc_decl.return_type, data_types.Pointer32):
         return instructions.ReturnInstruction(expressions.Null)
+    if (
+        isinstance(proc_decl.return_type, data_types.ClassType) and
+        proc_decl.return_type.class_name == "bool"
+    ):
+        return instructions.ReturnInstruction(
+            expressions.Constant(data_types.Bool(), 0))
     const_value = None
     if proc_decl.return_type.is_any_int:
         const_value = 0
-    elif isinstance(proc_decl.return_type, data_types.Float):
+    elif isinstance(
+        proc_decl.return_type, (data_types.Float, data_types.Double)
+    ):
         const_value = 0.0
     if const_value is not None:
         return instructions.ReturnInstruction(
@@ -69,6 +77,15 @@ def _make_return_stub(proc_decl):
     raise Exception("Unsupported return type: {}".format(proc_decl.return_type))
 
 
+def can_make_stub(proc_decl):
+    """The return of a stub of the procedure can be written."""
+    try:
+        _make_return_stub(proc_decl)
+    except Exception:
+        return False
+    return True
+
+
 def _make_writer():
     return Writer(max_line_len=80)
 
@@ -80,7 +97,8 @@ def _get_procedure_stub_code(procedure, is_inline):
     if return_stub is not None:
         instrs.append(return_stub)
     procedure_stub = Procedure(
-        procedure.proc_info, procedure.address, procedure.proc_decl, instrs)
+        procedure.proc_info, procedure.address, procedure.proc_decl, instrs,
+        None)
     num_indent = 1 if is_inline else 0
     _write(
         writer, num_indent, _write_procedure, procedure_stub,

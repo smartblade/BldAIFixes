@@ -13,7 +13,7 @@ import parser as cpp_parser
 from patterns.asm_patterns import process_asm_patterns
 from patterns.characteristics import ModuleCharacteristics
 from read_exports import read_exports
-from update_src import update_src
+from update_src import collect_virtual_method_stubs, update_src
 
 parser = OptionParser()
 parser.add_option("--show-hex-prefix", dest="show_hex_prefix",
@@ -1324,8 +1324,11 @@ def run():
             if options.update_src_at is not None:
                 update_src_at = os.path.abspath(options.update_src_at)
                 print("Update sources at {}...".format(update_src_at))
+                virtual_stubs = collect_virtual_method_stubs(
+                    readAsmCode(asm_files.intermediate_asm), declarations)
                 update_src(
-                    update_src_at, module_name, procedures, exported_procedures)
+                    update_src_at, module_name, procedures, exported_procedures,
+                    virtual_stubs)
 
 
 def process_asm_dir(asm_files, declarations):
