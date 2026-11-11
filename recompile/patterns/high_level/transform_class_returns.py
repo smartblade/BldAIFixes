@@ -43,7 +43,8 @@ def _get_returned_result(instr):
 def _transform_struct_copy_return(class_type, body):
     """'memcpy(__result, &local, sizeof(C))' -> 'return local;'
 
-    A class without a copy constructor is copied by 'rep movsd'.
+    A class without a copy constructor is copied by 'rep movsd'. The copied
+    object is a local or a field: 'return this->center;'.
     """
     if not body or not isinstance(body[-1], instructions.CodeInstruction):
         return None
@@ -62,7 +63,7 @@ def _transform_struct_copy_return(class_type, body):
     if not isinstance(src, expressions.AddressOf):
         return None
     value = src.expression
-    if not isinstance(value, expressions.Identifier):
+    if not isinstance(value, (expressions.Identifier, expressions.FieldAccess)):
         return None
     if not data_types.are_same(value.data_type, class_type):
         return None

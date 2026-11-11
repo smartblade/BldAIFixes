@@ -71,10 +71,19 @@ class ClassType(DataType):
 
     @property
     def size(self):
+        """Size of own fields, base classes and the vtable: a class without
+        own fields derived from another class ('class B : public A {}') has
+        the size of its base."""
         size = 0
         for offset, (field_type, field_name) in self._fields.items():
             if offset + field_type.size > size:
                 size = offset + field_type.size
+        if self._parent is not None:
+            size = max(size, self._parent.size)
+        for offset, parent in self._other_parents:
+            size = max(size, offset + parent.size)
+        if size == 0 and self.has_virtual_methods:
+            size = 4
         return size
 
     @property

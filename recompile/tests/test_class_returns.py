@@ -2,6 +2,7 @@ import os
 import tempfile
 import unittest
 
+import data_types
 import expressions
 import instructions
 import parser
@@ -81,3 +82,24 @@ class TestClassReturns(unittest.TestCase):
         self.assertEqual(1, len(instrs))
         self.assertIsInstance(instrs[0], instructions.ReturnInstruction)
         self.assertEqual("v", instrs[0].expression.emit_code())
+
+    def test_return_of_copied_field(self):
+        vector = _parse_vector()
+        box = data_types.ClassType("B_Box", {0: (vector, "center")})
+        result = expressions.Identifier(None, "__result")
+        this = expressions.Identifier(data_types.Pointer32(box), "this")
+        regdef = instructions.TemporaryRegisterDefinition()
+        regdef.define_reg_value("eax", result)
+        memcpy = expressions.ProcedureCall(
+            name="memcpy",
+            arguments=[
+                result,
+                expressions.AddressOf(expressions.FieldAccess(this, "center")),
+                expressions.Constant(None, vector.size),
+            ])
+        instrs = transform_class_returns(_ProcDecl(vector), [
+            instructions.CodeInstruction(memcpy),
+            regdef,
+        ])
+        self.assertEqual(1, len(instrs))
+        self.assertEqual("this->center", instrs[0].expression.emit_code())

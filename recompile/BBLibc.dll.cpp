@@ -25855,11 +25855,11 @@ p1003DA80
 p1003DA8F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    ACCESS(GLOBAL(0x1004A9D4), 0, 4) = 0x00000000;
-    ACCESS(GLOBAL(0x1004A9D8), 0, 4) = 0x00000000;
-    ACCESS(GLOBAL(0x1004A9DC), 0, 4) = 0x00000010;
-    ACCESS(GLOBAL(0x1004A9E0), 0, 4) = 0x00000000;
-    ACCESS(GLOBAL(0x1004A9E4), 0, 4) = 0x00000001;
+    B_csvs.elements = nullptr;
+    B_csvs.size = 0;
+    B_csvs.increment = 16;
+    B_csvs.num_alloc = 0;
+    B_csvs.deleteItems = 1;
     ACCESS(&B_csvs, 0, 4) = GLOBAL(0x10042E58);
     ACCESS(&B_csvs, 0, 4) = GLOBAL(0x10042E54);
     ACCESS(&B_csvs, 0, 4) = GLOBAL(0x10042E50);
@@ -25876,29 +25876,32 @@ p1003DAEE
 // address: 0x1003DB00
 p1003DB00
 {
+    unsigned int unknown_loc_04;
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     ACCESS(&B_csvs, 0, 4) = GLOBAL(0x10042E58);
-    if (ACCESS(GLOBAL(0x1004A9E0), 0, 4) == 0x00000000)
+    if (B_csvs.num_alloc == 0)
     {
         goto l1003DBBC;
     }
-    STACKVAR(-20, 4) = ACCESS(GLOBAL(0x1004A9E4), 0, 4);
-    if (ACCESS(GLOBAL(0x1004A9E0), 0, 4) == 0x00000000)
+    int unknown_loc_14;
+    unknown_loc_14 = B_csvs.deleteItems;
+    if (B_csvs.num_alloc == 0)
     {
         return;
     }
-    if (STACKVAR(-20, 4) != 0x00000000)
+    if (unknown_loc_14 != 0)
     {
-        for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A9D8), 0, 4)); unknown_loc_04++)
+        for (unknown_loc_04 = 0; unknown_loc_04 < B_csvs.size; unknown_loc_04++)
         {
-            delete ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A9D4), 0, 4), 4, unknown_loc_04, 0), 0, 4);
+            delete B_csvs.elements[unknown_loc_04];
         }
     }
-    STACKVAR(-16, 4) = ACCESS(GLOBAL(0x1004A9D4), 0, 4);
-    operator delete(STACKVAR(-16, 4));
-    ACCESS(GLOBAL(0x1004A9D4), 0, 4) = 0x00000000;
-    ACCESS(GLOBAL(0x1004A9D8), 0, 4) = 0x00000000;
-    ACCESS(GLOBAL(0x1004A9E0), 0, 4) = 0x00000000;
+    B_ElementCSV **unknown_loc_10;
+    unknown_loc_10 = B_csvs.elements;
+    operator delete(unknown_loc_10);
+    B_csvs.elements = nullptr;
+    B_csvs.size = 0;
+    B_csvs.num_alloc = 0;
 l1003DBBC:
 }
 

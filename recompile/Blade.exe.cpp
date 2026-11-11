@@ -852,6 +852,104 @@ B_GlobalSurfaceCache::B_GlobalSurfaceCache()
 // address: 0x00453AC0
 // B_OctantNodeBase: scalar deleting destructor
 
+// address: 0x004AB1FD
+void B_RigidBody::RemoveFromWorld()
+{
+}
+
+// address: 0x004AB208
+void B_RigidBody::PutToWorld()
+{
+}
+
+// address: 0x004AB213
+B_PhysicsTemplateBase *B_RigidBody::GetSolid()
+{
+    return this->solid;
+}
+
+// address: 0x004AB224
+int B_RigidBody::unknown_method010()
+{
+    if (this->unknownField0D8 - this->unknownField0E0 > 1.0)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+// address: 0x004AB33E
+double B_RigidBody::unknown_method018()
+{
+    return this->unknownField0C0;
+}
+
+// address: 0x004ABB97
+B_Vector B_RigidBody::GetWorldCenterOfMass()
+{
+    return this->worldCenterOfMass;
+}
+
+// address: 0x004B30A4
+int B_PhysicsTemplate::unknown_method008(B_PhysicsTemplateBase *other)
+{
+    return 0;
+}
+
+// address: 0x004B30B3
+int B_PhysicsTemplate::unknown_method010(int unknown)
+{
+    return 2;
+}
+
+// address: 0x004B550A
+int B_SphereSetTemplate::BindConstraints()
+{
+    return 2;
+}
+
+// address: 0x004B551A
+int B_SphereSetTemplate::unknown_method008(B_PhysicsTemplateBase *other)
+{
+    return 0;
+}
+
+// address: 0x004B5529
+int B_SphereSetTemplate::unknown_method010(int unknown)
+{
+    return 2;
+}
+
+// address: 0x004B553B
+const B_BoundingBox &B_SphereSetTemplate::GetBoundingBox()
+{
+    return this->boundingBox;
+}
+
+// address: 0x004B554E
+void B_SphereSetTemplate::SetPose(const B_Matrix *pose)
+{
+    this->pose = *pose;
+}
+
+// address: 0x004B556F
+B_Matrix &B_SphereSetTemplate::GetPose()
+{
+    return this->pose;
+}
+
+// address: 0x00544731
+void B_PhysicBody::RemoveFromWorld()
+{
+    this->entity->RemoveFromWorld();
+}
+
+// address: 0x00544753
+void B_PhysicBody::PutToWorld()
+{
+    this->entity->PutToWorld();
+}
+
 class B_OctantNodeBase
 {
     // address: inline
