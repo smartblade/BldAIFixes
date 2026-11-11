@@ -94,8 +94,16 @@ PATCHES = [
             ),
             (
                 array_h,
-                "    B_PtrArray(increment)\n",
-                "    B_PtrArray<TYPE>(increment)\n",
+                # B_PtrArray is named B_Array in newer sources
+                lambda text: _replace_first(
+                    text,
+                    [
+                        ("    B_PtrArray(increment)\n",
+                         "    B_PtrArray<TYPE>(increment)\n"),
+                        ("    B_Array(increment)\n",
+                         "    B_Array<TYPE>(increment)\n"),
+                    ]),
+                None,
                 "Visual C++ 6.0 needs arguments of templates of base classes",
             ),
         )
@@ -221,6 +229,14 @@ def copy_sources(src, dst):
             text = text.replace("\n", "\r\n")
         with open(path, "w", encoding="cp1251", newline="") as f:
             f.write(text)
+
+
+def _replace_first(text, replacements):
+    """Apply the first of (old, new) found in the text, None if none."""
+    for old, new in replacements:
+        if old in text:
+            return text.replace(old, new)
+    return None
 
 
 def _replace_after(text, anchor, old, new):
