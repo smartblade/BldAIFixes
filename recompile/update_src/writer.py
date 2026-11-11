@@ -38,7 +38,9 @@ def _get_metadata_and_and_procedure_stub(
             else_code = "#else\n{}".format(decl_code)
     else:
         else_code = ""
-    return "\n{}#ifndef BLD_NATIVE\n{}{}#endif\n".format(
+    # Procedures are separated by two blank lines, the metadata is
+    # separated from the definition by a blank line
+    return "\n{}\n#ifndef BLD_NATIVE\n{}{}#endif\n\n".format(
         metadata, procedure_code, else_code)
 
 

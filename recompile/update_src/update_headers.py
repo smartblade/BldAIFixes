@@ -37,6 +37,9 @@ def _bind_definitions_with_declarations(procedures_data, header_decls_data):
             continue
         if procedure_data.file is None:
             continue
+        # Virtual methods of stubs are declared in headers already
+        if procedure_data.is_virtual_stub:
+            continue
         class_name = procedure_data.get_class_name()
         if class_name not in class_states:
             class_states[class_name] = _ClassDeclarationState()
