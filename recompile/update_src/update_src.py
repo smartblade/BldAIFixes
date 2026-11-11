@@ -5,7 +5,8 @@ from hex_conversion import to_hex
 import parser
 
 from .procedure_data import ProcedureData
-from .update_headers import bind_headers
+from .update_headers import (
+    bind_headers, find_header_declarations, header_declaration_id)
 from .update_inlines import define_nearest_inline_definitions
 from .writer import get_code
 
@@ -114,8 +115,24 @@ def _add_virtual_stubs(
             if class_name is not None:
                 constructor_files.setdefault(class_name, src_file)
         definitions_by_file[id(src_file)] = definitions
-    for procedure in virtual_stubs:
+    header_declarations = find_header_declarations(src_files)
+    for stub in virtual_stubs:
+        procedure = stub.procedure
         if procedure.address in procedures_data:
+            continue
+        if stub.is_inline:
+            # The declaration in the class is replaced by an inline stub
+            found = header_declarations.get(
+                header_declaration_id(procedure.proc_decl))
+            if found is None:
+                continue
+            header_file, header_decl = found
+            procedure_data = ProcedureData(
+                header_file, procedure.address in exported_procedures,
+                header_decl, procedure, True)
+            procedure_data.is_virtual_stub = True
+            procedure_data.is_inline = True
+            procedures_data[procedure.address] = procedure_data
             continue
         src_file = constructor_files.get(
             procedure.proc_decl.method_class.class_name)
@@ -149,6 +166,10 @@ def _get_updating_procedures(procedures_data):
     updating_procedures = {}
     for addr, procedure_data in procedures_data.items():
         if addr in _excluded_addresses:
+            continue
+        if procedure_data.is_virtual_stub:
+            if procedure_data.file is not None:
+                updating_procedures[addr] = procedure_data
             continue
         src_definition = procedure_data.src_definition
         if src_definition is not None:

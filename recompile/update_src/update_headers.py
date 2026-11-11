@@ -71,6 +71,20 @@ def _bind_definitions_with_declarations(procedures_data, header_decls_data):
                 header_decl_data.header_decl, procedure_data.procedure, True)
 
 
+def find_header_declarations(src_files):
+    """Declarations of procedures in headers: {id: (file, declaration)}."""
+    return dict(
+        (proc_id, (data.file, data.header_decl))
+        for proc_id, data in _get_header_declarations(src_files).items()
+    )
+
+
+def header_declaration_id(proc_decl):
+    """Id of the declaration of a procedure in headers."""
+    return _make_reduced_proc_decl(proc_decl).get_declaration(
+        is_definition=True)
+
+
 def _get_header_decl_for_proc(procedure_data, header_decls_data):
     if procedure_data.src_definition is None:
         return None

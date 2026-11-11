@@ -1,7 +1,8 @@
 import unittest
 
 from update_src.virtual_stubs import (
-    _get_data_words, _match_defined_methods, find_own_vtable)
+    _get_data_words, _match_defined_methods, find_own_vtable,
+    get_object_files_starts)
 
 
 class _Method:
@@ -61,3 +62,22 @@ class TestVirtualStubs(unittest.TestCase):
         self.assertTrue(_match_defined_methods(methods, entries, src))
         src[0x20] = _SrcProcedure("int B_Node::Get()")
         self.assertFalse(_match_defined_methods(methods, entries, src))
+
+    def test_object_files_starts(self):
+        lines = [
+            "l004B4600 PROC",
+            "           ret 00004h",
+            "l004B4600 ENDP",
+            ";",
+            "           int 03h",
+            "           int 03h",
+            "l004B4680 PROC",
+            "           ret",
+            "l004B4680 ENDP",
+            "l004B4690 PROC",
+            "           ret",
+            "l004B4690 ENDP",
+            "           int 03h",
+            "l004B46A8 PROC",
+        ]
+        self.assertEqual([0x004B4680], get_object_files_starts(lines))

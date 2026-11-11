@@ -10,6 +10,9 @@ from .make_metadata_header import make_metadata_header
 def get_code(
     procedure_data, module_name, exported_procedures, start_line, lines
 ):
+    if procedure_data.is_declaration and procedure_data.is_virtual_stub:
+        return _get_metadata_and_and_procedure_stub(
+            procedure_data.procedure, True, module_name, exported_procedures)
     if procedure_data.is_declaration:
         return _get_procedure_declaration(
             procedure_data.procedure.proc_decl, procedure_data.is_exported)
