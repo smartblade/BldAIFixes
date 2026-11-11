@@ -77,21 +77,29 @@ PATCHES = [
         "#include <assert.h>",
         "the original binaries use assert of Visual C++ 6.0",
     ),
-    (
-        "include/array.h",
-        # The second loop of a block declaring 'i' in the first one
-        lambda text: _replace_after(
-            text, "for (unsigned int i = 0; i < index; i++)",
-            "for (unsigned int i = index + 1;", "for (i = index + 1;"),
-        None,
-        "a variable of 'for' is in the enclosing block in Visual C++ 6.0",
-    ),
-    (
-        "include/array.h",
-        "    B_PtrArray(increment)\n",
-        "    B_PtrArray<TYPE>(increment)\n",
-        "Visual C++ 6.0 needs arguments of templates of base classes",
-    ),
+    # array.h is in include in older sources and in BBLibc in newer ones
+    *[
+        patch
+        for array_h in ("include/array.h", "BBLibc/array.h")
+        for patch in (
+            (
+                array_h,
+                # The second loop of a block declaring 'i' in the first one
+                lambda text: _replace_after(
+                    text, "for (unsigned int i = 0; i < index; i++)",
+                    "for (unsigned int i = index + 1;", "for (i = index + 1;"),
+                None,
+                "a variable of 'for' is in the enclosing block in "
+                "Visual C++ 6.0",
+            ),
+            (
+                array_h,
+                "    B_PtrArray(increment)\n",
+                "    B_PtrArray<TYPE>(increment)\n",
+                "Visual C++ 6.0 needs arguments of templates of base classes",
+            ),
+        )
+    ],
     (
         "App/App.cpp",
         # Only after the loop over gbl_ag_textures declaring 'i'
