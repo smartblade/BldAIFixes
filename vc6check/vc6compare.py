@@ -49,7 +49,7 @@ MODULES = {
         [
             "Blade", "App", "BWorld", "Control", "View", "enemies",
             "Entities", "Math", "NetMod", "Person", "Sound",
-            "AnalyticGeometry",
+            "AnalyticGeometry", "Physics",
         ],
         [],
     ),
