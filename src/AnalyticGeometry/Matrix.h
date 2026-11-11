@@ -23,7 +23,7 @@ public:
     void SetScale(double scale);
     void RemoveScale();
     void InvertRigid(B_Matrix &out);
-    B_Matrix *Invert(B_Matrix *outMatrix) const;
+    B_Matrix Invert() const;
 
     double m[4][4];
 };

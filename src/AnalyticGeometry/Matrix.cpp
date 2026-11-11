@@ -332,10 +332,10 @@ void B_Matrix::InvertRigid(B_Matrix &out)
 * Entry point:            0x100043F9
 * Module:                 Blade.exe
 * Entry point:            0x00405BA9
-* VC++ mangling:          ?Invert@B_Matrix@@QBEPAV1@PAV1@@Z
+* VC++ mangling:          ?Invert@B_Matrix@@QBE?AV1@XZ
 */
 
-B_Matrix *B_Matrix::Invert(B_Matrix *outMatrix) const
+B_Matrix B_Matrix::Invert() const
 {
     B_Matrix temp;
     double det =
@@ -368,8 +368,7 @@ B_Matrix *B_Matrix::Invert(B_Matrix *outMatrix) const
     temp.m[3][0] = -translation.x;
     temp.m[3][1] = -translation.y;
     temp.m[3][2] = -translation.z;
-    *outMatrix = temp;
-    return outMatrix;
+    return temp;
 }
 
 

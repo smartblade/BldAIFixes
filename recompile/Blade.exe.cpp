@@ -148,7 +148,7 @@ void B_Matrix::InvertRigid(B_Matrix &out)
 }
 
 // address: 0x00405BA9
-B_Matrix *B_Matrix::Invert(B_Matrix *outMatrix) const
+B_Matrix B_Matrix::Invert() const
 {
     B_Matrix temp;
     double det = this->m[0][0] * this->m[1][1] * this->m[2][2] + this->m[0][1] * this->m[1][2] * this->m[2][0] + this->m[1][0] * this->m[2][1] * this->m[0][2] - this->m[0][2] * this->m[1][1] * this->m[2][0] - this->m[0][1] * this->m[1][0] * this->m[2][2] - this->m[1][2] * this->m[2][1] * this->m[0][0];
@@ -166,8 +166,7 @@ B_Matrix *B_Matrix::Invert(B_Matrix *outMatrix) const
     temp.m[3][0] = -translation.x;
     temp.m[3][1] = -translation.y;
     temp.m[3][2] = -translation.z;
-    *outMatrix = temp;
-    return outMatrix;
+    return temp;
 }
 
 // address: 0x00405F0D
