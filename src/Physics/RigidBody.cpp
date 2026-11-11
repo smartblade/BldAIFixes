@@ -70,7 +70,11 @@ B_PhysicsTemplateBase *B_RigidBody::GetSolid()
 
 int B_RigidBody::unknown_method010()
 {
-    return this->unknownField0D8 - this->unknownField0E0 > 1.0;
+    if (this->unknownField0D8 - this->unknownField0E0 > 1.0)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 
