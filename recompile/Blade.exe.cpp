@@ -20,278 +20,236 @@ B_BoundingBox::B_BoundingBox(const B_Vector &minCoords, const B_Vector &maxCoord
 }
 
 // address: 0x00404CFD
-p00404CFD
+B_Matrix::B_Matrix(double scale)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
-    ACCESS(this, 0, 8) = STACKVAR(8, 8);
-    ACCESS(this, 8, 8) = 0.0;
-    ACCESS(this, 16, 8) = 0.0;
-    ACCESS(this, 24, 8) = 0.0;
-    ACCESS(this, 32, 8) = 0.0;
-    ACCESS(this, 40, 8) = STACKVAR(8, 8);
-    ACCESS(this, 48, 8) = 0.0;
-    ACCESS(this, 56, 8) = 0.0;
-    ACCESS(this, 64, 8) = 0.0;
-    ACCESS(this, 72, 8) = 0.0;
-    ACCESS(this, 80, 8) = STACKVAR(8, 8);
-    ACCESS(this, 88, 8) = 0.0;
-    ACCESS(this, 96, 8) = 0.0;
-    ACCESS(this, 104, 8) = 0.0;
-    ACCESS(this, 112, 8) = 0.0;
-    ACCESS(this, 120, 8) = 1.0;
-    REGDEF(eax=this)
+    DEFINE_MATRIX(
+        scale, 0.0, 0.0, 0.0,
+        0.0, scale, 0.0, 0.0,
+        0.0, 0.0, scale, 0.0,
+        0.0, 0.0, 0.0, 1.0
+    )
 }
 
 // address: 0x00405050
-p00405050
+B_Matrix::B_Matrix(const B_Vector &axis, double angle)
 {
-    ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=12)
-    double c = cos(reinterpret_cast<double>(STACKVAR(12, 8)));
-    double s = sin(reinterpret_cast<double>(STACKVAR(12, 8)));
-    double x = reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 0, 8));
-    double y = reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 8, 8));
-    double z = reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 16, 8));
-    ACCESS(this, 0, 8) = x * x * (1.0 - c) + c;
-    ACCESS(this, 8, 8) = x * y * (1.0 - c) + z * s;
-    ACCESS(this, 16, 8) = x * z * (1.0 - c) - y * s;
-    ACCESS(this, 24, 8) = 0.0;
-    ACCESS(this, 32, 8) = x * y * (1.0 - c) - z * s;
-    ACCESS(this, 40, 8) = y * y + (x * x + z * z) * c;
-    ACCESS(this, 48, 8) = y * z * (1.0 - c) + x * s;
-    ACCESS(this, 56, 8) = 0.0;
-    ACCESS(this, 64, 8) = x * z * (1.0 - c) + y * s;
-    ACCESS(this, 72, 8) = y * z * (1.0 - c) - x * s;
-    ACCESS(this, 80, 8) = z * z * (1.0 - c) + c;
-    ACCESS(this, 88, 8) = 0.0;
-    ACCESS(this, 96, 8) = 0.0;
-    ACCESS(this, 104, 8) = 0.0;
-    ACCESS(this, 112, 8) = 0.0;
-    ACCESS(this, 120, 8) = 1.0;
-    REGDEF(eax=this)
+    double c = cos(angle);
+    double s = sin(angle);
+    double x = axis.x;
+    double y = axis.y;
+    double z = axis.z;
+    DEFINE_MATRIX(
+        x * x * (1.0 - c) + c, x * y * (1.0 - c) + z * s, x * z * (1.0 - c) - y * s, 0.0,
+        x * y * (1.0 - c) - z * s, y * y + (x * x + z * z) * c, y * z * (1.0 - c) + x * s, 0.0,
+        x * z * (1.0 - c) + y * s, y * z * (1.0 - c) - x * s, z * z * (1.0 - c) + c, 0.0,
+        0.0, 0.0, 0.0, 1.0
+    )
 }
 
 // address: 0x00405227
-p00405227
+B_Matrix::B_Matrix(const B_Plane &plane)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 0, 8) = 1.0 - 2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 4, 8));
-    ACCESS(this, 32, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 12, 8));
-    ACCESS(this, 64, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 20, 8));
-    ACCESS(this, 96, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8));
-    ACCESS(this, 8, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 4, 8));
-    ACCESS(this, 40, 8) = 1.0 - 2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 12, 8));
-    ACCESS(this, 72, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 20, 8));
-    ACCESS(this, 104, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8));
-    ACCESS(this, 16, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 4, 8));
-    ACCESS(this, 48, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 12, 8));
-    ACCESS(this, 80, 8) = 1.0 - 2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 20, 8));
-    ACCESS(this, 112, 8) = -2.0 * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8));
-    ACCESS(this, 24, 8) = 0.0;
-    ACCESS(this, 56, 8) = 0.0;
-    ACCESS(this, 88, 8) = 0.0;
-    ACCESS(this, 120, 8) = 1.0;
-    REGDEF(eax=this)
+    this->m[0][0] = 1.0 - 2.0 * plane.normal.x * plane.normal.x;
+    this->m[1][0] = -2.0 * plane.normal.x * plane.normal.y;
+    this->m[2][0] = -2.0 * plane.normal.x * plane.normal.z;
+    this->m[3][0] = -2.0 * plane.normal.x * plane.p;
+    this->m[0][1] = -2.0 * plane.normal.y * plane.normal.x;
+    this->m[1][1] = 1.0 - 2.0 * plane.normal.y * plane.normal.y;
+    this->m[2][1] = -2.0 * plane.normal.y * plane.normal.z;
+    this->m[3][1] = -2.0 * plane.normal.y * plane.p;
+    this->m[0][2] = -2.0 * plane.normal.z * plane.normal.x;
+    this->m[1][2] = -2.0 * plane.normal.z * plane.normal.y;
+    this->m[2][2] = 1.0 - 2.0 * plane.normal.z * plane.normal.z;
+    this->m[3][2] = -2.0 * plane.normal.z * plane.p;
+    this->m[0][3] = 0.0;
+    this->m[1][3] = 0.0;
+    this->m[2][3] = 0.0;
+    this->m[3][3] = 1.0;
 }
 
 // address: 0x0040578A
-p0040578A
+void B_Matrix::SetOrigin(const B_Vector *origin)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 96, 8) = ACCESS(STACKVAR(8, 4), 0, 8);
-    ACCESS(this, 104, 8) = ACCESS(STACKVAR(8, 4), 8, 8);
-    ACCESS(this, 112, 8) = ACCESS(STACKVAR(8, 4), 16, 8);
+    this->m[3][0] = origin->x;
+    this->m[3][1] = origin->y;
+    this->m[3][2] = origin->z;
 }
 
 // address: 0x004057CC
-p004057CC
+double B_Matrix::ScaleX() const
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(ST(0)=sqrt(reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(this, 0, 8)) + reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 8, 8)) + reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(this, 16, 8))))
+    return sqrt(this->m[0][0] * this->m[0][0] + this->m[0][1] * this->m[0][1] + this->m[0][2] * this->m[0][2]);
 }
 
 // address: 0x00405802
-p00405802
+double B_Matrix::ScaleY() const
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(ST(0)=sqrt(reinterpret_cast<double>(ACCESS(this, 32, 8)) * reinterpret_cast<double>(ACCESS(this, 32, 8)) + reinterpret_cast<double>(ACCESS(this, 40, 8)) * reinterpret_cast<double>(ACCESS(this, 40, 8)) + reinterpret_cast<double>(ACCESS(this, 48, 8)) * reinterpret_cast<double>(ACCESS(this, 48, 8))))
+    return sqrt(this->m[1][0] * this->m[1][0] + this->m[1][1] * this->m[1][1] + this->m[1][2] * this->m[1][2]);
 }
 
 // address: 0x0040583A
-p0040583A
+double B_Matrix::ScaleZ() const
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(ST(0)=sqrt(reinterpret_cast<double>(ACCESS(this, 64, 8)) * reinterpret_cast<double>(ACCESS(this, 64, 8)) + reinterpret_cast<double>(ACCESS(this, 72, 8)) * reinterpret_cast<double>(ACCESS(this, 72, 8)) + reinterpret_cast<double>(ACCESS(this, 80, 8)) * reinterpret_cast<double>(ACCESS(this, 80, 8))))
+    return sqrt(this->m[2][0] * this->m[2][0] + this->m[2][1] * this->m[2][1] + this->m[2][2] * this->m[2][2]);
 }
 
 // address: 0x00405872
-p00405872
+void B_Matrix::SetScale(double scale)
 {
-    ProcedureInfo(this=Id(this), this_offset=-52, local_size=52, stack_delta=8)
-    double lenX = this->unknown_method_004057CC();
-    double lenY = this->unknown_method_00405802();
-    double lenZ = this->unknown_method_0040583A();
-    double kX = reinterpret_cast<double>(STACKVAR(8, 8)) / lenX;
-    double kY = reinterpret_cast<double>(STACKVAR(8, 8)) / lenY;
-    double kZ = reinterpret_cast<double>(STACKVAR(8, 8)) / lenZ;
-    ACCESS(this, 0, 8) = kX * reinterpret_cast<double>(ACCESS(this, 0, 8));
-    ACCESS(this, 8, 8) = kX * reinterpret_cast<double>(ACCESS(this, 8, 8));
-    ACCESS(this, 16, 8) = kX * reinterpret_cast<double>(ACCESS(this, 16, 8));
-    ACCESS(this, 32, 8) = kY * reinterpret_cast<double>(ACCESS(this, 32, 8));
-    ACCESS(this, 40, 8) = kY * reinterpret_cast<double>(ACCESS(this, 40, 8));
-    ACCESS(this, 48, 8) = kY * reinterpret_cast<double>(ACCESS(this, 48, 8));
-    ACCESS(this, 64, 8) = kZ * reinterpret_cast<double>(ACCESS(this, 64, 8));
-    ACCESS(this, 72, 8) = kZ * reinterpret_cast<double>(ACCESS(this, 72, 8));
-    ACCESS(this, 80, 8) = kZ * reinterpret_cast<double>(ACCESS(this, 80, 8));
+    double lenX = this->ScaleX();
+    double lenY = this->ScaleY();
+    double lenZ = this->ScaleZ();
+    double kX = scale / lenX;
+    double kY = scale / lenY;
+    double kZ = scale / lenZ;
+    this->m[0][0] = kX * this->m[0][0];
+    this->m[0][1] = kX * this->m[0][1];
+    this->m[0][2] = kX * this->m[0][2];
+    this->m[1][0] = kY * this->m[1][0];
+    this->m[1][1] = kY * this->m[1][1];
+    this->m[1][2] = kY * this->m[1][2];
+    this->m[2][0] = kZ * this->m[2][0];
+    this->m[2][1] = kZ * this->m[2][1];
+    this->m[2][2] = kZ * this->m[2][2];
 }
 
 // address: 0x004059EF
-p004059EF
+void B_Matrix::RemoveScale()
 {
-    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=0)
-    double lenX = this->unknown_method_004057CC();
-    double lenY = this->unknown_method_00405802();
-    double lenZ = this->unknown_method_0040583A();
-    ACCESS(this, 0, 8) = reinterpret_cast<double>(ACCESS(this, 0, 8)) / lenX;
-    ACCESS(this, 8, 8) = reinterpret_cast<double>(ACCESS(this, 8, 8)) / lenX;
-    ACCESS(this, 16, 8) = reinterpret_cast<double>(ACCESS(this, 16, 8)) / lenX;
-    ACCESS(this, 32, 8) = reinterpret_cast<double>(ACCESS(this, 32, 8)) / lenY;
-    ACCESS(this, 40, 8) = reinterpret_cast<double>(ACCESS(this, 40, 8)) / lenY;
-    ACCESS(this, 48, 8) = reinterpret_cast<double>(ACCESS(this, 48, 8)) / lenY;
-    ACCESS(this, 64, 8) = reinterpret_cast<double>(ACCESS(this, 64, 8)) / lenZ;
-    ACCESS(this, 72, 8) = reinterpret_cast<double>(ACCESS(this, 72, 8)) / lenZ;
-    ACCESS(this, 80, 8) = reinterpret_cast<double>(ACCESS(this, 80, 8)) / lenZ;
+    double lenX = this->ScaleX();
+    double lenY = this->ScaleY();
+    double lenZ = this->ScaleZ();
+    this->m[0][0] /= lenX;
+    this->m[0][1] /= lenX;
+    this->m[0][2] /= lenX;
+    this->m[1][0] /= lenY;
+    this->m[1][1] /= lenY;
+    this->m[1][2] /= lenY;
+    this->m[2][0] /= lenZ;
+    this->m[2][1] /= lenZ;
+    this->m[2][2] /= lenZ;
 }
 
 // address: 0x00405AA2
-p00405AA2
+void B_Matrix::InvertRigid(B_Matrix &out)
 {
-    ProcedureInfo(this=Id(this), this_offset=-84, local_size=84, stack_delta=4)
     for (unsigned int i = 0; i < 3; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
         {
-            ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 32 * i, 8, j, 0), 0, 8) = ACCESS(ARRPTR(&static_cast<char *>(this)[32 * j], 8, i, 0), 0, 8);
+            out.m[i][j] = this->m[j][i];
         }
     }
-    B_Vector translation(reinterpret_cast<double>(ACCESS(this, 96, 8)), reinterpret_cast<double>(ACCESS(this, 104, 8)), reinterpret_cast<double>(ACCESS(this, 112, 8)));
-    translation = Rotate(translation, reinterpret_cast<B_Matrix &>(STACKVAR(8, 4)));
-    ACCESS(STACKVAR(8, 4), 96, 8) = -translation.x;
-    ACCESS(STACKVAR(8, 4), 104, 8) = -translation.y;
-    ACCESS(STACKVAR(8, 4), 112, 8) = -translation.z;
+    B_Vector translation(this->m[3][0], this->m[3][1], this->m[3][2]);
+    translation = Rotate(translation, out);
+    out.m[3][0] = -translation.x;
+    out.m[3][1] = -translation.y;
+    out.m[3][2] = -translation.z;
 }
 
 // address: 0x00405BA9
-p00405BA9
+B_Matrix B_Matrix::Invert() const
 {
-    ProcedureInfo(this=Id(this), this_offset=-212, local_size=212, stack_delta=4)
     B_Matrix temp;
-    double det = reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(this, 40, 8)) * reinterpret_cast<double>(ACCESS(this, 80, 8)) + reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 48, 8)) * reinterpret_cast<double>(ACCESS(this, 64, 8)) + reinterpret_cast<double>(ACCESS(this, 32, 8)) * reinterpret_cast<double>(ACCESS(this, 72, 8)) * reinterpret_cast<double>(ACCESS(this, 16, 8)) - reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(this, 40, 8)) * reinterpret_cast<double>(ACCESS(this, 64, 8)) - reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 32, 8)) * reinterpret_cast<double>(ACCESS(this, 80, 8)) - reinterpret_cast<double>(ACCESS(this, 48, 8)) * reinterpret_cast<double>(ACCESS(this, 72, 8)) * reinterpret_cast<double>(ACCESS(this, 0, 8));
-    temp.m[0][0] = (reinterpret_cast<double>(ACCESS(this, 40, 8)) * reinterpret_cast<double>(ACCESS(this, 80, 8)) - reinterpret_cast<double>(ACCESS(this, 48, 8)) * reinterpret_cast<double>(ACCESS(this, 72, 8))) / det;
-    temp.m[1][0] = -(reinterpret_cast<double>(ACCESS(this, 32, 8)) * reinterpret_cast<double>(ACCESS(this, 80, 8)) - reinterpret_cast<double>(ACCESS(this, 48, 8)) * reinterpret_cast<double>(ACCESS(this, 64, 8))) / det;
-    temp.m[2][0] = (reinterpret_cast<double>(ACCESS(this, 32, 8)) * reinterpret_cast<double>(ACCESS(this, 72, 8)) - reinterpret_cast<double>(ACCESS(this, 40, 8)) * reinterpret_cast<double>(ACCESS(this, 64, 8))) / det;
-    temp.m[0][1] = -(reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 80, 8)) - reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(this, 72, 8))) / det;
-    temp.m[1][1] = (reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(this, 80, 8)) - reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(this, 64, 8))) / det;
-    temp.m[2][1] = -(reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(this, 72, 8)) - reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 64, 8))) / det;
-    temp.m[0][2] = (reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 48, 8)) - reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(this, 40, 8))) / det;
-    temp.m[1][2] = -(reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(this, 48, 8)) - reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(this, 32, 8))) / det;
-    temp.m[2][2] = (reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(this, 40, 8)) - reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 32, 8))) / det;
-    B_Vector translation(reinterpret_cast<double>(ACCESS(this, 96, 8)), reinterpret_cast<double>(ACCESS(this, 104, 8)), reinterpret_cast<double>(ACCESS(this, 112, 8)));
+    double det = this->m[0][0] * this->m[1][1] * this->m[2][2] + this->m[0][1] * this->m[1][2] * this->m[2][0] + this->m[1][0] * this->m[2][1] * this->m[0][2] - this->m[0][2] * this->m[1][1] * this->m[2][0] - this->m[0][1] * this->m[1][0] * this->m[2][2] - this->m[1][2] * this->m[2][1] * this->m[0][0];
+    temp.m[0][0] = (this->m[1][1] * this->m[2][2] - this->m[1][2] * this->m[2][1]) / det;
+    temp.m[1][0] = -(this->m[1][0] * this->m[2][2] - this->m[1][2] * this->m[2][0]) / det;
+    temp.m[2][0] = (this->m[1][0] * this->m[2][1] - this->m[1][1] * this->m[2][0]) / det;
+    temp.m[0][1] = -(this->m[0][1] * this->m[2][2] - this->m[0][2] * this->m[2][1]) / det;
+    temp.m[1][1] = (this->m[0][0] * this->m[2][2] - this->m[0][2] * this->m[2][0]) / det;
+    temp.m[2][1] = -(this->m[0][0] * this->m[2][1] - this->m[0][1] * this->m[2][0]) / det;
+    temp.m[0][2] = (this->m[0][1] * this->m[1][2] - this->m[0][2] * this->m[1][1]) / det;
+    temp.m[1][2] = -(this->m[0][0] * this->m[1][2] - this->m[0][2] * this->m[1][0]) / det;
+    temp.m[2][2] = (this->m[0][0] * this->m[1][1] - this->m[0][1] * this->m[1][0]) / det;
+    B_Vector translation(this->m[3][0], this->m[3][1], this->m[3][2]);
     translation = Rotate(translation, temp);
     temp.m[3][0] = -translation.x;
     temp.m[3][1] = -translation.y;
     temp.m[3][2] = -translation.z;
-    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), &temp, 128);
-    REGDEF(eax=STACKVAR(8, 4))
+    return temp;
 }
 
 // address: 0x00405F0D
-p00405F0D
+int operator ==(const B_Matrix &a, const B_Matrix &b)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            if (fabs(reinterpret_cast<double>(ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 32 * i, 8, j, 0), 0, 8)) - reinterpret_cast<double>(ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 32 * i, 8, j, 0), 0, 8))) > 0.001)
+            if (fabs(a.m[i][j] - b.m[i][j]) > 0.001)
             {
-                REGDEF(eax=0x00000000)
-                return;
+                return 0;
             }
         }
     }
-    REGDEF(eax=0x00000001)
+    return 1;
 }
 
 // address: 0x00405F87
-p00405F87
+B_Matrix operator *(const B_Matrix &a, const B_Matrix &b)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=128, stack_delta=0)
     B_Matrix result;
-    result.m[0][0] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    result.m[0][1] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    result.m[0][2] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
-    result.m[0][3] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    result.m[1][0] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    result.m[1][1] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    result.m[1][2] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
-    result.m[1][3] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    result.m[2][0] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    result.m[2][1] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    result.m[2][2] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
-    result.m[2][3] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    result.m[3][0] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    result.m[3][1] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    result.m[3][2] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
-    result.m[3][3] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), &result, 128);
-    REGDEF(eax=STACKVAR(8, 4))
+    result.m[0][0] = a.m[0][0] * b.m[0][0] + a.m[0][1] * b.m[1][0] + a.m[0][2] * b.m[2][0] + a.m[0][3] * b.m[3][0];
+    result.m[0][1] = a.m[0][0] * b.m[0][1] + a.m[0][1] * b.m[1][1] + a.m[0][2] * b.m[2][1] + a.m[0][3] * b.m[3][1];
+    result.m[0][2] = a.m[0][0] * b.m[0][2] + a.m[0][1] * b.m[1][2] + a.m[0][2] * b.m[2][2] + a.m[0][3] * b.m[3][2];
+    result.m[0][3] = a.m[0][0] * b.m[0][3] + a.m[0][1] * b.m[1][3] + a.m[0][2] * b.m[2][3] + a.m[0][3] * b.m[3][3];
+    result.m[1][0] = a.m[1][0] * b.m[0][0] + a.m[1][1] * b.m[1][0] + a.m[1][2] * b.m[2][0] + a.m[1][3] * b.m[3][0];
+    result.m[1][1] = a.m[1][0] * b.m[0][1] + a.m[1][1] * b.m[1][1] + a.m[1][2] * b.m[2][1] + a.m[1][3] * b.m[3][1];
+    result.m[1][2] = a.m[1][0] * b.m[0][2] + a.m[1][1] * b.m[1][2] + a.m[1][2] * b.m[2][2] + a.m[1][3] * b.m[3][2];
+    result.m[1][3] = a.m[1][0] * b.m[0][3] + a.m[1][1] * b.m[1][3] + a.m[1][2] * b.m[2][3] + a.m[1][3] * b.m[3][3];
+    result.m[2][0] = a.m[2][0] * b.m[0][0] + a.m[2][1] * b.m[1][0] + a.m[2][2] * b.m[2][0] + a.m[2][3] * b.m[3][0];
+    result.m[2][1] = a.m[2][0] * b.m[0][1] + a.m[2][1] * b.m[1][1] + a.m[2][2] * b.m[2][1] + a.m[2][3] * b.m[3][1];
+    result.m[2][2] = a.m[2][0] * b.m[0][2] + a.m[2][1] * b.m[1][2] + a.m[2][2] * b.m[2][2] + a.m[2][3] * b.m[3][2];
+    result.m[2][3] = a.m[2][0] * b.m[0][3] + a.m[2][1] * b.m[1][3] + a.m[2][2] * b.m[2][3] + a.m[2][3] * b.m[3][3];
+    result.m[3][0] = a.m[3][0] * b.m[0][0] + a.m[3][1] * b.m[1][0] + a.m[3][2] * b.m[2][0] + a.m[3][3] * b.m[3][0];
+    result.m[3][1] = a.m[3][0] * b.m[0][1] + a.m[3][1] * b.m[1][1] + a.m[3][2] * b.m[2][1] + a.m[3][3] * b.m[3][1];
+    result.m[3][2] = a.m[3][0] * b.m[0][2] + a.m[3][1] * b.m[1][2] + a.m[3][2] * b.m[2][2] + a.m[3][3] * b.m[3][2];
+    result.m[3][3] = a.m[3][0] * b.m[0][3] + a.m[3][1] * b.m[1][3] + a.m[3][2] * b.m[2][3] + a.m[3][3] * b.m[3][3];
+    return result;
 }
 
 // address: 0x00406338
-p00406338
+B_Matrix MulRot_406338(const B_Matrix &a, const B_Matrix &b)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=128, stack_delta=0)
     B_Matrix result;
-    result.m[0][0] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8));
-    result.m[0][1] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8));
-    result.m[0][2] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8));
-    result.m[0][3] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8));
-    result.m[1][0] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8));
-    result.m[1][1] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8));
-    result.m[1][2] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8));
-    result.m[1][3] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8));
-    result.m[2][0] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8));
-    result.m[2][1] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8));
-    result.m[2][2] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8));
-    result.m[2][3] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8));
-    result.m[3][0] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8));
-    result.m[3][1] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8));
-    result.m[3][2] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8));
-    result.m[3][3] = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8));
-    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), &result, 128);
-    REGDEF(eax=STACKVAR(8, 4))
+    result.m[0][0] = a.m[0][0] * b.m[0][0] + a.m[0][1] * b.m[1][0] + a.m[0][2] * b.m[2][0];
+    result.m[0][1] = a.m[0][0] * b.m[0][1] + a.m[0][1] * b.m[1][1] + a.m[0][2] * b.m[2][1];
+    result.m[0][2] = a.m[0][0] * b.m[0][2] + a.m[0][1] * b.m[1][2] + a.m[0][2] * b.m[2][2];
+    result.m[0][3] = a.m[0][3];
+    result.m[1][0] = a.m[1][0] * b.m[0][0] + a.m[1][1] * b.m[1][0] + a.m[1][2] * b.m[2][0];
+    result.m[1][1] = a.m[1][0] * b.m[0][1] + a.m[1][1] * b.m[1][1] + a.m[1][2] * b.m[2][1];
+    result.m[1][2] = a.m[1][0] * b.m[0][2] + a.m[1][1] * b.m[1][2] + a.m[1][2] * b.m[2][2];
+    result.m[1][3] = a.m[1][3];
+    result.m[2][0] = a.m[2][0] * b.m[0][0] + a.m[2][1] * b.m[1][0] + a.m[2][2] * b.m[2][0];
+    result.m[2][1] = a.m[2][0] * b.m[0][1] + a.m[2][1] * b.m[1][1] + a.m[2][2] * b.m[2][1];
+    result.m[2][2] = a.m[2][0] * b.m[0][2] + a.m[2][1] * b.m[1][2] + a.m[2][2] * b.m[2][2];
+    result.m[2][3] = a.m[2][3];
+    result.m[3][0] = a.m[3][0];
+    result.m[3][1] = a.m[3][1];
+    result.m[3][2] = a.m[3][2];
+    result.m[3][3] = a.m[3][3];
+    return result;
 }
 
 // address: 0x00406547
-p00406547
+void MatrixMultiply(B_Matrix *out, const B_Matrix *a, const B_Matrix *b)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    ACCESS(STACKVAR(8, 4), 0, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    ACCESS(STACKVAR(8, 4), 8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    ACCESS(STACKVAR(8, 4), 16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
-    ACCESS(STACKVAR(8, 4), 24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    ACCESS(STACKVAR(8, 4), 32, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    ACCESS(STACKVAR(8, 4), 40, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    ACCESS(STACKVAR(8, 4), 48, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
-    ACCESS(STACKVAR(8, 4), 56, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    ACCESS(STACKVAR(8, 4), 64, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    ACCESS(STACKVAR(8, 4), 72, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    ACCESS(STACKVAR(8, 4), 80, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
-    ACCESS(STACKVAR(8, 4), 88, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    ACCESS(STACKVAR(8, 4), 96, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    ACCESS(STACKVAR(8, 4), 104, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    ACCESS(STACKVAR(8, 4), 112, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
-    ACCESS(STACKVAR(8, 4), 120, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
+    out->m[0][0] = a->m[0][0] * b->m[0][0] + a->m[0][1] * b->m[1][0] + a->m[0][2] * b->m[2][0] + a->m[0][3] * b->m[3][0];
+    out->m[0][1] = a->m[0][0] * b->m[0][1] + a->m[0][1] * b->m[1][1] + a->m[0][2] * b->m[2][1] + a->m[0][3] * b->m[3][1];
+    out->m[0][2] = a->m[0][0] * b->m[0][2] + a->m[0][1] * b->m[1][2] + a->m[0][2] * b->m[2][2] + a->m[0][3] * b->m[3][2];
+    out->m[0][3] = a->m[0][0] * b->m[0][3] + a->m[0][1] * b->m[1][3] + a->m[0][2] * b->m[2][3] + a->m[0][3] * b->m[3][3];
+    out->m[1][0] = a->m[1][0] * b->m[0][0] + a->m[1][1] * b->m[1][0] + a->m[1][2] * b->m[2][0] + a->m[1][3] * b->m[3][0];
+    out->m[1][1] = a->m[1][0] * b->m[0][1] + a->m[1][1] * b->m[1][1] + a->m[1][2] * b->m[2][1] + a->m[1][3] * b->m[3][1];
+    out->m[1][2] = a->m[1][0] * b->m[0][2] + a->m[1][1] * b->m[1][2] + a->m[1][2] * b->m[2][2] + a->m[1][3] * b->m[3][2];
+    out->m[1][3] = a->m[1][0] * b->m[0][3] + a->m[1][1] * b->m[1][3] + a->m[1][2] * b->m[2][3] + a->m[1][3] * b->m[3][3];
+    out->m[2][0] = a->m[2][0] * b->m[0][0] + a->m[2][1] * b->m[1][0] + a->m[2][2] * b->m[2][0] + a->m[2][3] * b->m[3][0];
+    out->m[2][1] = a->m[2][0] * b->m[0][1] + a->m[2][1] * b->m[1][1] + a->m[2][2] * b->m[2][1] + a->m[2][3] * b->m[3][1];
+    out->m[2][2] = a->m[2][0] * b->m[0][2] + a->m[2][1] * b->m[1][2] + a->m[2][2] * b->m[2][2] + a->m[2][3] * b->m[3][2];
+    out->m[2][3] = a->m[2][0] * b->m[0][3] + a->m[2][1] * b->m[1][3] + a->m[2][2] * b->m[2][3] + a->m[2][3] * b->m[3][3];
+    out->m[3][0] = a->m[3][0] * b->m[0][0] + a->m[3][1] * b->m[1][0] + a->m[3][2] * b->m[2][0] + a->m[3][3] * b->m[3][0];
+    out->m[3][1] = a->m[3][0] * b->m[0][1] + a->m[3][1] * b->m[1][1] + a->m[3][2] * b->m[2][1] + a->m[3][3] * b->m[3][1];
+    out->m[3][2] = a->m[3][0] * b->m[0][2] + a->m[3][1] * b->m[1][2] + a->m[3][2] * b->m[2][2] + a->m[3][3] * b->m[3][2];
+    out->m[3][3] = a->m[3][0] * b->m[0][3] + a->m[3][1] * b->m[1][3] + a->m[3][2] * b->m[2][3] + a->m[3][3] * b->m[3][3];
 }
 
 // address: 0x00406903
@@ -301,21 +259,19 @@ B_Vector operator *(const B_Vector &vector, const B_Matrix &matrix)
 }
 
 // address: 0x004069CB
-p004069CB
+void TransformPoint(B_Vector &out, const B_Vector &v, const B_Matrix &matrix)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    ACCESS(STACKVAR(8, 4), 0, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    ACCESS(STACKVAR(8, 4), 8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
-    ACCESS(STACKVAR(8, 4), 16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
+    out.x = v.x * matrix.m[0][0] + v.y * matrix.m[1][0] + v.z * matrix.m[2][0] + matrix.m[3][0];
+    out.y = v.x * matrix.m[0][1] + v.y * matrix.m[1][1] + v.z * matrix.m[2][1] + matrix.m[3][1];
+    out.z = v.x * matrix.m[0][2] + v.y * matrix.m[1][2] + v.z * matrix.m[2][2] + matrix.m[3][2];
 }
 
 // address: 0x00406A67
-p00406A67
+void Rotate(B_Vector &out, const B_Vector &v, const B_Matrix &rotateMatrix)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    ACCESS(STACKVAR(8, 4), 0, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8));
-    ACCESS(STACKVAR(8, 4), 8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8));
-    ACCESS(STACKVAR(8, 4), 16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8));
+    out.x = v.x * rotateMatrix.m[0][0] + v.y * rotateMatrix.m[1][0] + v.z * rotateMatrix.m[2][0];
+    out.y = v.x * rotateMatrix.m[0][1] + v.y * rotateMatrix.m[1][1] + v.z * rotateMatrix.m[2][1];
+    out.z = v.x * rotateMatrix.m[0][2] + v.y * rotateMatrix.m[1][2] + v.z * rotateMatrix.m[2][2];
 }
 
 // address: 0x00406AF1
@@ -325,29 +281,26 @@ B_Vector Rotate(const B_Vector &v, const B_Matrix &rotateMatrix)
 }
 
 // address: 0x00406BA7
-p00406BA7
+void TransformPlane(B_Plane &out, const B_Plane &in, const B_Matrix &matrix)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    ACCESS(STACKVAR(8, 4), 4, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8));
-    ACCESS(STACKVAR(8, 4), 12, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8));
-    ACCESS(STACKVAR(8, 4), 20, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8));
-    ACCESS(STACKVAR(8, 4), 28, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
+    out.normal.x = in.normal.x * matrix.m[0][0] + in.normal.y * matrix.m[1][0] + in.normal.z * matrix.m[2][0];
+    out.normal.y = in.normal.x * matrix.m[0][1] + in.normal.y * matrix.m[1][1] + in.normal.z * matrix.m[2][1];
+    out.normal.z = in.normal.x * matrix.m[0][2] + in.normal.y * matrix.m[1][2] + in.normal.z * matrix.m[2][2];
+    out.p = in.p - out.normal.x * matrix.m[3][0] - out.normal.y * matrix.m[3][1] - out.normal.z * matrix.m[3][2];
 }
 
 // address: 0x00406C69
-p00406C69
+B_IDataFile &operator >>(B_IDataFile &file, B_Matrix &matrix)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 128);
-    REGDEF(eax=STACKVAR(8, 4))
+    file.Read(&matrix, sizeof(B_Matrix));
+    return file;
 }
 
 // address: 0x00406C83
-p00406C83
+B_ODataFile &operator <<(B_ODataFile &file, const B_Matrix &matrix)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 128);
-    REGDEF(eax=STACKVAR(8, 4))
+    file.Write(&matrix, sizeof(B_Matrix));
+    return file;
 }
 
 // address: 0x0040A5D0
@@ -833,7 +786,7 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
         for (j = 0; j < current_sector->size; j++)
         {
             B_Surface *current_surface = current_sector->elements[j];
-            distance = current_surface->Distance(sphere);
+            distance = current_surface->Distance(&sphere->center);
             if (distance < -sphere->radius)
             {
                 j = current_sector->size + 1;
@@ -877,19 +830,16 @@ B_SectorSurfaceCache::~B_SectorSurfaceCache()
 }
 
 // address: 0x004534A4
-p004534A4
+int B_SectorSurfaceCache::IsPointInside(const B_Vector *point)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=4)
-    for (unsigned int i = 0; i < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)); i++)
+    for (unsigned int i = 0; i < this->numSurfaces; i++)
     {
-        STACKVAR(-8, 4) = ACCESS(ARRPTR(this, 4, i, 12), 0, 4);
-        if (STACKVAR(-8, 4)->Distance(STACKVAR(8, 4)) < 0.0)
+        if (this->surfaces[i]->Distance(point) < 0.0)
         {
-            REGDEF(eax=0x00000000)
-            return;
+            return 0;
         }
     }
-    REGDEF(eax=0x00000001)
+    return 1;
 }
 
 // address: 0x004539A9
@@ -900,7 +850,7 @@ B_GlobalSurfaceCache::B_GlobalSurfaceCache()
 }
 
 // address: 0x00453AC0
-// p00453AC0: scalar deleting destructor
+// B_OctantNodeBase: scalar deleting destructor
 
 // address: 0x004AB1FD
 void B_RigidBody::RemoveFromWorld()
@@ -999,3 +949,12 @@ void B_PhysicBody::PutToWorld()
 {
     this->entity->PutToWorld();
 }
+
+class B_OctantNodeBase
+{
+    // address: inline
+    virtual ~B_OctantNodeBase()
+    {
+        gbl_node_count--;
+    }
+};
