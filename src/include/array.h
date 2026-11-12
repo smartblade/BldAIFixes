@@ -124,7 +124,7 @@ public:
         }
     }
 
-    B_Array(int increment = 16, int deleteItems = true)
+    B_Array(unsigned int increment = 16, int deleteItems = true)
     :
         elements(NULL),
         size(0),
@@ -273,7 +273,7 @@ public:
 
     TYPE **elements;
     unsigned int size;
-    int increment;
+    unsigned int increment;
     unsigned int num_alloc;
     int deleteItems;
 };
@@ -323,7 +323,7 @@ public:
         }
     }
 
-    B_SharedPtrArray(int increment = 16)
+    B_SharedPtrArray(unsigned int increment = 16)
         :
     B_Array<TYPE>(increment)
     {
