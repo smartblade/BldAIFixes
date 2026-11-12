@@ -1,11 +1,16 @@
+from cpp_mangling import mangle_cpp
 from hex_conversion import to_hex
 from writer import Writer
 
 
 def make_metadata_header(
-    procedure, is_inline, module_name, exported_procedures
+    procedure, is_inline, module_name, exported_procedures,
+    is_virtual_stub=False
 ):
     mangling = exported_procedures.get(procedure.address)
+    if mangling is None and is_virtual_stub:
+        # Virtual methods missing in sources have no known mangled names
+        mangling = mangle_cpp(procedure.proc_decl)
     hex_addr = to_hex(procedure.address)
     lines = [
         "/*",

@@ -48,7 +48,7 @@ class _CppDemangler:
         if not self._try_pop_char("?"):
             return None
         method_class, proc_name, operator = self._pop_procedure_qualified_name()
-        is_method, is_static, is_virtual, modifier = self._pop_modifier()
+        is_method, is_static, is_virtual, access = self._pop_modifier()
         is_const = False
         if is_method and not is_static:
             is_const = self._pop_const_modifier() == "const"
@@ -76,7 +76,7 @@ class _CppDemangler:
         return ProcedureDeclaration(
             proc_name, calling_convention, method_class, parameters,
             return_type, is_static=is_static, is_virtual=is_virtual,
-            is_vararg=is_vararg, is_const=is_const)
+            is_vararg=is_vararg, is_const=is_const, access=access or "public")
 
     def parse_variable(self):
         if not self._try_pop_char("?"):
@@ -201,7 +201,9 @@ class _CppDemangler:
         return data_type
 
     def _pop_struct_type(self, arg_types):
-        return self._pop_class_type(arg_types)
+        struct_type = self._pop_class_type(arg_types)
+        struct_type.set_struct()
+        return struct_type
 
     def _pop_class_type(self, arg_types):
         (class_name,) = self._pop_qualified_identifier()

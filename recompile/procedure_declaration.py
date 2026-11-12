@@ -14,6 +14,7 @@ class ProcedureDeclaration:
     def __init__(
         self, proc_name, convention, method_class, parameters, return_arg,
         is_static=False, is_virtual=False, is_vararg=False, is_const=False,
+        access="public",
     ):
         self._proc_name = proc_name
         self._convention = convention
@@ -24,6 +25,7 @@ class ProcedureDeclaration:
         self._is_virtual = is_virtual
         self._is_vararg = is_vararg
         self._is_const = is_const
+        self._access = access
         self._operator = self._get_operator()
         self._is_default_constructor_closure = (
             proc_name == "default constructor closure"
@@ -46,6 +48,7 @@ class ProcedureDeclaration:
             is_virtual=self._is_virtual,
             is_vararg=self._is_vararg,
             is_const=self._is_const,
+            access=self._access,
         )
 
 
@@ -66,6 +69,17 @@ class ProcedureDeclaration:
         if self._return_arg is None and self.is_constructor:
             return data_types.Reference(self.method_class)
         return self._return_arg
+
+    @property
+    def parameters(self):
+        return list(self._parameters)
+
+    @property
+    def access(self):
+        return self._access
+
+    def set_access(self, access):
+        self._access = access
 
     @property
     def is_static(self):

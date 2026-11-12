@@ -19,6 +19,11 @@ class ClassType(DataType):
         # Parents of multiple inheritance after the first one: (offset, type)
         self._other_parents = []
         self._parent = None
+        # Classes declared with 'struct' are mangled differently
+        self._is_struct = False
+        # Name of the class template and its arguments of an instance
+        self._template_name = None
+        self._template_arguments = None
         self._fields_sorted = True
         self._sorted_offsets = None
         # Type of the parameter of class template
@@ -32,6 +37,25 @@ class ClassType(DataType):
     @property
     def class_name(self):
         return self._class_name
+
+    @property
+    def is_struct(self):
+        return self._is_struct
+
+    def set_struct(self):
+        self._is_struct = True
+
+    @property
+    def template_name(self):
+        return self._template_name
+
+    @property
+    def template_arguments(self):
+        return self._template_arguments
+
+    def set_template_arguments(self, template_name, arguments):
+        self._template_name = template_name
+        self._template_arguments = list(arguments)
 
     def rename(self, new_name):
         return self.__class__(new_name, self._fields)

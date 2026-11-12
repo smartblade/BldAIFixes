@@ -21,6 +21,7 @@ preprocessor_regexp = re.compile(
 comment_regexp = re.compile(r'^(?P<line>.*)//')
 comment_start_regexp = re.compile(r'^(?P<line>.*)/\*(?P<tail>.*)$')
 comment_end_regexp = re.compile(r'\*/(?P<line>.*)$')
+access_regexp = re.compile(r'\b(?P<access>public|protected|private)\s*:')
 class_regexp = re.compile(
     r'^(class|struct)\s+(LIB_EXP\s+)?(?P<class>\w+)(?P<semicolon>;)?'
     r'(\s*:\s*public\s*(?P<parent>\w+(\s*<\s*\w+\s*>)?)'
@@ -130,6 +131,8 @@ class HeaderState:
                 if not is_forward:
                     class_type = self._declared_types[class_name]
                     class_type.template_param = self._template_param
+                    if match.group(1) == "struct":
+                        class_type.set_struct()
                 self._template_param = None
                 if is_forward:
                     fields = None
@@ -170,10 +173,18 @@ class HeaderState:
     ):
         offset = parent_size
         has_virtual_methods = False
+        class_type = self._declared_types[class_name]
+        access = "public" if class_type.is_struct else "private"
         for field_definition in re.split(r'[{};]', definition):
+            for match in access_regexp.finditer(field_definition):
+                access = match.group("access")
             decl = self._parse_definition(class_name, field_definition)
             if decl is None:
                 continue
+            if isinstance(decl, (_Constructor, _OtherMethod)):
+                decl.proc_decl.set_access(access)
+            elif isinstance(decl, ProcedureDeclaration):
+                decl.set_access(access)
             if isinstance(decl, _Constructor):
                 self._declared_types[class_name].add_constructor(
                     decl.proc_decl, decl.default_values)
