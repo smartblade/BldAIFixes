@@ -356,18 +356,18 @@ B_OctantNodeBase *BuildNode(
 
 void B_OctTree::Build(const B_Map &map, double minNodeSize)
 {
-    if (this->m_root != nullptr)
-    {
-        delete this->m_root;
-    }
-    this->m_halfSize = 0.0;
-    B_BoundingBox worldBB;
     double max_x;
     double min_x;
     double max_y;
     double min_y;
     double max_z;
     double min_z;
+    if (this->m_root != nullptr)
+    {
+        delete this->m_root;
+    }
+    this->m_halfSize = 0.0;
+    B_BoundingBox worldBB;
     if (gbl_world_points.points.size != 0)
     {
         max_x = gbl_world_points.points[0].v.x;
@@ -1029,7 +1029,7 @@ int B_OctTreeSectorsList::BuildSurfaceCache(
         {
             B_Surface *current_surface = current_sector->elements[j];
             distance = current_surface->Distance(&sphere->center);
-            if (-sphere->radius > distance)
+            if (distance < -sphere->radius)
             {
                 j = current_sector->size + 1;
             }
