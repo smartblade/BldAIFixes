@@ -45,7 +45,6 @@ void B_BoundingBox::CollectIntersectingSectors(const B_Array<B_Sector> &sectors,
             outBuffer.Append(sectors.elements[i]);
         }
     }
-
 }
 
 
@@ -195,9 +194,9 @@ B_OctTree::B_OctTree()
 * VC++ mangling:          ??0B_OctTree@@QAE@ABVB_Map@@N@Z
 */
 
-B_OctTree::B_OctTree(const B_Map &map, double minNodeSize) 
-: 
-    m_halfSize(0.0), 
+B_OctTree::B_OctTree(const B_Map &map, double minNodeSize)
+:
+    m_halfSize(0.0),
     m_root(nullptr)
 {
     this->Build(map, minNodeSize);
@@ -429,7 +428,6 @@ void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTree
         if (this->elements[i]->lastQueryId != gbl_oct_tree_query_id && this->elements[i]->isActive != 0)
         {
             this->elements[i]->lastQueryId = gbl_oct_tree_query_id;
-
             if (outList->size < 0x200)
             {
                 outList->sectors[outList->size] = this->elements[i];
@@ -496,7 +494,7 @@ void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &, B_OctTreeSecto
 */
 
 void B_OctantNode::CollectSectorsAtPoint(
-    const B_Vector &localPos, 
+    const B_Vector &localPos,
     B_OctTreeSectorsList *outList,
     double halfSize)
 {
