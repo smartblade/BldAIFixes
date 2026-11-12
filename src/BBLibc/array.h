@@ -123,15 +123,16 @@ public:
     }
 
     B_Array(unsigned int increment = 16, int deleteItems = true)
+    :
+        elements(NULL),
+        size(0),
+        increment(increment),
+        num_alloc(0),
+        deleteItems(deleteItems)
     {
-        elements = NULL;
-        size = 0;
-        this->increment = increment;
-        num_alloc = 0;
-        this->deleteItems = deleteItems;
     }
 
-    TYPE *operator[](unsigned int index)
+    TYPE *operator[](unsigned int index) const
     {
         return elements[index];
     }
@@ -258,7 +259,7 @@ public:
 
     TYPE **elements;
     unsigned int size;
-    int increment;
+    unsigned int increment;
     unsigned int num_alloc;
     int deleteItems;
 };
