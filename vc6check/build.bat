@@ -39,7 +39,7 @@ if errorlevel 1 (
 
 echo === BBLibc.dll
 for %%f in (IDataFile Name BBLibc) do (
-    cl /nologo /c %CFLAGS% %INCLUDES% %DEFINES% /D _USRDLL /D BUILD_LIB /Fo"%OUT%\%%f.obj" "%BLD%\src\BBLibc\%%f.cpp"
+    cl /nologo /c %CFLAGS% %INCLUDES% %DEFINES% /D _USRDLL /D BBLIBC_LIB_EXPORT= /Fo"%OUT%\%%f.obj" "%BLD%\src\BBLibc\%%f.cpp"
     if errorlevel 1 exit /b 1
 )
 %COMPARE% --raw "%BLD%\src\BBLibc\asm\raw.txt" %COMPARE_FLAGS% "%OUT%\IDataFile.obj" "%OUT%\Name.obj" "%OUT%\BBLibc.obj"

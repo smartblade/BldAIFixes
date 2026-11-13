@@ -46,6 +46,8 @@ from stack_layout import bucket  # noqa: E402
 # A source directory is a name or (name, extra options, files): BBLibc.dll
 # contains only some files of AnalyticGeometry, compiled with the sources
 # of BBLibc (calls of B_IDataFile are direct, not through imports).
+# BBLIBC_LIB_EXPORT of BBLibc is defined empty like '#define' of older
+# sources defining it in each file.
 MODULES = {
     "Blade": (
         "Blade",
@@ -61,11 +63,11 @@ MODULES = {
         [
             "BBLibc",
             (
-                "AnalyticGeometry", ["/DBBLIBC_LIB_EXPORT"],
+                "AnalyticGeometry", [],
                 ["BoundingBox.cpp", "Matrix.cpp", "Plane.cpp", "Vector.cpp"],
             ),
         ],
-        ["/DBUILD_LIB"],
+        ["/DBBLIBC_LIB_EXPORT="],
     ),
     "rOpenGL": ("Raster/rOpenGL3", ["Raster/rOpenGL3", "AnalyticGeometry"],
                 []),

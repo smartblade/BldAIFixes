@@ -143,10 +143,10 @@ not applied is printed):
 Then it compiles the sources of each module (`MODULES` of the script) in
 parallel to `WORK/obj/MODULE` with the options of the original build
 `/c /MD /Od /Ob1 /Oi /Zp4 /GR- /DBLD_NATIVE /Doverride= /FAs` (and
-`/DBUILD_LIB` for `BBLibc.dll`; `BoundingBox.cpp`, `Matrix.cpp`,
-`Plane.cpp` and `Vector.cpp` of `AnalyticGeometry` are compiled for
-`BBLibc.dll` too, with `/DBBLIBC_LIB_EXPORT` like in `BBLibc.vcproj`),
-listings are written next to the object
+`/DBBLIBC_LIB_EXPORT=` for `BBLibc.dll` like in `BBLibc.vcproj`;
+`BoundingBox.cpp`, `Matrix.cpp`, `Plane.cpp` and `Vector.cpp` of
+`AnalyticGeometry` are compiled for `BBLibc.dll` too), listings are
+written next to the object
 files. `--module` and `--file FILE` (repeatable, relative to `src`)
 compile a part of the sources quickly.
 
