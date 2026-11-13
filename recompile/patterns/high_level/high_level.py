@@ -37,6 +37,7 @@ from .split_jumped_declarations import split_jumped_declarations
 from .transform_for_loops import transform_for_loops
 from .transform_returns import transform_returns
 from .transform_struct_copy import transform_struct_copy
+from .chain_assignments import chain_assignments
 from .conditional_results import fold_conditional_results
 from .operands_order import order_operands
 from .inlined_clear import collapse_inlined_clears
@@ -116,6 +117,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     procedure = restore_local_constructions(procedure)
     procedure = fold_temporaries(procedure, declarations.declared_types)
     procedure = split_jumped_declarations(procedure)
+    procedure = chain_assignments(procedure)
     procedure = collapse_matrix_definitions(procedure)
     return extract_inlined_destructor(procedure, inline_procedures)
 

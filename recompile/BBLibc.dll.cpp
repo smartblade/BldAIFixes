@@ -21633,8 +21633,7 @@ l10033BC4:
     for (STACKVAR(-28, 4) = 0x00000000; reinterpret_cast<unsigned int>(STACKVAR(-28, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 84, 4)); STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001)
     {
         STACKVAR(-116, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-28, 4), 0), 0, 4);
-        STACKVAR(-100, 4) = 0x00000000;
-        STACKVAR(-96, 4) = 0x00000000;
+        STACKVAR(-100, 8) = 0.0;
         ACCESS(LOCAL(-92), 0, 8) = 0.0;
         ACCESS(LOCAL(-84), 0, 8) = 0.0;
         for (STACKVAR(-112, 4) = 0x00000000; reinterpret_cast<unsigned int>(STACKVAR(-112, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 164, 4)); STACKVAR(-112, 4) = reinterpret_cast<any_int32>(STACKVAR(-112, 4)) + 0x00000001)

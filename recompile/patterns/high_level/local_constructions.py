@@ -10,7 +10,8 @@ def restore_local_constructions(procedure):
 
     'B_Vector v; v.x = a; v.y = b; v.z = c;' is restored as
     'B_Vector v(a, b, c);' if the class has a constructor with parameters
-    of types of its fields. A call of a constructor that is not inlined
+    of types of its fields, or as 'B_Vector v;' if the values are the
+    initializers of the members by the constructor without parameters. A call of a constructor that is not inlined
     right after the declaration, 'B_BoundingBox b; b.B_BoundingBox(x, y);',
     is restored as 'B_BoundingBox b(x, y);'.
     """
@@ -54,7 +55,10 @@ def _make_construction(instr, next_instrs):
         return None
     if class_type.parent is not None or class_type.has_virtual_methods:
         return None
-    if _find_constructor(class_type, fields) is None:
+    if (
+        _find_constructor(class_type, fields) is None and
+        not class_type.default_initializers
+    ):
         return None
     values = []
     for assignment, (field_type, field_name) in zip(next_instrs, fields):
@@ -70,11 +74,26 @@ def _make_construction(instr, next_instrs):
         if _uses_variable(assignment.src, var):
             return None
         values.append(assignment.src)
+    if _are_default_initializers(class_type, fields, values):
+        return instructions.VariableDeclaration(var, None), len(fields)
+    if _find_constructor(class_type, fields) is None:
+        return None
     construction = expressions.ProcedureCall(
         name=class_type.class_name, is_method=False, arguments=values)
     declaration = instructions.VariableDeclaration(
         var, construction, is_direct_initialization=True)
     return declaration, len(fields)
+
+
+def _are_default_initializers(class_type, fields, values):
+    initializers = class_type.default_initializers
+    if not initializers:
+        return False
+    for (field_type, field_name), value in zip(fields, values):
+        initializer = initializers.get(field_name)
+        if initializer is None or value.emit_code() != initializer:
+            return False
+    return True
 
 
 def _make_called_construction(instr, next_instrs):

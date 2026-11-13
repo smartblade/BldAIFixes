@@ -61,6 +61,45 @@ class TestLocalConstructions(unittest.TestCase):
         ]))
 
 
+def _vector():
+    vector = data_types.ClassType("B_Vector", {
+        0: (data_types.Double(), "x"),
+        8: (data_types.Double(), "y"),
+        16: (data_types.Double(), "z"),
+    })
+    vector.add_constructor(ProcedureDeclaration(
+        "B_Vector", CallingConvention.THISCALL, vector, [], None))
+    vector.set_default_initializers({"x": "0.0", "y": "0.0", "z": "0.0"})
+    return vector
+
+
+def _double(value):
+    return expressions.Constant(data_types.Double(), value)
+
+
+class TestDefaultConstructions(unittest.TestCase):
+    """Fields assigned the initializers of the default constructor."""
+
+    def test_default_construction(self):
+        v = expressions.Identifier(_vector(), "zero")
+        self.assertEqual("B_Vector zero;\n", _emit([
+            instructions.VariableDeclaration(v, None),
+            _assign_field(v, "x", _double(0.0)),
+            _assign_field(v, "y", _double(0.0)),
+            _assign_field(v, "z", _double(0.0)),
+        ]))
+
+    def test_other_values(self):
+        v = expressions.Identifier(_vector(), "v")
+        result = _emit([
+            instructions.VariableDeclaration(v, None),
+            _assign_field(v, "x", _double(0.0)),
+            _assign_field(v, "y", _double(1.0)),
+            _assign_field(v, "z", _double(0.0)),
+        ])
+        self.assertTrue(result.startswith("B_Vector v;\nv.x = 0.0;"), result)
+
+
 def _box():
     box = data_types.ClassType("B_Box", {
         0: (data_types.Int32(), "a"),

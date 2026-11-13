@@ -878,10 +878,31 @@ int B_RigidBody::unknown_method010()
     return 0;
 }
 
+// address: 0x004AB257
+void B_RigidBody::ResetForcesAndPose(double time)
+{
+    this->unknownField0C0 = time;
+    this->unknownField0D8 = time;
+    this->unknownField0C8 = time;
+    this->unknownField0E0 = time;
+    this->pose = this->solid->pose;
+    this->solid->contacts.Clear();
+    B_Vector zero;
+    this->linearImpulse = this->angularImpulse = zero;
+    this->unknown_method020();
+}
+
 // address: 0x004AB33E
 double B_RigidBody::unknown_method018()
 {
     return this->unknownField0C0;
+}
+
+// address: 0x004AB7D9
+void B_RigidBody::unknown_method01C(double unknown)
+{
+    this->unknownField0D8 = unknown;
+    this->unknown_method020();
 }
 
 // address: 0x004ABB97
@@ -900,6 +921,13 @@ int B_PhysicsTemplate::unknown_method008(B_PhysicsTemplateBase *other)
 int B_PhysicsTemplate::unknown_method010(int unknown)
 {
     return 2;
+}
+
+// address: 0x004B3978
+const B_BoundingBox &B_PhysicsTemplate::GetBoundingBox()
+{
+    this->Update();
+    return this->stateCache.state->boundingBox;
 }
 
 // address: 0x004B550A

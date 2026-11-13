@@ -1,3 +1,4 @@
+import data_types
 import expressions
 import instructions
 
@@ -13,6 +14,9 @@ def merge_split_copies(instrs, double_offsets=()):
     Merge them to 'STACKVAR(-232, 8) = STACKVAR(-16, 8)' if the source or
     the destination is accessed as 8-byte stack variable elsewhere, e.g. a
     field of a local object copied to an argument of an inlined method.
+    Zero is stored to a double with two 32-bit moves too, e.g. by an
+    inlined 'B_Vector()': 'STACKVAR(-24, 8) = 0.0' if the destination is
+    accessed as 8-byte stack variable.
     double_offsets are offsets of double fields of local objects known from
     the analysis. Copies are merged repeatedly: a merged destination may be
     the source of other copy, e.g. a field copied to a temporary and then to
@@ -64,6 +68,9 @@ def _merge_block(block, qwords):
 
 
 def _try_merge(low, high, qwords):
+    zero = _try_merge_zero(low, high, qwords)
+    if zero is not None:
+        return zero
     low_halves = _stackvar_copy(low)
     high_halves = _stackvar_copy(high)
     if low_halves is None or high_halves is None:
@@ -81,6 +88,29 @@ def _try_merge(low, high, qwords):
         expressions.intermediate.Stackvar(low_dst, 8),
         expressions.intermediate.Stackvar(low_src, 8),
     )
+
+
+def _try_merge_zero(low, high, qwords):
+    low_dst = _stackvar_zero(low)
+    high_dst = _stackvar_zero(high)
+    if low_dst is None or high_dst != low_dst + 4 or low_dst not in qwords:
+        return None
+    return instructions.Assignment(
+        expressions.intermediate.Stackvar(low_dst, 8),
+        expressions.Constant(data_types.Double(), 0.0),
+    )
+
+
+def _stackvar_zero(instr):
+    """Offset of 'STACKVAR(offset, 4) = 0', None for other instructions."""
+    if not isinstance(instr, instructions.Assignment):
+        return None
+    dst, src = instr.dst, instr.src
+    if not isinstance(dst, expressions.intermediate.Stackvar) or dst.size != 4:
+        return None
+    if not isinstance(src, expressions.Constant) or src.value != 0:
+        return None
+    return dst.offset
 
 
 def _stackvar_copy(instr):

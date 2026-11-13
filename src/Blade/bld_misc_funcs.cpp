@@ -149,16 +149,6 @@ void unknown_00497AE0()
 
 /*
 * Module:                 Blade.exe
-* Entry point:            0x004AC6C2
-*/
-
-int newExclusionGroupId()
-{
-}
-
-
-/*
-* Module:                 Blade.exe
 * Entry point:            0x004C21C6
 * VC++ mangling:          ??0B_YSoundDev@@QAE@XZ
 */

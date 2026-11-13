@@ -188,6 +188,9 @@ class HeaderState:
             if isinstance(decl, _Constructor):
                 self._declared_types[class_name].add_constructor(
                     decl.proc_decl, decl.default_values)
+                if not decl.proc_decl.parameters:
+                    self._declared_types[class_name].set_default_initializers(
+                        decl.initializers)
                 continue
             if isinstance(decl, _OtherMethod):
                 self._declared_types[class_name].add_other_method(
@@ -255,13 +258,15 @@ class HeaderState:
                 depth -= 1
                 if depth == 0:
                     break
+        initializers = _get_initializers(definition[end + 1:])
         definition = definition[:end + 1]
         try:
             proc_decl = parser.parse_cpp_function(
                 class_name, definition, self._declared_types)
         except Exception:
             return None
-        return _Constructor(proc_decl, _get_default_values(definition))
+        return _Constructor(
+            proc_decl, _get_default_values(definition), initializers)
 
     def _try_parse_preprocessor_directive(self, line):
         match = preprocessor_regexp.search(line)
@@ -325,9 +330,34 @@ class _OtherMethod:
 
 
 class _Constructor:
-    def __init__(self, proc_decl, default_values):
+    def __init__(self, proc_decl, default_values, initializers):
         self.proc_decl = proc_decl
         self.default_values = default_values
+        self.initializers = initializers
+
+
+def _get_initializers(rest):
+    """{member: C++ expression} of the initializer list after the
+    parameters of a constructor, e.g. ': x(0.0), y(0.0)'."""
+    rest = rest.strip()
+    if not rest.startswith(":"):
+        return {}
+    initializers = {}
+    depth = 0
+    item = []
+    for c in rest[1:] + ",":
+        if c == "," and depth == 0:
+            name, sep, value = "".join(item).strip().partition("(")
+            if sep and value.endswith(")"):
+                initializers[name.strip()] = value[:-1].strip()
+            item = []
+            continue
+        if c == "(":
+            depth += 1
+        elif c == ")":
+            depth -= 1
+        item.append(c)
+    return initializers
 
 
 def _get_default_values(definition):

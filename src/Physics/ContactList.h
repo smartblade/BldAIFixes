@@ -30,10 +30,21 @@ class B_ContactList
 public:
     B_ContactList();
     ~B_ContactList();
+    void Clear();
 
     B_SharedPtrArray<B_ContactPoint> points;
     B_SharedPtrArray<B_Sector> sectors;
     int type;
 };
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern int newExclusionGroupId();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CONTACT_LIST_H */

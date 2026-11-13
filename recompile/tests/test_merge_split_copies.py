@@ -1,5 +1,6 @@
 import unittest
 
+import data_types
 import expressions
 from patterns.high_level.merge_split_copies import merge_split_copies
 from tests.builder import ass, call_instr
@@ -10,9 +11,9 @@ def _stackvar(offset, size=4):
     return expressions.intermediate.Stackvar(offset, size)
 
 
-def _emit(instrs):
+def _emit(instrs, double_offsets=()):
     writer = Writer()
-    for instr in merge_split_copies(instrs):
+    for instr in merge_split_copies(instrs, double_offsets):
         instr.emit_code(writer)
     return writer.get_string()
 
@@ -72,3 +73,16 @@ class TestMergeSplitCopies(unittest.TestCase):
             ass(_stackvar(-8), _stackvar(-12)),
         ]
         self.assertIn("STACKVAR(-12, 4) = STACKVAR(-16, 4);\n", _emit(instrs))
+
+    def test_zero_of_double(self):
+        # x(0.0) of an inlined 'B_Vector()'
+        zero = expressions.Constant(data_types.Int32(), 0)
+        instrs = [ass(_stackvar(-24), zero), ass(_stackvar(-20), zero)]
+        self.assertEqual(
+            "STACKVAR(-24, 8) = 0.0;\n", _emit(instrs, double_offsets={-24}))
+
+    def test_zeros_of_other_halves(self):
+        zero = expressions.Constant(data_types.Int32(), 0)
+        instrs = [ass(_stackvar(-24), zero), ass(_stackvar(-20), zero)]
+        self.assertEqual(
+            "STACKVAR(-24, 4) = 0;\nSTACKVAR(-20, 4) = 0;\n", _emit(instrs))

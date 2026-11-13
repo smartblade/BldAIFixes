@@ -16,6 +16,9 @@ class ClassType(DataType):
         self._constructors = []
         # Default values of parameters of constructors (C++ expressions)
         self._default_values = {}
+        # Initializers of members by the constructor without parameters:
+        # {member: C++ expression}
+        self._default_initializers = {}
         # Parents of multiple inheritance after the first one: (offset, type)
         self._other_parents = []
         self._parent = None
@@ -118,6 +121,13 @@ class ClassType(DataType):
         self._constructors.append(constructor)
         if default_values is not None:
             self._default_values[id(constructor)] = default_values
+
+    @property
+    def default_initializers(self):
+        return dict(self._default_initializers)
+
+    def set_default_initializers(self, initializers):
+        self._default_initializers = dict(initializers)
 
     def get_default_values(self, constructor):
         """Default values of parameters of constructor or None for each."""

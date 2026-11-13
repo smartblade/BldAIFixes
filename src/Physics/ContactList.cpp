@@ -36,8 +36,33 @@ B_ContactList::~B_ContactList()
 
 
 /*
+* Module:                 Blade.exe
+* Entry point:            0x004AC1B9
+* VC++ mangling:          ?Clear@B_ContactList@@QAEXXZ
+*/
+
+#ifndef BLD_NATIVE
+void B_ContactList::Clear()
+{
+}
+#endif
+
+
+/*
 ................................................................................
 ................................................................................
 ................................................................................
 ................................................................................
 */
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x004AC6C2
+*/
+#ifndef BLD_NATIVE
+int newExclusionGroupId()
+{
+    return 0;
+}
+#endif

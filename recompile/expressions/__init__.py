@@ -1,5 +1,6 @@
 from .address_of import AddressOf
 from .array_access import ArrayAccess
+from .assignment_expression import AssignmentExpression
 from .binary_expression import BinaryExpression as Bin
 from .bit_not import BitNot
 from .brackets_expression import BracketsExpression
