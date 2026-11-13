@@ -33,8 +33,7 @@ constants (`make_octtree_variants.py` makes the variants). For these
 procedures targets of relocations are printed too: float literals of the
 compiler are `__real@...` symbols in `.rdata`, `static double` variables
 are in `.data`. In the original `Blade.exe` the constants are read from
-`.rdata` and `-10.0` is a separate constant, see section 10 of
-`docs/BldMystery-pull-7-review.md` in branch `claude/blade-single-procedure`.
+`.rdata` and `-10.0` is a separate constant.
 
 `vc6compare.py` compares all implemented procedures of the three modules,
 see [All implemented procedures](#all-implemented-procedures).
