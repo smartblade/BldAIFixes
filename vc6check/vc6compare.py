@@ -42,7 +42,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import compare_obj  # noqa: E402
 from stack_layout import bucket  # noqa: E402
 
-# Module: (directory of asm files, source directories, extra options)
+# Module: (directory of asm files, source directories, extra options).
+# A source directory is a name or (name, extra options, files): BBLibc.dll
+# contains only some files of AnalyticGeometry, compiled with the sources
+# of BBLibc (calls of B_IDataFile are direct, not through imports).
 MODULES = {
     "Blade": (
         "Blade",
@@ -53,7 +56,17 @@ MODULES = {
         ],
         [],
     ),
-    "BBLibc": ("BBLibc", ["BBLibc"], ["/DBUILD_LIB"]),
+    "BBLibc": (
+        "BBLibc",
+        [
+            "BBLibc",
+            (
+                "AnalyticGeometry", ["/DBBLIBC_LIB_EXPORT"],
+                ["BoundingBox.cpp", "Matrix.cpp", "Plane.cpp", "Vector.cpp"],
+            ),
+        ],
+        ["/DBUILD_LIB"],
+    ),
     "rOpenGL": ("Raster/rOpenGL3", ["Raster/rOpenGL3", "AnalyticGeometry"],
                 []),
 }
@@ -182,8 +195,7 @@ def build(bldmystery, work, modules, files, jobs):
     for module in modules:
         out_dir = os.path.join(work, "obj", module)
         os.makedirs(out_dir, exist_ok=True)
-        options = MODULES[module][2]
-        for source in module_sources(src, module):
+        for source, options in module_sources(src, module):
             if files and not any(_same_path(source, f) for f in files):
                 continue
             tasks.append((module, source, out_dir, options))
@@ -251,9 +263,14 @@ def _replace_after(text, anchor, old, new):
 
 
 def module_sources(src, module):
-    """Source files of the module relative to src."""
+    """(source file relative to src, compiler options) of the module."""
     sources = []
-    for directory in MODULES[module][1]:
+    for entry in MODULES[module][1]:
+        if isinstance(entry, str):
+            directory, extra_options, only_files = entry, [], None
+        else:
+            directory, extra_options, only_files = entry
+        options = MODULES[module][2] + extra_options
         path = os.path.join(src, directory)
         if not os.path.isdir(path):
             continue
@@ -263,10 +280,13 @@ def module_sources(src, module):
             if os.path.relpath(root, path).count(os.sep) > 0:
                 continue
             for file_name in sorted(files):
-                if file_name.lower().endswith(".cpp"):
-                    sources.append(os.path.relpath(
-                        os.path.join(root, file_name), src).replace(
-                            os.sep, "/"))
+                if not file_name.lower().endswith(".cpp"):
+                    continue
+                if only_files is not None and file_name not in only_files:
+                    continue
+                sources.append((os.path.relpath(
+                    os.path.join(root, file_name), src).replace(
+                        os.sep, "/"), options))
     return sources
 
 
