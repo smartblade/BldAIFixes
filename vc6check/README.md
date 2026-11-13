@@ -183,7 +183,7 @@ and the hash buckets of their names (see [stack-layout.md](stack-layout.md));
 
 `BBLibc.dll` contains IJG libjpeg 6b (strings `6b  27-Mar-1998` and
 `Copyright (C) 1998, Thomas G. Lane`) at `100096A0`-`1002698F` (see
-`docs/BBLibc-object-map.md` in branch `claude/bblibc-object-map`).
+`docs/BBLibc-object-map.md`).
 `build_libjpeg.bat` compiles the library files of libjpeg 6b (`LIBOBJECTS`
 of `makefile.vc` with the `jmemnobs` memory manager, 47 files; the Rich
 header of `BBLibc.dll` counts 46 C objects) with `jconfig.vc` as

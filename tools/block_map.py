@@ -21,14 +21,18 @@ raw_line_regexp = re.compile(r'^(?P<addr>[0-9A-F]{8}): (?P<bytes>[0-9A-F]+)\s')
 export_regexp = re.compile(r'^\* Export: (?P<name>[^,]+),')
 section_regexp = re.compile(r'^Section (?P<name>\S+)')
 proc_regexp = re.compile(r'^l(?P<addr>[0-9A-F]{8}) PROC', re.M)
+# Metadata comment of a procedure: a procedure of several modules lists
+# each module with its entry point
 src_proc_regexp = re.compile(
-    r'Module:\s+(?P<module>\S+)\s*\n'
-    r'\* Entry point:\s+0x(?P<addr>[0-9A-F]{8})\s*\n'
-    r'(?:\* VC\+\+ mangling:\s+(?P<mangling>\S+)\s*\n)?'
-    r'\*/\s*\n'
+    r'/\*[ \t]*\n'
+    r'(?P<meta>(?:[ \t]*\*(?!/)[^\n]*\n)+)'
+    r'[ \t]*\*/\s*\n'
     r'(?:\s*//[^\n]*\n|\s*\n)*'
-    r'(?P<native>#ifndef BLD_NATIVE\s*\n)?'
+    r'(?P<native>[ \t]*#ifndef BLD_NATIVE\s*\n)?'
     r'(?P<decl>[^\n{]*)')
+module_entry_regexp = re.compile(
+    r'Module:\s+(?P<module>\S+)\s*\n'
+    r'[ \t]*\* Entry point:\s+0x(?P<addr>[0-9A-F]{8})')
 
 ALIGNMENT = 16
 
@@ -103,14 +107,15 @@ def read_src_procedures(src_dir, module):
             with open(path, encoding="cp1251", errors="replace") as f:
                 text = f.read().replace("\r", "")
             for match in src_proc_regexp.finditer(text):
-                if match.group("module") != module:
-                    continue
-                addr = int(match.group("addr"), 16)
-                procedures[addr] = (
-                    os.path.relpath(path, src_dir).replace("\\", "/"),
-                    match.group("decl").strip(),
-                    match.group("native") is None,
-                )
+                for entry in module_entry_regexp.finditer(match.group("meta")):
+                    if entry.group("module") != module:
+                        continue
+                    addr = int(entry.group("addr"), 16)
+                    procedures[addr] = (
+                        os.path.relpath(path, src_dir).replace("\\", "/"),
+                        match.group("decl").strip(),
+                        match.group("native") is None,
+                    )
     return procedures
 
 
