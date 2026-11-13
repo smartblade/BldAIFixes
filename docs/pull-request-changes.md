@@ -9,6 +9,33 @@ the following order:
      object file containing them in the binary, the boundaries of object
      files are found by 'int 3' padding to addresses aligned to 16, the
      order of procedures and the table of dynamic initializers;
+   - a stub moved to another source file keeps the format of stubs: the
+     lines `#ifndef BLD_NATIVE` and `#endif` stand for blank lines, so
+     the metadata comment is followed by `#ifndef BLD_NATIVE` without a
+     blank line, and `#endif` with one blank line separates the stub from
+     the next procedure instead of two blank lines:
+
+     ```cpp
+     /*
+     * Module:                 Blade.exe
+     * Entry point:            0x0040A375
+     * VC++ mangling:          ??D@YA?AVB_Vector@@NABV0@@Z
+     */
+     #ifndef BLD_NATIVE
+     B_Vector operator *(double c, const B_Vector &v)
+     {
+         return v;
+     }
+     #endif
+
+     /*
+     * Module:                 Blade.exe
+     * Entry point:            0x0040A3D1
+     ```
+
+     A stub moved next to a definition or a block of dots follows the same
+     rule, and the lines of a stub which becomes a definition are replaced
+     by blank lines;
    - methods outside of the object file of their class (compiled as
      separate COMDAT sections after the object files using them) are
      inline methods defined in the headers;
