@@ -59,7 +59,6 @@ int B_SphereSetTemplate::DetectCollisions(
 }
 #endif
 
-
 /*
 * Module:                 Blade.exe
 * Entry point:            0x004B550A
