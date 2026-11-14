@@ -41,6 +41,7 @@ B_MeshEdge::B_MeshEdge(unsigned int a, unsigned int b, unsigned int node)
     this->vertexB = a > b ? a : b;
 }
 
+
 /*
 * Module:                 BBLibc.dll
 * Entry point:            0x1003227E

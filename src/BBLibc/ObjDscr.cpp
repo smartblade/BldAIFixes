@@ -12,6 +12,7 @@ unsigned short B_ObjDscr::ClassId() const
     return 1;
 }
 
+
 /*
 * Module:                 BBLibc.dll
 * Entry point:            0x10032ACC
@@ -23,6 +24,7 @@ unsigned long B_ObjDscr::CheckSum() const
     return 0;
 }
 
+
 /*
 * Module:                 BBLibc.dll
 * Entry point:            0x10032AD9
@@ -33,6 +35,7 @@ unsigned int B_ObjDscr::SerialSize() const
 {
     return 0;
 }
+
 
 /*
 * Module:                 BBLibc.dll
@@ -145,6 +148,7 @@ unsigned char B_ObjDscr::EdgeFaceGrp(unsigned int edge)
     }
     return 0;
 }
+
 
 /*
 * Module:                 BBLibc.dll
