@@ -52,7 +52,7 @@ class B_ObjFaceArray : public array_t<B_ObjFace>
 {
 };
 
-class B_ObjNodeArray : public B_PtrArray<B_ObjNode>
+class B_ObjNodeArray : public B_Array<B_ObjNode>
 {
 };
 
