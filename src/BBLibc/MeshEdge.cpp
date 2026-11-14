@@ -34,8 +34,9 @@ B_MeshEdge::B_MeshEdge()
 */
 
 B_MeshEdge::B_MeshEdge(unsigned int a, unsigned int b, unsigned int node)
+:
+    node(node)
 {
-    this->node = node;
     this->sharp = 1;
     this->vertexA = a < b ? a : b;
     this->vertexB = a > b ? a : b;
