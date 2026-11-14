@@ -1,4 +1,5 @@
 #include "MeshEdge.h"
+#include <bld_system.h>
 
 
 /*
@@ -38,8 +39,8 @@ B_MeshEdge::B_MeshEdge(unsigned int a, unsigned int b, unsigned int node)
     node(node)
 {
     this->sharp = 1;
-    this->vertexA = a < b ? a : b;
-    this->vertexB = a > b ? a : b;
+    this->vertexA = min(a, b);
+    this->vertexB = max(a, b);
 }
 
 
